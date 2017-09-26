@@ -1,7 +1,7 @@
 Cindy
 =====
 A (non-)replica project for replicating the
-website of [sui-hei.net](sui-hei.net) by `Django`.
+website of [sui-hei.net](http://sui-hei.net) by `Django`.
 
 The name of `Cindy` stands for **Cindy Is Not Dead Yet**,
 which comes from the popular original character of
@@ -9,8 +9,31 @@ which comes from the popular original character of
 
 **THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
 
+TODOs
+-----
+1. This is actually an empty project! Anything will help!
+1. A Japanese version of this 'README.md' file is needed!
+
 Contribute
 ----------
+All means of contributions are Welcome!
+
+If you are familiar with `python` or `css` or `html`,
+don't hesitate to [make your own changes](#improving-codes) to it!
+You can even improve this `README.md` page if you have some `markdown` skills!
+
+If you are not familiar with a programming language
+but have some fastinating ideas, [leave your comments](#posting-issues)
+for us!
+
+### Posting Issues
+1. Go to [issues page](https://github.com/heyrict/cindy/issues)
+
+1. Press `New Issue` button.
+
+1. Leave your comments!
+
+### Improving codes
 1. Fork this project.
 
 1. Pull *your forked repo* to your local machine.
@@ -33,4 +56,4 @@ Contribute
     git push origin name_of_your_new_branch
     ```
 
-1. Pull request
+1. Start a pull request
