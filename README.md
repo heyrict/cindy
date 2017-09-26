@@ -14,6 +14,14 @@ Requirements
 - [Python3.5](http://www.python.org)
 - django and pymysql
 
+    ```bash
+    # Windows
+    pip install django pymysql
+
+    # Mac or Linux
+    sudo -H pip install django pymysql
+    ```
+
 How To Run This Site On Your Machine
 ------------------------------------
 1. Clone this repo to your machine if you have `git`,
@@ -32,19 +40,16 @@ How To Run This Site On Your Machine
 ### How to open a terminal
 
 #### Windows
-```bash
-# For Windows users, open a cmd window
-# By Typing `Win+R`, Input `cmd`, enter
-# and run this command below
-pip install django pymysql
-```
+For Windows users, hit `Win+R`, Input `cmd`, and hit enter.
 
 #### Mac/Linux
-```bash
-# Run this command with your terminal
-# For Mac/Linux users
-sudo -H pip install django pymysql
-```
+Open app menu by hitting `Super` or `Win` on your keyboard,
+or clicking the icon in your docker.
+
+Search for `terminal`, and open it.
+
+Under linux, you can open a terminal by hitting `Ctrl-Alt-T` or click th
+e `open a terminal` in the right-click menu.
 
 TODO
 -----
