@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sui_hei.apps.SuiHeiConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,13 @@ WSGI_APPLICATION = 'cindy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'cindy',
+        'ENGINE': 'django.db.backends.mysql',
+        #'DATABASE': 'cindy',
+        'USER': 'cindy',
+        'PASSWORD': 'sui_hei',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -108,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ja-jp'
 
-TIME_ZONE = 'Japan/Tokyo'
+TIME_ZONE = 'Japan'
 
 USE_I18N = True
 
@@ -120,3 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Don't append `_id` to foreign keys
+FK_AUTO_ID=''
