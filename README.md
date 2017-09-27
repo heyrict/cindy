@@ -66,7 +66,6 @@ e `open a terminal` in the right-click menu.
 TODO
 -----
 1. This is almost an empty project! Anything will help!
-1. A Japanese version of this 'README.md' file is needed!
 
 Contribute
 ----------
