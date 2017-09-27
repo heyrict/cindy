@@ -1,9 +1,13 @@
 Cindy - mondai
 ==============
+[{% trans "register" %}](users/add)
+
+{% trans "All Soups" %}
+-----------------------
 
 {% for mondai in mondai_list %}
 
-- [{{ mondai.title }}](mondai/show/%7B%7B%20mondai.id%20%7D%7D)
-    Syutudaisya: [{{ mondai.user_id.username }}](profile/%7B%7B%20mondai.user_id%20%7D%7D)
+- [{{ mondai.title }}](mondai/show/{{ mondai.id }})
+    Syutudaisya: [{{ mondai.user_id.username }}](profile/{{ mondai.user_id }})
 
 {% endfor %}
