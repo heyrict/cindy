@@ -9,17 +9,18 @@ which comes from the popular original character of
 
 **THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
 
-Requirements
+Dependency
 -----------
 - [Python3.5](http://www.python.org)
+- MySQL Server
 - django and pymysql
 
     ```bash
     # Windows
-    pip install django pymysql
+    pip3 install django pymysql
 
     # Mac or Linux
-    sudo -H pip install django pymysql
+    sudo -H pip3 install django pymysql
     ```
 
 How To Run This Site On Your Machine
@@ -28,14 +29,25 @@ How To Run This Site On Your Machine
     otherwize download the zip archive by clicking the
     button up-right.
 2. [Install requirements](#requirements)
-3. run server on your localhost.
+3. Configure your MySQL database
+    - customize `cindy/mysql.cnf` file.
+    - open mysql, create a user and a database, grant all previlidges to it.
+
+        ```sql
+        # note that you need to chage all <>s to the value in your mysql.cnf.
+        create database <database>
+        create user '<user>'@'<host>' identified by <password>;
+        grant all on <database> to '<user>'@'<host>'
+        quit
+        ```
+4. Run server on your localhost.
     - For Linux Users or Mac Users,
         `cd` to the root of the cloned/unzipped folder,
         and run `python3 manage.py runserver`.
     - For Windows Users,
         open a `cmd` window, and type
         `python3 <drag the manage.py here> runserver`
-4. open the link appeared in your terminal/cmd with a browser.
+5. Open the link appeared in your terminal/cmd with a browser.
 
 ### How to open a terminal
 
@@ -44,7 +56,7 @@ For Windows users, hit `Win+R`, Input `cmd`, and hit enter.
 
 #### Mac/Linux
 Open app menu by hitting `Super` or `Win` on your keyboard,
-or clicking the icon in your docker.
+or clicking the `all applications` icon in your dock.
 
 Search for `terminal`, and open it.
 
@@ -53,7 +65,7 @@ e `open a terminal` in the right-click menu.
 
 TODO
 -----
-1. This is actually an empty project! Anything will help!
+1. This is almost an empty project! Anything will help!
 1. A Japanese version of this 'README.md' file is needed!
 
 Contribute
@@ -112,6 +124,7 @@ This chapter is specially for explaning the whole project to programmers.
 │   ├── settings.py                 #  know what you are doing.
 │   ├── urls.py
 │   └── wsgi.py
+├── mysql.cnf                       # config for mysql
 ├── LICENSE                         # licence file
 ├── manage.py                       # auto-generated manage script by django
 ├── README.md                       # the description file you are reading!

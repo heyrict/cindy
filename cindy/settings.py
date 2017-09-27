@@ -77,13 +77,10 @@ WSGI_APPLICATION = 'cindy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'cindy',
         'ENGINE': 'django.db.backends.mysql',
-        #'DATABASE': 'cindy',
-        'USER': 'cindy',
-        'PASSWORD': 'sui_hei',
-        'HOST': 'localhost',
-        'PORT': '',
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'mysql.cnf')
+        }
     }
 }
 
