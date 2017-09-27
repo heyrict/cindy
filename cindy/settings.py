@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'cindy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'cindy',
+        'NAME': 'heyrict$cindy',
         'ENGINE': 'django.db.backends.mysql',
         #'DATABASE': 'cindy',
-        'USER': 'cindy',
-        'PASSWORD': 'sui_hei',
-        'HOST': 'localhost',
+        'USER': 'heyrict',
+        'PASSWORD': 'a02350770630',
+        'HOST': 'heyrict.mysql.pythonanywhere-services.com',
         'PORT': '',
     }
 }
@@ -125,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # Don't append `_id` to foreign keys
 FK_AUTO_ID=''
