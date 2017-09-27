@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'cindy.urls'
@@ -125,4 +126,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # Don't append `_id` to foreign keys
-FK_AUTO_ID=''
+FK_AUTO_ID = ''
+
+# Locale path
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]

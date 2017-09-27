@@ -1,36 +1,32 @@
 Cindy
 =====
-A (non-)replica project for replicating the
-website of [sui-hei.net](http://sui-hei.net) by `Django`.
+Djangoによるウミガメのスープ出題サイト『[ラテシン](http://sui-hei.net)』 のレプリカプロジェクトです。
 
-The name of `Cindy` stands for **Cindy Is Not Dead Yet**,
-which comes from the popular original character of
-[Cindy](http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3).
+プロジェクト名の由来は「シンディは死んでいない(Cindy Is Not Dead Yet)」
+ラテシンの公式キャラクターである[シンディ](http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3)から取っています。
 
-**THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
+**このプロジェクトは開発中です。皆さんの助けが必要です！**
 
-Dependency
+開発環境
 -----------
 - [Python3.5](http://www.python.org)
-- MySQL Server
 - django and pymysql
 
     ```bash
-    # Windows
+    # Windowsの場合
     pip3 install django pymysql
 
-    # Mac or Linux
+    # Mac または Linux の場合
     sudo -H pip3 install django pymysql
     ```
 
-How To Run This Site On Your Machine
+ローカルでの実行方法
 ------------------------------------
-1. Clone this repo to your machine if you have `git`,
-    otherwize download the zip archive by clicking the
-    button up-right.
-2. [Install requirements](#requirements)
-3. Configure your MySQL database
-    - customize `cindy/mysql.cnf` file.
+1. `git`をインストール済みなら、レポジトリをcloneしてください。
+    なければ右上のボタンからzipをダウンロードしてください。
+2. [必要な環境](#開発環境)
+3. MySQL データベースを配置してください。
+    - `cindy/mysql.cnf` をカスタマイズしてください。
     - open mysql, create a user and a database, grant all previlidges to it.
 
         ```sql
@@ -40,23 +36,23 @@ How To Run This Site On Your Machine
         grant all on <database> to '<user>'@'<host>'
         quit
         ```
-4. Run server on your localhost.
-    - For Linux Users or Mac Users,
-        `cd` to the root of the cloned/unzipped folder,
-        and run `python3 manage.py runserver`.
-    - For Windows Users,
-        open a `cmd` window, and type
-        `python3 <drag the manage.py here> runserver`
-5. Open the link appeared in your terminal/cmd with a browser.
+4. localhost上でサーバーを起動してください。
+    - Linux　か Mac の場合
+        `cd` でクローン/解凍したディレクトリに移動してください。
+        そのあと　`python3 manage.py runserver` を実行してください。
+    - Windows の場合
+        コマンドプロンプトで
+        `python3 <ここに manage.py のアイコンをドラッグ> runserver`　を実行してください。
+5. ターミナルに現れたリンクをブラウザで開いてください。
 
-### How to open a terminal
+### ターミナルの開き方
 
 #### Windows
 For Windows users, hit `Win+R`, Input `cmd`, and hit enter.
 
 #### Mac/Linux
 Open app menu by hitting `Super` or `Win` on your keyboard,
-or clicking the `all applications` icon in your dock.
+or clicking the icon in your docker.
 
 Search for `terminal`, and open it.
 
@@ -65,41 +61,37 @@ e `open a terminal` in the right-click menu.
 
 TODO
 -----
-1. This is almost an empty project! Anything will help!
+1. 現段階ではほとんど空のプロジェクトです。協力をお待ちしています！
 
 Contribute
 ----------
-All means of contributions are Welcome!
+どんな形でもご協力を歓迎します！
 
-If you are familiar with `python` or `css` or `html`,
-don't hesitate to [make your own changes](#improving-codes) to it!
-You can even improve this `README.md` page if you have some `markdown` skills!
+`python` , `css` , `html`, のいずれかに詳しければ、遠慮なく [make your own changes](#コードを改善する) で変更してください！
+`markdown` のスキルがあれば、 `README.md` も改善してください！
 
-If you are not familiar with a programming language
-but have some fastinating ideas, [leave your comments](#posting-issues)
-for us!
+プログラミングが得意でなくても、アイデアがあれば [leave your comments](#issues-に投稿する)　までコメントをお願いします！
 
-### Posting Issues
-1. Go to [issues page](https://github.com/heyrict/cindy/issues)
+### Issues に投稿する
+1. [issues page](https://github.com/heyrict/cindy/issues)　に移動してください。
 
-1. Press `New Issue` button.
+1. `New Issue` ボタンを押してください。
 
-1. Leave your comments!
+1. コメントを投稿してください！
 
-### Improving codes
-1. Fork this project.
+### コードを改善する
+1. このプロジェクトをフォークしてください。
 
-1. Pull *your forked repo* to your local machine.
+1. *your forked repo* をローカルにクローンしてください。
 
     `git clone http://github.com/your_user_name/your_folked_repo.git`
 
 
-1. Create a new branch `develop` or something else
-    like `a-new-feature` on your local machine.
+1. `develop` のようなブランチを作成してください。
 
     `git checkout -b name_of_your_new_branch`
 
-1. Do some editing & commit it
+1. 編集した後、 commit してください。
 
     ```bash
     # edit...
@@ -109,9 +101,10 @@ for us!
     git push origin name_of_your_new_branch
     ```
 
-1. Start a pull request
+1.  プルリクエストしてください。
 
-For Programmers
+
+プログラマーズへ
 ----------------
 This chapter is specially for explaning the whole project to programmers.
 
