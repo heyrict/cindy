@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}" type="text/css" />
+</head>
+<body>
+<h1 id="cindy---mondai---show">Cindy - mondai - show</h1>
+<h2 id="mondai.title">{{ mondai.title }}</h2>
+<h3 id="info">Info</h3>
+<ul>
+<li>Syutudaisya: {{ mondai.user_id.name }}</li>
+<li>Syutudai_jikan: {{ mondai.created }}</li>
+</ul>
+<h3 id="soup">Soup</h3>
+<p>{{ mondai.content }}</p>
+<h3 id="answer">Answer</h3>
+<p>{{ mondai.kaisetu }}</p>
+</body>
+</html>
