@@ -99,3 +99,41 @@ for us!
     ```
 
 1. Start a pull request
+
+For Programmers
+----------------
+This chapter is specially for explaning the whole project to programmers.
+
+### Data structure
+```
+.
+├── cindy                           # folder storing metadata for the project.
+│   ├── __init__.py                 #  you may not need to edit it unless you
+│   ├── settings.py                 #  know what you are doing.
+│   ├── urls.py
+│   └── wsgi.py
+├── LICENSE                         # licence file
+├── manage.py                       # auto-generated manage script by django
+├── README.md                       # the description file you are reading!
+└── sui_hei                         # folder storing the main site project.
+    ├── admin.py
+    ├── apps.py                     # apps config file.
+    ├── __init__.py
+    ├── migrations/
+    ├── models.py                   # models storing data structure.
+    ├── static                      # storing static files, e.g. css, js, png, etc.
+    │   └── github-pandoc.css       # initial stylesheet (which i used for styling markdown)
+    ├── templates                   # html templates.
+    │   └── sui_hei                 #  there are md files because I used a hack by
+    │       ├── index.html          #  generating html files from markdown(`v ')
+    │       ├── mondai.html
+    │       ├── mondai_show.html
+    │       ├── mondai_show.md
+    │       ├── profile.html
+    │       └── profile.md
+    ├── tests.py                    # file for testing the project
+    ├── urls.py                     # url patterns of the website
+    └── views.py                    # views (or frontend) of the web pages.
+                                    #  pass parameters here to the templates.
+```
+
