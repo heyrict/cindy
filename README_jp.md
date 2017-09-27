@@ -3,7 +3,7 @@ Cindy
 Djangoによるウミガメのスープ出題サイト『ラテシン』(http://sui-hei.net)のレプリカプロジェクトです。
 
 プロジェクト名の由来は「シンディは死んでいない」
-ラテシンの公式キャラクターであるシンディから取っています。
+ラテシンの公式キャラクターであるシンディから取っています。  
 (参考：http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3).
 
 **このプロジェクトは開発中です。皆さんの助けが必要です！**
@@ -26,14 +26,14 @@ Djangoによるウミガメのスープ出題サイト『ラテシン』(http://
 1　　　`git`をインストール済みなら、レポジトリをcloneしてください。
     なければ右上のボタンからzipをダウンロードしてください。
 2. [必要な環境](#requirements)
-3. localhost上でサーバーを起動してください。
-    - Linux　か Mac の場合
-        `cd` でクローン/解凍したディレクトリに移動してください。
-        そのあと　`python3 manage.py runserver` を実行してください。
-    - Windows の場合
-        コマンドプロンプトで
-        `python3 <ここに manage.py のアイコンをドラッグ> runserver`　を実行してください。
-4. ターミナルに現れたリンクをブラウザで開いてください。
+3. localhost上でサーバーを起動してください。  
+    - Linux　か Mac の場合  
+        `cd` でクローン/解凍したディレクトリに移動してください。  
+        そのあと　`python3 manage.py runserver` を実行してください。  
+    - Windows の場合  
+        コマンドプロンプトで  
+        `python3 <ここに manage.py のアイコンをドラッグ> runserver`　を実行してください。  
+4. ターミナルに現れたリンクをブラウザで開いてください。  
 
 ### ターミナルの開き方
 
@@ -57,7 +57,7 @@ Contribute
 ----------
 どんな形でもご協力を歓迎します！
 
-`python` , `css` , `html`, のいずれかに詳しければ、遠慮なく [make your own changes](#improving-codes) で変更してください！
+`python` , `css` , `html`, のいずれかに詳しければ、遠慮なく [make your own changes](#improving-codes) で変更してください！  
 `markdown` のスキルがあれば、 `README.md` も改善してください！
 
 プログラミングが得意でなくても、アイデアがあれば [leave your comments](#posting-issues)　までコメントをお願いします！
