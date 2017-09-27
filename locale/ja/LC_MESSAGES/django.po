@@ -8,52 +8,67 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 20:30+0900\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-09-27 21:01+0900\n"
+"PO-Revision-Date: 2017-09-27 20:05+0800\n"
 "Last-Translator: heyrict <xiezh0831@yahoo.co.jp>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sui_hei/templates/sui_hei/index.html:14
-msgid "a replica for"
-msgstr "レプリカ："
+#: cindy/settings.py:140
+msgid "Japanese"
+msgstr "日本語"
 
-#: sui_hei/templates/sui_hei/index.html:14
+#: cindy/settings.py:141
+msgid "English"
+msgstr "英語"
+
+#: sui_hei/templates/sui_hei/index.html:15
+msgid "a replica for"
+msgstr "レプリカサイトオブ："
+
+#: sui_hei/templates/sui_hei/index.html:15
 msgid "suiheinet"
 msgstr "ウミガメスープ"
 
-#: sui_hei/templates/sui_hei/index.html:14
+#: sui_hei/templates/sui_hei/index.html:15
 msgid "constructed by kamisugi."
 msgstr "制作者：上杉"
 
-#: sui_hei/templates/sui_hei/index.html:15
+#: sui_hei/templates/sui_hei/index.html:16
 msgid "Site Navigations"
 msgstr "ナビゲーション"
 
-#: sui_hei/templates/sui_hei/index.html:16
+#: sui_hei/templates/sui_hei/index.html:17
 msgid "mondai"
 msgstr "問題"
 
 #: sui_hei/templates/sui_hei/mondai.html:17
 #: sui_hei/templates/sui_hei/mondai_show.html:18
 msgid "Giver"
-msgstr ""
+msgstr "出題者"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:16
 msgid "Info"
-msgstr ""
+msgstr "インフォメーション"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:19
 msgid "Give time"
-msgstr ""
+msgstr "出題時間"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:21
+msgid "Soup"
+msgstr "問題"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:23
+msgid "Answer"
+msgstr "解説"
 
 #: sui_hei/templates/sui_hei/profile.html:16
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: sui_hei/templates/sui_hei/profile.html:17
 msgid "Created time"
-msgstr ""
+msgstr "作った時間"
