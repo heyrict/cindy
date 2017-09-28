@@ -1,6 +1,7 @@
 from datetime import datetime
+from django import forms
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.urls import reverse
@@ -29,14 +30,18 @@ def mondai_show(request, mondai_inst):
 
 def profile(request, user_inst):
     template = loader.get_template('sui_hei/profile.html')
-    user_inst = get_object_or_404(Users, name=user_inst)
+    user_inst = get_object_or_404(Users, pk=user_inst)
     return HttpResponse(template.render({'user': user_inst}, request))
 
+
+class RegisterForm(forms.Form):
+    username = forms.CharField()
+    name = forms.CharField()
+    password = forms.PasswordInput()
 
 def users_add(request):
     template = loader.get_template('sui_hei/register.html')
     return HttpResponse(template.render({}, request))
-
 
 def register(request):
     try:
@@ -65,3 +70,14 @@ def register(request):
         return HttpResponse(
             _("Successfully created a user account!"
               "Click <a href='/mondai'>here</a> to back to home page."))
+
+def login(request):
+    try:
+        name = request.POST['name']
+        password = request.POST['password']
+        user_inst = get_object_or_404(Users, name=name, password=password)
+    except Http404:
+        return render(request, 'sui_hei/login.html', {'error_message': e})
+    else:
+        request.session['id'] = user_inst.id
+        return HttpResponseRedirect('/')

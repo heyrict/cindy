@@ -8,6 +8,6 @@ Cindy - mondai
 {% for mondai in mondai_list %}
 
 - [{{ mondai.title }}](mondai/show/{{ mondai.id }})
-    Syutudaisya: [{{ mondai.user_id.username }}](profile/{{ mondai.user_id }})
+    {% trans "Giver" %}: [{{ mondai.user_id.username }}](profile/{{ mondai.user_id.id }})
 
 {% endfor %}

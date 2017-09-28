@@ -16,10 +16,10 @@
 <body>
 <h1 id="cindy---register">Cindy - register</h1>
 <p><strong>{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</strong></p>
-<p>{% trans 'You can register to cindy free in one step' %}</p>
+<p>{% trans 'You can register to cindy free in one more step' %}</p>
 <p>{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}</p>
 <form action="{% url 'sui_hei:register' %}" method="post">
-{% csrf_token %} <label>{% trans 'Nickname' %}</label>: <input type="text" name="username" id="name" /><br /> <label>{% trans 'User' %}</label>: <input type="text" name="name" id="username" /><br /> <label>{% trans 'Password' %}</label>: <input type="password" name="password" id="password" /><br /> <input type="submit" value="Confirm" />
+{% csrf_token %} <label>{% trans 'Nickname' %}</label>: <input type="text" name="username" id="username" /><br /> <label>{% trans 'User' %}</label>: <input type="text" name="name" id="name" /><br /> <label>{% trans 'Password' %}</label>: <input type="password" name="password" id="password" /><br /> <input type="submit" value="Confirm" />
 </form>
 </body>
 </html>
