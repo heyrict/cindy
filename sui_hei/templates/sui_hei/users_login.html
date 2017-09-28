@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="cindy---login">Cindy - login</h1>
+<form action="{% url 'sui_hei:users_login' %}" method="post">
+{% csrf_token %}
+<p>
+{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
+</p>
+{{ lf.as_p }} <input type="submit" value="Confirm" />
+</form>
+</body>
+</html>
