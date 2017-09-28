@@ -19,7 +19,11 @@ def index(request):
 def mondai(request):
     template = loader.get_template('sui_hei/mondai.html')
     mondai_list = Mondais.objects.order_by('-created')
-    return HttpResponse(template.render({'mondai_list': mondai_list}, request))
+    return HttpResponse(
+        template.render({
+            'mondai_list': mondai_list,
+            'log_id': request.session.get('id', '')
+        }, request))
 
 
 def mondai_show(request, mondai_inst):
@@ -34,6 +38,7 @@ def profile(request, user_inst):
     return HttpResponse(template.render({'user': user_inst}, request))
 
 
+# cindy/sui_hei/users/add
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=255)
     name = forms.CharField(max_length=255)
@@ -44,12 +49,16 @@ def users_add(request):
     if request.method == "POST":
         rf = RegisterForm(request.POST)
 
-        try:
+        if rf.is_valid():
             username = rf.cleaned_data['username']
             name = rf.cleaned_data['name']
             password = rf.cleaned_data['password']
-        except:
+
+        # Validate the signup request
+        try:
             # TODO: Validate the form here
+            pass
+        except:
             return render(request, 'sui_hei/users_add.html', {'rf': rf})
 
         # Create a new user
@@ -69,13 +78,36 @@ def users_add(request):
     return render(request, 'sui_hei/users_add.html', {'rf': RegisterForm()})
 
 
+# cindy/sui_hei/users/login
+class LoginForm(forms.Form):
+    name = forms.CharField(max_length=255)
+    password = forms.CharField(max_length=255, widget=forms.PasswordInput)
+
+
 def users_login(request):
-    try:
-        name = request.POST['name']
-        password = request.POST['password']
-        user_inst = get_object_or_404(Users, name=name, password=password)
-    except Http404:
-        return render(request, 'sui_hei/login.html', {'error_message': e})
-    else:
+    if request.method == "POST":
+        lf = LoginForm(request.POST)
+        if lf.is_valid():
+            name = lf.cleaned_data['name']
+            password = lf.cleaned_data['password']
+
+        # Validate the login request
+        try:
+            user_inst = get_object_or_404(Users, name=name, password=password)
+        except Http404 as e:
+            return render(request, 'sui_hei/users_login.html',
+                          {'lf': lf,
+                           'error_message': e})
+
+        # Login succeed
         request.session['id'] = user_inst.id
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/mondai')
+    else:
+        return render(request, 'sui_hei/users_login.html', {'lf': LoginForm()})
+
+def users_logout(request):
+    try:
+        del request.session['id']
+    except:
+        pass
+    return HttpResponseRedirect('/mondai')

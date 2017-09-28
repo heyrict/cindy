@@ -1,6 +1,16 @@
 Cindy - mondai
 ==============
+{% if not log_id %}
+
 [{% trans "register" %}](users/add)
+
+[{% trans "login" %}](users/login)
+
+{% else %}
+
+[{% trans "logout" %}](users/logout)
+
+{% endif %}
 
 {% trans "All Soups" %}
 -----------------------

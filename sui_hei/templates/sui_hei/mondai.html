@@ -15,7 +15,12 @@
 </head>
 <body>
 <h1 id="cindy---mondai">Cindy - mondai</h1>
+<p>{% if not log_id %}</p>
 <p><a href="users/add">{% trans 'register' %}</a></p>
+<p><a href="users/login">{% trans 'login' %}</a></p>
+<p>{% else %}</p>
+<p><a href="users/logout">{% trans 'logout' %}</a></p>
+<p>{% endif %}</p>
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
 <p>{% for mondai in mondai_list %}</p>
 <ul>

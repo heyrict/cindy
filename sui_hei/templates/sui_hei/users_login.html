@@ -15,9 +15,12 @@
 </head>
 <body>
 <h1 id="cindy---login">Cindy - login</h1>
-<p>{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}</p>
-<form action="{% url 'sui_hei:login' %}" method="post">
-{% csrf_token %} <label>{% trans 'User' %}</label>: <input type="text" name="name" id="name" /><br /> <label>{% trans 'Password' %}</label>: <input type="password" name="password" id="password" /><br /> <input type="submit" value="Confirm" />
+<form action="{% url 'sui_hei:users_login' %}" method="post">
+{% csrf_token %}
+<p>
+{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
+</p>
+{{ lf.as_p }} <input type="submit" value="Confirm" />
 </form>
 </body>
 </html>

@@ -4,8 +4,6 @@ Cindy - register
 
 {% trans "You can register to cindy free in one more step" %}
 
-<p>{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}</p>
-
 <form action="{% url 'sui_hei:users_add' %}" method="post">
 {% csrf_token %}
 {{ rf.as_p }}

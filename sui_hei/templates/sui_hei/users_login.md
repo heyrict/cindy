@@ -5,10 +5,8 @@ Cindy - login
 **{{ error_message }}**
 {% endif %}
 
-<form action="{% url 'sui_hei:login' %}" method="post">
+<form action="{% url 'sui_hei:users_login' %}" method="post">
 {% csrf_token %}
-<p>{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}</p>
-<label>{% trans "User" %}</label>: <input type="text" name="name" id="name" /><br />
-<label>{% trans "Password" %}</label>: <input type="password" name="password" id="password" /><br />
+{{ lf.as_p }}
 <input type="submit" value="Confirm" />
 </form>
