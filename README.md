@@ -66,6 +66,13 @@ e `open a terminal` in the right-click menu.
 TODO
 -----
 1. This is almost an empty project! Anything will help!
+1. Add a lobby chat(comming soon)
+    - store lobby chat in a frame (for that reason I am currently learning html&css styling)
+    - add to database temporary storing feature for logs
+1. Rich the database
+    - add `profile` to table `Users` just as suiheinet do
+1. Q&A frame in `sui_hei/mondai/show` (giving space to infrastructure)
+1. **A MORE BUILTIFUL LAYOUT**
 
 Contribute
 ----------
@@ -127,6 +134,8 @@ This chapter is specially for explaning the whole project to programmers.
 ├── LICENSE                         # licence file
 ├── manage.py                       # auto-generated manage script by django
 ├── README.md                       # the description file you are reading!
+├── README_jp.md                    # the description file in Japanese
+├── locale/                         # folder storing language files
 └── sui_hei                         # folder storing the main site project.
     ├── admin.py
     ├── apps.py                     # apps config file.
@@ -134,15 +143,21 @@ This chapter is specially for explaning the whole project to programmers.
     ├── migrations/
     ├── models.py                   # models storing data structure.
     ├── static                      # storing static files, e.g. css, js, png, etc.
-    │   └── github-pandoc.css       # initial stylesheet (which i used for styling markdown)
+    │   └── github-pandoc.css       # initial stylesheet (which I used for styling markdown)
     ├── templates                   # html templates.
     │   └── sui_hei                 #  there are md files because I used a hack by
     │       ├── index.html          #  generating html files from markdown(`v ')
+    │       ├── index.md
     │       ├── mondai.html
+    │       ├── mondai.md
     │       ├── mondai_show.html
     │       ├── mondai_show.md
     │       ├── profile.html
-    │       └── profile.md
+    │       ├── profile.md
+    │       ├── users_add.html
+    │       ├── users_add.md
+    │       ├── users_login.html
+    │       └── users_login.md
     ├── tests.py                    # file for testing the project
     ├── urls.py                     # url patterns of the website
     └── views.py                    # views (or frontend) of the web pages.

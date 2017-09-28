@@ -4,8 +4,7 @@ from django import forms
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
-from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView, ListView
 
 from .models import Chats, Mondais, Shitumons, Users
 
@@ -16,26 +15,39 @@ def index(request):
     return HttpResponse(template.render({}, request))
 
 
-def mondai(request):
-    template = loader.get_template('sui_hei/mondai.html')
-    mondai_list = Mondais.objects.order_by('-created')
-    return HttpResponse(
-        template.render({
-            'mondai_list': mondai_list,
-            'log_id': request.session.get('id', '')
-        }, request))
+class MondaiView(ListView):
+    template_name = 'sui_hei/mondai.html'
+    context_object_name = 'mondai_list'
+
+    def get_context_data(self, **kwargs):
+        context = super(MondaiView, self).get_context_data(**kwargs)
+        context['log_id'] = self.request.session.get('id', '')
+        return context
+
+    def get_queryset(self):
+        return Mondais.objects.order_by('-created')
 
 
-def mondai_show(request, mondai_inst):
-    template = loader.get_template('sui_hei/mondai_show.html')
-    mondai_inst = get_object_or_404(Mondais, pk=mondai_inst)
-    return HttpResponse(template.render({'mondai': mondai_inst}, request))
+class MondaiShowView(DetailView):
+    model = Mondais
+    template_name = 'sui_hei/mondai_show.html'
+    context_object_name = 'mondai'
+
+    def get_context_data(self, **kwargs):
+        context = super(MondaiShowView, self).get_context_data(**kwargs)
+        context['log_id'] = self.request.session.get('id', '')
+        return context
 
 
-def profile(request, user_inst):
-    template = loader.get_template('sui_hei/profile.html')
-    user_inst = get_object_or_404(Users, pk=user_inst)
-    return HttpResponse(template.render({'user': user_inst}, request))
+class ProfileView(DetailView):
+    model = Users
+    template_name = 'sui_hei/profile.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context['log_id'] = self.request.session.get('id', '')
+        return context
 
 
 # cindy/sui_hei/users/add
@@ -105,9 +117,10 @@ def users_login(request):
     else:
         return render(request, 'sui_hei/users_login.html', {'lf': LoginForm()})
 
+
 def users_logout(request):
     try:
         del request.session['id']
-    except:
+    except KeyError:
         pass
     return HttpResponseRedirect('/mondai')
