@@ -1,7 +1,7 @@
 from datetime import datetime
-from django import forms
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django import forms
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.urls import reverse
@@ -35,31 +35,24 @@ def profile(request, user_inst):
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField()
-    name = forms.CharField()
-    password = forms.PasswordInput()
+    username = forms.CharField(max_length=255)
+    name = forms.CharField(max_length=255)
+    password = forms.CharField(max_length=255, widget=forms.PasswordInput)
+
 
 def users_add(request):
-    template = loader.get_template('sui_hei/register.html')
-    return HttpResponse(template.render({}, request))
+    if request.method == "POST":
+        rf = RegisterForm(request.POST)
 
-def register(request):
-    try:
-        name = request.POST['name']
-        username = request.POST['username']
-        password = request.POST['password']
-        if name == "":
-            raise ValueError(_("Name is empty!"))
-        if username == "":
-            raise ValueError(_("Username is empty!"))
-        if password == "":
-            raise ValueError(_("Password is empty!"))
-        if len(password) < 6:
-            raise ValueError(
-                _("Password is too short! You need at least 6 characters."))
-    except ValueError as e:
-        return render(request, 'sui_hei/register.html', {'error_message': e})
-    else:
+        try:
+            username = rf.cleaned_data['username']
+            name = rf.cleaned_data['name']
+            password = rf.cleaned_data['password']
+        except:
+            # TODO: Validate the form here
+            return render(request, 'sui_hei/users_add.html', {'rf': rf})
+
+        # Create a new user
         user = Users(
             username=username,
             name=name,
@@ -67,11 +60,16 @@ def register(request):
             created=datetime.now(),
             modified=datetime.now())
         user.save()
-        return HttpResponse(
-            _("Successfully created a user account!"
-              "Click <a href='/mondai'>here</a> to back to home page."))
 
-def login(request):
+        # Set the new user as log-in
+        request.session['id'] = user.id
+
+        # Redirect to homepage
+        return HttpResponseRedirect('/mondai')
+    return render(request, 'sui_hei/users_add.html', {'rf': RegisterForm()})
+
+
+def users_login(request):
     try:
         name = request.POST['name']
         password = request.POST['password']

@@ -10,4 +10,5 @@ urlpatterns = [
     url(r"^mondai/show/(?P<mondai_inst>[0-9]+)$", views.mondai_show, name="mondai_show"),
     url(r"^profile/(?P<user_inst>[0-9]+)$", views.profile, name="profile"),
     url(r"^users/add$", views.users_add, name="users_add"),
+    url(r"^users/login$", views.users_login, name="users_login"),
 ]
