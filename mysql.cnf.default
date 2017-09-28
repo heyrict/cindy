@@ -1,10 +1,10 @@
 [client]
 
-database = Cindy
+database = cindy
 
-user = atihs
+user = cindy
 
-password = password
+password = sui_hei
 
 host = localhost
 
