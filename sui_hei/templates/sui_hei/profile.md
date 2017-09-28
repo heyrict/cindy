@@ -1,4 +1,4 @@
 cindy - profile
 ===============
-- Name: {{ user.name }}
+- Name: {{ user.username }}
 - Created: {{ user.created }}

@@ -7,6 +7,6 @@ Cindy - login
 
 <form action="{% url 'sui_hei:users_login' %}" method="post">
 {% csrf_token %}
-{{ lf.as_p }}
+<table>{{ lf.as_table }}</table>
 <input type="submit" value="Confirm" />
 </form>

@@ -6,6 +6,6 @@ Cindy - register
 
 <form action="{% url 'sui_hei:users_add' %}" method="post">
 {% csrf_token %}
-{{ rf.as_p }}
+<table>{{ rf.as_table }}</table>
 <input type="submit" value="Confirm" />
 </form>

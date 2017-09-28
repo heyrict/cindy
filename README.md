@@ -22,13 +22,16 @@ Dependency
     # Mac or Linux
     sudo -H pip3 install django pymysql
     ```
+- (Under Windows) mysqlclient
 
 How To Run This Site On Your Machine
 ------------------------------------
 1. Clone this repo to your machine if you have `git`,
     otherwize download the zip archive by clicking the
     button up-right.
-2. [Install requirements](#requirements)
+2. [Install requirements](#requirements).
+    Make sure `python3` exists in your PATH.
+
 3. Configure your MySQL database
     - customize `cindy/mysql.cnf` file.
     - open mysql, create a user and a database, grant all previlidges to it.
@@ -40,6 +43,13 @@ How To Run This Site On Your Machine
         grant all on <database> to '<user>'@'<host>'
         quit
         ```
+    - have django generate the database for you
+
+        ```bash
+        python3 manage.py makemigrations   # Alternatively, drag `manage.py` to the
+        python3 manage.py migrate          # terminal to avoid `cd` operations.
+        ```
+
 4. Run server on your localhost.
     - For Linux Users or Mac Users,
         `cd` to the root of the cloned/unzipped folder,
