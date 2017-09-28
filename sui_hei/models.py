@@ -6,7 +6,7 @@ from django.db import connections
 class Users(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     username = models.CharField(max_length=255, null=False)
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False, unique=True)
     password = models.CharField(max_length=255, null=False)
     created = models.DateTimeField(null=False)
     modified = models.DateTimeField(null=False)
