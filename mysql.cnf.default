@@ -1,0 +1,6 @@
+[client]
+database = Cindy
+user = atihs
+password = password
+host = localhost
+default-character-set = utf8
