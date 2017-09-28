@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from django.utils.translation import ugettext_lazy as _
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,13 +80,10 @@ WSGI_APPLICATION = 'cindy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'cindy',
         'ENGINE': 'django.db.backends.mysql',
-        #'DATABASE': 'cindy',
-        'USER': 'cindy',
-        'PASSWORD': 'sui_hei',
-        'HOST': 'localhost',
-        'PORT': '',
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'mysql.cnf')
+        }
     }
 }
 
@@ -128,4 +128,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Don't append `_id` to foreign keys
-FK_AUTO_ID=''
+FK_AUTO_ID = ''
+
+# Locale path
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+LANGUAGES = [
+    ('ja', _('Japanese')),
+    ('en', _('English')),
+]

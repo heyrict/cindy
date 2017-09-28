@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="cindy---register">Cindy - register</h1>
+<p><strong>{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</strong></p>
+<p>{% trans 'You can register to cindy free in one step' %}</p>
+<p>{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}</p>
+<form action="{% url 'sui_hei:register' %}" method="post">
+{% csrf_token %} <label>{% trans 'Nickname' %}</label>: <input type="text" name="username" id="name" /><br /> <label>{% trans 'User' %}</label>: <input type="text" name="name" id="username" /><br /> <label>{% trans 'Password' %}</label>: <input type="password" name="password" id="password" /><br /> <input type="submit" value="Confirm" />
+</form>
+</body>
+</html>
