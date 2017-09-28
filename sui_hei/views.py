@@ -1,9 +1,12 @@
 from datetime import datetime
 
 from django import forms
+from django.db.utils import IntegrityError
+from django.forms import ValidationError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
 
 from .models import Chats, Mondais, Shitumons, Users
@@ -56,6 +59,15 @@ class RegisterForm(forms.Form):
     name = forms.CharField(max_length=255)
     password = forms.CharField(max_length=255, widget=forms.PasswordInput)
 
+    def clean(self):
+        cleaned_data = super(RegisterForm, self).clean()
+        _name = cleaned_data.get('name')
+        if _name in [i.name for i in Users.objects.iterator()]:
+            self.add_error(
+                'name',
+                _("`{}` is already registered "
+                  "by another user.\nTry another one!".format(_name)))
+
 
 def users_add(request):
     if request.method == "POST":
@@ -66,27 +78,22 @@ def users_add(request):
             name = rf.cleaned_data['name']
             password = rf.cleaned_data['password']
 
-        # Validate the signup request
-        try:
-            # TODO: Validate the form here
-            pass
-        except:
+            # Create a new user
+            user = Users(
+                username=username,
+                name=name,
+                password=password,
+                created=datetime.now(),
+                modified=datetime.now())
+            user.save()
+
+            # Set the new user as log-in
+            request.session['id'] = user.id
+
+            # Redirect to homepage
+            return HttpResponseRedirect('/mondai')
+        else:
             return render(request, 'sui_hei/users_add.html', {'rf': rf})
-
-        # Create a new user
-        user = Users(
-            username=username,
-            name=name,
-            password=password,
-            created=datetime.now(),
-            modified=datetime.now())
-        user.save()
-
-        # Set the new user as log-in
-        request.session['id'] = user.id
-
-        # Redirect to homepage
-        return HttpResponseRedirect('/mondai')
     return render(request, 'sui_hei/users_add.html', {'rf': RegisterForm()})
 
 
