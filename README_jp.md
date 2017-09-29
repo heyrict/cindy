@@ -169,3 +169,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
+Contributers
+------------
+- 上杉
+- [上３](https://github.com/pb10001)

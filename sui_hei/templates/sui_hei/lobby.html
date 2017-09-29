@@ -6,12 +6,15 @@
     #content {
         float: left;
         width:300px;
-       border:1px #eee8d5 solid;
+        border:1px #eee8d5 solid;
     }
     #chat {
         float: right;
         width:300px;
-       border:1px #eee8d5 solid;
+        border:1px #eee8d5 solid;
+    }
+    .clear {
+        clear: both;
     }
 {% endblock %} 
 
@@ -39,5 +42,5 @@ content here
     </li>
     {% endfor %} 
 </div>
-
+<div class="clear"></div>
 {% endblock %} 

@@ -177,3 +177,8 @@ you have to update your local database manually by running
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
+
+Contributers
+------------
+- kamisugi
+- [kamisan](https://github.com/pb10001)
