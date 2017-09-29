@@ -38,9 +38,9 @@ How To Run This Site On Your Machine
 
         ```sql
         # note that you need to chage all <>s to the value in your mysql.cnf.
-        create database <database>
+        create database <database>;
         create user '<user>'@'<host>' identified by <password>;
-        grant all on <database> to '<user>'@'<host>'
+        grant all on <database> to '<user>'@'<host>';
         quit
         ```
     - have django generate the database for you
@@ -152,12 +152,13 @@ This chapter is specially for explaning the whole project to programmers.
     ├── __init__.py
     ├── migrations/
     ├── models.py                   # models storing data structure.
-    ├── static                      # storing static files, e.g. css, js, png, etc.
+    ├── static                      # folder storing static files, e.g. css, js, png, etc.
     │   └── github-pandoc.css       # initial stylesheet (which I used for styling markdown)
     ├── templates                   # html templates.
     │   └── sui_hei                 #  there are md files because I used a hack by
     │       ├── index.html          #  generating html files from markdown(`v ')
     │       ├── index.md
+    │       ├── lobby.html
     │       ├── mondai.html
     │       ├── mondai.md
     │       ├── mondai_show.html
@@ -174,3 +175,13 @@ This chapter is specially for explaning the whole project to programmers.
                                     #  pass parameters here to the templates.
 ```
 
+### Trouble Shooting
+
+#### I pulled the latest commit but the database won't update
+The latest commit may have some changes in sui_hei/models.py and
+you have to update your local database manually by running
+
+```bash
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
