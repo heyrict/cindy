@@ -11,6 +11,7 @@ from django.views.generic import DetailView, ListView
 
 from .models import Chats, Lobby, Mondais, Shitumons, Users
 from markdown import markdown as md
+import re
 
 
 # Create your views here.
@@ -50,8 +51,13 @@ def lobby(request):
             if content == '': raise ValueError("Empty Input Data")
             user_inst = get_object_or_404(Users, id=request.session.get("id"))
 
-            # Translate to markdown and remove "^<p>" "</p>$"
+            # Translate to markdown
+            ## prevent markdown from translating * - + into lists
+            content = re.sub("^([*+-]) ", r"\\\1 ", content)
+            print(content)
+            ## remove "^<p>" "</p>$"
             content = md(content)[3:-4]
+
             chat = Lobby(user_id=user_inst, content=content)
             chat.save()
         except Exception as e:
