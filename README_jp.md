@@ -19,6 +19,7 @@ Djangoによるウミガメのスープ出題サイト『[ラテシン](http://s
     # Mac または Linux の場合
     sudo -H pip3 install django pymysql
     ```
+- (Under Windows) mysqlclient
 
 ローカルでの実行方法
 ------------------------------------
@@ -31,11 +32,18 @@ Djangoによるウミガメのスープ出題サイト『[ラテシン](http://s
 
         ```sql
         # note that you need to chage all <>s to the value in your mysql.cnf.
-        create database <database>
+        create database <database>;
         create user '<user>'@'<host>' identified by <password>;
-        grant all on <database> to '<user>'@'<host>'
+        grant all on <database> to '<user>'@'<host>';
         quit
         ```
+    - have django generate the database for you
+
+        ```bash
+        python3 manage.py makemigrations   # Alternatively, drag `manage.py` to the
+        python3 manage.py migrate          # terminal to avoid `cd` operations.
+        ```
+
 4. localhost上でサーバーを起動してください。
     - Linux　か Mac の場合
         `cd` でクローン/解凍したディレクトリに移動してください。
@@ -62,6 +70,10 @@ e `open a terminal` in the right-click menu.
 TODO
 -----
 1. 現段階ではほとんど空のプロジェクトです。協力をお待ちしています！
+1. ロビーチャットのフロントエンドを改善する。
+1. データベースをsuiheinetのように豊富する。
+1. **レイアウトをもっと美しくデザインする**。
+1. Q＆Aフレイムを追加する。
 
 Contribute
 ----------
@@ -108,37 +120,56 @@ Contribute
 ----------------
 This chapter is specially for explaning the whole project to programmers.
 
-### Data structure
+### データストラクチャー
 ```
 .
-├── cindy                           # folder storing metadata for the project.
+├── cindy                           # メタデータをストアするフォルダです。
 │   ├── __init__.py                 #  you may not need to edit it unless you
 │   ├── settings.py                 #  know what you are doing.
 │   ├── urls.py
 │   └── wsgi.py
-├── mysql.cnf                       # config for mysql
-├── LICENSE                         # licence file
-├── manage.py                       # auto-generated manage script by django
-├── README.md                       # the description file you are reading!
-└── sui_hei                         # folder storing the main site project.
+├── mysql.cnf                       # MySQLのコンフィグファイルです。
+├── LICENSE                         # ライセンスファイルです。
+├── manage.py                       # Djangoプロジェクトを管理するスクリプトです。
+├── README.md                       # 英語版のREADMEです。日本語版より更新頻度が高いです。
+├── README_jp.md                    # あなたが読んでいるこのファイルです。
+├── locale/                         # folder storing language files
+└── sui_hei                         # メインサイトプロジェクトをストアするフォルダです。
     ├── admin.py
     ├── apps.py                     # apps config file.
     ├── __init__.py
     ├── migrations/
-    ├── models.py                   # models storing data structure.
-    ├── static                      # storing static files, e.g. css, js, png, etc.
-    │   └── github-pandoc.css       # initial stylesheet (which i used for styling markdown)
-    ├── templates                   # html templates.
-    │   └── sui_hei                 #  there are md files because I used a hack by
-    │       ├── index.html          #  generating html files from markdown(`v ')
-    │       ├── mondai.html
-    │       ├── mondai_show.html
-    │       ├── mondai_show.md
-    │       ├── profile.html
-    │       └── profile.md
-    ├── tests.py                    # file for testing the project
-    ├── urls.py                     # url patterns of the website
-    └── views.py                    # views (or frontend) of the web pages.
-                                    #  pass parameters here to the templates.
+    ├── models.py                   # テーブルストラクチャー(schema)をストアするファイルです。
+    ├── static                      # スタチックファイルのフォルダです。e.g. css, js, png, etc.
+    │   └── github-pandoc.css       #   イニシャルスタイルシートです。
+    ├── templates                   # htmlファイルのテンプレートをストアするフォルダです。
+    │   │── frames                  #   テンプレートのテンプレートをストアするフォルダです。
+    │   │   └── header_n_footer.html#     general template containing header and footer.
+    │   └── sui_hei                 #   html pages:
+    │       ├── index.html          #     /sui_hei
+    │       ├── lobby.html          #     /lobby
+    │       ├── mondai.html         #     /mondai
+    │       ├── mondai_show.html    #     /mondai/show/[0-9]+
+    │       ├── profile.html        #     /profile/[0-9]+
+    │       ├── users_add.html      #     /users/add
+    │       └── users_login.html    #     /users/login
+    ├── tests.py                    # プロジェクトテストに使うテストです。
+    ├── urls.py                     # ウェブサイトのURLをコンファインするファイルです。
+    └── views.py                    # テンプレートと変量からページを作るファイルです。
 ```
 
+### トラブルシューティング
+
+#### 最新のcommitをpullしましたが、データベースが正しく動作していないようだ
+最新のcommitにsui_hei/models.pyが編集される場合があります。
+この場合は手動的に以下のコマンドを実行する必要があります。
+
+```bash
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+Contributers
+------------
+- 上杉
+- [上３](https://github.com/pb10001)

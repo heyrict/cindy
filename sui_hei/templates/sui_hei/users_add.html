@@ -1,24 +1,13 @@
+{% extends 'frames/header_n_footer.html' %} 
 {% load i18n %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
-</head>
-<body>
-<h1 id="cindy---register">Cindy - register</h1>
+
+{% block title %} Cindy - register {% endblock %} 
+
+{% block content %} 
 <p><strong>{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</strong></p>
 <p>{% trans 'You can register to cindy free and enjoy its contents in one more step!' %}</p>
 <form action="{% url 'sui_hei:users_add' %}" method="post">
-{% csrf_token %} {{ rf.as_p }} <input type="submit" value="Confirm" />
+    {% csrf_token %} <table>{{ rf.as_table }}</table> <input type="submit" value="Confirm" />
 </form>
-</body>
-</html>
+{% endblock %} 

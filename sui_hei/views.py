@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from django import forms
@@ -8,19 +9,23 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
+from markdown import markdown as md
+from django.core.paginator import Paginator
 
-from .models import Chats, Mondais, Shitumons, Users
+from .models import Chats, Lobby, Mondais, Shitumons, Users
 
 
 # Create your views here.
 def index(request):
+    log_id = request.session.get("id")
     template = loader.get_template('sui_hei/index.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render({'log_id': log_id}, request))
 
 
 class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(MondaiView, self).get_context_data(**kwargs)
@@ -40,6 +45,32 @@ class MondaiShowView(DetailView):
         context = super(MondaiShowView, self).get_context_data(**kwargs)
         context['log_id'] = self.request.session.get('id', '')
         return context
+
+
+def lobby(request, page=1):
+    log_id = request.session.get("id")
+
+    if request.method == "POST":
+        try:
+            content = request.POST['push_chat']
+            if content == '': raise ValueError("Empty Input Data")
+            user_inst = get_object_or_404(Users, id=log_id)
+
+            # Translate to markdown
+            ## prevent markdown from translating * - + into lists
+            content = re.sub("^([*+-]) ", r"\\\1 ", content)
+            ## remove "^<p>" "</p>$"
+            content = md(content)[3:-4]
+
+            chat = Lobby(user_id=user_inst, content=content)
+            chat.save()
+        except Exception as e:
+            print(e)
+
+    chatlist = Paginator(Lobby.objects.order_by('-id'), 20)
+    return render(request, "sui_hei/lobby.html",
+                  {'chatlist': chatlist.page(page),
+                   'log_id': log_id})
 
 
 class ProfileView(DetailView):

@@ -22,24 +22,34 @@ Dependency
     # Mac or Linux
     sudo -H pip3 install django pymysql
     ```
+- (Under Windows) mysqlclient
 
 How To Run This Site On Your Machine
 ------------------------------------
 1. Clone this repo to your machine if you have `git`,
     otherwize download the zip archive by clicking the
     button up-right.
-2. [Install requirements](#requirements)
+2. [Install requirements](#requirements).
+    Make sure `python3` exists in your PATH.
+
 3. Configure your MySQL database
     - customize `cindy/mysql.cnf` file.
     - open mysql, create a user and a database, grant all previlidges to it.
 
         ```sql
         # note that you need to chage all <>s to the value in your mysql.cnf.
-        create database <database>
+        create database <database>;
         create user '<user>'@'<host>' identified by <password>;
-        grant all on <database> to '<user>'@'<host>'
+        grant all on <database> to '<user>'@'<host>';
         quit
         ```
+    - have django generate the database for you
+
+        ```bash
+        python3 manage.py makemigrations   # Alternatively, drag `manage.py` to the
+        python3 manage.py migrate          # terminal to avoid `cd` operations.
+        ```
+
 4. Run server on your localhost.
     - For Linux Users or Mac Users,
         `cd` to the root of the cloned/unzipped folder,
@@ -66,9 +76,6 @@ e `open a terminal` in the right-click menu.
 TODO
 -----
 1. This is almost an empty project! Anything will help!
-1. Add a lobby chat(comming soon)
-    - store lobby chat in a frame (for that reason I am currently learning html&css styling)
-    - add to database temporary storing feature for logs
 1. Rich the database
     - add `profile` to table `Users` just as suiheinet do
 1. Q&A frame in `sui_hei/mondai/show` (giving space to infrastructure)
@@ -142,25 +149,36 @@ This chapter is specially for explaning the whole project to programmers.
     ├── __init__.py
     ├── migrations/
     ├── models.py                   # models storing data structure.
-    ├── static                      # storing static files, e.g. css, js, png, etc.
-    │   └── github-pandoc.css       # initial stylesheet (which I used for styling markdown)
+    ├── static                      # folder storing static files, e.g. css, js, png, etc.
+    │   └── github-pandoc.css       #   initial stylesheet (which I used for styling markdown)
     ├── templates                   # html templates.
-    │   └── sui_hei                 #  there are md files because I used a hack by
-    │       ├── index.html          #  generating html files from markdown(`v ')
-    │       ├── index.md
-    │       ├── mondai.html
-    │       ├── mondai.md
-    │       ├── mondai_show.html
-    │       ├── mondai_show.md
-    │       ├── profile.html
-    │       ├── profile.md
-    │       ├── users_add.html
-    │       ├── users_add.md
-    │       ├── users_login.html
-    │       └── users_login.md
+    │   │── frames                  #   folder storing the template of templates.
+    │   │   └── header_n_footer.html#     general template containing header and footer.
+    │   └── sui_hei                 #   html pages:
+    │       ├── index.html          #     /sui_hei
+    │       ├── lobby.html          #     /lobby
+    │       ├── mondai.html         #     /mondai
+    │       ├── mondai_show.html    #     /mondai/show/[0-9]+
+    │       ├── profile.html        #     /profile/[0-9]+
+    │       ├── users_add.html      #     /users/add
+    │       └── users_login.html    #     /users/login
     ├── tests.py                    # file for testing the project
     ├── urls.py                     # url patterns of the website
-    └── views.py                    # views (or frontend) of the web pages.
-                                    #  pass parameters here to the templates.
+    └── views.py                    # create pages from templates. Pass variables here.
 ```
 
+### Trouble Shooting
+
+#### I pulled the latest commit but the database won't update
+The latest commit may have some changes in sui_hei/models.py and
+you have to update your local database manually by running
+
+```bash
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+Contributers
+------------
+- kamisugi
+- [kamisan](https://github.com/pb10001)

@@ -1,31 +1,35 @@
+{% extends 'frames/header_n_footer.html' %} 
 {% load i18n %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
-</head>
-<body>
-<h1 id="cindy---mondai">Cindy - mondai</h1>
-<p>{% if not log_id %}</p>
-<p><a href="users/add">{% trans 'register' %}</a></p>
-<p><a href="users/login">{% trans 'login' %}</a></p>
-<p>{% else %}</p>
-<p><a href="users/logout">{% trans 'logout' %}</a></p>
-<p>{% endif %}</p>
+
+{% block title %} Cindy - mondai {% endblock%} 
+
+{% block content %} 
+
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
-<p>{% for mondai in mondai_list %}</p>
+
+{% if is_paginated %} 
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %} 
+            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+            {% endif %} 
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
+            </span>
+
+            {% if page_obj.has_next %} 
+            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            {% endif %} 
+        </span>
+    </div>
+{% endif %} 
+
+{% for mondai in mondai_list %}
 <ul>
 <li><a href="mondai/show/{{ mondai.id }}">{{ mondai.title }}</a> {% trans 'Giver' %}: <a href="profile/{{ mondai.user_id.id }}">{{ mondai.user_id.username }}</a></li>
 </ul>
-<p>{% endfor %}</p>
-</body>
-</html>
+{% endfor %}
+
+{% endblock %} 

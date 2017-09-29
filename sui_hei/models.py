@@ -48,3 +48,8 @@ class Shitumons(models.Model):
     created = models.DateTimeField(null=False)
     modified = models.DateTimeField(null=False)
 
+
+class Lobby(models.Model):
+    id = models.AutoField(max_length=11, null=False, primary_key=True)
+    user_id = models.ForeignKey(Users, db_column='user_id')
+    content = models.TextField(null=False)
