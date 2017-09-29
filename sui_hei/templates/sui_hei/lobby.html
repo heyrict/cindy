@@ -6,12 +6,12 @@
     #content {
         float: left;
         width:300px;
-       border:1px #333 solid;
+       border:1px #eee8d5 solid;
     }
     #chat {
         float: right;
         width:300px;
-       border:1px #333 solid;
+       border:1px #eee8d5 solid;
     }
 {% endblock %} 
 
@@ -23,6 +23,7 @@ content here
 </div>
 
 <div id="chat">
+    <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
     {% if log_id %} 
     <form action="{% url 'sui_hei:lobby' %}" method="post">
         {% csrf_token %}
