@@ -1,13 +1,8 @@
+{% extends 'frames/header_n_footer.html' %} 
 {% load i18n %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-    <style>
+
+{% block style %} 
     #content {
         float: left;
         width:300px;
@@ -18,16 +13,11 @@
         width:300px;
        border:1px #333 solid;
     }
-    </style>
-  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
-</head>
+{% endblock %} 
 
-<body>
+{% block title %} Cindy - lobby {% endblock %} 
 
-<h1>Cindy - lobby</h1>
+{% block content %} 
 <div id="content">
 content here
 </div>
@@ -49,6 +39,4 @@ content here
     {% endfor %} 
 </div>
 
-</body>
-
-
+{% endblock %} 

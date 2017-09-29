@@ -16,8 +16,9 @@ from .models import Chats, Lobby, Mondais, Shitumons, Users
 
 # Create your views here.
 def index(request):
+    log_id = request.session.get("id")
     template = loader.get_template('sui_hei/index.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render({'log_id': log_id}, request))
 
 
 class MondaiView(ListView):
