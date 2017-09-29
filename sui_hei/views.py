@@ -9,17 +9,14 @@ from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
 
-from .models import Chats, Mondais, Shitumons, Users
+from .models import Chats, Lobby, Mondais, Shitumons, Users
+from markdown import markdown as md
 
 
 # Create your views here.
 def index(request):
     template = loader.get_template('sui_hei/index.html')
     return HttpResponse(template.render({}, request))
-
-
-def lobby(request):
-    return render(request, "sui_hei/lobby.html", {})
 
 
 class MondaiView(ListView):
@@ -44,6 +41,24 @@ class MondaiShowView(DetailView):
         context = super(MondaiShowView, self).get_context_data(**kwargs)
         context['log_id'] = self.request.session.get('id', '')
         return context
+
+
+def lobby(request):
+    if request.method == "POST":
+        try:
+            content = request.POST['push_chat']
+            if content == '': raise ValueError("Empty Input Data")
+            user_inst = get_object_or_404(Users, id=request.session.get("id"))
+
+            # Translate to markdown and remove "^<p>" "</p>$"
+            content = md(content)[3:-4]
+            chat = Lobby(user_id=user_inst, content=content)
+            chat.save()
+        except Exception as e:
+            print(e)
+
+    chatlist = Lobby.objects.order_by('-id')[:50]
+    return render(request, "sui_hei/lobby.html", {'chatlist': chatlist})
 
 
 class ProfileView(DetailView):
