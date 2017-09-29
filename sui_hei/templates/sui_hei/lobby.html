@@ -47,6 +47,7 @@
 
     <div class="chat">
         <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
+
         {% if log_id %} 
         <form action="{% url 'sui_hei:lobby' %}" method="post">
             {% csrf_token %}
@@ -56,6 +57,23 @@
             </table>
         </form>
         {% endif %} 
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if chatlist.has_previous %} 
+                <a href="{{ chatlist.previous_page_number }}">{% trans 'prev' %}</a>
+                {% endif %} 
+
+                <span class="current">
+                    Page {{ chatlist.number }} of {{ chatlist.paginator.num_pages }} 
+                </span>
+
+                {% if chatlist.has_next %} 
+                <a href="{{ chatlist.next_page_number }}">{% trans 'next' %}</a>
+                {% endif %} 
+            </span>
+        </div>
+
         {% for chat in chatlist %} 
         <div class="chat">
             <div id="user"> 
@@ -64,6 +82,7 @@
             <div id="message">{{ chat.content|safe }} </div>
         </div>
         {% endfor %} 
+
     </div>
     <div class="clear"></div>
 </div>

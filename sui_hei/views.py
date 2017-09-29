@@ -10,6 +10,7 @@ from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
 from markdown import markdown as md
+from django.core.paginator import Paginator
 
 from .models import Chats, Lobby, Mondais, Shitumons, Users
 
@@ -45,7 +46,7 @@ class MondaiShowView(DetailView):
         return context
 
 
-def lobby(request):
+def lobby(request, page=1):
     log_id = request.session.get("id")
 
     if request.method == "POST":
@@ -65,9 +66,9 @@ def lobby(request):
         except Exception as e:
             print(e)
 
-    chatlist = Lobby.objects.order_by('-id')[:50]
+    chatlist = Paginator(Lobby.objects.order_by('-id'), 20)
     return render(request, "sui_hei/lobby.html",
-                  {'chatlist': chatlist,
+                  {'chatlist': chatlist.page(page),
                    'log_id': log_id})
 
 
