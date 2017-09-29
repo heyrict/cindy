@@ -25,10 +25,10 @@
     </h1>
 
     {% if not log_id %}
-    <div><a href="users/add">{% trans 'register' %}</a></div>
-    <div><a href="users/login">{% trans 'login' %}</a></div>
+    <div><a href="/users/add">{% trans 'register' %}</a></div>
+    <div><a href="/users/login">{% trans 'login' %}</a></div>
     {% else %}
-    <div><a href="users/logout">{% trans 'logout' %}</a></div>
+    <div><a href="/users/logout">{% trans 'logout' %}</a></div>
     {% endif %}
 
 
