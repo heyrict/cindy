@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from django import forms
@@ -8,10 +9,9 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
+from markdown import markdown as md
 
 from .models import Chats, Lobby, Mondais, Shitumons, Users
-from markdown import markdown as md
-import re
 
 
 # Create your views here.
@@ -45,16 +45,17 @@ class MondaiShowView(DetailView):
 
 
 def lobby(request):
+    log_id = request.session.get("id")
+
     if request.method == "POST":
         try:
             content = request.POST['push_chat']
             if content == '': raise ValueError("Empty Input Data")
-            user_inst = get_object_or_404(Users, id=request.session.get("id"))
+            user_inst = get_object_or_404(Users, id=log_id)
 
             # Translate to markdown
             ## prevent markdown from translating * - + into lists
             content = re.sub("^([*+-]) ", r"\\\1 ", content)
-            print(content)
             ## remove "^<p>" "</p>$"
             content = md(content)[3:-4]
 
@@ -64,7 +65,9 @@ def lobby(request):
             print(e)
 
     chatlist = Lobby.objects.order_by('-id')[:50]
-    return render(request, "sui_hei/lobby.html", {'chatlist': chatlist})
+    return render(request, "sui_hei/lobby.html",
+                  {'chatlist': chatlist,
+                   'log_id': log_id})
 
 
 class ProfileView(DetailView):
