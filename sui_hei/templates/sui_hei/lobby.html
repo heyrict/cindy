@@ -3,15 +3,30 @@
 {% load static %}
 
 {% block style %} 
+    #wrap {
+        width: 622px;
+        padding: 10px;
+        border: 1px #eee8d5 solid;
+    }
     #content {
         float: left;
-        width:300px;
-        border:1px #eee8d5 solid;
+        width: 300px;
+        border: 1px #eee8d5 solid;
     }
-    #chat {
+    .chat {
         float: right;
-        width:300px;
-        border:1px #eee8d5 solid;
+        width: 300px;
+        border: 1px #eee8d5 solid;
+    }
+    #user{
+        float: left;
+        width: 80px;
+        overflow: auto;
+        border 1px #eee8d5 solid;
+    }
+    #message{
+        float: right;
+        width: 220px;
     }
     .clear {
         clear: both;
@@ -21,26 +36,31 @@
 {% block title %} Cindy - lobby {% endblock %} 
 
 {% block content %} 
-<div id="content">
-content here
-</div>
+<div id="wrap">
+    <div id="content">
+    content here
+    </div>
 
-<div id="chat">
-    <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
-    {% if log_id %} 
-    <form action="{% url 'sui_hei:lobby' %}" method="post">
-        {% csrf_token %}
-        <table class="push_chat">
-            <input id="LobbyContent" name="push_chat" type="text">
-            <input value="Send" type="submit">
-        </table>
-    </form>
-    {% endif %} 
-    {% for chat in chatlist %} 
-    <li> <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.username }}</a> >>
-        {{ chat.content|safe }} 
-    </li>
-    {% endfor %} 
+    <div class="chat">
+        <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
+        {% if log_id %} 
+        <form action="{% url 'sui_hei:lobby' %}" method="post">
+            {% csrf_token %}
+            <table class="push_chat">
+                <input id="LobbyContent" name="push_chat" type="text">
+                <input value="Send" type="submit">
+            </table>
+        </form>
+        {% endif %} 
+        {% for chat in chatlist %} 
+        <div class="chat">
+            <div id="user"> 
+                <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.username }}</a> : 
+            </div>
+            <div id="message">{{ chat.content|safe }} </div>
+        </div>
+        {% endfor %} 
+    </div>
+    <div class="clear"></div>
 </div>
-<div class="clear"></div>
 {% endblock %} 
