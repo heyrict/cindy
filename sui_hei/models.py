@@ -8,6 +8,7 @@ class Users(models.Model):
     username = models.CharField(max_length=255, null=False)
     name = models.CharField(max_length=255, null=False, unique=True)
     password = models.CharField(max_length=255, null=False)
+    profile = models.TextField()
     created = models.DateTimeField(null=False)
     modified = models.DateTimeField(null=False)
 

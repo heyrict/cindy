@@ -24,18 +24,22 @@
         {% endblock %} 
     </h1>
 
+    <span>
     {% if not log_id %}
-    <div><a href="/users/add">{% trans 'register' %}</a></div>
-    <div><a href="/users/login">{% trans 'login' %}</a></div>
+    [<a href="/users/add">{% trans 'register' %}</a>]
+    [<a href="/users/login">{% trans 'login' %}</a>]
     {% else %}
-    <div><a href="/users/logout">{% trans 'logout' %}</a></div>
+    [<a href="/users/logout">{% trans 'logout' %}</a>]
     {% endif %}
+    </span>
 
 
     <h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
-    <div><a href='/' class='uri'>{% trans 'homepage' %}</a></div>
-    <div><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></div>
-    <div><a href='/lobby' class='uri'>{% trans 'lobby' %}</a></div>
+    <span>
+    [<a href='/' class='uri'>{% trans 'homepage' %}</a>]
+    [<a href='/mondai' class='uri'>{% trans 'mondai' %}</a>]
+    [<a href='/lobby' class='uri'>{% trans 'lobby' %}</a>]
+    </span>
 
 </header>
 

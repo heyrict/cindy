@@ -4,18 +4,24 @@
 
 {% block style %} 
     #wrap {
-        width: 622px;
+        width: 100%;
         padding: 10px;
         border: 1px #eee8d5 solid;
     }
     #content {
         float: left;
-        width: 300px;
+        width: 48%;
         border: 1px #eee8d5 solid;
     }
-    .chat {
+    #chat {
         float: right;
-        width: 300px;
+        width: 48%;
+        border: 1px #eee8d5 solid;
+    }
+    #message_box {
+        width: 100%;
+        float: left;
+        position: relative;
         border: 1px #eee8d5 solid;
     }
     #user{
@@ -45,7 +51,7 @@
     content here
     </div>
 
-    <div class="chat">
+    <div id="chat">
         <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
 
         {% if log_id %} 
@@ -75,7 +81,7 @@
         </div>
 
         {% for chat in chatlist %} 
-        <div class="chat">
+        <div id="message_box">
             <div id="user"> 
                 <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.username }}</a> : 
             </div>
