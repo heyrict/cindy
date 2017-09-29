@@ -6,6 +6,7 @@ app_name = "sui_hei"
 
 urlpatterns = [
     url(r"^$", views.index, name="index"),
+    url(r"^lobby$", views.lobby, name="lobby"),
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
     url(r"^mondai/show/(?P<pk>[0-9]+)$", views.MondaiShowView.as_view(), name="mondai_show"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),

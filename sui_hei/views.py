@@ -18,6 +18,10 @@ def index(request):
     return HttpResponse(template.render({}, request))
 
 
+def lobby(request):
+    return render(request, "sui_hei/lobby.html", {})
+
+
 class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
