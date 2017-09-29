@@ -5,10 +5,31 @@
 {% block title %} Cindy - mondai {% endblock%} 
 
 {% block content %} 
+
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
-<p>{% for mondai in mondai_list %}</p>
+
+{% if is_paginated %} 
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %} 
+            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+            {% endif %} 
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
+            </span>
+
+            {% if page_obj.has_next %} 
+            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            {% endif %} 
+        </span>
+    </div>
+{% endif %} 
+
+{% for mondai in mondai_list %}
 <ul>
 <li><a href="mondai/show/{{ mondai.id }}">{{ mondai.title }}</a> {% trans 'Giver' %}: <a href="profile/{{ mondai.user_id.id }}">{{ mondai.user_id.username }}</a></li>
 </ul>
-<p>{% endfor %}</p>
+{% endfor %}
+
 {% endblock %} 

@@ -25,6 +25,7 @@ def index(request):
 class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(MondaiView, self).get_context_data(**kwargs)
