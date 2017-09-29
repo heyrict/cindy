@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+    <style>
+    #content {
+        float: left;
+        width:300px;
+       border:1px #333 solid;
+    }
+    #chat {
+        float: right;
+        width:300px;
+       border:1px #333 solid;
+    }
+    </style>
+  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<h1>Cindy - lobby</h1>
+<div id="content">
+content here
+</div>
+
+<div id="chat">
+    {% if log_id %} 
+    <form action="{% url 'sui_hei:lobby' %}" method="post">
+        {% csrf_token %}
+        <table class="push_chat">
+            <input id="LobbyContent" name="push_chat" type="text">
+            <input value="Send" type="submit">
+        </table>
+    </form>
+    {% endif %} 
+    {% for chat in chatlist %} 
+    <li> <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.username }}</a> >>
+        {{ chat.content|safe }} 
+    </li>
+    {% endfor %} 
+</div>
+
+</body>
+
+
