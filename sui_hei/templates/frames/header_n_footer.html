@@ -25,7 +25,8 @@
 
     <span>
     {% if user.is_authenticated %}
-    {% trans "Welcome, "%} {{ user.nickname }}.  [<a href="/users/logout">{% trans 'logout' %}</a>]
+    {% trans "Welcome, "%} <a href="profile/{{ user.id }}">{{ user.nickname }}</a>.
+        [<a href="/users/logout">{% trans 'logout' %}</a>]
     {% else %}
     [<a href="/users/add">{% trans 'register' %}</a>]
     [<a href="/users/login">{% trans 'login' %}</a>]

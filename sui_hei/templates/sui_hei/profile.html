@@ -4,16 +4,16 @@
 {% block title %} cindy - profile {% endblock %} 
 
 {% block content %} 
-<ul>
-    <li>{% trans "Name" %}: {{ sui_hei_user.nickname }}</li>
-    <li>{% trans "Created time" %}: {{ sui_hei_user.date_joined }}</li>
-    <li>{% trans "Last login" %}: {{ sui_hei_user.last_login }} 
-    <li>{% trans "Profile" %}
+<table>
+    <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
+    <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>
+    <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
+    <tr><th>{% trans "Profile" %}
         {% if user == sui_hei_user %}
         <a href="/profile/edit/{{ sui_hei_user.id }}?next=/profile/{{ sui_hei_user.id }}">
             [{% trans 'edit' %}]
         </a>
         {% endif %} 
-        : {{ sui_hei_user.profile|text2md|safe }} 
-</ul>
+        </th><td> {{ sui_hei_user.profile|text2md|safe }} </td><tr>
+</table>
 {% endblock %} 
