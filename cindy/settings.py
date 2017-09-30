@@ -144,3 +144,5 @@ LANGUAGES = [
 
 # Authentiation
 AUTH_USER_MODEL = 'sui_hei.User'
+LOGIN_REDIRECT_URL = '/mondai'
+LOGOUT_REDIRECT_URL = '/mondai'

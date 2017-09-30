@@ -3,7 +3,6 @@ from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
 from django.db import connections, models
 from django.utils.translation import ugettext_lazy as _
 
-
 # Create your models here.
 
 #class SuiheiUserManager(BaseUserManager):
@@ -37,7 +36,8 @@ class User(AbstractUser):
     #objects = SuiheiUserManager()
 
     #USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['nickname']
+    EMAIL_FIELD = None
+    REQUIRED_FIELDS = ['email', 'nickname']
 
     def get_full_name(self):
         return self.nickname
@@ -47,6 +47,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nickname
+
 
 #    def has_perm(self, perm, obj=None):
 #        return True

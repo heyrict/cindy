@@ -1,7 +1,9 @@
 import re
+from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 
 from django import forms
+from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -10,7 +12,6 @@ from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView
 from markdown import markdown as md
-from django.core.paginator import Paginator
 
 from .models import *
 
@@ -105,17 +106,15 @@ def users_add(request):
         rf = RegisterForm(request.POST)
 
         if rf.is_valid():
-            username = rf.cleaned_data['username']
-            name = rf.cleaned_data['name']
+            nickname = rf.cleaned_data['username']
+            username = rf.cleaned_data['name']
             password = rf.cleaned_data['password']
 
             # Create a new user
             user = User(
                 username=username,
-                name=name,
-                password=password,
-                created=datetime.now(),
-                modified=datetime.now())
+                nickname=nickname,
+                password=password)
             user.save()
 
             # Set the new user as log-in
@@ -124,13 +123,13 @@ def users_add(request):
             # Redirect to homepage
             return HttpResponseRedirect('/mondai')
         else:
-            return render(request, 'sui_hei/users_add.html', {'rf': rf})
-    return render(request, 'sui_hei/users_add.html', {'rf': RegisterForm()})
+            return render(request, 'registration/add.html', {'rf': rf})
+    return render(request, 'registration/add.html', {'rf': RegisterForm()})
 
 
 # cindy/sui_hei/users/login
 class LoginForm(forms.Form):
-    name = forms.CharField(max_length=255)
+    username = forms.CharField(max_length=255)
     password = forms.CharField(max_length=255, widget=forms.PasswordInput)
 
 
@@ -138,27 +137,20 @@ def users_login(request):
     if request.method == "POST":
         lf = LoginForm(request.POST)
         if lf.is_valid():
-            name = lf.cleaned_data['name']
+            username = lf.cleaned_data['username']
             password = lf.cleaned_data['password']
-
-        # Validate the login request
-        try:
-            user_inst = get_object_or_404(User, name=name, password=password)
-        except Http404 as e:
-            return render(request, 'sui_hei/users_login.html',
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/mondai')
+            else:
+                return render(request, 'registration/login.html',
                           {'lf': lf,
-                           'error_message': e})
+                           'error_message': 'Invalid login'})
 
-        # Login succeed
-        request.session['id'] = user_inst.id
-        return HttpResponseRedirect('/mondai')
-    else:
-        return render(request, 'sui_hei/users_login.html', {'lf': LoginForm()})
+    return render(request, 'registration/login.html', {'lf': LoginForm()})
 
 
 def users_logout(request):
-    try:
-        del request.session['id']
-    except KeyError:
-        pass
+    logout(request)
     return HttpResponseRedirect('/mondai')
