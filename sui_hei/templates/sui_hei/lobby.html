@@ -1,6 +1,5 @@
 {% extends 'frames/header_n_footer.html' %} 
-{% load i18n %}
-{% load static %}
+{% load i18n static markdown %}
 
 {% block style %} 
     #wrap {
@@ -85,7 +84,7 @@
             <div id="user"> 
                 <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
             </div>
-            <div id="message">{{ chat.content|safe }} </div>
+            <div id="message">{{ chat.content|line2md|safe }} </div>
         </div>
         {% endfor %} 
 

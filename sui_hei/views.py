@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 
 from django import forms
@@ -48,12 +47,6 @@ def lobby(request, page=1):
         try:
             content = request.POST['push_chat']
             if content == '': raise ValueError("Empty Input Data")
-
-            # Translate to markdown
-            ## prevent markdown from translating * - + into lists
-            content = re.sub("^([*+-]) ", r"\\\1 ", content)
-            ## remove "^<p>" "</p>$"
-            content = md(content)[3:-4]
 
             chat = Lobby(user_id=request.user, content=content)
             chat.save()
