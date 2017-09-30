@@ -55,6 +55,9 @@ coverage.xml
 local_settings.py
 migrations/
 
+# mysql config. you should define one yourself.
+mysql.cnf
+
 # Flask stuff:
 instance/
 .webassets-cache
