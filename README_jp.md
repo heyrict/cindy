@@ -10,14 +10,14 @@ Djangoによるウミガメのスープ出題サイト『[ラテシン](http://s
 開発環境
 -----------
 - [Python3.5](http://www.python.org)
-- django and pymysql
+- django ,pymysql and markdown
 
     ```bash
     # Windowsの場合
-    pip3 install django pymysql
+    pip3 install django pymysql markdown
 
     # Mac または Linux の場合
-    sudo -H pip3 install django pymysql
+    sudo -H pip3 install django pymysql markdown
     ```
 - (Under Windows) mysqlclient
 
