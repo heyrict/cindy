@@ -76,6 +76,9 @@ class ProfileEdit(UpdateView):
     template_name = 'sui_hei/profile_edit.html'
     fields = ['profile']
 
+    def get_object(self):
+        return self.request.user
+
     def get_success_url(self):
         return self.request.GET.get('next', '/mondai')
 
