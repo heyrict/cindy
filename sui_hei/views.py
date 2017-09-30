@@ -12,7 +12,7 @@ from django.views.generic import DetailView, ListView
 from markdown import markdown as md
 from django.core.paginator import Paginator
 
-from .models import Chats, Lobby, Mondais, Shitumons, Users
+from .models import *
 
 
 # Create your views here.
@@ -33,11 +33,11 @@ class MondaiView(ListView):
         return context
 
     def get_queryset(self):
-        return Mondais.objects.order_by('-created')
+        return Mondai.objects.order_by('-created')
 
 
 class MondaiShowView(DetailView):
-    model = Mondais
+    model = Mondai
     template_name = 'sui_hei/mondai_show.html'
     context_object_name = 'mondai'
 
@@ -74,7 +74,7 @@ def lobby(request, page=1):
 
 
 class ProfileView(DetailView):
-    model = Users
+    model = User
     template_name = 'sui_hei/profile.html'
     context_object_name = 'user'
 
@@ -93,7 +93,7 @@ class RegisterForm(forms.Form):
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
         _name = cleaned_data.get('name')
-        if _name in [i.name for i in Users.objects.iterator()]:
+        if _name in [i.name for i in User.objects.iterator()]:
             self.add_error(
                 'name',
                 _("`{}` is already registered "
@@ -110,7 +110,7 @@ def users_add(request):
             password = rf.cleaned_data['password']
 
             # Create a new user
-            user = Users(
+            user = User(
                 username=username,
                 name=name,
                 password=password,
@@ -143,7 +143,7 @@ def users_login(request):
 
         # Validate the login request
         try:
-            user_inst = get_object_or_404(Users, name=name, password=password)
+            user_inst = get_object_or_404(User, name=name, password=password)
         except Http404 as e:
             return render(request, 'sui_hei/users_login.html',
                           {'lf': lf,
