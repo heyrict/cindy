@@ -1,8 +1,8 @@
 import re
-from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 
 from django import forms
+from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
@@ -108,7 +108,7 @@ def users_add(request):
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            nickname = form.cleaned_data['username']
+            nickname = form.cleaned_data['nickname']
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
@@ -117,7 +117,7 @@ def users_add(request):
             user = User.objects.create_user(
                 username=username,
                 nickname=nickname,
-                email = email,
+                email=email,
                 password=password)
             user.save()
 
