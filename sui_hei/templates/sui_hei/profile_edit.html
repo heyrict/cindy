@@ -1,0 +1,21 @@
+{% extends 'frames/header_n_footer.html' %} 
+{% load i18n %}
+{% load static %}
+
+{% block title %} Cindy - register {% endblock %} 
+
+{% block content %} 
+
+<form action="" method="post">
+<div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
+{% csrf_token %}
+<div>{{ form.as_p }}</div>
+<div><input type="submit" value="Confirm" /></div>
+
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+{#<p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+
+{% endblock %} 

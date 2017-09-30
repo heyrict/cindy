@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sui_hei',
+    'django_embed_template',
 ]
 
 MIDDLEWARE = [

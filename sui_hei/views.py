@@ -10,7 +10,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, UpdateView
 from markdown import markdown as md
 
 from .models import *
@@ -42,11 +42,6 @@ class MondaiShowView(DetailView):
     template_name = 'sui_hei/mondai_show.html'
     context_object_name = 'mondai'
 
-    def get_context_data(self, **kwargs):
-        context = super(MondaiShowView, self).get_context_data(**kwargs)
-        context['log_id'] = self.request.session.get('id', '')
-        return context
-
 
 def lobby(request, page=1):
     if request.method == "POST" and request.user.is_authenticated:
@@ -73,12 +68,16 @@ def lobby(request, page=1):
 class ProfileView(DetailView):
     model = User
     template_name = 'sui_hei/profile.html'
-    context_object_name = 'user'
+    context_object_name = 'sui_hei_user'
 
-    def get_context_data(self, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
-        context['log_id'] = self.request.session.get('id', '')
-        return context
+
+class ProfileEdit(UpdateView):
+    model = User
+    template_name = 'sui_hei/profile_edit.html'
+    fields = ['profile']
+
+    def get_success_url(self):
+        return self.request.GET.get('next', '/mondai')
 
 
 # cindy/sui_hei/users/add

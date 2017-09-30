@@ -1,0 +1,15 @@
+{% load embed i18n static %} 
+
+{% embed 'frames/header_n_footer.html' %} 
+    {% block content %} 
+    <form>
+        {% csrf_token %} 
+        <textarea>
+            {{ input_content }} 
+        </textarea>
+        <div class="submit">
+            <input value="{% trans 'Edit' %}" type="submit">
+        </div>
+    </form>
+    {% endblock %} 
+{% endembed %} 

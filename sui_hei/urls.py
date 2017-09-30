@@ -13,6 +13,7 @@ urlpatterns = [
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
     url(r"^mondai/show/(?P<pk>[0-9]+)$", views.MondaiShowView.as_view(), name="mondai_show"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
+    url(r"^profile/edit/(?P<pk>[0-9]+)$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^users/add$", views.users_add, name="register"),
     #url(r"^users/login$", views.users_login, name="users_login"),
     #url(r"^users/logout$", views.users_logout, name="users_logout"),

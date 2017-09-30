@@ -83,7 +83,7 @@
         {% for chat in chatlist %} 
         <div id="message_box">
             <div id="user"> 
-                <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
+                <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
             </div>
             <div id="message">{{ chat.content|safe }} </div>
         </div>
