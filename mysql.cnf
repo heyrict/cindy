@@ -1,6 +1,6 @@
 [client]
-database = heyrict$cindy
-user = heyrict
-password = a02350770630
-host = heyrict.mysql.pythonanywhere-services.com
+database = cindy
+user = cindy
+password = sui_hei
+host = localhost
 default-character-set = utf8
