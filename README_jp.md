@@ -14,10 +14,10 @@ Djangoによるウミガメのスープ出題サイト『[ラテシン](http://s
 
     ```bash
     # Windowsの場合
-    pip3 install django pymysql
+    pip3 install django pymysql markdown django-embed-template
 
     # Mac または Linux の場合
-    sudo -H pip3 install django pymysql
+    sudo -H pip3 install django pymysql markdown django-embed-template
     ```
 - (Under Windows) mysqlclient
 

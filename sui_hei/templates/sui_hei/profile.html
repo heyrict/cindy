@@ -1,12 +1,19 @@
 {% extends 'frames/header_n_footer.html' %} 
-{% load i18n %}
-{% load static %}
+{% load i18n static markdown %}
 
 {% block title %} cindy - profile {% endblock %} 
 
 {% block content %} 
-<ul>
-    <li>{% trans "Name" %}: {{ user.username }}</li>
-    <li>{% trans "Created time" %}: {{ user.created }}</li>
-</ul>
+<table>
+    <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
+    <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>
+    <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
+    <tr><th>{% trans "Profile" %}
+        {% if user == sui_hei_user %}
+        <a href="/profile/edit/{{ sui_hei_user.id }}?next=/profile/{{ sui_hei_user.id }}">
+            [{% trans 'edit' %}]
+        </a>
+        {% endif %} 
+        </th><td> {{ sui_hei_user.profile|text2md|safe }} </td><tr>
+</table>
 {% endblock %} 

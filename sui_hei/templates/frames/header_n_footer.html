@@ -1,5 +1,4 @@
-{% load i18n %}
-{% load static %}
+{% load i18n static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,18 +23,23 @@
         {% endblock %} 
     </h1>
 
-    {% if not log_id %}
-    <div><a href="/users/add">{% trans 'register' %}</a></div>
-    <div><a href="/users/login">{% trans 'login' %}</a></div>
+    <span>
+    {% if user.is_authenticated %}
+    {% trans "Welcome, "%} <a href="profile/{{ user.id }}">{{ user.nickname }}</a>.
+        [<a href="/users/logout">{% trans 'logout' %}</a>]
     {% else %}
-    <div><a href="/users/logout">{% trans 'logout' %}</a></div>
+    [<a href="/users/add">{% trans 'register' %}</a>]
+    [<a href="/users/login">{% trans 'login' %}</a>]
     {% endif %}
+    </span>
 
 
     <h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
-    <div><a href='/' class='uri'>{% trans 'homepage' %}</a></div>
-    <div><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></div>
-    <div><a href='/lobby' class='uri'>{% trans 'lobby' %}</a></div>
+    <span>
+    [<a href='/' class='uri'>{% trans 'homepage' %}</a>]
+    [<a href='/mondai' class='uri'>{% trans 'mondai' %}</a>]
+    [<a href='/lobby' class='uri'>{% trans 'lobby' %}</a>]
+    </span>
 
 </header>
 

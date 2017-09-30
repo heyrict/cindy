@@ -13,14 +13,14 @@ Dependency
 -----------
 - [Python3.5](http://www.python.org)
 - MySQL Server
-- django and pymysql
+- django, pymysql, markdown, django-embed-template
 
     ```bash
     # Windows
-    pip3 install django pymysql
+    pip3 install django pymysql markdown django-embed-template
 
     # Mac or Linux
-    sudo -H pip3 install django pymysql
+    sudo -H pip3 install django pymysql markdown django-embed-template
     ```
 - (Under Windows) mysqlclient
 

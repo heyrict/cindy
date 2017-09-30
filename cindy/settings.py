@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sui_hei.apps.SuiHeiConfig',
+    'sui_hei',
+    'django_embed_template',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,8 @@ LANGUAGES = [
     ('ja', _('Japanese')),
     ('en', _('English')),
 ]
+
+# Authentiation
+AUTH_USER_MODEL = 'sui_hei.User'
+LOGIN_REDIRECT_URL = '/mondai'
+LOGOUT_REDIRECT_URL = '/mondai'
