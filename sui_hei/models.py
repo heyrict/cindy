@@ -36,7 +36,6 @@ class User(AbstractUser):
     #objects = SuiheiUserManager()
 
     #USERNAME_FIELD = 'username'
-    EMAIL_FIELD = None
     REQUIRED_FIELDS = ['email', 'nickname']
 
     def get_full_name(self):

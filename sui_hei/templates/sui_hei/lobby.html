@@ -54,7 +54,7 @@
     <div id="chat">
         <h3 id="lobby_chat"> {% trans "Lobby Chat" %} </h3>
 
-        {% if log_id %} 
+        {% if user.is_authenticated %} 
         <form action="{% url 'sui_hei:lobby' %}" method="post">
             {% csrf_token %}
             <table class="push_chat">
@@ -83,7 +83,7 @@
         {% for chat in chatlist %} 
         <div id="message_box">
             <div id="user"> 
-                <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.username }}</a> : 
+                <a href="profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
             </div>
             <div id="message">{{ chat.content|safe }} </div>
         </div>

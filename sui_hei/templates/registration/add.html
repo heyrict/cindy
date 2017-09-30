@@ -7,7 +7,27 @@
 {% block content %} 
 <p><strong>{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</strong></p>
 <p>{% trans 'You can register to cindy free and enjoy its contents in one more step!' %}</p>
-<form action="{% url 'sui_hei:users_add' %}" method="post">
-    {% csrf_token %} <table>{{ rf.as_table }}</table> <input type="submit" value="Confirm" />
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form action="{% url 'sui_hei:register' %}" method="post">
+{% csrf_token %}
+<p>
+{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
+</p>
+<table>{{ form.as_table }}</table> <input type="submit" value="Confirm" />
+
+<input type="hidden" name="next" value="{{ next }}" />
 </form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+{#<p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+
 {% endblock %} 

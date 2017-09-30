@@ -6,7 +6,9 @@
 
 {% block content %} 
 <ul>
-    <li>{% trans "Name" %}: {{ user.username }}</li>
-    <li>{% trans "Created time" %}: {{ user.created }}</li>
+    <li>{% trans "Name" %}: {{ user.nickname }}</li>
+    <li>{% trans "Created time" %}: {{ user.date_joined }}</li>
+    <li>{% trans "Last login" %}: {{ user.last_login }} 
+    <li>{% trans "Profile" %}: {{ user.profile }} 
 </ul>
 {% endblock %} 

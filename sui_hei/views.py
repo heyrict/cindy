@@ -49,13 +49,10 @@ class MondaiShowView(DetailView):
 
 
 def lobby(request, page=1):
-    log_id = request.session.get("id")
-
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         try:
             content = request.POST['push_chat']
             if content == '': raise ValueError("Empty Input Data")
-            user_inst = get_object_or_404(Users, id=log_id)
 
             # Translate to markdown
             ## prevent markdown from translating * - + into lists
@@ -63,15 +60,14 @@ def lobby(request, page=1):
             ## remove "^<p>" "</p>$"
             content = md(content)[3:-4]
 
-            chat = Lobby(user_id=user_inst, content=content)
+            chat = Lobby(user_id=request.user, content=content)
             chat.save()
         except Exception as e:
             print(e)
 
     chatlist = Paginator(Lobby.objects.order_by('-id'), 20)
     return render(request, "sui_hei/lobby.html",
-                  {'chatlist': chatlist.page(page),
-                   'log_id': log_id})
+                  {'chatlist': chatlist.page(page)})
 
 
 class ProfileView(DetailView):
@@ -87,68 +83,50 @@ class ProfileView(DetailView):
 
 # cindy/sui_hei/users/add
 class RegisterForm(forms.Form):
+    nickname = forms.CharField(max_length=255)
     username = forms.CharField(max_length=255)
-    name = forms.CharField(max_length=255)
+    email = forms.EmailField(max_length=255, widget=forms.TextInput)
     password = forms.CharField(max_length=255, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
-        _name = cleaned_data.get('name')
-        if _name in [i.name for i in User.objects.iterator()]:
+        _username = cleaned_data.get('username')
+        _email = cleaned_data.get('email')
+        if _username in [i.username for i in User.objects.iterator()]:
             self.add_error(
-                'name',
+                'username',
                 _("`{}` is already registered "
-                  "by another user.\nTry another one!".format(_name)))
+                  "by another user.\nTry another one!".format(_username)))
+        if _email in [i.email for i in User.objects.iterator()]:
+            self.add_error(
+                'email',
+                _("`{}` is already registered "
+                  "by another user.\nTry another one!".format(_username)))
 
 
 def users_add(request):
     if request.method == "POST":
-        rf = RegisterForm(request.POST)
+        form = RegisterForm(request.POST)
 
-        if rf.is_valid():
-            nickname = rf.cleaned_data['username']
-            username = rf.cleaned_data['name']
-            password = rf.cleaned_data['password']
+        if form.is_valid():
+            nickname = form.cleaned_data['username']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
 
             # Create a new user
-            user = User(
+            user = User.objects.create_user(
                 username=username,
                 nickname=nickname,
+                email = email,
                 password=password)
             user.save()
 
-            # Set the new user as log-in
-            request.session['id'] = user.id
-
             # Redirect to homepage
-            return HttpResponseRedirect('/mondai')
+            return HttpResponseRedirect('/sui_hei/users/login')
         else:
-            return render(request, 'registration/add.html', {'rf': rf})
-    return render(request, 'registration/add.html', {'rf': RegisterForm()})
-
-
-# cindy/sui_hei/users/login
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=255)
-    password = forms.CharField(max_length=255, widget=forms.PasswordInput)
-
-
-def users_login(request):
-    if request.method == "POST":
-        lf = LoginForm(request.POST)
-        if lf.is_valid():
-            username = lf.cleaned_data['username']
-            password = lf.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return HttpResponseRedirect('/mondai')
-            else:
-                return render(request, 'registration/login.html',
-                          {'lf': lf,
-                           'error_message': 'Invalid login'})
-
-    return render(request, 'registration/login.html', {'lf': LoginForm()})
+            return render(request, 'registration/add.html', {'form': form})
+    return render(request, 'registration/add.html', {'form': RegisterForm()})
 
 
 def users_logout(request):

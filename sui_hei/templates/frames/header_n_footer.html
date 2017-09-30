@@ -25,11 +25,11 @@
     </h1>
 
     <span>
-    {% if not log_id %}
+    {% if user.is_authenticated %}
+    {% trans "Welcome, "%} {{ user.nickname }}.  [<a href="/users/logout">{% trans 'logout' %}</a>]
+    {% else %}
     [<a href="/users/add">{% trans 'register' %}</a>]
     [<a href="/users/login">{% trans 'login' %}</a>]
-    {% else %}
-    [<a href="/users/logout">{% trans 'logout' %}</a>]
     {% endif %}
     </span>
 
