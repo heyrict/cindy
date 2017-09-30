@@ -10,6 +10,19 @@
     code{white-space: pre;}
     {% block style %} 
     {% endblock %} 
+    .list-nav li
+    {
+        display:table-cell;
+        vertical-align:middle;
+    }
+    .list-nav a
+    {
+        height:auto;
+        width:5em;
+        display:table-cell;
+        text-align:center;
+        vertical-align:middle;
+    }
   </style>
   <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
   <!--[if lt IE 9]>
@@ -35,11 +48,11 @@
 
 
     <h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
-    <span>
-    [<a href='/' class='uri'>{% trans 'homepage' %}</a>]
-    [<a href='/mondai' class='uri'>{% trans 'mondai' %}</a>]
-    [<a href='/lobby' class='uri'>{% trans 'lobby' %}</a>]
-    </span>
+    <ul class = "list-nav">
+        <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
+        <li><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></li>
+        <li><a href='/lobby' class='uri'>{% trans 'lobby' %}</a></li>
+    </ul>
 
 </header>
 
