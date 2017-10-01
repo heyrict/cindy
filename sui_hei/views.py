@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView, UpdateView
+from django.template import RequestContext
 from markdown import markdown as md
 
 from .models import *

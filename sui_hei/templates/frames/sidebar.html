@@ -1,8 +1,43 @@
-{% load i18n static %} 
+{% load i18n static markdown %} 
 <div class="leftbar" mode="closed">
     <img class="leftbar_button" src={% static 'sidebar.png' %}>
     <div class="leftbar_content">
-        <h2>Lobby Chat</h2>
-        <p>Lobby chat is going to be moved here!</p>
+        <div class="pagination">
+            <span class="step-links">
+                {% if chatlist.has_previous %} 
+                <a href="?page={{ chatlist.previous_page_number }}">{% trans 'prev' %}</a>
+                {% endif %} 
+
+                <span class="current">
+                    Page {{ chatlist.number }} of {{ chatlist.paginator.num_pages }} 
+                </span>
+
+                {% if chatlist.has_next %} 
+                <a href="?page={{ chatlist.next_page_number }}">{% trans 'next' %}</a>
+                {% endif %} 
+            </span>
+        </div>
+
+        <table class="lobby_table">
+            {% for chat in chatlist %} 
+            <tr>
+                <th id="user"> 
+                    <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
+                </th>
+                <td id="message">{{ chat.content|line2md|safe }} </td>
+            </tr>
+            {% endfor %} 
+        </table>
+
+        {% if user.is_authenticated %} 
+        <form action="{% url 'sui_hei:lobby' %}" method="post">
+            {% csrf_token %}
+            <table class="push_chat">
+                <input id="LobbyContent" name="push_chat" type="text">
+                <input value="Send" type="submit">
+            </table>
+        </form>
+        {% endif %} 
+
     </div>
 </div>
