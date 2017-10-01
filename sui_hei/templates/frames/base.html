@@ -7,65 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">
-    code{white-space: pre;}
     {% block style %} 
     {% endblock %} 
-    textarea {
-        padding: 6px;
-        font-size: 15px;
-        border-radius: 2px;
-        border: 3px solid #98d0f1;
-        margin-top: 10px;
-        height: 100px;
-        width: 100%;
-    }
-    input[type="submit"] {
-        background: #2bc1f2;
-        border: none;
-        color: #fff;
-        width: 100%;
-        font-size: 22px;
-        font-weight: bolder;
-        padding: 8px 0;
-        border-radius: 3px;
-        cursor: pointer;
-        margin-top: 25px;
-    }
-    input[type="text"] {
-        margin-top: 10px;
-        padding: 6px;
-        width: 99%;
-        font-size: 15px;
-        padding: 8px 0;
-        border-radius: 2px;
-        border: 3px solid #98d0f1;
-    }
-    .list-nav li
-    {
-        display:table-cell;
-        vertical-align:middle;
-    }
-    .list-nav a
-    {
-        height:auto;
-        width:5em;
-        display:table-cell;
-        text-align:center;
-        vertical-align:middle;
-    } 
-    .leftbar {
-        position: fixed;
-        top: 20px;
-        left: -480px;
-    }
-    .leftbar_content {
-        position: inherit;
-        width: 270px;
-        border-radius: 5px;
-        background: #eee8d5;
-    }
   </style>
   <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
+  <link rel="stylesheet" href="{% static 'base.css' %}">
   <link rel="stylesheet" href="{% static 'sidebar.css' %}">
   <script src="{% static 'jquery.min.js' %}" type="text/javascript"></script>
   <script src="{% static 'velocity.min.js' %}" type="text/javascript"></script>

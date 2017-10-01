@@ -1,0 +1,43 @@
+textarea {
+    padding: 6px;
+    font-size: 15px;
+    border-radius: 2px;
+    border: 3px solid #98d0f1;
+    margin-top: 10px;
+    height: 100px;
+    width: 100%;
+}
+input[type="submit"] {
+    background: #2bc1f2;
+    border: none;
+    color: #fff;
+    width: 100%;
+    font-size: 22px;
+    font-weight: bolder;
+    padding: 8px 0;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+input[type="text"] {
+    margin-top: 10px;
+    padding: 6px;
+    width: 99%;
+    font-size: 15px;
+    padding: 8px 0;
+    border-radius: 2px;
+    border: 3px solid #98d0f1;
+}
+.list-nav li
+{
+    display:table-cell;
+    vertical-align:middle;
+}
+.list-nav a
+{
+    height:auto;
+    width:5em;
+    display:table-cell;
+    text-align:center;
+    vertical-align:middle;
+} 
