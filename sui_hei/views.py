@@ -55,8 +55,8 @@ def lobby(request):
             chat.save()
         except Exception as e:
             print(e)
-    return redirect(request.META['HTTP_REFERER'])
-    #return redirect(request.META['HTTP_REFERER']+"?"+paramlist)
+    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+    return redirect(referer_without_query + "?chatpage=1&mode=open")
 
 
 class ProfileView(DetailView):

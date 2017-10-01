@@ -13,15 +13,15 @@ def lobby_chatlist(request):
         chatpage = 1
 
     # mode param
-    #mode = request.GET.get('mode')
-    #if isinstance(mode, str) and mode == "opened":
-    #    pass
-    #else:
-    #    mode = "closed"
+    mode = request.GET.get('mode')
+    if isinstance(mode, str) and mode == "open":
+        pass
+    else:
+        mode = "closed"
 
     # channel param (to be added)
     channel = request.GET.get('channel')  # leave it for future channel use
 
-    chatlist = Paginator(Lobby.objects.order_by('-id'), 5)
+    chatlist = Paginator(Lobby.objects.order_by('-id'), 10)
     context = {'chatlist': chatlist.page(chatpage)}
     return context

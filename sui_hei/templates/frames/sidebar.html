@@ -5,7 +5,7 @@
         <div class="pagination">
             <span class="step-links">
                 {% if chatlist.has_previous %} 
-                <a href="?chatpage={{ chatlist.previous_page_number }}">{% trans 'prev' %}</a>
+                <a href="?chatpage={{ chatlist.previous_page_number }}&mode=open">{% trans 'prev' %}</a>
                 {% endif %} 
 
                 <span class="current">
@@ -13,7 +13,7 @@
                 </span>
 
                 {% if chatlist.has_next %} 
-                <a href="?chatpage={{ chatlist.next_page_number }}">{% trans 'next' %}</a>
+                <a href="?chatpage={{ chatlist.next_page_number }}&mode=open">{% trans 'next' %}</a>
                 {% endif %} 
             </span>
         </div>
