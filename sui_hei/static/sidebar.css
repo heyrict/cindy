@@ -1,13 +1,20 @@
 .leftbar {
     position: fixed;
-    top: 20px;
-    left: -480px;
+    width: 38.2%;
+    top: 50px;
+    left: -31%;
     z-index: 99;
 }
 .leftbar_content {
-    position: inherit;
-    width: 270px;
+    position: relative;
+    top: 50px;
+    width: "90%";
     border-radius: 5px;
     background: #eee8d5;
     z-index: 100;
+}
+.leftbar_button {
+    position: fixed;
+    left: 0%;
+    z-index: 98;
 }

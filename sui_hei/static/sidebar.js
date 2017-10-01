@@ -5,12 +5,12 @@ $(document).ready(function() {
     // Toggle leftbar
     if ($this.attr("mode") == "closed") {
       $this.velocity({
-        left: "0px"
+        left: "0%"
       });
       $this.attr("mode", "opened");
     } else if ($this.attr("mode") == "opened") {
       $(".leftbar").velocity({
-        left: "-480px"
+        left: "-30%"
       });
       $this.attr("mode", "closed");
     }
