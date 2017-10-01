@@ -13,7 +13,6 @@
     top: 0;
     right: 20%;
     height: 600px;
-    overflow: auto;
     z-index: 100;
 }
 .leftbar_button {
@@ -23,4 +22,9 @@
     position: absolute;
     top: 60px;
     z-index: 98;
+}
+.lobby_table_div {
+    position: relative;
+    height: 75%;
+    overflow: auto;
 }

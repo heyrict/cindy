@@ -18,16 +18,18 @@
             </span>
         </div>
 
-        <table class="lobby_table">
-            {% for chat in chatlist|inv %} 
-            <tr>
-                <th id="user"> 
-                    <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
-                </th>
-                <td id="message">{{ chat.content|line2md|safe }} </td>
-            </tr>
-            {% endfor %} 
-        </table>
+        <div class="lobby_table_div">
+            <table class="lobby_table">
+                {% for chat in chatlist|inv %} 
+                <tr>
+                    <th id="user"> 
+                        <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
+                    </th>
+                    <td id="message">{{ chat.content|line2md|safe }} </td>
+                </tr>
+                {% endfor %} 
+            </table>
+        </div>
 
         {% if user.is_authenticated %} 
         <form action="{% url 'sui_hei:lobby' %}" method="post">
