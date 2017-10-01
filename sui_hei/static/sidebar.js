@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  $(".leftbar").on("click", function() {
-    var $this = $(this);
+  $(".leftbar_button").on("click", function() {
+    var $this = $(".leftbar");
 
     // Toggle leftbar
     if ($this.attr("mode") == "closed") {
