@@ -1,4 +1,4 @@
-{% load i18n static markdown %} 
+{% load i18n static markdown iterutil %} 
 <div class="leftbar" mode="closed">
     <img class="leftbar_button" src={% static 'sidebar.png' %}>
     <div class="leftbar_content">
@@ -19,7 +19,7 @@
         </div>
 
         <table class="lobby_table">
-            {% for chat in chatlist %} 
+            {% for chat in chatlist|inv %} 
             <tr>
                 <th id="user"> 
                     <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
