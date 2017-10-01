@@ -15,9 +15,9 @@ def text2md(value):
     convert markdown-like text to html.
     strip header <p> and footer </p> if p is True.
     '''
-    returns = BeautifulSoup(value, 'html5lib').prettify(encoding="utf8")
-    returns = md(returns.decode('utf8'))
-    return returns
+    returns = md(value)
+    returns = BeautifulSoup(returns, 'html5lib').prettify(encoding="utf8")
+    return returns.decode('utf8')
 
 
 @register.filter(is_safe=True)
