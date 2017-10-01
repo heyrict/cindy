@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView, UpdateView
@@ -43,7 +43,7 @@ class MondaiShowView(DetailView):
     context_object_name = 'mondai'
 
 
-def lobby(request, page=1):
+def lobby(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:
             content = request.POST['push_chat']
@@ -53,10 +53,8 @@ def lobby(request, page=1):
             chat.save()
         except Exception as e:
             print(e)
-
-    chatlist = Paginator(Lobby.objects.order_by('-id'), 20)
-    return render(request, "sui_hei/lobby.html",
-                  {'chatlist': chatlist.page(page)})
+        print(request.META['HTTP_REFERER'])
+    return redirect(request.META['HTTP_REFERER'])
 
 
 class ProfileView(DetailView):
