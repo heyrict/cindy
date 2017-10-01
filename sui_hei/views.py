@@ -44,6 +44,8 @@ class MondaiShowView(DetailView):
 
 
 def lobby(request):
+    #params = request.GET
+    #paramlist = '&'.join(['%s=%s' % t for t in params])
     if request.method == "POST" and request.user.is_authenticated:
         try:
             content = request.POST['push_chat']
@@ -53,8 +55,8 @@ def lobby(request):
             chat.save()
         except Exception as e:
             print(e)
-        print(request.META['HTTP_REFERER'])
     return redirect(request.META['HTTP_REFERER'])
+    #return redirect(request.META['HTTP_REFERER']+"?"+paramlist)
 
 
 class ProfileView(DetailView):
