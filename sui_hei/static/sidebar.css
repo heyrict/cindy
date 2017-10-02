@@ -28,4 +28,5 @@
     height: 75%;
     width: 100%;
     overflow: auto;
+    z-index: 101
 }

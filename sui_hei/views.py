@@ -59,6 +59,20 @@ def mondai_show_push_answ(request):
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
+def mondai_show_update_soup(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        try:
+            mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
+            kaisetu = request.POST['change_kaisetu']
+            if kaisetu == '': raise ValueError("Empty Input Data")
+
+            mondai_id.kaisetu = kaisetu
+            mondai_id.save()
+        except Exception as e:
+            print("UpdateSoup:",e)
+    return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
+
+
 def mondai_show_push_ques(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:

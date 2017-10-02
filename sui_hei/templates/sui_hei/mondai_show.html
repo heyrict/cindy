@@ -9,6 +9,7 @@
     }
     .HBar {
         width: 96%;
+        z-index: -1;
     }
     .QBlock {
         position: relative;
@@ -18,6 +19,7 @@
         border-radius: 5px;
         padding: 3px;
         font-size: 16px;
+        z-index: -1;
     }
     .ABlock {
         position: relative;
@@ -27,6 +29,7 @@
         border-radius: 5px;
         padding: 3px;
         font-size: 16px;
+        z-index: -1;
     }
 {% endblock %}
 
@@ -82,7 +85,7 @@
 <!-- Answer of Question -->
 {% if mondai.seikai %}
 <div class="mondai_kaisetu wrapper">
-    <h3 id="answer">{% trans "Answer" %}</h3>
+    <h3 id="true-answer">{% trans "True Answer" %}</h3>
     {{ mondai.kaisetu|text2md|safe }}
 </div>
 {% else %}
@@ -92,6 +95,14 @@
     <!-- end for guests -->
     {% elif user == mondai.user_id %}
     <!-- giver panel -->
+    <form action="{% url 'sui_hei:mondai_show_update_soup' %}?mondai={{ mondai.id }}" method="post">
+        {% csrf_token %}
+        <span class="giver_panel">
+            <p>{% trans 'True Answer' %}: 
+            <textarea id="kaisetu_textarea" name="change_kaisetu">{{ mondai.kaisetu }}</textarea></p>
+            <input value="Update" type="submit">
+        </span>
+    </form>
     <!-- end giver panel -->
     {% else %}
     <!-- paticipants panel -->
