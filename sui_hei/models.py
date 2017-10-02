@@ -98,9 +98,9 @@ class Shitumon(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')
     mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
     shitumon = models.TextField(null=False)
-    kaitou = models.TextField(null=False)
-    created = models.DateTimeField(null=False)
-    modified = models.DateTimeField(null=False)
+    kaitou = models.TextField(null=True)
+    askedtime = models.DateTimeField(null=False)
+    answeredtime = models.DateTimeField(null=True)
 
 
 class Lobby(models.Model):

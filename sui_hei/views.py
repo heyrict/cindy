@@ -32,10 +32,31 @@ class MondaiView(ListView):
 
 
 # /mondai/show/[0-9]+
-class MondaiShowView(DetailView):
-    model = Mondai
-    template_name = 'sui_hei/mondai_show.html'
-    context_object_name = 'mondai'
+def mondai_show(request, pk):
+    mondai = Mondai.objects.get(id=pk)
+    qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
+
+    return render(request, 'sui_hei/mondai_show.html',
+                  {'mondai': mondai,
+                   'qnas': qnas})
+
+
+def mondai_show_push_ques(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        try:
+            mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
+            content = request.POST['push_ques']
+            if content == '': raise ValueError("Empty Input Data")
+
+            ques = Shitumon(
+                user_id=request.user,
+                shitumon=content,
+                askedtime=datetime.now(),
+                mondai_id=mondai_id)
+            ques.save()
+        except Exception as e:
+            print("PushQues:",e)
+    return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
 # /lobby
@@ -50,7 +71,7 @@ def lobby(request):
             chat = Lobby(user_id=request.user, content=content)
             chat.save()
         except Exception as e:
-            print(e)
+            print("Lobby:",e)
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query + "?chatpage=1&mode=open")
 
@@ -72,7 +93,7 @@ class ProfileEdit(UpdateView):
         return self.request.user
 
     def get_success_url(self):
-        return self.request.GET.get('next', '/mondai')
+        return request.META['HTTP_REFERER']
 
 
 # cindy/sui_hei/users/add
@@ -136,7 +157,8 @@ class MondaiAddForm(forms.Form):
         (0, _("Albatross")),
         (1, _("20th-Door")),
         (2, _("Little Albat")),
-        (3, _("Others & Formal")), ]))
+        (3, _("Others & Formal")),
+    ]))
     yami = forms.BooleanField(required=False)
     content = forms.CharField(widget=forms.Textarea)
     kaisetu = forms.CharField(widget=forms.Textarea)
@@ -170,4 +192,5 @@ def mondai_add(request):
             return redirect(reverse('sui_hei:mondai'))
         else:
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
-    return render(request, 'sui_hei/mondai_add.html', {'form': MondaiAddForm()})
+    return render(request, 'sui_hei/mondai_add.html',
+                  {'form': MondaiAddForm()})

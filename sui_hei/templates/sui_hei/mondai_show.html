@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static markdown %}
+{% load i18n static markdown decodes %}
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
@@ -14,16 +14,24 @@
         position: relative;
         float: left;
         width: 48%;
+        border: 1px solid #268bd288;
+        border-radius: 5px;
+        padding: 3px;
+        font-size: 16px;
     }
     .ABlock {
         position: relative;
         float: right;
         width: 48%;
+        border: 1px solid #268bd288;
+        border-radius: 5px;
+        padding: 3px;
+        font-size: 16px;
     }
 {% endblock %}
 
 {% block content %} 
-<h2>{{ mondai.title }} [{{ mondai.genre }}]</h2>
+<h2>{{ mondai.title }} [{{ mondai.genre|genre }}]</h2>
 
 <!-- Content of Question -->
 <div class="mondai_content wrapper">
@@ -36,6 +44,21 @@
 <!-- End Content of Question -->
 <br>
 <!-- Q&A -->
+<div class="mondai_qna">
+    {% for qna in qnas %}
+    <div class="HBar">
+        <div class="QBlock">
+            {{ qna.shitumon }}
+        </div>
+        <div class="ABlock">
+            {% if qna.kaitou %} {{ qna.kaitou }}
+            {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </div>
+    {% endfor %}
+</div>
 <!-- End Q&A -->
 <br>
 <!-- Answer of Question -->
@@ -44,6 +67,23 @@
     <h3 id="answer">{% trans "Answer" %}</h3>
     {{ mondai.kaisetu|text2md|safe }}
 </div>
+{% else %}
+    {% if not user.is_authenticated %}
+    <!-- for guests -->
+    You are a guest!
+    {% elif user == mondai.user_id %}
+    <!-- giver panel -->
+    You are a giver!
+    {% else %}
+    <!-- paticipants panel -->
+    <form action="{% url 'sui_hei:mondai_show_push_ques' %}?mondai={{ mondai.id }}" method="post">
+        {% csrf_token %}
+        <span class="paticipants_panel">
+            <input id="ques_input" name="push_ques" type="text">
+            <input value="Put Question" type="submit">
+        </span>
+    </form>
+    {% endif %}
 {% endif %}
 <!-- End Answer of Question -->
 
