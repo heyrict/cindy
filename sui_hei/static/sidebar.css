@@ -26,5 +26,6 @@
 .lobby_table_div {
     position: relative;
     height: 75%;
+    width: 100%;
     overflow: auto;
 }

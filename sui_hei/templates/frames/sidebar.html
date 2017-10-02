@@ -19,10 +19,10 @@
         </div>
 
         <div class="lobby_table_div">
-            <table class="lobby_table">
+            <table class="lobby_table" style="width:100%; height:100%;">
                 {% for chat in chatlist|inv %} 
                 <tr>
-                    <th id="user"> 
+                    <th id="user" style="width: 33%;"> 
                         <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
                     </th>
                     <td id="message">{{ chat.content|line2md|safe }} </td>

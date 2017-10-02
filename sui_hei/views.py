@@ -18,9 +18,7 @@ from .models import *
 # Create your views here.
 # /
 def index(request):
-    log_id = request.session.get("id")
-    template = loader.get_template('sui_hei/index.html')
-    return HttpResponse(template.render({'log_id': log_id}, request))
+    return render(request, 'sui_hei/index.html')
 
 
 # /mondai
@@ -28,11 +26,6 @@ class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
     paginate_by = 20
-
-    def get_context_data(self, **kwargs):
-        context = super(MondaiView, self).get_context_data(**kwargs)
-        context['log_id'] = self.request.session.get('id', '')
-        return context
 
     def get_queryset(self):
         return Mondai.objects.order_by('-created')

@@ -3,6 +3,25 @@
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
+{% block style %}
+    .clear {
+        clear: both
+    }
+    .HBar {
+        width: 96%;
+    }
+    .QBlock {
+        position: relative;
+        float: left;
+        width: 48%;
+    }
+    .ABlock {
+        position: relative;
+        float: right;
+        width: 48%;
+    }
+{% endblock %}
+
 {% block content %} 
 <h2>{{ mondai.title }} [{{ mondai.genre }}]</h2>
 
