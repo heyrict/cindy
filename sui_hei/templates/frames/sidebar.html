@@ -36,7 +36,7 @@
             {% csrf_token %}
             <table class="push_chat">
                 <input id="LobbyContent" name="push_chat" type="text">
-                <input value="Send" type="submit">
+                <input value={% trans 'Send' %} type="submit">
             </table>
         </form>
         {% endif %} 

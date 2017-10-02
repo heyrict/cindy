@@ -11,7 +11,7 @@
     {% csrf_token %}
     <span class="paticipants_panel">
         <textarea id="change_textarea" name="push_change" type="text">{{ original }}</textarea>
-        <input value="Commit Change" type="submit">
+        <input value={% trans 'Commit Change' %} type="submit">
     </span>
 </form>
 {% endif %}

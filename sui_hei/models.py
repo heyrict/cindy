@@ -68,15 +68,15 @@ class Mondai(models.Model):
       3: shin-keshiki
     '''
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
-    title = models.CharField(max_length=255, null=False)
-    yami = models.BooleanField(default=False, null=False)
-    genre = models.IntegerField(default=0, null=False)
-    content = models.TextField(null=False)
-    kaisetu = models.TextField(null=False)
-    seikai = models.BooleanField(null=False)
-    created = models.DateTimeField(null=False)
-    modified = models.DateTimeField(null=False)
+    user_id = models.ForeignKey(User, User, db_column='user_id')
+    title = models.CharField(_('title'), max_length=255, null=False)
+    yami = models.BooleanField(_('yami'), default=False, null=False)
+    genre = models.IntegerField(_('genre'), default=0, null=False)
+    content = models.TextField(_('content'), null=False)
+    kaisetu = models.TextField(_('kaisetu'), null=False)
+    seikai = models.BooleanField(_('seikai'), null=False)
+    created = models.DateTimeField(_('created'), null=False)
+    modified = models.DateTimeField(_('modified'), null=False)
 
     def __str__(self):
         return self.title
@@ -84,15 +84,15 @@ class Mondai(models.Model):
 
 class Shitumon(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
-    shitumon = models.TextField(null=False)
-    kaitou = models.TextField(null=True)
-    askedtime = models.DateTimeField(null=False)
-    answeredtime = models.DateTimeField(null=True)
+    user_id = models.ForeignKey(User, User, db_column='user_id')
+    mondai_id = models.ForeignKey(Mondai, Mondai, db_column='mondai_id')
+    shitumon = models.TextField(_('shitumon'), null=False)
+    kaitou = models.TextField(_('kaitou'), null=True)
+    askedtime = models.DateTimeField(_('askedtime'), null=False)
+    answeredtime = models.DateTimeField(_('answeredtime'), null=True)
 
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
-    content = models.TextField(null=False)
+    user_id = models.ForeignKey(User, User, db_column='user_id')
+    content = models.TextField(_('content'), null=False)

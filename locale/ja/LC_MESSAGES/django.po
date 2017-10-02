@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-29 19:00+0900\n"
+"POT-Creation-Date: 2017-10-02 22:33+0900\n"
 "PO-Revision-Date: 2017-09-27 20:05+0800\n"
 "Last-Translator: heyrict <xiezh0831@yahoo.co.jp>\n"
 "Language: ja\n"
@@ -16,41 +16,125 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cindy/settings.py:141
+#: cindy/settings.py:142
 msgid "Japanese"
 msgstr "日本語"
 
-#: cindy/settings.py:142
+#: cindy/settings.py:143
 msgid "English"
 msgstr "英語"
 
-#: sui_hei/templates/frames/header_n_footer.html:28
-msgid "register"
-msgstr "サインイン"
+#: sui_hei/models.py:31
+msgid "nick_name"
+msgstr "ニックネーム"
 
-#: sui_hei/templates/frames/header_n_footer.html:29
-msgid "login"
-msgstr "ログイン"
+#: sui_hei/models.py:32
+msgid "profile"
+msgstr "プロフィール"
 
-#: sui_hei/templates/frames/header_n_footer.html:31
+#: sui_hei/models.py:72
+msgid "title"
+msgstr "タイトル"
+
+#: sui_hei/models.py:73
+msgid "yami"
+msgstr "闇スープ"
+
+#: sui_hei/models.py:74
+msgid "genre"
+msgstr "ジャンル"
+
+#: sui_hei/models.py:75 sui_hei/models.py:98
+msgid "content"
+msgstr "コンテンツ"
+
+#: sui_hei/models.py:76
+msgid "kaisetu"
+msgstr "解説"
+
+#: sui_hei/models.py:77
+msgid "seikai"
+msgstr "正解あり"
+
+#: sui_hei/models.py:78
+#, fuzzy
+#| msgid "Created time"
+msgid "created"
+msgstr "作った時間"
+
+#: sui_hei/models.py:79
+msgid "modified"
+msgstr "最後変更時間"
+
+#: sui_hei/models.py:89
+msgid "shitumon"
+msgstr "質問"
+
+#: sui_hei/models.py:90
+msgid "kaitou"
+msgstr "回答"
+
+#: sui_hei/models.py:91
+#, fuzzy
+#| msgid "answeredtime"
+msgid "askedtime"
+msgstr "回答時間"
+
+#: sui_hei/models.py:92
+msgid "answeredtime"
+msgstr "回答時間"
+
+#: sui_hei/templates/frames/header.html:4
+msgid "Welcome, "
+msgstr "こんにちは、"
+
+#: sui_hei/templates/frames/header.html:5
 msgid "logout"
 msgstr "ログアウト"
 
-#: sui_hei/templates/frames/header_n_footer.html:35
+#: sui_hei/templates/frames/header.html:7
+msgid "register"
+msgstr "サインイン"
+
+#: sui_hei/templates/frames/header.html:8
+msgid "login"
+msgstr "ログイン"
+
+#: sui_hei/templates/frames/header.html:13
 msgid "Site Navigations"
 msgstr "ナビゲーション"
 
-#: sui_hei/templates/frames/header_n_footer.html:36
+#: sui_hei/templates/frames/header.html:15
 msgid "homepage"
 msgstr "ホームページ"
 
-#: sui_hei/templates/frames/header_n_footer.html:37
+#: sui_hei/templates/frames/header.html:16
 msgid "mondai"
 msgstr "問題"
 
-#: sui_hei/templates/frames/header_n_footer.html:38
-msgid "lobby"
-msgstr "ロビー"
+#: sui_hei/templates/frames/sidebar.html:8
+#: sui_hei/templates/sui_hei/mondai.html:20
+msgid "prev"
+msgstr "<-前"
+
+#: sui_hei/templates/frames/sidebar.html:16
+#: sui_hei/templates/sui_hei/mondai.html:28
+msgid "next"
+msgstr "次->"
+
+#: sui_hei/templates/frames/sidebar.html:39
+msgid "Send"
+msgstr "発言"
+
+#: sui_hei/templates/registration/add.html:8
+msgid "Welcome to Cindy, a real-time website for lateral thinking games!"
+msgstr ""
+"「Cindy」へようこそ〜「Cindy」はリアルタイムラテラルシンキングを楽しめるサイ"
+"トです！"
+
+#: sui_hei/templates/registration/add.html:9
+msgid "You can register to cindy free and enjoy its contents in one more step!"
+msgstr "一歩だけで、あなたは無料で「Cindy」にサインイン出来ます！"
 
 #: sui_hei/templates/sui_hei/index.html:10
 msgid "a replica for"
@@ -64,59 +148,115 @@ msgstr "ウミガメスープ"
 msgid "constructed by kamisugi."
 msgstr "制作者：上杉"
 
-#: sui_hei/templates/sui_hei/lobby.html:29
-msgid "Lobby Chat"
-msgstr "ロビーチャット"
+#: sui_hei/templates/sui_hei/index.html:11
+msgid "This HomePage is still under construction ...⏳"
+msgstr "このホームページは建設中です...⏳"
 
 #: sui_hei/templates/sui_hei/mondai.html:8
-#, fuzzy
-#| msgid "Soup"
-msgid "All Soups"
-msgstr "問題"
+msgid "NewSoup"
+msgstr "新問題"
 
-#: sui_hei/templates/sui_hei/mondai.html:11
-#: sui_hei/templates/sui_hei/mondai_show.html:11
+#: sui_hei/templates/sui_hei/mondai.html:14
+msgid "All Soups"
+msgstr "すべての問題"
+
+#: sui_hei/templates/sui_hei/mondai.html:36
+#: sui_hei/templates/sui_hei/mondai_show.html:36
 msgid "Giver"
 msgstr "出題者"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:9
-msgid "Info"
-msgstr "インフォメーション"
+#: sui_hei/templates/sui_hei/mondai_change.html:14
+msgid "Commit Change"
+msgstr "変更実行"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:12
+#: sui_hei/templates/sui_hei/mondai_show.html:37
 msgid "Give time"
 msgstr "出題時間"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:14
-msgid "Soup"
-msgstr "問題"
+#: sui_hei/templates/sui_hei/mondai_show.html:55
+#: sui_hei/templates/sui_hei/mondai_show.html:68
+msgid "[edit]"
+msgstr "[編集]"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:16
-msgid "Answer"
+#: sui_hei/templates/sui_hei/mondai_show.html:86
+msgid "waiting to be answered"
+msgstr "回答はまだです"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:96
+msgid "Put Responds"
+msgstr "すべての質問を回答する"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:104
+#: sui_hei/templates/sui_hei/mondai_show.html:117
+msgid "True Answer"
 msgstr "解説"
 
-#: sui_hei/templates/sui_hei/profile.html:9
+#: sui_hei/templates/sui_hei/mondai_show.html:120
+msgid "Put True Answer"
+msgstr "解説を出す"
+
+#: sui_hei/templates/sui_hei/profile.html:8
 msgid "Name"
 msgstr "名前"
 
-#: sui_hei/templates/sui_hei/profile.html:10
+#: sui_hei/templates/sui_hei/profile.html:9
 msgid "Created time"
-msgstr "作った時間"
+msgstr "作成時間"
 
-#: sui_hei/templates/sui_hei/users_add.html:8
-msgid "Welcome to Cindy, a real-time website for lateral thinking games!"
-msgstr ""
-"「Cindy」へようこそ〜「Cindy」はリアルタイムラテラルシンキングを楽しめるサイ"
-"トです！"
+#: sui_hei/templates/sui_hei/profile.html:10
+msgid "Last login"
+msgstr "最後のログイン時間"
 
-#: sui_hei/templates/sui_hei/users_add.html:9
-msgid "You can register to cindy free and enjoy its contents in one more step!"
-msgstr "一歩だけで、あなたは無料で「Cindy」にサインイン出来ます！"
+#: sui_hei/templates/sui_hei/profile.html:11
+msgid "Profile"
+msgstr "プロフィール"
 
-#: sui_hei/views.py:97
+#: sui_hei/templates/sui_hei/profile.html:14
+msgid "edit"
+msgstr "編集"
+
+#: sui_hei/templates/sui_hei/profile_edit.html:13
+msgid "Confirm"
+msgstr "確認"
+
+#: sui_hei/templatetags/decodes.py:9 sui_hei/views.py:230
+msgid "Albatross"
+msgstr "ウミガメのスープ"
+
+#: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:231
+msgid "20th-Door"
+msgstr "２０の扉"
+
+#: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:232
+msgid "Little Albat"
+msgstr "亀夫君"
+
+#: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:233
+msgid "Others & Formal"
+msgstr "新・形式"
+
+#: sui_hei/views.py:186 sui_hei/views.py:191
 msgid ""
 "`{}` is already registered by another user.\n"
 "Try another one!"
 msgstr ""
 "`{}` はすでに他のユーザーに使用されました。\n"
 "他を試してみてくださいね"
+
+#~ msgid "user_id"
+#~ msgstr "ユーザーID"
+
+#~ msgid "mondai_id"
+#~ msgstr "問題ID"
+
+#~ msgid "Soup"
+#~ msgstr "問題"
+
+#~ msgid "lobby"
+#~ msgstr "ロビー"
+
+#~ msgid "Lobby Chat"
+#~ msgstr "ロビーチャット"
+
+#~ msgid "Info"
+#~ msgstr "インフォメーション"
