@@ -82,17 +82,6 @@ class Mondai(models.Model):
         return self.title
 
 
-class Chat(models.Model):
-    id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
-    content = models.TextField(null=False)
-    created = models.DateTimeField(null=False)
-
-    def __str__(self):
-        return "%s: %s -> %s" % (id, self.user_id, self.mondai_id)
-
-
 class Shitumon(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     user_id = models.ForeignKey(User, db_column='user_id')

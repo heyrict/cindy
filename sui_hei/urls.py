@@ -16,6 +16,7 @@ urlpatterns = [
     url(r"^mondai/show/push_ques", views.mondai_show_push_ques, name="mondai_show_push_ques"),
     url(r"^mondai/show/push_answ", views.mondai_show_push_answ, name="mondai_show_push_answ"),
     url(r"^mondai/show/update_soup", views.mondai_show_update_soup, name="mondai_show_update_soup"),
+    url(r"^mondai/edit/(?P<table_name>[a-zA-Z]+)/(?P<field_name>[a-zA-Z]+)/(?P<pk>[0-9]+)$", views.mondai_change, name="mondai_change"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^users/add$", views.users_add, name="register"),

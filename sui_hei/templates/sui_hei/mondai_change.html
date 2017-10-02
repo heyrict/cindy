@@ -1,0 +1,18 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static %}
+
+{% block title %} Cindy - {{ table_name }} - {{ field_name }} {% endblock %} 
+{% block content %}
+
+{% if error_message %}
+<big><b>{{ error_message }}</b></big>
+{% else %}
+<form action="{% url 'sui_hei:mondai_change' table_name field_name pk %}" method="post">
+    {% csrf_token %}
+    <span class="paticipants_panel">
+        <textarea id="change_textarea" name="push_change" type="text">{{ original }}</textarea>
+        <input value="Commit Change" type="submit">
+    </span>
+</form>
+{% endif %}
+{% endblock %}

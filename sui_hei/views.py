@@ -1,5 +1,5 @@
-from datetime import datetime
 import re
+from datetime import datetime
 
 from django import forms
 from django.contrib.auth import authenticate, login, logout
@@ -41,6 +41,7 @@ def mondai_show(request, pk):
                   {'mondai': mondai,
                    'qnas': qnas})
 
+
 def mondai_show_push_answ(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:
@@ -55,7 +56,7 @@ def mondai_show_push_answ(request):
                 mondai_id.answeredtime = datetime.now()
                 mondai_id.save()
         except Exception as e:
-            print("PushAnsw:",e)
+            print("PushAnsw:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
@@ -64,13 +65,53 @@ def mondai_show_update_soup(request):
         try:
             mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
             kaisetu = request.POST['change_kaisetu']
+            seikai = request.POST['change_seikai']
             if kaisetu == '': raise ValueError("Empty Input Data")
 
             mondai_id.kaisetu = kaisetu
+            mondai_id.seikai = True if seikai=='on' else False
             mondai_id.save()
         except Exception as e:
-            print("UpdateSoup:",e)
+            print("UpdateSoup:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
+
+
+def mondai_change(request, table_name, field_name, pk):
+    acceptable = {"Shitumon": Shitumon}
+    if table_name in acceptable:
+        try:
+            obj2upd = get_object_or_404(acceptable[table_name], id=pk)
+
+            # Validation
+            if field_name == 'kaitou':
+                if obj2upd.mondai_id.user_id != request.user:
+                    raise ValidationError(
+                        "You are not authenticated to access this page!")
+            else:
+                if obj2upd.user_id != request.user:
+                    raise ValidationError(
+                        "You are not authenticated to access this page!")
+
+            if request.method == "POST":
+                obj2upd.__setattr__(field_name, request.POST['push_change'])
+                obj2upd.save()
+
+                # Redirect to relavant page
+                if table_name == "Shitumon":
+                    return redirect(reverse("sui_hei:mondai_show",kwargs={'pk':obj2upd.mondai_id.id}))
+                else:
+                    return redirect(reverse("sui_hei:index"))
+            else:
+                return render(request, "sui_hei/mondai_change.html", {
+                    'original': obj2upd.__getattribute__(field_name),
+                    'table_name': table_name,
+                    'field_name': field_name,
+                    'pk': pk,
+                })
+
+        except Exception as e:
+            return render(request, "sui_hei/mondai_change.html",
+                          {'error_message': e})
 
 
 def mondai_show_push_ques(request):
@@ -87,7 +128,7 @@ def mondai_show_push_ques(request):
                 mondai_id=mondai_id)
             ques.save()
         except Exception as e:
-            print("PushQues:",e)
+            print("PushQues:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
@@ -103,7 +144,7 @@ def lobby(request):
             chat = Lobby(user_id=request.user, content=content)
             chat.save()
         except Exception as e:
-            print("Lobby:",e)
+            print("Lobby:", e)
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query + "?chatpage=1&mode=open")
 
@@ -125,7 +166,7 @@ class ProfileEdit(UpdateView):
         return self.request.user
 
     def get_success_url(self):
-        return request.META['HTTP_REFERER']
+        return self.request.META['HTTP_REFERER']
 
 
 # cindy/sui_hei/users/add
