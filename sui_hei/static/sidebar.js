@@ -33,7 +33,7 @@ $(document).ready(function() {
       $this.attr("mode", "open");
     } else if ($this.attr("mode") == "open") {
       $(".leftbar").velocity({
-        left: "-30%"
+        left: "-30.3%"
       });
       $this.attr("mode", "closed");
     }
