@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 from django import forms
 from django.contrib.auth import authenticate, login, logout
@@ -39,6 +40,23 @@ def mondai_show(request, pk):
     return render(request, 'sui_hei/mondai_show.html',
                   {'mondai': mondai,
                    'qnas': qnas})
+
+def mondai_show_push_answ(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        try:
+            for pk, kaitou in request.POST.items():
+                if re.findall("^push_answ_", pk):
+                    pk = pk[len("push_answ_"):]
+                    mondai_id = get_object_or_404(Shitumon, id=pk)
+                else:
+                    continue
+
+                mondai_id.kaitou = kaitou
+                mondai_id.answeredtime = datetime.now()
+                mondai_id.save()
+        except Exception as e:
+            print("PushAnsw:",e)
+    return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
 def mondai_show_push_ques(request):

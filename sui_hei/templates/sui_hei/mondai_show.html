@@ -44,6 +44,10 @@
 <!-- End Content of Question -->
 <br>
 <!-- Q&A -->
+{% if user == mondai.user_id %}
+<form action="{% url 'sui_hei:mondai_show_push_answ' %}" method="post">
+{% csrf_token %}
+{% endif %}
 <div class="mondai_qna">
     {% for qna in qnas %}
     <div class="HBar">
@@ -51,14 +55,28 @@
             {{ qna.shitumon }}
         </div>
         <div class="ABlock">
-            {% if qna.kaitou %} {{ qna.kaitou }}
-            {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
+            {% if user == mondai.user_id %}
+            <!-- for giver -->
+                {% if qna.kaitou %} {{ qna.kaitou }} {% else %}
+                <input id="answ_input" name="push_answ_{{ qna.id }}" type="text">
+                {% endif %}
+            <!-- end for giver -->
+            {% else %}
+            <!-- for others -->
+                {% if qna.kaitou %} {{ qna.kaitou }}
+                {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
+                {% endif %}
+            <!-- end for others -->
             {% endif %}
         </div>
         <div class="clear"></div>
     </div>
     {% endfor %}
 </div>
+{% if user == mondai.user_id %}
+<input value="Put Answer" type="submit">
+{% endif %}
+</form>
 <!-- End Q&A -->
 <br>
 <!-- Answer of Question -->
@@ -71,9 +89,10 @@
     {% if not user.is_authenticated %}
     <!-- for guests -->
     You are a guest!
+    <!-- end for guests -->
     {% elif user == mondai.user_id %}
     <!-- giver panel -->
-    You are a giver!
+    <!-- end giver panel -->
     {% else %}
     <!-- paticipants panel -->
     <form action="{% url 'sui_hei:mondai_show_push_ques' %}?mondai={{ mondai.id }}" method="post">
@@ -83,6 +102,7 @@
             <input value="Put Question" type="submit">
         </span>
     </form>
+    <!-- end paticipants panel -->
     {% endif %}
 {% endif %}
 <!-- End Answer of Question -->
