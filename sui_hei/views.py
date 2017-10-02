@@ -65,7 +65,7 @@ def mondai_show_update_soup(request):
         try:
             mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
             kaisetu = request.POST['change_kaisetu']
-            seikai = request.POST['change_seikai']
+            seikai = request.POST.get('change_seikai','off')
             if kaisetu == '': raise ValueError("Empty Input Data")
 
             mondai_id.kaisetu = kaisetu
