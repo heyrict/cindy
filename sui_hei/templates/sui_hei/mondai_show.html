@@ -1,18 +1,31 @@
 {% extends 'frames/base.html' %} 
-{% load i18n %}
-{% load static %}
+{% load i18n static markdown %}
 
-{% block title %} Cindy - mondai - show {% endblock%} 
+{% block title %} Cindy - mondai - show {% endblock %} 
 
 {% block content %} 
-<h2 id="mondai.title">{{ mondai.title }}</h2>
-<h3 id="info">{% trans "Info" %}</h3>
-<ul>
-    <li>{% trans "Giver" %}: {{ mondai.user_id.nickname }}</li>
-    <li>{% trans "Give time" %}: {{ mondai.created }}</li>
-</ul>
-<h3 id="soup">{% trans "Soup" %}</h3>
-<p>{{ mondai.content }}</p>
-<h3 id="answer">{% trans "Answer" %}</h3>
-<p>{{ mondai.kaisetu }}</p>
-{% endblock%} 
+<h2>{{ mondai.title }} [{{ mondai.genre }}]</h2>
+
+<!-- Content of Question -->
+<div class="mondai_content wrapper">
+    <ul style="left: 10px;">
+        <li>{% trans "Giver" %}: {{ mondai.user_id.nickname }}</li>
+        <li>{% trans "Give time" %}: {{ mondai.created }}</li>
+    </ul>
+    {{ mondai.content|text2md|safe }}
+</div>
+<!-- End Content of Question -->
+<br>
+<!-- Q&A -->
+<!-- End Q&A -->
+<br>
+<!-- Answer of Question -->
+{% if mondai.seikai %}
+<div class="mondai_kaisetu wrapper">
+    <h3 id="answer">{% trans "Answer" %}</h3>
+    {{ mondai.kaisetu|text2md|safe }}
+</div>
+{% endif %}
+<!-- End Answer of Question -->
+
+{% endblock %} 

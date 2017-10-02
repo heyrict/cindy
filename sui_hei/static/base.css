@@ -1,3 +1,8 @@
+.wrapper {
+    border: 3px solid #2aa198;
+    border-radius: 5px;
+    width: 88%;
+}
 textarea {
     padding: 6px;
     font-size: 15px;

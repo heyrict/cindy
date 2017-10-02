@@ -11,6 +11,7 @@ urlpatterns = [
     url(r"^lobby$", views.lobby, name="lobby"),
     #url(r"^lobby/(?P<page>[0-9]+)$", views.lobby, name="lobby"),
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
+    url(r"^mondai/add$", views.mondai_add, name="mondai_add"),
     url(r"^mondai/show/(?P<pk>[0-9]+)$", views.MondaiShowView.as_view(), name="mondai_show"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),

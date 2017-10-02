@@ -1,0 +1,16 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static %}
+
+{% block title %} Cindy - mondai - add {% endblock%} 
+
+{% block content %} 
+
+<form action="" method="post">
+<div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
+{% csrf_token %}
+<div>
+    {{ form.as_p }} 
+</div>
+<div><input type="submit" value="Confirm" /></div>
+
+{% endblock %} 

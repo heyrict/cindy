@@ -60,12 +60,21 @@ class User(AbstractUser):
 
 
 class Mondai(models.Model):
+    '''
+    genre:
+      0: umigame
+      1: tobira
+      2: kameo
+      3: shin-keshiki
+    '''
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     user_id = models.ForeignKey(User, db_column='user_id')
     title = models.CharField(max_length=255, null=False)
+    yami = models.BooleanField(default=False, null=False)
+    genre = models.IntegerField(default=0, null=False)
     content = models.TextField(null=False)
     kaisetu = models.TextField(null=False)
-    seikai = models.IntegerField(null=False)
+    seikai = models.BooleanField(null=False)
     created = models.DateTimeField(null=False)
     modified = models.DateTimeField(null=False)
 
