@@ -90,11 +90,13 @@ def mondai_show_update_soup(request):
         try:
             mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
             kaisetu = request.POST['change_kaisetu']
-            seikai = request.POST.get('change_seikai', 'off')
+            seikai = request.POST.get('change_seikai')
+            yami = request.POST.get('toggle_yami')
             if kaisetu == '': raise ValueError("Empty Input Data")
 
             mondai_id.kaisetu = kaisetu
-            mondai_id.seikai = True if seikai == 'on' else False
+            mondai_id.seikai = True if seikai else False
+            if yami: mondai_id.yami = not mondai_id.yami
             mondai_id.save()
         except Exception as e:
             print("UpdateSoup:", e)
@@ -117,6 +119,7 @@ def mondai_change(request, table_name, field_name, pk):
                     raise ValidationError(
                         "You are not authenticated to access this page!")
 
+            # Process
             if request.method == "POST":
                 obj2upd.__setattr__(field_name, request.POST['push_change'])
                 obj2upd.save()
