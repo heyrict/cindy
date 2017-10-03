@@ -52,7 +52,7 @@ def mondai_show_push_answ(request):
         try:
             to_update = {}
             for pk in request.POST.keys():
-                if pk[:len('push_answ_')] == 'push_answ':
+                if pk[:len('push_answ_')] == 'push_answ_':
                     pk = pk[len('push_answ_'):]
                     if pk not in to_update:
                         to_update[pk] = get_object_or_404(Shitumon, id=pk)
@@ -69,7 +69,6 @@ def mondai_show_push_answ(request):
                     to_update[pk].true = not to_update[pk].true
 
             for _, obj in to_update.items():
-                print(obj.good, obj.true)
                 obj.save()
         except Exception as e:
             print("PushAnsw:", e)
@@ -176,7 +175,7 @@ def lobby_chat(request):
 
 
 def lobby_channel(request):
-    if request.methos == "POST":
+    if request.method == "POST":
         channel = request.POST.get('change_channel', 'lobby')
         channel = '-'.join(re.findall('\w+',
                                       channel))  # clear all symbols, e.g. @#$
