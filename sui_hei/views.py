@@ -29,7 +29,7 @@ class MondaiView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Mondai.objects.order_by('-created')
+        return Mondai.objects.order_by('seikai', '-created')
 
 
 # /mondai/show/[0-9]+
@@ -144,20 +144,31 @@ def mondai_show_push_ques(request):
 
 
 # /lobby
-def lobby(request):
-    #params = request.GET
-    #paramlist = '&'.join(['%s=%s' % t for t in params])
+def lobby_chat(request):
+    # get current channel
+    channel = re.findall(r"(?<=channel=)[^&]+", request.META['HTTP_REFERER'])
+    channel = 'lobby' if not channel else channel[0]
+
+    # update
     if request.method == "POST" and request.user.is_authenticated:
         try:
-            content = request.POST['push_chat']
-            if content == '': raise ValueError("Empty Input Data")
-
-            chat = Lobby(user_id=request.user, content=content)
-            chat.save()
+            content = request.POST.get('push_chat', '')
+            if content != '':
+                chat = Lobby(user_id=request.user, content=content, channel=channel)
+                print(channel)
+                chat.save()
         except Exception as e:
             print("Lobby:", e)
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=1&mode=open")
+    return redirect(referer_without_query + "?chatpage=1&mode=open&channel=" + channel)
+
+
+def lobby_channel(request):
+    channel = request.POST.get('change_channel', 'lobby')
+    channel = '-'.join(re.findall('\w+', channel))          # clear all symbols, e.g. @#$
+    if not channel.strip(): channel = 'lobby'
+    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+    return redirect(referer_without_query + "?chatpage=1&mode=open&channel=" + channel)
 
 
 # /profile/[0-9]+

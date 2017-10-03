@@ -20,8 +20,8 @@ def lobby_chatlist(request):
         mode = "closed"
 
     # channel param (to be added)
-    channel = request.GET.get('channel')  # leave it for future channel use
+    channel = request.GET.get('channel', 'lobby')  # leave it for future channel use
 
-    chatlist = Paginator(Lobby.objects.order_by('-id'), 10)
+    chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10)
     context = {'chatlist': chatlist.page(chatpage)}
     return context

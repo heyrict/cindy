@@ -8,7 +8,8 @@ app_name = "sui_hei"
 urlpatterns = [
     url(r'^users/', include('django.contrib.auth.urls')),
     url(r"^$", views.index, name="index"),
-    url(r"^lobby$", views.lobby, name="lobby"),
+    url(r"^lobby/chat$", views.lobby_chat, name="lobby_chat"),
+    url(r"^lobby/channel$", views.lobby_channel, name="lobby_channel"),
     #url(r"^lobby/(?P<page>[0-9]+)$", views.lobby, name="lobby"),
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
     url(r"^mondai/add$", views.mondai_add, name="mondai_add"),

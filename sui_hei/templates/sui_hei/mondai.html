@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static %}
+{% load i18n static decodes %}
 
 {% block title %} Cindy - mondai {% endblock%} 
 
@@ -33,7 +33,12 @@
 
 {% for mondai in mondai_list %}
 <ul>
-<li><a href="mondai/show/{{ mondai.id }}">{{ mondai.title }}</a> {% trans 'Giver' %}: <a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a></li>
+<li>
+    <a href="/mondai/show/{{ mondai.id }}?channel=mondai-{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+    {% trans 'Giver' %}: 
+    <a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
+    [{% trans 'created' %}: {{ mondai.created }}]
+</li>
 </ul>
 {% endfor %}
 
