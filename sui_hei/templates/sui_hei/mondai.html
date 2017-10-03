@@ -9,6 +9,25 @@
 </ul>
 {% endblock %}
 
+{% block style %}
+    .status_label {
+        float: left;
+        width: 70px;
+        text-align: center;
+        border-radius: 10px;
+    }
+    .solved {
+        border: 1px solid #859900;
+    }
+    .unsolved {
+        border: 1px solid #cb4b16;
+    }
+    .title_label {
+        width: 50%;
+        padding-left: 10px;
+    }
+{% endblock %}
+
 {% block content %} 
 
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
@@ -34,7 +53,15 @@
 {% for mondai in mondai_list %}
 <ul>
 <li>
-    <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+    {% if mondai.seikai %}
+        <span class="status_label solved"><font color="#859900">solved</font></span>
+    {% else %}
+        <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+    {% endif %}
+
+    <span class="title_label">
+        <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+    </span>
     {% trans 'Giver' %}: 
     <a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
     [{% trans 'created' %}: {{ mondai.created }}]
