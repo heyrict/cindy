@@ -31,9 +31,14 @@ class MondaiView(ListView):
     def get_queryset(self):
         return Mondai.objects.order_by('seikai', '-created')
 
+    def get_context_data(self, **kwargs):
+        self.request.session['channel'] = 'lobby'
+        return super(MondaiView, self).get_context_data(**kwargs)
+
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
+    request.session['channel'] = 'mondai-'+pk
     mondai = Mondai.objects.get(id=pk)
     qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
 
@@ -146,8 +151,7 @@ def mondai_show_push_ques(request):
 # /lobby
 def lobby_chat(request):
     # get current channel
-    channel = re.findall(r"(?<=channel=)[^&]+", request.META['HTTP_REFERER'])
-    channel = 'lobby' if not channel else channel[0]
+    channel = request.session.get['session', 'lobby']
 
     # update
     if request.method == "POST" and request.user.is_authenticated:
@@ -160,15 +164,17 @@ def lobby_chat(request):
         except Exception as e:
             print("Lobby:", e)
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=1&mode=open&channel=" + channel)
+    return redirect(referer_without_query + "?chatpage=1&mode=open")
 
 
 def lobby_channel(request):
-    channel = request.POST.get('change_channel', 'lobby')
-    channel = '-'.join(re.findall('\w+', channel))          # clear all symbols, e.g. @#$
-    if not channel.strip(): channel = 'lobby'
-    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=1&mode=open&channel=" + channel)
+    if request.methos == "POST":
+        channel = request.POST.get('change_channel', 'lobby')
+        channel = '-'.join(re.findall('\w+', channel))          # clear all symbols, e.g. @#$
+        if not channel.strip(): channel = 'lobby'
+        request.session['channel'] = channel
+        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+    return redirect(referer_without_query + "?chatpage=1&mode=open")
 
 
 # /profile/[0-9]+
