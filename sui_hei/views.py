@@ -32,8 +32,8 @@ class MondaiView(ListView):
         return Mondai.objects.order_by('seikai', '-created')
 
     def get_context_data(self, **kwargs):
-        if self.request.session.get('change_channel'):
-            del self.request.session['change_channel']
+        if self.request.session.get('stay_channel'):
+            del self.request.session['stay_channel']
         else:
             self.request.session['channel'] = 'lobby'
         return super(MondaiView, self).get_context_data(**kwargs)
@@ -42,8 +42,8 @@ class MondaiView(ListView):
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
     # don't set channel automatically on user-triggered channel change.
-    if request.session.get('change_channel'):
-        del request.session['change_channel']
+    if request.session.get('stay_channel'):
+        del request.session['stay_channel']
     else:
         request.session['channel'] = 'mondai-' + pk
 
@@ -165,7 +165,7 @@ def mondai_show_push_ques(request):
 # /lobby
 def lobby_chat(request):
     # get current channel
-    channel = request.session.get['session', 'lobby']
+    channel = request.session.get('channel', 'lobby')
 
     # update
     if request.method == "POST" and request.user.is_authenticated:
@@ -176,6 +176,7 @@ def lobby_chat(request):
                     user_id=request.user, content=content, channel=channel)
                 print(channel)
                 chat.save()
+                request.session['stay_channel'] = True
         except Exception as e:
             print("Lobby:", e)
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
@@ -189,7 +190,7 @@ def lobby_channel(request):
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
         request.session['channel'] = channel
-        request.session['change_channel'] = True
+        request.session['stay_channel'] = True
         referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query + "?chatpage=1&mode=open")
 
