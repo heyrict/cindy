@@ -214,7 +214,7 @@ class ProfileEdit(UpdateView):
         return self.request.user
 
     def get_success_url(self):
-        return self.request.META['HTTP_REFERER']
+        return reverse("sui_hei:profile", kwargs={'pk': self.request.user.id})
 
 
 # cindy/sui_hei/users/add

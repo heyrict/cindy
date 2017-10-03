@@ -10,7 +10,7 @@
     <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
     <tr><th>{% trans "Profile" %}
         {% if user == sui_hei_user %}
-        <a href="/profile/edit?next=/profile/{{ sui_hei_user.id }}">
+        <a href="/profile/edit">
             [{% trans 'edit' %}]
         </a>
         {% endif %} 
