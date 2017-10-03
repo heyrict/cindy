@@ -65,8 +65,8 @@
                 {% if qna.kaitou %}
                 <div>
                 <div style="width:69.2%; float:left; border-right: 1px solid #268bd288;">
-                    {% if qna.true %}<font size="7" color="red">⛳</font>{% endif %}
-                    {% if qna.good %}<font size="6" color="darkpink">☞</font>{% endif %}
+                    {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
+                    {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
                     {{ qna.kaitou|line2md|safe }} 
                     <a href="/mondai/edit/Shitumon/kaitou/{{ qna.id }}">{% trans '[edit]' %}</a>
                 </div>
@@ -96,8 +96,8 @@
             <!-- for others -->
                 {% if qna.kaitou %} 
                 <div style="width:69%; float:left; border-right: 1px solid #268bd288">
-                    {% if qna.true %}<font size="7" color="red">⛳</font>{% endif %}
-                    {% if qna.good %}<font size="6" color="red">☞</font>{% endif %}
+                    {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
+                    {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
                     {{ qna.kaitou|line2md|safe }} 
                 </div>
                 <div style="width:29%; float:right;">
