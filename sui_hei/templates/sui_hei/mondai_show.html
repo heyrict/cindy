@@ -127,7 +127,7 @@
 {% else %}
     {% if not user.is_authenticated %}
     <!-- for guests -->
-    You are a guest!
+    <a href="{% url "sui_hei:login" %}">{% trans 'Hello guest! I need to know who you are before you ask a question!' %}</a>
     <!-- end for guests -->
     {% elif user == mondai.user_id %}
     <!-- giver panel -->

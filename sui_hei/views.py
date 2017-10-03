@@ -38,7 +38,7 @@ class MondaiView(ListView):
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
-    request.session['channel'] = 'mondai-'+pk
+    request.session['channel'] = 'mondai-' + pk
     mondai = Mondai.objects.get(id=pk)
     qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
 
@@ -56,7 +56,7 @@ def mondai_show_push_answ(request):
                     pk = pk[len('push_answ_'):]
                     if pk not in to_update:
                         to_update[pk] = get_object_or_404(Shitumon, id=pk)
-                    to_update[pk].kaitou = request.POST.get('push_answ_'+pk)
+                    to_update[pk].kaitou = request.POST.get('push_answ_' + pk)
                 elif pk[:len('check_goodques_')] == 'check_goodques_':
                     pk = pk[len('check_goodques_'):]
                     if pk not in to_update:
@@ -81,11 +81,11 @@ def mondai_show_update_soup(request):
         try:
             mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
             kaisetu = request.POST['change_kaisetu']
-            seikai = request.POST.get('change_seikai','off')
+            seikai = request.POST.get('change_seikai', 'off')
             if kaisetu == '': raise ValueError("Empty Input Data")
 
             mondai_id.kaisetu = kaisetu
-            mondai_id.seikai = True if seikai=='on' else False
+            mondai_id.seikai = True if seikai == 'on' else False
             mondai_id.save()
         except Exception as e:
             print("UpdateSoup:", e)
@@ -114,15 +114,22 @@ def mondai_change(request, table_name, field_name, pk):
 
                 # Redirect to relavant page
                 if table_name == "Shitumon":
-                    return redirect(reverse("sui_hei:mondai_show",kwargs={'pk':obj2upd.mondai_id.id}))
+                    return redirect(
+                        reverse(
+                            "sui_hei:mondai_show",
+                            kwargs={'pk': obj2upd.mondai_id.id}))
                 else:
                     return redirect(reverse("sui_hei:index"))
             else:
                 return render(request, "sui_hei/mondai_change.html", {
-                    'original': obj2upd.__getattribute__(field_name),
-                    'table_name': table_name,
-                    'field_name': field_name,
-                    'pk': pk,
+                    'original':
+                    obj2upd.__getattribute__(field_name),
+                    'table_name':
+                    table_name,
+                    'field_name':
+                    field_name,
+                    'pk':
+                    pk,
                 })
 
         except Exception as e:
@@ -158,7 +165,8 @@ def lobby_chat(request):
         try:
             content = request.POST.get('push_chat', '')
             if content != '':
-                chat = Lobby(user_id=request.user, content=content, channel=channel)
+                chat = Lobby(
+                    user_id=request.user, content=content, channel=channel)
                 print(channel)
                 chat.save()
         except Exception as e:
@@ -170,7 +178,8 @@ def lobby_chat(request):
 def lobby_channel(request):
     if request.methos == "POST":
         channel = request.POST.get('change_channel', 'lobby')
-        channel = '-'.join(re.findall('\w+', channel))          # clear all symbols, e.g. @#$
+        channel = '-'.join(re.findall('\w+',
+                                      channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
         request.session['channel'] = channel
         referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
@@ -199,10 +208,10 @@ class ProfileEdit(UpdateView):
 
 # cindy/sui_hei/users/add
 class RegisterForm(forms.Form):
-    nickname = forms.CharField(max_length=255)
-    username = forms.CharField(max_length=255)
-    email = forms.EmailField(max_length=255, widget=forms.TextInput)
-    password = forms.CharField(max_length=255, widget=forms.PasswordInput)
+    nickname = forms.CharField(label=_('nickname'), max_length=255)
+    username = forms.CharField(label=_('username'), max_length=255)
+    email = forms.EmailField(label=_('Email'), max_length=255, widget=forms.TextInput)
+    password = forms.CharField(label=_('password'), max_length=255, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
@@ -253,16 +262,16 @@ def users_logout(request):
 
 # /mondai/add
 class MondaiAddForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    genre = forms.IntegerField(widget=forms.Select(choices=[
+    title = forms.CharField(label=_('Title'), max_length=255)
+    genre = forms.IntegerField(label=_('Genre'), widget=forms.Select(choices=[
         (0, _("Albatross")),
         (1, _("20th-Door")),
         (2, _("Little Albat")),
         (3, _("Others & Formal")),
     ]))
-    yami = forms.BooleanField(required=False)
-    content = forms.CharField(widget=forms.Textarea)
-    kaisetu = forms.CharField(widget=forms.Textarea)
+    yami = forms.BooleanField(label=_('Yami'), required=False)
+    content = forms.CharField(label=_('Content'), widget=forms.Textarea)
+    kaisetu = forms.CharField(label=_('True Answer'), widget=forms.Textarea)
 
 
 def mondai_add(request):
