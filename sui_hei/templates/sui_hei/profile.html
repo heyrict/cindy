@@ -10,10 +10,14 @@
     <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
     <tr><th>{% trans "Profile" %}
         {% if user == sui_hei_user %}
-        <a href="/profile/edit">
-            [{% trans 'edit' %}]
-        </a>
+            <a href="/profile/edit"> [{% trans 'edit' %}] </a>
         {% endif %} 
-        </th><td> {{ sui_hei_user.profile|text2md|safe }} </td><tr>
+            </th><td> {{ sui_hei_user.profile|text2md|safe }}
+    </td></tr>
+        {% if user == sui_hei_user %}
+        <tr><th>{% trans "Change password" %}</th><td>
+            <a href="{% url 'sui_hei:password_change' %}">{% url 'sui_hei:password_change' %}</a>
+        </td></tr>
+        {% endif %} 
 </table>
 {% endblock %} 
