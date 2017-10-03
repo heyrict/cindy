@@ -32,7 +32,10 @@ class MondaiView(ListView):
         return Mondai.objects.order_by('seikai', '-created')
 
     def get_context_data(self, **kwargs):
-        self.request.session['channel'] = 'lobby'
+        if self.request.session.get('change_channel'):
+            del self.request.session['change_channel']
+        else:
+            self.request.session['channel'] = 'lobby'
         return super(MondaiView, self).get_context_data(**kwargs)
 
 
