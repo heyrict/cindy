@@ -16,6 +16,10 @@
   <script src="{% static 'jquery.min.js' %}" type="text/javascript"></script>
   <script src="{% static 'velocity.min.js' %}" type="text/javascript"></script>
   <script src="{% static 'sidebar.js' %}" type="text/javascript"></script>
+  <script type="text/javascript">
+    {% block script %}
+    {% endblock %}
+  </script>
 </head>
 
 <header>

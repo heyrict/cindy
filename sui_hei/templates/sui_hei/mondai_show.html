@@ -51,36 +51,56 @@
         <div class="QBlock">
             <div style="width:29%; float:left; border-right: 1px solid #268bd288;">
                     <a href={% url 'sui_hei:profile' qna.user_id.id %}>{{ qna.user_id.nickname }}</a>
-                    {% if qna.user_id == user %}
-                    <a href="/mondai/edit/Shitumon/shitumon/{{ qna.id }}">{% trans '[edit]' %}</a>
-                    {% endif %}
             </div>
             <div style="width:69%; float:right;">
-                {{ qna.shitumon }}
+                {{ qna.shitumon|line2md|safe }}
+                {% if qna.user_id == user %}
+                <a href="/mondai/edit/Shitumon/shitumon/{{ qna.id }}">{% trans '[edit]' %}</a>
+                {% endif %}
             </div>
         </div>
         <div class="ABlock">
             {% if user == mondai.user_id %}
             <!-- for giver -->
                 {% if qna.kaitou %}
-                <div style="width:69%; float:left; border-right: 1px solid #268bd288">
-                    {{ qna.kaitou }} 
+                <div>
+                <div style="width:69.2%; float:left; border-right: 1px solid #268bd288;">
+                    {% if qna.true %}<font size="7" color="red">⛳</font>{% endif %}
+                    {% if qna.good %}<font size="6" color="darkpink">☞</font>{% endif %}
+                    {{ qna.kaitou|line2md|safe }} 
                     <a href="/mondai/edit/Shitumon/kaitou/{{ qna.id }}">{% trans '[edit]' %}</a>
                 </div>
-                <div style="width:29%; float:right">
+                <div style="width:30.2%; float:right;">
                     <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
                 </div>
                 {% else %}
                 <input id="answ_input" name="push_answ_{{ qna.id }}" type="text">
                 {% endif %}
+                </div>
+                <div class="clear"></div>
+                <div style="border-top: 1px solid #268bd288">
+                <input type="checkbox" name="check_goodques_{{ qna.id }}">
+                {% if qna.good %}
+                    {% trans 'uncheck as good-question' %}
+                {% else %}
+                    {% trans 'check as good-question' %}
+                {% endif %}<br>
+                <input type="checkbox" name="check_trueansw_{{ qna.id }}">
+                {% if qna.true %}
+                    {% trans 'uncheck as true-answer' %}
+                {% else %}
+                    {% trans 'check as true-answer' %}
+                {% endif %}</div>
             <!-- end for giver -->
             {% else %}
             <!-- for others -->
                 {% if qna.kaitou %} 
                 <div style="width:69%; float:left; border-right: 1px solid #268bd288">
-                {{ qna.kaitou }}
+                    {% if qna.true %}<font size="7" color="red">⛳</font>{% endif %}
+                    {% if qna.good %}<font size="6" color="red">☞</font>{% endif %}
+                    {{ qna.kaitou|line2md|safe }} 
                 </div>
-                <div style="width:29%; float:right">
+                <div style="width:29%; float:right;">
                     <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
                 </div>
                 {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>

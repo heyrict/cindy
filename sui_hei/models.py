@@ -88,6 +88,8 @@ class Shitumon(models.Model):
     mondai_id = models.ForeignKey(Mondai, Mondai, db_column='mondai_id')
     shitumon = models.TextField(_('shitumon'), null=False)
     kaitou = models.TextField(_('kaitou'), null=True)
+    good = models.BooleanField(_('good_ques'), default=False, null=False)
+    true = models.BooleanField(_('true_ques'), default=False, null=False)
     askedtime = models.DateTimeField(_('askedtime'), null=False)
     answeredtime = models.DateTimeField(_('answeredtime'), null=True)
 
@@ -95,4 +97,5 @@ class Shitumon(models.Model):
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     user_id = models.ForeignKey(User, User, db_column='user_id')
+    channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)

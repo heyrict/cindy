@@ -45,16 +45,27 @@ def mondai_show(request, pk):
 def mondai_show_push_answ(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:
-            for pk, kaitou in request.POST.items():
-                if re.findall("^push_answ_", pk):
-                    pk = pk[len("push_answ_"):]
-                    mondai_id = get_object_or_404(Shitumon, id=pk)
-                else:
-                    continue
+            to_update = {}
+            for pk in request.POST.keys():
+                if pk[:len('push_answ_')] == 'push_answ':
+                    pk = pk[len('push_answ_'):]
+                    if pk not in to_update:
+                        to_update[pk] = get_object_or_404(Shitumon, id=pk)
+                    to_update[pk].kaitou = request.POST.get('push_answ_'+pk)
+                elif pk[:len('check_goodques_')] == 'check_goodques_':
+                    pk = pk[len('check_goodques_'):]
+                    if pk not in to_update:
+                        to_update[pk] = get_object_or_404(Shitumon, id=pk)
+                    to_update[pk].good = not to_update[pk].good
+                elif pk[:len('check_trueansw_')] == 'check_trueansw_':
+                    pk = pk[len('check_trueansw_'):]
+                    if pk not in to_update:
+                        to_update[pk] = get_object_or_404(Shitumon, id=pk)
+                    to_update[pk].true = not to_update[pk].true
 
-                mondai_id.kaitou = kaitou
-                mondai_id.answeredtime = datetime.now()
-                mondai_id.save()
+            for _, obj in to_update.items():
+                print(obj.good, obj.true)
+                obj.save()
         except Exception as e:
             print("PushAnsw:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
