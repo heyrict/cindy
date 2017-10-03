@@ -38,7 +38,12 @@ class MondaiView(ListView):
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
-    request.session['channel'] = 'mondai-' + pk
+    # don't set channel automatically on user-triggered channel change.
+    if request.session.get('change_channel'):
+        del request.session['change_channel']
+    else:
+        request.session['channel'] = 'mondai-' + pk
+
     mondai = Mondai.objects.get(id=pk)
     qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
 
@@ -181,6 +186,7 @@ def lobby_channel(request):
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
         request.session['channel'] = channel
+        request.session['change_channel'] = True
         referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query + "?chatpage=1&mode=open")
 
@@ -209,8 +215,10 @@ class ProfileEdit(UpdateView):
 class RegisterForm(forms.Form):
     nickname = forms.CharField(label=_('nickname'), max_length=255)
     username = forms.CharField(label=_('username'), max_length=255)
-    email = forms.EmailField(label=_('Email'), max_length=255, widget=forms.TextInput)
-    password = forms.CharField(label=_('password'), max_length=255, widget=forms.PasswordInput)
+    email = forms.EmailField(
+        label=_('Email'), max_length=255, widget=forms.TextInput)
+    password = forms.CharField(
+        label=_('password'), max_length=255, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
@@ -262,12 +270,14 @@ def users_logout(request):
 # /mondai/add
 class MondaiAddForm(forms.Form):
     title = forms.CharField(label=_('Title'), max_length=255)
-    genre = forms.IntegerField(label=_('Genre'), widget=forms.Select(choices=[
-        (0, _("Albatross")),
-        (1, _("20th-Door")),
-        (2, _("Little Albat")),
-        (3, _("Others & Formal")),
-    ]))
+    genre = forms.IntegerField(
+        label=_('Genre'),
+        widget=forms.Select(choices=[
+            (0, _("Albatross")),
+            (1, _("20th-Door")),
+            (2, _("Little Albat")),
+            (3, _("Others & Formal")),
+        ]))
     yami = forms.BooleanField(label=_('Yami'), required=False)
     content = forms.CharField(label=_('Content'), widget=forms.Textarea)
     kaisetu = forms.CharField(label=_('True Answer'), widget=forms.Textarea)
