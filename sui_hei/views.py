@@ -2,7 +2,8 @@ import re
 from datetime import datetime
 
 from django import forms
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import (authenticate, login, logout,
+                                 update_session_auth_hash)
 from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
@@ -10,9 +11,10 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.template import RequestContext, loader
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from markdown import markdown as md
 
+from .admin import *
 from .models import *
 
 
@@ -216,59 +218,32 @@ class ProfileEdit(UpdateView):
 
 
 # cindy/sui_hei/users/add
-class RegisterForm(forms.Form):
-    nickname = forms.CharField(label=_('nickname'), max_length=255)
-    username = forms.CharField(label=_('username'), max_length=255)
-    email = forms.EmailField(
-        label=_('Email'), max_length=255, widget=forms.TextInput)
-    password = forms.CharField(
-        label=_('password'), max_length=255, widget=forms.PasswordInput)
-
-    def clean(self):
-        cleaned_data = super(RegisterForm, self).clean()
-        _username = cleaned_data.get('username')
-        _email = cleaned_data.get('email')
-        if _username in [i.username for i in User.objects.iterator()]:
-            self.add_error(
-                'username',
-                _("`{}` is already registered "
-                  "by another user.\nTry another one!".format(_username)))
-        if _email in [i.email for i in User.objects.iterator()]:
-            self.add_error(
-                'email',
-                _("`{}` is already registered "
-                  "by another user.\nTry another one!".format(_username)))
-
-
 def users_add(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = SuiheiUserCreationForm(request.POST)
 
         if form.is_valid():
-            nickname = form.cleaned_data['nickname']
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            # Create a new user
-            user = User.objects.create_user(
-                username=username,
-                nickname=nickname,
-                email=email,
-                password=password)
-            user.save()
-
-            # Redirect to homepage
+            form.save()
             return redirect(reverse('sui_hei:login'))
         else:
             return render(request, 'registration/add.html', {'form': form})
-    return render(request, 'registration/add.html', {'form': RegisterForm()})
+    return render(request, 'registration/add.html',
+                  {'form': SuiheiUserCreationForm()})
 
 
-# /users/logout
-def users_logout(request):
-    logout(request)
-    return HttpResponseRedirect('/mondai')
+# /users/password_change
+def password_change(request):
+    if request.method == "POST":
+        form = SuiheiPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect(reverse("sui_hei:index"))
+        else:
+            return render(request, 'registration/users_password_change.html',
+                          {'form': form})
+    return render(request, 'registration/users_password_change.html',
+                  {'form': SuiheiPasswordChangeForm(request.user)})
 
 
 # /mondai/add

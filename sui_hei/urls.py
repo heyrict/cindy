@@ -1,7 +1,9 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from django.conf.urls import include
 
 from . import views
+from .admin import *
 
 app_name = "sui_hei"
 
@@ -21,6 +23,5 @@ urlpatterns = [
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^users/add$", views.users_add, name="register"),
-    #url(r"^users/login$", views.users_login, name="users_login"),
-    #url(r"^users/logout$", views.users_logout, name="users_logout"),
+    url(r"^users/password_change$", views.password_change, name="password_change"),
 ]
