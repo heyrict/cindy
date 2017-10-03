@@ -8,6 +8,7 @@
         clear: both
     }
     .HBar {
+        padding-bottom: 10px;
     }
     .QBlock {
         float: left;
@@ -64,19 +65,17 @@
             <!-- for giver -->
                 {% if qna.kaitou %}
                 <div>
-                <div style="width:69.2%; float:left; border-right: 1px solid #268bd288;">
-                    {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
-                    {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
-                    {{ qna.kaitou|line2md|safe }} 
-                    <a href="/mondai/edit/Shitumon/kaitou/{{ qna.id }}">{% trans '[edit]' %}</a>
-                </div>
-                <div style="width:30.2%; float:right;">
-                    <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
-                </div>
+                    <div style="width:100%; float:left;">
+                        {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
+                        {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
+                        {{ qna.kaitou|line2md|safe }} 
+                        <a href="/mondai/edit/Shitumon/kaitou/{{ qna.id }}">{% trans '[edit]' %}</a>
+                    </div>
                 {% else %}
-                <input id="answ_input" name="push_answ_{{ qna.id }}" type="text">
+                    <div style="width:100%; float:left;">
+                        <input id="answ_input" name="push_answ_{{ qna.id }}" type="text">
+                    </div>
                 {% endif %}
-                </div>
                 <div class="clear"></div>
                 <div style="border-top: 1px solid #268bd288">
                 <input type="checkbox" name="check_goodques_{{ qna.id }}">
@@ -91,6 +90,7 @@
                 {% else %}
                     {% trans 'check as true-answer' %}
                 {% endif %}</div>
+                </div>
             <!-- end for giver -->
             {% else %}
             <!-- for others -->
