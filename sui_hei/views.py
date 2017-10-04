@@ -122,7 +122,7 @@ def mondai_show_update_soup(request):
         try:
             mondai_id = get_object_or_404(
                 Mondai,
-                id=re.findall(r"(?<=/mondai/)[0-9]+",
+                id=re.findall(r"(?<=/mondai/show/)[0-9]+",
                               request.META['HTTP_REFERER'])[0])
             kaisetu = request.POST['change_kaisetu']
             seikai = request.POST.get('change_seikai')
@@ -194,7 +194,7 @@ def mondai_show_push_ques(request):
         try:
             mondai_id = get_object_or_404(
                 Mondai,
-                id=re.findall(r"(?<=/mondai/)[0-9]+",
+                id=re.findall(r"(?<=/mondai/show/)[0-9]+",
                               request.META['HTTP_REFERER'])[0])
             content = request.POST['push_ques']
             if content == '': raise ValueError("Empty Input Data")
