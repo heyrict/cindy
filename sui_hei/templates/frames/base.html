@@ -13,12 +13,19 @@
   <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
   <link rel="stylesheet" href="{% static 'base.css' %}">
   <link rel="stylesheet" href="{% static 'sidebar.css' %}">
-  <script src="{% static 'jquery.min.js' %}" type="text/javascript"></script>
-  <script src="{% static 'velocity.min.js' %}" type="text/javascript"></script>
-  <script src="{% static 'sidebar.js' %}" type="text/javascript"></script>
+  <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
   <script type="text/javascript">
-    {% block script %}
-    {% endblock %}
+    requirejs.config({
+        base_url: '/static',
+        paths: {
+            jquery: 'jquery.min',
+            marked: 'marked.min',
+        }
+    });
+    require(["jquery"], function($) {
+        {% block script %}
+        {% endblock %}
+    });
   </script>
 </head>
 

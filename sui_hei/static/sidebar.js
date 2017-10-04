@@ -13,29 +13,31 @@ var getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
-$(document).ready(function() {
-  // Set mode on load
-  var $leftbar = $(".leftbar");
-  if (getUrlParameter("mode") == "open") {
-    $leftbar.attr("style", "left:0%");
-    $leftbar.attr("mode", "open");
-    console.log("OPEN");
-  } else $leftbar.attr("left", "0%");
+define(["jquery"], function($) {
+  $(document).ready(function() {
+    // Set mode on load
+    var $leftbar = $(".leftbar");
+    if (getUrlParameter("mode") == "open") {
+      $leftbar.attr("style", "left:0%");
+      $leftbar.attr("mode", "open");
+      console.log("OPEN");
+    } else $leftbar.attr("left", "0%");
 
-  // Toggle leftbar
-  $(".leftbar_button").on("click", function() {
-    var $this = $(".leftbar");
+    // Toggle leftbar
+    $(".leftbar_button").on("click", function() {
+      var $this = $(".leftbar");
 
-    if ($this.attr("mode") == "closed") {
-      $this.velocity({
-        left: "0%"
-      });
-      $this.attr("mode", "open");
-    } else if ($this.attr("mode") == "open") {
-      $(".leftbar").velocity({
-        left: "-30.3%"
-      });
-      $this.attr("mode", "closed");
-    }
+      if ($this.attr("mode") == "closed") {
+        $this.velocity({
+          left: "0%"
+        });
+        $this.attr("mode", "open");
+      } else if ($this.attr("mode") == "open") {
+        $(".leftbar").velocity({
+          left: "-30.3%"
+        });
+        $this.attr("mode", "closed");
+      }
+    });
   });
 });

@@ -3,6 +3,19 @@
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
+{% block script %}
+$(document).ready(function() {
+  require(['marked'], function(marked){
+    marked.setOptions({tables: false})
+    $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
+
+    $("#kaisetu_textarea").on('input', function(){
+      $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
+    });
+  });
+});
+{% endblock %}
+
 {% block style %}
     .clear {
         clear: both
@@ -148,7 +161,11 @@
             {% trans 'Put True Answer' %}<br>
             <input value="Update" type="submit">
         </span>
-    </form>
+    </form><br>
+    <div class="wrapper" style="border:3px solid #728905;">
+        <font color=#52676f" size="5px" face="monospace">{% trans 'True Answer' %} {% trans 'Preview' %}</font>
+        <div id="kaisetu_preview"></div>
+    </div>
     <!-- end giver panel -->
     {% else %}
     <!-- paticipants panel -->
