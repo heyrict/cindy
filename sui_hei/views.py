@@ -41,7 +41,7 @@ def index(request):
 
             infos = Lobby.objects.filter(channel="homepage-info")
             return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments, mondais)[:20],
+                'comments': zip(comments[:20], mondais[:20]),
                 'infos': infos[:10]
             })
         except Exception as e:
