@@ -1,18 +1,28 @@
 {% extends 'frames/base.html' %} 
-{% load i18n %}
-{% load static %}
+{% load i18n markdown static %}
 
 {% block style %}
 .mainbar {
-    position: relative;
-    float: left;
-    width: 50%;
+    float: right;
+    width: 53%;
 }
 .subbar {
-    position: relative;
-    float: right;
-    width: 50%;
+    float: left;
+    width: 43%;
+    padding-right: 20px;
 }
+{% endblock %}
+
+{% block script %}
+$(document).ready(function() {
+  require(['marked'], function(marked){
+    marked.setOptions({tables: false})
+
+    $("#info_textarea").on('input', function(){
+      $("#info_preview")[0].innerHTML = marked($("#info_textarea").val());
+    });
+  });
+});
 {% endblock %}
 
 {% block title %} 
@@ -24,14 +34,47 @@ Cindy
 <p><big>{% trans "This HomePage is still under construction ...⏳" %}</big></p>
 
 <div class="mainbar">
-    <table>
-        {% for comment in comments %}
-        <tr><th></th>
-            <td></td>
-        </tr>
+    <div align="center">
+        <font color="#52676f" size="5px" bold>{% trans 'Information' %}</font><br>
+        <div class="hline"></div><br>
+    </div>
+    <table style="width:100%">
+        {% for info in infos %}
+        <div class="wrapper" style="border:2px solid #268bd2;">
+            {{ info.content|text2md|safe }}
+            {% if perms.sui_hei.can_add_info %}
+            <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' info.id %}">[{% trans 'edit' %}]</a>
+            {% endif %}
+        </div>
         {% endfor %}
+        {% if perms.sui_hei.can_add_info %}
+        <form action="{% url 'sui_hei:index' %}" method="post">
+            {% csrf_token %}
+            <span>
+                <textarea id="info_textarea" name="add_info" type="text"></textarea>
+                <div id="info_preview" class="wrapper"></div>
+                <input value="{% trans 'Add Info' %}" type="submit">
+            </span>
+        </form>
+        {% endif %}
+    </table>
 </div>
 
 <div class="subbar">
+    <div align="center">
+        <font color="#52676f" size="5px" bold>{% trans 'Comments' %}</font><br>
+        <div class="hline"></div>
+    </div>
+    <table style="width:100%;">
+        {% for comment, mondai in comments %}
+        <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
+            <td><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+                >> {{ comment.content }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
+
+<div class="clear"></div>
 {% endblock %} 

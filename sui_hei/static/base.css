@@ -7,6 +7,9 @@
   border-top: 1px solid #839496;
   width: 95%;
 }
+.clear {
+  clear: both;
+}
 textarea {
   padding: 6px;
   font-size: 15px;

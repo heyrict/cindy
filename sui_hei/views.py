@@ -22,7 +22,30 @@ from .models import *
 # Create your views here.
 # /
 def index(request):
-    return render(request, 'sui_hei/index.html')
+    if request.method == "POST" and request.user.has_perm(
+            'sui_hei.can_add_info'):
+        try:
+            content = request.POST.get("add_info", "")
+            chat = Lobby(
+                user_id=request.user, content=content, channel="homepage-info")
+            chat.save()
+        except Exception as e:
+            print("Index_POST:", e)
+    else:
+        try:
+            comments = Lobby.objects.filter(channel__startswith="comments-")
+            mondais = [
+                Mondai.objects.get(id=i.channel[len("comments-"):])
+                for i in comments
+            ]
+
+            infos = Lobby.objects.filter(channel="homepage-info")
+            return render(request, 'sui_hei/index.html',
+                          {'comments': zip(comments, mondais),
+                           'infos': infos})
+        except Exception as e:
+            print("Index:", e)
+            return redirect(reverse("sui_hei:index"))
 
 
 # /mondai
@@ -114,7 +137,7 @@ def mondai_show_update_soup(request):
 
 
 def mondai_change(request, table_name, field_name, pk):
-    acceptable = {"Shitumon": Shitumon}
+    acceptable = {"Shitumon": Shitumon, 'Lobby': Lobby}
     if table_name in acceptable:
         try:
             obj2upd = get_object_or_404(acceptable[table_name], id=pk)
@@ -122,6 +145,10 @@ def mondai_change(request, table_name, field_name, pk):
             # Validation
             if field_name == 'kaitou':
                 if obj2upd.mondai_id.user_id != request.user:
+                    raise ValidationError(
+                        "You are not authenticated to access this page!")
+            elif table_name == "Lobby" and obj2upd.channel == "homepage-info":
+                if not request.user.has_perm('sui_hei.can_add_info'):
                     raise ValidationError(
                         "You are not authenticated to access this page!")
             else:
@@ -157,6 +184,7 @@ def mondai_change(request, table_name, field_name, pk):
         except Exception as e:
             return render(request, "sui_hei/mondai_change.html",
                           {'error_message': e})
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def mondai_show_push_ques(request):
@@ -206,8 +234,11 @@ def lobby_channel(request):
         channel = '-'.join(re.findall('\w+',
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
-        request.session['channel'] = channel
-        request.session['stay_channel'] = True
+        if channel == "homepage-info" or re.findall("^comments[^a-zA-Z0-9]*[0-9]+", channel):
+            request.session['channel'] = 'lobby'
+        else:
+            request.session['channel'] = channel
+            request.session['stay_channel'] = True
         referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query + "?chatpage=1&mode=open")
 
