@@ -40,6 +40,9 @@ class Mondai(models.Model):
     created = models.DateTimeField(_('created'), null=False)
     modified = models.DateTimeField(_('modified'), null=False)
 
+    class Meta:
+        verbose_name = _("Soup")
+
     def __str__(self):
         return self.title
 
@@ -55,6 +58,9 @@ class Shitumon(models.Model):
     askedtime = models.DateTimeField(_('askedtime'), null=False)
     answeredtime = models.DateTimeField(_('answeredtime'), null=True)
 
+    class Meta:
+        verbose_name = _("Question")
+
     def __str__(self):
         return "[%s]%s: {%s} puts {%50s}" % (self.mondai_id.id, self.mondai_id,
                                              self.user_id, self.shitumon)
@@ -65,6 +71,10 @@ class Lobby(models.Model):
     user_id = models.ForeignKey(User, User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
+
+    class Meta:
+        permissions = (("can_add_info", _("Can add homepage info")),)
+        verbose_name = _("Lobby")
 
     def __str__(self):
         return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
