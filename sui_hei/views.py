@@ -40,12 +40,14 @@ def index(request):
             ]
 
             infos = Lobby.objects.filter(channel="homepage-info")
-            return render(request, 'sui_hei/index.html',
-                          {'comments': zip(comments, mondais),
-                           'infos': infos})
+            return render(request, 'sui_hei/index.html', {
+                'comments': zip(comments, mondais)[:20],
+                'infos': infos[:10]
+            })
         except Exception as e:
             print("Index:", e)
             return redirect(reverse("sui_hei:index"))
+    return redirect(request.META['HTTP_REFERER'])
 
 
 # /mondai
@@ -234,7 +236,8 @@ def lobby_channel(request):
         channel = '-'.join(re.findall('\w+',
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
-        if channel == "homepage-info" or re.findall("^comments[^a-zA-Z0-9]*[0-9]+", channel):
+        if channel == "homepage-info" or re.findall(
+                "^comments[^a-zA-Z0-9]*[0-9]+", channel):
             request.session['channel'] = 'lobby'
         else:
             request.session['channel'] = channel
