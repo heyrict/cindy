@@ -252,6 +252,15 @@ class ProfileView(DetailView):
     template_name = 'sui_hei/profile.html'
     context_object_name = 'sui_hei_user'
 
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        userid = context['sui_hei_user'].id
+        mondais = Mondai.objects.filter(user_id=userid)
+        comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id) for i in mondais])
+        context['comments'] = zip(comments[:10], mondais[:10])
+        context['pk'] = self.kwargs['pk']
+        return context
+
 
 # /profile/edit
 class ProfileEdit(UpdateView):
@@ -264,6 +273,22 @@ class ProfileEdit(UpdateView):
 
     def get_success_url(self):
         return reverse("sui_hei:profile", kwargs={'pk': self.request.user.id})
+
+
+# /profile/mysoup/[0-9]+
+class MySoupView(ListView):
+    model = Mondai
+    template_name = 'sui_hei/profile_mysoup.html'
+    context_object_name = 'mondai_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super(MySoupView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        return context
 
 
 # cindy/sui_hei/users/add

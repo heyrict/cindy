@@ -3,7 +3,25 @@
 
 {% block title %} cindy - profile {% endblock %} 
 
+{% block child_navi %}
+{% include 'frames/profile_child_navi.html' %}
+{% endblock %}
+
 {% block content %} 
+<h2>{% trans 'Latest' %} {% trans 'Comments' %}</h2>
+<div class="subbar">
+    <table style="width:100%;">
+        {% for comment, mondai in comments %}
+        <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
+            <td><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+                >> {{ comment.content }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h2>{% trans 'Profile' %}</h2>
 <table>
     <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
     <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>

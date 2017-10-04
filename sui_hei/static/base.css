@@ -51,3 +51,19 @@ input[type="text"] {
   text-align: center;
   vertical-align: middle;
 }
+.status_label {
+  float: left;
+  width: 70px;
+  text-align: center;
+  border-radius: 10px;
+}
+.solved {
+  border: 1px solid #859900;
+}
+.unsolved {
+  border: 1px solid #cb4b16;
+}
+.title_label {
+  width: 50%;
+  padding-left: 10px;
+}

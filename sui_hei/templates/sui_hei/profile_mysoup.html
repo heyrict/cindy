@@ -1,18 +1,14 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static decodes %}
+{% load i18n static markdown decodes %}
 
-{% block title %} Cindy - mondai {% endblock%} 
+{% block title %} cindy - profile - mysoup {% endblock %} 
 
 {% block child_navi %}
-<ul class="list-nav">
-    <li><a href='/mondai/add' class='uri'>{% trans 'NewSoup' %}</a></li>
-</ul>
+{% include 'frames/profile_child_navi.html' %}
 {% endblock %}
 
-{% block content %} 
-
-<h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
-
+{% block content %}
+<h2>{% trans 'Selled Soups' %}</h2>
 {% if is_paginated %} 
     <div class="pagination">
         <span class="step-links">
@@ -49,5 +45,4 @@
 </li>
 </ul>
 {% endfor %}
-
-{% endblock %} 
+{% endblock %}
