@@ -17,8 +17,16 @@ define(["jquery"], function($) {
   $(document).ready(function() {
     // Set mode on load
     var $leftbar = $(".leftbar");
+    $(".leftbar").css("height",window.outerHeight+"px");
+    $(".leftbar_content").css("height",window.outerHeight-120+"px");
+
+    var $leftbarbtn = $(".leftbar_button");
+    resize_rate = $leftbarbtn.height() / (window.innerHeight*0.45);
+    $leftbarbtn.attr("style", "height:"+$leftbarbtn.height()/resize_rate+"px;"+
+        "width:"+$leftbarbtn.width()/resize_rate+"px;");
+
     if (getUrlParameter("mode") == "open") {
-      $leftbar.attr("style", "left:0%");
+      $leftbar.style.left="0%";
       $leftbar.attr("mode", "open");
       console.log("OPEN");
     } else $leftbar.attr("left", "0%");
@@ -29,12 +37,14 @@ define(["jquery"], function($) {
 
       if ($this.attr("mode") == "closed") {
         $this.velocity({
-          left: "0%"
+          left: "0%",
+          width: window.innerWidth * 0.5,
         });
         $this.attr("mode", "open");
       } else if ($this.attr("mode") == "open") {
         $(".leftbar").velocity({
-          left: "-30.3%"
+          left: "-90px",
+          width: "100px",
         });
         $this.attr("mode", "closed");
       }
