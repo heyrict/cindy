@@ -7,7 +7,7 @@ from django.contrib.auth.forms import (ReadOnlyPasswordHashField,
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User
+from .models import *
 
 # Register your models here.
 class SuiheiUserCreationForm(UserCreationForm):
@@ -28,6 +28,9 @@ class SuiheiPasswordChangeForm(PasswordChangeForm):
         model = User
 
 
+#class SuiheiPasswordResetForm(PasswordResetForm):
+
+
 class SuiheiUserAdmin(UserAdmin):
     form = SuiheiUserChangeForm
     add_form = SuiheiUserCreationForm
@@ -37,3 +40,6 @@ class SuiheiUserAdmin(UserAdmin):
 
 
 admin.site.register(User, SuiheiUserAdmin)
+admin.site.register(Mondai)
+admin.site.register(Shitumon)
+admin.site.register(Lobby)

@@ -4,6 +4,7 @@ from datetime import datetime
 from django import forms
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
@@ -44,17 +45,23 @@ class MondaiView(ListView):
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
     # don't set channel automatically on user-triggered channel change.
-    if request.session.get('stay_channel'):
-        del request.session['stay_channel']
+    if request.method == "POST" and request.user.is_authenticated:
+        request.session['channel'] = 'comments-' + pk
+        request.session['stay_channel'] = True
+        return lobby_chat(request)
+
     else:
-        request.session['channel'] = 'mondai-' + pk
+        if request.session.get('stay_channel'):
+            del request.session['stay_channel']
+        else:
+            request.session['channel'] = 'mondai-' + pk
 
-    mondai = Mondai.objects.get(id=pk)
-    qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
+        mondai = Mondai.objects.get(id=pk)
+        qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
 
-    return render(request, 'sui_hei/mondai_show.html',
-                  {'mondai': mondai,
-                   'qnas': qnas})
+        return render(request, 'sui_hei/mondai_show.html',
+                      {'mondai': mondai,
+                       'qnas': qnas})
 
 
 def mondai_show_push_answ(request):
@@ -88,7 +95,10 @@ def mondai_show_push_answ(request):
 def mondai_show_update_soup(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:
-            mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
+            mondai_id = get_object_or_404(
+                Mondai,
+                id=re.findall(r"(?<=/mondai/)[0-9]+",
+                              request.META['HTTP_REFERER'])[0])
             kaisetu = request.POST['change_kaisetu']
             seikai = request.POST.get('change_seikai')
             yami = request.POST.get('toggle_yami')
@@ -152,7 +162,10 @@ def mondai_change(request, table_name, field_name, pk):
 def mondai_show_push_ques(request):
     if request.method == "POST" and request.user.is_authenticated:
         try:
-            mondai_id = get_object_or_404(Mondai, id=request.GET.get('mondai'))
+            mondai_id = get_object_or_404(
+                Mondai,
+                id=re.findall(r"(?<=/mondai/)[0-9]+",
+                              request.META['HTTP_REFERER'])[0])
             content = request.POST['push_ques']
             if content == '': raise ValueError("Empty Input Data")
 
@@ -179,7 +192,6 @@ def lobby_chat(request):
             if content != '':
                 chat = Lobby(
                     user_id=request.user, content=content, channel=channel)
-                print(channel)
                 chat.save()
                 request.session['stay_channel'] = True
         except Exception as e:
@@ -235,6 +247,7 @@ def users_add(request):
 
 
 # /users/password_change
+@login_required
 def password_change(request):
     if request.method == "POST":
         form = SuiheiPasswordChangeForm(user=request.user, data=request.POST)
@@ -265,6 +278,7 @@ class MondaiAddForm(forms.Form):
     kaisetu = forms.CharField(label=_('True Answer'), widget=forms.Textarea)
 
 
+@login_required
 def mondai_add(request):
     if request.method == "POST":
         form = MondaiAddForm(request.POST)

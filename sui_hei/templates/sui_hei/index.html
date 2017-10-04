@@ -2,6 +2,19 @@
 {% load i18n %}
 {% load static %}
 
+{% block style %}
+.mainbar {
+    position: relative;
+    float: left;
+    width: 50%;
+}
+.subbar {
+    position: relative;
+    float: right;
+    width: 50%;
+}
+{% endblock %}
+
 {% block title %} 
 Cindy
 {% endblock %} 
@@ -9,4 +22,16 @@ Cindy
 {% block content %} 
 <p>{% trans "a replica for" %} <a href="http://sui_hei.net">{% trans "suiheinet" %}</a> {% trans "constructed by kamisugi." %}</p>
 <p><big>{% trans "This HomePage is still under construction ...⏳" %}</big></p>
+
+<div class="mainbar">
+    <table>
+        {% for comment in comments %}
+        <tr><th></th>
+            <td></td>
+        </tr>
+        {% endfor %}
+</div>
+
+<div class="subbar">
+</div>
 {% endblock %} 

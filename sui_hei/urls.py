@@ -24,4 +24,5 @@ urlpatterns = [
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^users/add$", views.users_add, name="register"),
     url(r"^users/password_change$", views.password_change, name="password_change"),
+    #url(r"^users/password_reset$", views.password_reset, name="password_reset"),
 ]

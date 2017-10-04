@@ -3,6 +3,7 @@ from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
 from django.db import connections, models
 from django.utils.translation import ugettext_lazy as _
 
+
 # Create your models here.
 class User(AbstractUser):
     nickname = models.CharField(_('nick_name'), max_length=255, null=False)
@@ -54,9 +55,17 @@ class Shitumon(models.Model):
     askedtime = models.DateTimeField(_('askedtime'), null=False)
     answeredtime = models.DateTimeField(_('answeredtime'), null=True)
 
+    def __str__(self):
+        return "[%s]%s: {%s} puts {%50s}" % (self.mondai_id.id, self.mondai_id,
+                                             self.user_id, self.shitumon)
+
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     user_id = models.ForeignKey(User, User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
+
+    def __str__(self):
+        return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
+                                           self.content)
