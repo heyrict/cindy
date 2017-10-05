@@ -9,4 +9,7 @@ def inv(value):
 
 @register.filter
 def startswith(value, head):
-    return value[:len(head)] == head
+    if not (value and head):
+        return False
+    else:
+        return value[:len(head)] == head
