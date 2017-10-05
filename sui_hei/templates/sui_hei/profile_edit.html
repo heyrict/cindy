@@ -3,12 +3,26 @@
 
 {% block title %} Cindy - register {% endblock %} 
 
+{% block script %}
+$(document).ready(function() {
+  require(['marked'], function(marked){
+    marked.setOptions({tables: false})
+    $("#profile_preview")[0].innerHTML = marked($("#id_profile").val());
+
+    $("#id_profile").on('input', function(){
+      $("#profile_preview")[0].innerHTML = marked($("#id_profile").val());
+    });
+  });
+});
+{% endblock %}
+
 {% block content %} 
 
 <form action="" method="post">
 <div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
 {% csrf_token %}
-<div>{{ form.as_p }}</div>
+<div style="width:50%;">{{ form.as_p }}</div>
+<div id="profile_preview"></div>
 <div><input type="submit" value={% trans 'Confirm' %}></div>
 
 <input type="hidden" name="next" value="{{ next }}" />
