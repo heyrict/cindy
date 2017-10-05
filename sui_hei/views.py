@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from django import forms
+from django.utils.translation import LANGUAGE_SESSION_KEY, activate
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required, permission_required
@@ -418,3 +419,10 @@ def mondai_add(request):
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
     return render(request, 'sui_hei/mondai_add.html',
                   {'form': MondaiAddForm()})
+
+
+def set_language(request):
+    if request.method == "POST":
+        lang = request.POST.get('lang', 'en')
+        request.session[LANGUAGE_SESSION_KEY] = lang
+    return redirect(request.META['HTTP_REFERER'])
