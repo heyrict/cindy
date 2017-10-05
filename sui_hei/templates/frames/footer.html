@@ -1,9 +1,10 @@
 {% load i18n static %}
-<br>
 <div class="hline"></div>
-<h4>Language:</h4>
+<br>
 <form action="{% url 'sui_hei:set_language' %}" method="post">
     {% csrf_token %}
+    <fieldset>
+    <legend>Language</legend>
     <span style="border:1px solid black; border-radius:5px; padding:5px; font-size:18px;">
         <input type="radio" name="lang" value="en" checked>en
     </span>
@@ -11,4 +12,5 @@
         <input type="radio" name="lang" value="ja">ja
     </span>
     <input type="submit" name="langbtn" value="select" style="width:150px; font-size:18px;">
+    </fieldset>
 </form>
