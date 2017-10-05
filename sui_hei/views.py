@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from django import forms
+from django.utils.translation import LANGUAGE_SESSION_KEY, activate
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required, permission_required
@@ -23,6 +24,7 @@ from .models import *
 # /
 def index(request):
     hpinfopage = request.GET.get('hpinfopage',1)
+    request.session['channel'] = 'lobby'
     if request.method == "POST":
         if request.user.has_perm('sui_hei.can_add_info'):
             try:
@@ -89,14 +91,31 @@ def mondai_show(request, pk):
             mycomment = Lobby.objects.get(channel="comments-%s"%pk, user_id=request.user)
         except:
             mycomment = None
+        try:
+            mystar = Star.objects.get(mondai_id=mondai, user_id=request.user).value
+        except:
+            mystar = 0
 
         return render(request, 'sui_hei/mondai_show.html',
                       {'mondai': mondai,
                        'qnas': qnas,
-                       'mycomment': mycomment})
+                       'mycomment': mycomment,
+                       'mystar': mystar})
+
 
 def mondai_star(request):
-    pass
+    try:
+        mondai = re.findall("(?<=/mondai/show/)[0-9]+", request.META['HTTP_REFERER'])[0]
+        mondai_id = Mondai.objects.get(id=mondai)
+    except Exception as e:
+        print("MondaiStar:",e)
+        return redirect(request.META['HTTP_REFERER'])
+
+    if request.method == "POST" and request.user.is_authenticated:
+        star = Star.objects.get_or_create(user_id=request.user, mondai_id=mondai_id)[0]
+        star.value = float(request.POST.get('starbarind', 0))
+        star.save()
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def mondai_show_push_answ(request):
@@ -293,9 +312,9 @@ class ProfileEdit(UpdateView):
 
 
 # /profile/mysoup/[0-9]+
-class MySoupView(ListView):
+class SelledSoupView(ListView):
     model = Mondai
-    template_name = 'sui_hei/profile_mysoup.html'
+    template_name = 'sui_hei/profile_selledsoup.html'
     context_object_name = 'mondai_list'
     paginate_by = 20
 
@@ -303,7 +322,22 @@ class MySoupView(ListView):
         return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-id')
 
     def get_context_data(self, **kwargs):
-        context = super(MySoupView, self).get_context_data(**kwargs)
+        context = super(SelledSoupView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        return context
+
+
+class MyStarView(ListView):
+    model = Star
+    template_name = 'sui_hei/profile_mystar.html'
+    context_object_name = 'star_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-value')
+
+    def get_context_data(self, **kwargs):
+        context = super(MyStarView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs['pk']
         return context
 
@@ -385,3 +419,10 @@ def mondai_add(request):
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
     return render(request, 'sui_hei/mondai_add.html',
                   {'form': MondaiAddForm()})
+
+
+def set_language(request):
+    if request.method == "POST":
+        lang = request.POST.get('lang', 'en')
+        request.session[LANGUAGE_SESSION_KEY] = lang
+    return redirect(request.META['HTTP_REFERER'])

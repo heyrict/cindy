@@ -9,6 +9,9 @@ app_name = "sui_hei"
 
 urlpatterns = [
     url(r'^users/', include('django.contrib.auth.urls')),
+    url(r"^users/add$", views.users_add, name="register"),
+    url(r"^users/password_change$", views.password_change, name="password_change"),
+    #url(r"^users/password_reset$", views.password_reset, name="password_reset"),
     url(r"^$", views.index, name="index"),
     url(r"^lobby/chat$", views.lobby_chat, name="lobby_chat"),
     url(r"^lobby/channel$", views.lobby_channel, name="lobby_channel"),
@@ -23,8 +26,7 @@ urlpatterns = [
     url(r"^mondai/edit/(?P<table_name>[a-zA-Z]+)/(?P<field_name>[a-zA-Z]+)/(?P<pk>[0-9]+)$", views.mondai_change, name="mondai_change"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
-    url(r"^profile/mysoup/(?P<pk>[0-9]+)$", views.MySoupView.as_view(), name="profile_selledsoup"),
-    url(r"^users/add$", views.users_add, name="register"),
-    url(r"^users/password_change$", views.password_change, name="password_change"),
-    #url(r"^users/password_reset$", views.password_reset, name="password_reset"),
+    url(r"^profile/selledsoup/(?P<pk>[0-9]+)$", views.SelledSoupView.as_view(), name="profile_selledsoup"),
+    url(r"^profile/mystar/(?P<pk>[0-9]+)$", views.MyStarView.as_view(), name="profile_mystar"),
+    url(r"^language$", views.set_language, name="set_language"),
 ]
