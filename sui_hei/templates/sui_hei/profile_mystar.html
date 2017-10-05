@@ -1,0 +1,44 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static markdown decodes %}
+
+{% block title %} cindy - profile - mysoup {% endblock %} 
+
+{% block child_navi %}
+{% include 'frames/profile_child_navi.html' %}
+{% endblock %}
+
+{% block content %}
+<h2>{% trans 'MyStar' %}</h2>
+{% if is_paginated %} 
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %} 
+            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+            {% endif %} 
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
+            </span>
+
+            {% if page_obj.has_next %} 
+            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            {% endif %} 
+        </span>
+    </div>
+{% endif %} 
+
+{% for star in star_list %}
+<ul>
+<li>
+    <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
+
+    <span class="title_label">
+        <a href="/star/show/{{ star.mondai_id.id }}">{{ star.mondai_id.title }} </a>
+    </span>
+    {% trans 'Giver' %}: 
+    <a href="/profile/{{ star.mondai_id.user_id.id }}">{{ star.mondai_id.user_id.nickname }}</a>
+    [{% trans 'created' %}: {{ star.mondai_id.created }}]
+</li>
+</ul>
+{% endfor %}
+{% endblock %}

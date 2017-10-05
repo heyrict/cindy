@@ -11,7 +11,7 @@
 $(document).ready(function() {
   require(['marked', 'jquery-ui'], function(marked){
     var handle = $("#starbar_handle");
-    $("#starbar").slider({max:5, min:-5, step:0.1, value:{{ mystar }},
+    $("#starbar").slider({max:5, min:-5, step:0.02, value:{{ mystar }},
         create: function() { $("#starbarind").val(ui.value);},
         slide: function(event, ui){
             $("#starbarind").val(ui.value);

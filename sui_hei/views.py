@@ -310,9 +310,9 @@ class ProfileEdit(UpdateView):
 
 
 # /profile/mysoup/[0-9]+
-class MySoupView(ListView):
+class SelledSoupView(ListView):
     model = Mondai
-    template_name = 'sui_hei/profile_mysoup.html'
+    template_name = 'sui_hei/profile_selledsoup.html'
     context_object_name = 'mondai_list'
     paginate_by = 20
 
@@ -320,7 +320,22 @@ class MySoupView(ListView):
         return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-id')
 
     def get_context_data(self, **kwargs):
-        context = super(MySoupView, self).get_context_data(**kwargs)
+        context = super(SelledSoupView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        return context
+
+
+class MyStarView(ListView):
+    model = Star
+    template_name = 'sui_hei/profile_mystar.html'
+    context_object_name = 'star_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-value')
+
+    def get_context_data(self, **kwargs):
+        context = super(MyStarView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs['pk']
         return context
 
