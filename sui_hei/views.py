@@ -85,7 +85,10 @@ def mondai_show(request, pk):
 
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
-        mycomment = Lobby.objects.filter(channel="comments-%s"%pk, user_id=request.user)
+        try:
+            mycomment = Lobby.objects.get(channel="comments-%s"%pk, user_id=request.user)
+        except:
+            mycomment = None
 
         return render(request, 'sui_hei/mondai_show.html',
                       {'mondai': mondai,
@@ -239,8 +242,10 @@ def lobby_chat(request):
 
 
 def lobby_channel(request):
+    # change channel by submit button
     if request.method == "POST":
         channel = request.POST.get('change_channel', 'lobby')
+        chatpage = request.GET.get('chatpage', 1)
         channel = '-'.join(re.findall('\w+',
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
@@ -249,8 +254,13 @@ def lobby_channel(request):
         else:
             request.session['channel'] = channel
             request.session['stay_channel'] = True
-        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=1&mode=open")
+    # change page by redirect
+    else:
+        chatpage = request.GET.get('chatpage', 1)
+        request.session['stay_channel'] = True
+
+    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+    return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
 
 
 # /profile/[0-9]+

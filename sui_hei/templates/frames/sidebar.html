@@ -3,7 +3,7 @@
     <img class="leftbar_button" src={% static 'sidebar.png' %}>
     <div class="leftbar_content">
         <div class="lobby_navigation_div">
-            {% include 'frames/pagination.html' with page_obj=chatlist ln_prefix="?mode=open&chatpage=" is_paginated=True %}
+            {% include 'frames/pagination.html' with page_obj=chatlist path="/lobby/channel" ln_prefix="?mode=open&chatpage=" is_paginated=True %}
             <span class="channel">
                 <form action="{% url 'sui_hei:lobby_channel' %}" method="post">
                     {% csrf_token %}

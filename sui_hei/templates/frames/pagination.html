@@ -3,7 +3,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %} 
-        <a href="{{ ln_prefix|default:"" }}{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+        <a href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
         {% endif %} 
 
         <span class="current">
@@ -11,7 +11,7 @@
         </span>
 
         {% if page_obj.has_next %} 
-        <a href="{{ ln_prefix|default:"" }}{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+        <a href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
         {% endif %} 
     </span>
 </div>
