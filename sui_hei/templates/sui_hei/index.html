@@ -47,6 +47,7 @@ Cindy
             {% endif %}
         </div>
         {% endfor %}
+        {% include 'frames/pagination.html' with ln_prefix="?hpinfopage=" is_paginated=True page_obj=infos %}
         {% if perms.sui_hei.can_add_info %}
         <form action="{% url 'sui_hei:index' %}" method="post">
             {% csrf_token %}

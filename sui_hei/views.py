@@ -22,15 +22,16 @@ from .models import *
 # Create your views here.
 # /
 def index(request):
-    if request.method == "POST" and request.user.has_perm(
-            'sui_hei.can_add_info'):
-        try:
-            content = request.POST.get("add_info", "")
-            chat = Lobby(
-                user_id=request.user, content=content, channel="homepage-info")
-            chat.save()
-        except Exception as e:
-            print("Index_POST:", e)
+    hpinfopage = request.GET.get('hpinfopage',1)
+    if request.method == "POST":
+        if request.user.has_perm('sui_hei.can_add_info'):
+            try:
+                content = request.POST.get("add_info", "")
+                chat = Lobby(
+                    user_id=request.user, content=content, channel="homepage-info")
+                chat.save()
+            except Exception as e:
+                print("Index_POST:", e)
     else:
         try:
             comments = Lobby.objects.filter(channel__startswith="comments-")
@@ -40,9 +41,10 @@ def index(request):
             ]
 
             infos = Lobby.objects.filter(channel="homepage-info")
+            hpinfo_list = Paginator(infos, 20)
             return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments[:20], mondais[:20]),
-                'infos': infos[:10]
+                'comments': zip(comments[:15], mondais[:15]),
+                'infos': hpinfo_list.page(hpinfopage),
             })
         except Exception as e:
             print("Index:", e)

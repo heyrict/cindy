@@ -29,3 +29,10 @@
     overflow: auto;
     z-index: 101
 }
+.lobby_navigation_div {
+    height: 10%;
+}
+.lobby_chat_div {
+    height: 19%;
+    text-align: center;
+}

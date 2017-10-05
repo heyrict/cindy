@@ -17,7 +17,9 @@ define(["jquery"], function($) {
   $(document).ready(function() {
     // Set mode on load
     var $leftbar = $(".leftbar");
-    $(".leftbar_content").css("height",window.outerHeight-120+"px");
+    var goodh = Math.max(window.innerHeight-20, 400)
+    var goodw = Math.max(window.outerWidth*0.45, 400)
+    $(".leftbar_content").css("height", goodh+"px");
 
     var $leftbarbtn = $(".leftbar_button");
     resize_rate = $leftbarbtn.height() / (window.innerHeight*0.45);
@@ -26,7 +28,7 @@ define(["jquery"], function($) {
 
     if (getUrlParameter("mode") == "open") {
       $leftbar.css("left", "0px");
-      $leftbar.css("width", window.innerWidth * 0.5);
+      $leftbar.css("width", goodw+"px");
       $leftbar.attr("mode", "open");
       console.log("OPEN");
     } else $leftbar.attr("left", "0%");
@@ -38,13 +40,13 @@ define(["jquery"], function($) {
       if ($this.attr("mode") == "closed") {
         $this.velocity({
           left: "0%",
-          width: window.innerWidth * 0.5,
+          width: goodw+"px",
         });
         $this.attr("mode", "open");
       } else if ($this.attr("mode") == "open") {
         $(".leftbar").velocity({
-          left: "-90px",
-          width: "100px",
+          left: -goodw * 0.792 + "px",
+          width: goodw+"px",
         });
         $this.attr("mode", "closed");
       }

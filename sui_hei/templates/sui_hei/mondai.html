@@ -13,23 +13,7 @@
 
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
 
-{% if is_paginated %} 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %} 
-            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
-            {% endif %} 
-
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
-            </span>
-
-            {% if page_obj.has_next %} 
-            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
-            {% endif %} 
-        </span>
-    </div>
-{% endif %} 
+{% include 'frames/pagination.html' with ln_prefix="/mondai?page=" %}
 
 {% for mondai in mondai_list %}
 <ul>

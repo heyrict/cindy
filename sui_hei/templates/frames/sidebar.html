@@ -2,26 +2,14 @@
 <div class="leftbar" mode={{ mode|default:"closed" }} >
     <img class="leftbar_button" src={% static 'sidebar.png' %}>
     <div class="leftbar_content">
-        <div class="pagination">
-            <span class="step-links">
-                {% if chatlist.has_previous %} 
-                <a href="?chatpage={{ chatlist.previous_page_number }}&mode=open">{% trans 'prev' %}</a>
-                {% endif %} 
-
-                <span class="current">
-                    Page {{ chatlist.number }} of {{ chatlist.paginator.num_pages }} 
-                </span>
-
-                {% if chatlist.has_next %} 
-                <a href="?chatpage={{ chatlist.next_page_number }}&mode=open">{% trans 'next' %}</a>
-                {% endif %} 
-            </span>
+        <div class="lobby_navigation_div">
+            {% include 'frames/pagination.html' with page_obj=chatlist ln_prefix="?mode=open&chatpage=" is_paginated=True %}
             <span class="channel">
                 <form action="{% url 'sui_hei:lobby_channel' %}" method="post">
                     {% csrf_token %}
-                    <input id="LobbyChannel" name="change_channel" type="text" style="width:50%; font-size:14px; padding:7px;"
+                    <input id="LobbyChannel" name="change_channel" type="text" style="width:50%; font-size:14px; padding:3px;"
                     placeholder="current_channel: {{ request.session.channel }}">
-                    <input value="{% trans 'Change channel' %}" type="submit" style="width:35%; font-size:16px; margin-top:5px;">
+                    <input value="{% trans 'Change channel' %}" type="submit" style="width:35%; font-size:14px; margin-top:2px;">
                 </form>
             </span>
         </div>
@@ -40,13 +28,15 @@
         </div>
 
         {% if user.is_authenticated %} 
-        <form action="{% url 'sui_hei:lobby_chat' %}" method="post">
-            {% csrf_token %}
-            <table class="push_chat">
-                <input id="LobbyContent" name="push_chat" type="text" style="padding:7px; width:95%;">
-                <input value={% trans 'Send' %} type="submit" style="margin-top:5px;">
-            </table>
-        </form>
+        <div class="lobby_chat_div">
+            <form action="{% url 'sui_hei:lobby_chat' %}" method="post">
+                {% csrf_token %}
+                <table class="push_chat">
+                    <input id="LobbyContent" name="push_chat" type="text" style="padding:3px; width:95%;">
+                    <input value={% trans 'Send' %} type="submit" style="margin-top:2px; font-size:18px; width:95%;">
+                </table>
+            </form>
+        </div>
         {% endif %} 
 
     </div>
