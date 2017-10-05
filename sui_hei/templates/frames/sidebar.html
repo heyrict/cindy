@@ -21,7 +21,7 @@
                     {% csrf_token %}
                     <input id="LobbyChannel" name="change_channel" type="text" style="width:50%; font-size:14px; padding:7px;"
                     placeholder="current_channel: {{ request.session.channel }}">
-                    <input value="{% trans 'Change channel' %}" type="submit" style="width:39%; font-size:16px; margin-top:5px;">
+                    <input value="{% trans 'Change channel' %}" type="submit" style="width:35%; font-size:16px; margin-top:5px;">
                 </form>
             </span>
         </div>
