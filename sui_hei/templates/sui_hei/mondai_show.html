@@ -3,6 +3,10 @@
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
+{% block child_navi %}
+{% include 'frames/mondai_child_navi.html' %}
+{% endblock %}
+
 {% block style_include %}
 <link rel="stylesheet" href="{% static 'jquery-ui.css' %}">
 {% endblock %}
