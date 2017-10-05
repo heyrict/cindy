@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
   <link rel="stylesheet" href="{% static 'base.css' %}">
   <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  {% block style_include %}{% endblock %}
   <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
   <script type="text/javascript">
     requirejs.config({

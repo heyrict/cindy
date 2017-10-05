@@ -30,7 +30,7 @@ class Mondai(models.Model):
       3: shin-keshiki
     '''
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, User, db_column='user_id')
+    user_id = models.ForeignKey(User, db_column='user_id')
     title = models.CharField(_('title'), max_length=255, null=False)
     yami = models.BooleanField(_('yami'), default=False, null=False)
     genre = models.IntegerField(_('genre'), default=0, null=False)
@@ -39,6 +39,7 @@ class Mondai(models.Model):
     seikai = models.BooleanField(_('seikai'), null=False)
     created = models.DateTimeField(_('created'), null=False)
     modified = models.DateTimeField(_('modified'), null=False)
+    score = models.FloatField(_('score'), default=0, null=False)
 
     class Meta:
         verbose_name = _("Soup")
@@ -49,8 +50,8 @@ class Mondai(models.Model):
 
 class Shitumon(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, Mondai, db_column='mondai_id')
+    user_id = models.ForeignKey(User, db_column='user_id')
+    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
     shitumon = models.TextField(_('shitumon'), null=False)
     kaitou = models.TextField(_('kaitou'), null=True)
     good = models.BooleanField(_('good_ques'), default=False, null=False)
@@ -68,7 +69,7 @@ class Shitumon(models.Model):
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, User, db_column='user_id')
+    user_id = models.ForeignKey(User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
 
@@ -79,3 +80,14 @@ class Lobby(models.Model):
     def __str__(self):
         return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
                                            self.content)
+
+class Star(models.Model):
+    user_id = models.ForeignKey(User, db_column='user_id')
+    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
+    value = models.FloatField(_('Value'), null=False, default=0)
+
+    class Meta:
+        verbose_name = _("Star")
+
+    def __str__(self):
+        return "%s -- %.1f --> %s" % (user_id, value, mondai_id)

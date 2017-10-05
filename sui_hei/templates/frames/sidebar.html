@@ -21,13 +21,17 @@
                     <th id="user" style="width: 33%;"> 
                         <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
                     </th>
-                    <td id="message">{{ chat.content|line2md|safe }} </td>
+                    <td id="message">{{ chat.content|line2md|safe }}
+                        {% if chat.user_id == user %}
+                        <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' chat.id %}?next={{ request.path }}">
+                        [{% trans 'edit' %}]</a>{% endif %}</td>
                 </tr>
                 {% endfor %} 
             </table>
         </div>
 
-        {% if user.is_authenticated %} 
+        {% if request.session.channel|startswith:"comments-" %}
+        {% elif user.is_authenticated %} 
         <div class="lobby_chat_div">
             <form action="{% url 'sui_hei:lobby_chat' %}" method="post">
                 {% csrf_token %}

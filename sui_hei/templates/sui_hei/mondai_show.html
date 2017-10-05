@@ -3,9 +3,15 @@
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
+{% block style_include %}
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
 {% block script %}
 $(document).ready(function() {
-  require(['marked'], function(marked){
+  require(['marked', 'jquery-ui'], function(marked){
+    $("#starbar").slider({max:5, min:-5});
+
     marked.setOptions({tables: false})
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
 
@@ -143,9 +149,21 @@ $(document).ready(function() {
     <h3 id="true-answer">{% trans "True Answer" %}</h3>
     {{ mondai.kaisetu|text2md|safe }}
 
-    <div align="center"><div class="hline"></div><br></div>
+    <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->
+    <form action="{% url 'sui_hei:mondai_show' mondai.id %}" method="post" style="width:40%; float:left; padding-left:5%;">
+        {% csrf_token %}
+        <input value="Show Comments" type="submit" style="font-size: 17px;">
+    </form>
+    <form action="{% url 'sui_hei:mondai_star' %}" method="post" style="width:40%; float:right; padding-right:5%;">
+        {% csrf_token %}
+        <div id="starbar"></div>
+        <input type="submit" value="Star" style="font-size: 17px;">
+    </form>
+    <div class="clear"></div>
+    {% if mycomment %}
+    {% else %}
     <form action="{% url 'sui_hei:mondai_show' mondai.id %}" method="post">
         {% csrf_token %}
         <span class="paticipants_panel">
@@ -153,6 +171,8 @@ $(document).ready(function() {
             <input value="Add Comments" type="submit" style="width:20%; font-size: 17px;">
         </span>
     </form>
+    {% endif %}
+    <br>
     <!-- Evaluation Panel -->
 </div>
 {% else %}

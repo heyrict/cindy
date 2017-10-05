@@ -40,7 +40,7 @@ def index(request):
                 for i in comments
             ]
 
-            infos = Lobby.objects.filter(channel="homepage-info")
+            infos = Lobby.objects.filter(channel="homepage-info").order_by('-id')
             hpinfo_list = Paginator(infos, 20)
             return render(request, 'sui_hei/index.html', {
                 'comments': zip(comments[:15], mondais[:15]),
@@ -85,10 +85,15 @@ def mondai_show(request, pk):
 
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
+        mycomment = Lobby.objects.filter(channel="comments-%s"%pk, user_id=request.user)
 
         return render(request, 'sui_hei/mondai_show.html',
                       {'mondai': mondai,
-                       'qnas': qnas})
+                       'qnas': qnas,
+                       'mycomment': mycomment})
+
+def mondai_star(request):
+    pass
 
 
 def mondai_show_push_answ(request):
@@ -142,6 +147,7 @@ def mondai_show_update_soup(request):
 
 def mondai_change(request, table_name, field_name, pk):
     acceptable = {"Shitumon": Shitumon, 'Lobby': Lobby}
+    nextpage = request.GET.get('next', reverse("sui_hei:index"))
     if table_name in acceptable:
         try:
             obj2upd = get_object_or_404(acceptable[table_name], id=pk)
@@ -172,7 +178,7 @@ def mondai_change(request, table_name, field_name, pk):
                             "sui_hei:mondai_show",
                             kwargs={'pk': obj2upd.mondai_id.id}))
                 else:
-                    return redirect(reverse("sui_hei:index"))
+                    return redirect(nextpage)
             else:
                 return render(request, "sui_hei/mondai_change.html", {
                     'original':
@@ -238,8 +244,7 @@ def lobby_channel(request):
         channel = '-'.join(re.findall('\w+',
                                       channel))  # clear all symbols, e.g. @#$
         if not channel.strip(): channel = 'lobby'
-        if channel == "homepage-info" or re.findall(
-                "^comments[^a-zA-Z0-9]*[0-9]+", channel):
+        if channel == "homepage-info":
             request.session['channel'] = 'lobby'
         else:
             request.session['channel'] = channel
