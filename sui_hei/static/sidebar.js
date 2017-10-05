@@ -17,9 +17,7 @@ define(["jquery"], function($) {
   $(document).ready(function() {
     // Set mode on load
     var $leftbar = $(".leftbar");
-    //$(".leftbar").css("height",window.outerHeight+"px");
     $(".leftbar_content").css("height",window.outerHeight-120+"px");
-    //$(".leftbar_content").css("width",window.outerHeight-120+"px");
 
     var $leftbarbtn = $(".leftbar_button");
     resize_rate = $leftbarbtn.height() / (window.innerHeight*0.45);
@@ -27,7 +25,8 @@ define(["jquery"], function($) {
         "width:"+$leftbarbtn.width()/resize_rate+"px;");
 
     if (getUrlParameter("mode") == "open") {
-      $leftbar.style.left="0%";
+      $leftbar.css("left", "0px");
+      $leftbar.css("width", window.innerWidth * 0.5);
       $leftbar.attr("mode", "open");
       console.log("OPEN");
     } else $leftbar.attr("left", "0%");
