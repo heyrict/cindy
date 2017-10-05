@@ -4,13 +4,22 @@
 {% block title %} Cindy - mondai - show {% endblock %} 
 
 {% block style_include %}
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="{% static 'jquery-ui.css' %}">
 {% endblock %}
 
 {% block script %}
 $(document).ready(function() {
   require(['marked', 'jquery-ui'], function(marked){
-    $("#starbar").slider({max:5, min:-5});
+    var handle = $("#starbar_handle");
+    $("#starbar").slider({max:5, min:-5, step:0.1, value:{{ mystar }},
+        create: function() { $("#starbarind").val(ui.value);},
+        slide: function(event, ui){
+            $("#starbarind").val(ui.value);
+            handle.css('width', 30+2*ui.value+"px");
+            handle.css('height', 30+2*ui.value+"px");
+            handle.css('margin-top', -7.5-ui.value+"px");
+            }
+        });
 
     marked.setOptions({tables: false})
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
@@ -23,6 +32,12 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block style %}
+    #starbar_handle {
+      width: 30px;
+      height: 30px;
+      margin-top: -7.5px;
+      text-align: center;
+    }
     .clear {
         clear: both
     }
@@ -154,12 +169,14 @@ $(document).ready(function() {
     <!-- Evaluation Panel -->
     <form action="{% url 'sui_hei:mondai_show' mondai.id %}" method="post" style="width:40%; float:left; padding-left:5%;">
         {% csrf_token %}
+        <br>
         <input value="Show Comments" type="submit" style="font-size: 17px;">
     </form>
-    <form action="{% url 'sui_hei:mondai_star' %}" method="post" style="width:40%; float:right; padding-right:5%;">
+    <form id="mondai_star_form" action="{% url 'sui_hei:mondai_star' %}" method="post" style="width:40%; float:right; padding-right:5%;">
         {% csrf_token %}
-        <div id="starbar"></div>
-        <input type="submit" value="Star" style="font-size: 17px;">
+        <input id="starbarind" type="text" name="starbarind" value="{{ mystar }}" style="visibility:hidden;">
+        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'star.png' %}"></img></div>
+        <input id="starbutton" type="submit" value="Star" style="font-size: 17px;">
     </form>
     <div class="clear"></div>
     {% if mycomment %}

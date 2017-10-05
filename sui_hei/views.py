@@ -89,14 +89,31 @@ def mondai_show(request, pk):
             mycomment = Lobby.objects.get(channel="comments-%s"%pk, user_id=request.user)
         except:
             mycomment = None
+        try:
+            mystar = Star.objects.get(mondai_id=mondai, user_id=request.user).value
+        except:
+            mystar = 0
 
         return render(request, 'sui_hei/mondai_show.html',
                       {'mondai': mondai,
                        'qnas': qnas,
-                       'mycomment': mycomment})
+                       'mycomment': mycomment,
+                       'mystar': mystar})
+
 
 def mondai_star(request):
-    pass
+    try:
+        mondai = re.findall("(?<=/mondai/show/)[0-9]+", request.META['HTTP_REFERER'])[0]
+        mondai_id = Mondai.objects.get(id=mondai)
+    except Exception as e:
+        print("MondaiStar:",e)
+        return redirect(request.META['HTTP_REFERER'])
+
+    if request.method == "POST" and request.user.is_authenticated:
+        star = Star.objects.get_or_create(user_id=request.user, mondai_id=mondai_id)[0]
+        star.value = float(request.POST.get('starbarind', 0))
+        star.save()
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def mondai_show_push_answ(request):
