@@ -4,9 +4,7 @@
 {% block title %} Cindy - mondai {% endblock%} 
 
 {% block child_navi %}
-<ul class="list-nav">
-    <li><a href='/mondai/add' class='uri'>{% trans 'NewSoup' %}</a></li>
-</ul>
+{% include 'frames/mondai_child_navi.html' %}
 {% endblock %}
 
 {% block content %} 

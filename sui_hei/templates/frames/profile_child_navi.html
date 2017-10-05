@@ -1,5 +1,6 @@
 {% load i18n %}
-<ul class="list-nav">
+<ul class="list-nav child-nav">
     <li><a href="{% url 'sui_hei:profile' pk %}">{% trans 'Profile' %}</a></li>
-    <li><a href="{% url 'sui_hei:profile_selledsoup' pk %}">{% trans "Selled Soups" %}</a></li>
+    <li><a href="{% url 'sui_hei:profile_selledsoup' pk %}">{% trans 'Selled Soups' %}</a></li>
+    <li><a href="{% url 'sui_hei:profile_mystar' pk %}">{% trans 'MyStar' %}</a></li>
 </ul>

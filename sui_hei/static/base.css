@@ -43,13 +43,27 @@ input[type="text"] {
 .list-nav li {
   display: table-cell;
   vertical-align: middle;
+  background: #fcf4dc;
+  border: 3px solid #5856b9;
+  border-radius: 25px;
 }
 .list-nav a {
   height: auto;
-  width: 5em;
+  width: 100px;
   display: table-cell;
   text-align: center;
   vertical-align: middle;
+  color: #2075c7;
+  padding: 8px;
+  font-size: 16px;
+}
+.child-nav li {
+  border: 3px solid #2075c7;
+}
+.child-nav a {
+  color: #2075c799;
+  padding: 1px;
+  font-size: 14px;
 }
 .status_label {
   float: left;
@@ -67,3 +81,5 @@ input[type="text"] {
   width: 50%;
   padding-left: 10px;
 }
+body {
+    background: #fdf6e360;

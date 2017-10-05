@@ -72,6 +72,7 @@ class Lobby(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
+    score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
         permissions = (("can_add_info", _("Can add homepage info")),)
@@ -90,4 +91,4 @@ class Star(models.Model):
         verbose_name = _("Star")
 
     def __str__(self):
-        return "%s -- %.1f --> %s" % (user_id, value, mondai_id)
+        return "%s -- %.1f --> %s" % (self.user_id, self.value, self.mondai_id)

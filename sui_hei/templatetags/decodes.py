@@ -11,3 +11,7 @@ def genre(value):
         (2, _("Little Albat")),
         (3, _("Others & Formal"))])
     return genred[value]
+
+@register.filter
+def normalize_star(value):
+    return '%.1f' % ((value+5)*10)
