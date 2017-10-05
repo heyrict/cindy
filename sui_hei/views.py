@@ -23,6 +23,7 @@ from .models import *
 # /
 def index(request):
     hpinfopage = request.GET.get('hpinfopage',1)
+    request.session['channel'] = 'lobby'
     if request.method == "POST":
         if request.user.has_perm('sui_hei.can_add_info'):
             try:
