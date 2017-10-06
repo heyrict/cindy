@@ -33,7 +33,7 @@
         {% csrf_token %}
         <table class="push_chat">
             <input id="LobbyContent" name="push_chat" type="text" style="padding:3px; width:95%;">
-            <input value={% trans 'Send' %} type="submit" style="margin-top:2px; font-size:18px; width:95%;">
+            <input value={% trans 'Send' %}/{% trans 'Update' %} type="submit" style="margin-top:2px; font-size:18px; width:95%;">
             <input id="channel" type="text" value="{{ channel }}" style="visibility:hidden">
         </table>
     </form>
