@@ -266,6 +266,7 @@ def lobby_chat(request):
 def lobby_channel(request):
     # change channel by submit button
     if request.method == "GET":
+        print(request.GET)
         chatpage = request.GET.get('chatpage', 1)
         channel = request.GET.get('channel', 'lobby')
         if not channel.strip(): channel = 'lobby'
@@ -277,9 +278,8 @@ def lobby_channel(request):
     # change page by redirect
     else:
         chatpage = request.GET.get('chatpage', 1)
-
-    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
+        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+        return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
 
 
 # /profile/[0-9]+

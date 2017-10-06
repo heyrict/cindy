@@ -11,12 +11,16 @@
 <link rel="stylesheet" href="{% static 'jquery-ui.css' %}">
 {% endblock %}
 
+{% block script_include %}
+<script src={% static 'mondai_show.js' %}></script>
+{% endblock %}
+
 {% block script %}
 $(document).ready(function() {
   require(['marked', 'jquery-ui'], function(marked){
     var handle = $("#starbar_handle");
     $("#starbar").slider({max:5, min:-5, step:0.02, value:{{ mystar }},
-        create: function() { $("#starbarind").val(ui.value);},
+        create: function(event, ui) { $("#starbarind").val(ui.value);},
         slide: function(event, ui){
             $("#starbarind").val(ui.value);
             handle.css('width', 30+2*ui.value+"px");
@@ -171,11 +175,8 @@ $(document).ready(function() {
     <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->
-    <form action="{% url 'sui_hei:mondai_show' mondai.id %}" method="post" style="width:40%; float:left; padding-left:5%;">
-        {% csrf_token %}
-        <br>
-        <input value="Show Comments" type="submit" style="font-size: 17px;">
-    </form>
+    <input value="Show Comments" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:6%;"
+        id="show_comments" channel="comments-{{ mondai.id }}" onclick="ShowComments()">
     <form id="mondai_star_form" action="{% url 'sui_hei:mondai_star' %}" method="post" style="width:40%; float:right; padding-right:5%;">
         {% csrf_token %}
         <input id="starbarind" type="text" name="starbarind" value="{{ mystar }}" style="visibility:hidden;">

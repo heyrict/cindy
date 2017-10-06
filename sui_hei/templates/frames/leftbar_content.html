@@ -26,7 +26,7 @@
     </table>
 </div>
 
-{% if request.session.channel|startswith:"comments-" %}
+{% if channel|startswith:"comments-" %}
 {% elif user.is_authenticated %} 
 <div class="lobby_chat_div">
     <form action="{% url 'sui_hei:lobby_chat' %}" method="post" onsubmit="return PostChat()">
