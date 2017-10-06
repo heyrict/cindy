@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from django.template import RequestContext
 
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
@@ -250,6 +251,13 @@ def lobby_chat(request):
                 chat.save()
         except Exception as e:
             print("Lobby:", e)
+
+        # render response
+        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10)
+        context = {'chatlist': chatlist.page(1), 'request': request, 'mode': 'open',
+                'channel': channel, 'user': request.user}
+        return render_to_response('frames/leftbar_content.html', context)
+
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query)
 

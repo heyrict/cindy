@@ -54,25 +54,50 @@ define(["jquery"], function($) {
         $this.attr("mode", "closed");
       }
     });
-    $("#change_channel_form").on('submit',function(event) {
-      event.preventDefault();
-      $.get("/lobby/channel", { channel: $("#LobbyChannel").val() }, function(data) {
-        $(".leftbar_content").html(data);
-      });
-    });
   }
 });
+function ChangeChannel() {
+  jQuery.get(
+    "/lobby/channel",
+    { channel: jQuery("#LobbyChannel").val() },
+    function(data) {
+      jQuery(".leftbar_content").html(data);
+    }
+  );
+  return false;
+}
+function PostChat() {
+  jQuery.post(
+    "/lobby/chat",
+    {
+      channel: jQuery("#channel").val(),
+      push_chat: jQuery("#LobbyContent").val()
+    },
+    function(data) {
+      jQuery(".leftbar_content").html(data);
+    }
+  );
+  return false;
+}
 function InputNorm() {
-    var lc = jQuery("#LobbyChannel");
-    lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, '-'));
+  var lc = jQuery("#LobbyChannel");
+  lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
 }
 function PrevChatPage() {
-    jQuery.get("/lobby/channel", {chatpage: jQuery("#lobby_nav_prev").val()}, function(data) {
-        jQuery(".leftbar_content").html(data);
-    });
+  jQuery.get(
+    "/lobby/channel",
+    { chatpage: jQuery("#lobby_nav_prev").val() },
+    function(data) {
+      jQuery(".leftbar_content").html(data);
+    }
+  );
 }
 function NextChatPage() {
-    jQuery.get("/lobby/channel", {chatpage: jQuery("#lobby_nav_next").val()}, function(data) {
-        jQuery(".leftbar_content").html(data);
-    });
+  jQuery.get(
+    "/lobby/channel",
+    { chatpage: jQuery("#lobby_nav_next").val() },
+    function(data) {
+      jQuery(".leftbar_content").html(data);
+    }
+  );
 }
