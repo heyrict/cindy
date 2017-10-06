@@ -23,5 +23,5 @@ def lobby_chatlist(request):
     channel = request.session.get('channel', 'lobby')
 
     chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10)
-    context = {'chatlist': chatlist.page(chatpage)}
+    context = {'chatlist': chatlist.page(chatpage), 'channel': channel}
     return context
