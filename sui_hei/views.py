@@ -253,10 +253,8 @@ def lobby_chat(request):
             print("Lobby:", e)
 
         # render response
-        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10)
-        context = {'chatlist': chatlist.page(1), 'request': request, 'mode': 'open',
-                'channel': channel, 'user': request.user}
-        return render_to_response('frames/leftbar_content.html', context)
+        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
+        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
 
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query)
@@ -266,15 +264,13 @@ def lobby_chat(request):
 def lobby_channel(request):
     # change channel by submit button
     if request.method == "GET":
-        print(request.GET)
         chatpage = request.GET.get('chatpage', 1)
         channel = request.GET.get('channel', 'lobby')
         if not channel.strip(): channel = 'lobby'
         if channel == "homepage-info": channel = 'lobby'
-        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10)
-        context = {'chatlist': chatlist.page(chatpage), 'request': request, 'mode': 'open',
-                'channel': channel, 'user': request.user}
-        return render_to_response('frames/leftbar_content.html', context)
+        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(chatpage)
+
+        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
     # change page by redirect
     else:
         chatpage = request.GET.get('chatpage', 1)
