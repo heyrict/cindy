@@ -1,6 +1,6 @@
 from django import template
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import Count
+from django.db.models import Count, Q
 
 register = template.Library()
 
@@ -20,6 +20,6 @@ def normalize_star(value):
 @register.filter
 def get_unanswered(value):
     try:
-        return value.filter(kaitou="").aggregate(Count('id'))['id__count']
+        return value.filter(Q(kaitou="") | Q(kaitou__isnull=True)).aggregate(Count('id'))['id__count']
     except:
         return 0
