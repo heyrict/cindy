@@ -226,7 +226,7 @@ def mondai_show_push_ques(request):
 
             ques = Shitumon(
                 user_id=request.user,
-                shitumon=content,
+                shitumon=content.strip(),
                 askedtime=datetime.now(),
                 mondai_id=mondai_id)
             ques.save()
