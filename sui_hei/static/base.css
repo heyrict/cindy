@@ -95,6 +95,21 @@ input[type="text"] {
 .unsolved {
   border: 1px solid #cb4b16;
 }
+.process_label {
+  text-align: center;
+  padding: 3px;
+  border-radius: 10px;
+}
+.unanswered {
+  background: #b58900;
+  font-weight: bold;
+  color: #eee8d5;
+}
+.answered {
+  background: #859900cc;
+  font-weight: bold;
+  color: #eee8d5;
+}
 .title_label {
   width: 50%;
   padding-left: 10px;

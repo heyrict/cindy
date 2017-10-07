@@ -1,5 +1,6 @@
 from django import template
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Count
 
 register = template.Library()
 
@@ -15,3 +16,10 @@ def genre(value):
 @register.filter
 def normalize_star(value):
     return '%.1f' % ((value+5)*10)
+
+@register.filter
+def get_unanswered(value):
+    try:
+        return value.filter(kaitou="").aggregate(Count('id'))['id__count']
+    except:
+        return 0

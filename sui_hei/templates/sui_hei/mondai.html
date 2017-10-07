@@ -21,6 +21,12 @@
     {% else %}
         <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
     {% endif %}
+    
+    {% if mondai.shitumon_set|get_unanswered %}
+    <span class="process_label unanswered" style="margin-left:5px;">{{ mondai.shitumon_set|get_unanswered }}</span>
+    {% else %}
+    <span class="process_label answered" style="margin-left:5px;">{{ mondai.shitumon_set|get_unanswered }}</span>
+    {% endif %}
 
     <span class="title_label">
         <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>

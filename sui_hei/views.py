@@ -63,7 +63,7 @@ class MondaiView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Mondai.objects.order_by('seikai', '-created')
+        return Mondai.objects.order_by('seikai', '-created').select_related()
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
