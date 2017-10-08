@@ -1,0 +1,42 @@
+{% load i18n static markdown iterutil %} 
+<div class="lobby_navigation_div">
+    {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True next_click="NextChatPage" prev_click="PrevChatPage" %}
+    <span class="channel">
+        <form id="change_channel_form" method="get" onsubmit="return ChangeChannel()">
+            <input id="LobbyChannel" name="change_channel" type="text" style="width:50%; font-size:14px; padding:3px;"
+            oninput="InputNorm()" placeholder="current_channel: {{ channel }}">
+            <input value="{% trans 'Change channel' %}" type="submit" style="width:35%; font-size:14px; margin-top:2px;">
+        </form>
+    </span>
+</div>
+
+<div class="lobby_table_div">
+    <table class="lobby_table" style="width:100%; height:93%;">
+        {% for chat in chatlist|inv %} 
+        <tr>
+            <th id="user" style="width: 33%;"> 
+                <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
+            </th>
+            <td id="message">{{ chat.content|line2md|safe }}
+                {% if chat.user_id == user %}
+                <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' chat.id %}?next={{ request.path }}">
+                [{% trans 'edit' %}]</a>{% endif %}</td>
+        </tr>
+        {% endfor %} 
+    </table>
+</div>
+
+{% if channel|startswith:"comments-" %}
+{% elif user.is_authenticated %} 
+<div class="lobby_chat_div">
+    <form action="{% url 'sui_hei:lobby_chat' %}" method="post" onsubmit="return PostChat()">
+        {% csrf_token %}
+        <table class="push_chat">
+            <input id="LobbyContent" name="push_chat" type="text" style="padding:3px; width:95%;">
+            <input value={% trans 'Send' %}/{% trans 'Update' %} type="submit" style="margin-top:2px; font-size:18px; width:95%;">
+            <input id="channel" type="text" value="{{ channel }}" style="visibility:hidden">
+        </table>
+    </form>
+</div>
+{% endif %} 
+

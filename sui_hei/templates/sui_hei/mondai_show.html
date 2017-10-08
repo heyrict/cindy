@@ -11,12 +11,16 @@
 <link rel="stylesheet" href="{% static 'jquery-ui.css' %}">
 {% endblock %}
 
+{% block script_include %}
+<script src={% static 'mondai_show.js' %}></script>
+{% endblock %}
+
 {% block script %}
 $(document).ready(function() {
   require(['marked', 'jquery-ui'], function(marked){
     var handle = $("#starbar_handle");
     $("#starbar").slider({max:5, min:-5, step:0.02, value:{{ mystar }},
-        create: function() { $("#starbarind").val(ui.value);},
+        create: function(event, ui) { $("#starbarind").val(ui.value);},
         slide: function(event, ui){
             $("#starbarind").val(ui.value);
             handle.css('width', 30+2*ui.value+"px");
@@ -87,7 +91,7 @@ $(document).ready(function() {
 <div class="mondai_qna">
     {% for qna in qnas %}
     <!-- if yami -->
-    {% if mondai.yami and qna.user_id != user %}
+    {% if mondai.yami and qna.user_id != user and mondai.user_id != user %}
     {% else %}
     <div class="HBar">
         <div class="QBlock">
@@ -171,16 +175,13 @@ $(document).ready(function() {
     <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->
-    <form action="{% url 'sui_hei:mondai_show' mondai.id %}" method="post" style="width:40%; float:left; padding-left:5%;">
-        {% csrf_token %}
-        <br>
-        <input value="Show Comments" type="submit" style="font-size: 17px;">
-    </form>
+    <input value="{% trans 'Show Comments' %}" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:6%;"
+        id="show_comments" channel="comments-{{ mondai.id }}" onclick="ShowComments()">
     <form id="mondai_star_form" action="{% url 'sui_hei:mondai_star' %}" method="post" style="width:40%; float:right; padding-right:5%;">
         {% csrf_token %}
         <input id="starbarind" type="text" name="starbarind" value="{{ mystar }}" style="visibility:hidden;">
         <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'star.png' %}"></img></div>
-        <input id="starbutton" type="submit" value="Star" style="font-size: 17px;">
+        <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </form>
     <div class="clear"></div>
     {% if mycomment %}
@@ -212,7 +213,7 @@ $(document).ready(function() {
             {% if mondai.yami %}{% trans 'uncheck as yami' %}{% else %}{% trans 'check as yami' %}{% endif %}<br>
             <input type="checkbox" name="change_seikai" onclick="alert('You cannot revert change if you put the true answer!')">
             {% trans 'Put True Answer' %}<br>
-            <input value="Update" type="submit">
+            <input value="{% trans 'Update' %}" type="submit">
         </span>
     </form><br>
     <div class="wrapper" style="border:3px solid #728905;">
@@ -226,7 +227,7 @@ $(document).ready(function() {
         {% csrf_token %}
         <span class="paticipants_panel">
             <input id="ques_input" name="push_ques" type="text">
-            <input value="Put Question" type="submit">
+            <input value="{% trans 'Put Question' %}" type="submit">
         </span>
     </form>
     <!-- end paticipants panel -->

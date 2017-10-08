@@ -3,7 +3,12 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %} 
-        <a href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+            {% if isbtn %}
+            <button id="{{ id_prefix|default:"" }}prev" value="{{ page_obj.previous_page_number }}" onclick="{{ prev_click }}()"> {% trans 'prev' %}</button>
+            {% else %}
+            <a id="{{ id_prefix|default:"" }}prev" 
+                href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
+            {% endif %}
         {% endif %} 
 
         <span class="current">
@@ -11,7 +16,11 @@
         </span>
 
         {% if page_obj.has_next %} 
-        <a href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            {% if isbtn %}
+            <button id="{{ id_prefix|default:"" }}next" value="{{ page_obj.next_page_number }}" onclick="{{ next_click }}()">{% trans 'next' %}</button>
+            {% else %}
+        <a id="{{ id_prefix|default:"" }}next" href="{{ path|default:request.path }}{{ ln_prefix|default:"" }}{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            {% endif %}
         {% endif %} 
     </span>
 </div>

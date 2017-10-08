@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
+from django.template import RequestContext
 
+from django.views.decorators.csrf import csrf_exempt
 from django import forms
 from django.utils.translation import LANGUAGE_SESSION_KEY, activate
 from django.contrib.auth import (authenticate, login, logout,
@@ -10,7 +12,7 @@ from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.shortcuts import get_object_or_404, redirect, render, reverse, render_to_response
 from django.template import RequestContext, loader
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
@@ -61,13 +63,10 @@ class MondaiView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Mondai.objects.order_by('seikai', '-created')
+        return Mondai.objects.order_by('seikai', '-created').select_related()
 
     def get_context_data(self, **kwargs):
-        if self.request.session.get('stay_channel'):
-            del self.request.session['stay_channel']
-        else:
-            self.request.session['channel'] = 'lobby'
+        self.request.session['channel'] = 'lobby'
         return super(MondaiView, self).get_context_data(**kwargs)
 
 
@@ -76,14 +75,10 @@ def mondai_show(request, pk):
     # don't set channel automatically on user-triggered channel change.
     if request.method == "POST" and request.user.is_authenticated:
         request.session['channel'] = 'comments-' + pk
-        request.session['stay_channel'] = True
         return lobby_chat(request)
 
     else:
-        if request.session.get('stay_channel'):
-            del request.session['stay_channel']
-        else:
-            request.session['channel'] = 'mondai-' + pk
+        request.session['channel'] = 'mondai-' + pk
 
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
@@ -231,7 +226,7 @@ def mondai_show_push_ques(request):
 
             ques = Shitumon(
                 user_id=request.user,
-                shitumon=content,
+                shitumon=content.strip(),
                 askedtime=datetime.now(),
                 mondai_id=mondai_id)
             ques.save()
@@ -241,9 +236,10 @@ def mondai_show_push_ques(request):
 
 
 # /lobby
+@csrf_exempt
 def lobby_chat(request):
     # get current channel
-    channel = request.session.get('channel', 'lobby')
+    channel = request.POST.get('channel', 'lobby')
 
     # update
     if request.method == "POST" and request.user.is_authenticated:
@@ -253,33 +249,33 @@ def lobby_chat(request):
                 chat = Lobby(
                     user_id=request.user, content=content, channel=channel)
                 chat.save()
-                request.session['stay_channel'] = True
         except Exception as e:
             print("Lobby:", e)
+
+        # render response
+        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
+        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
+
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=1&mode=open")
+    return redirect(referer_without_query)
 
 
+@csrf_exempt
 def lobby_channel(request):
     # change channel by submit button
-    if request.method == "POST":
-        channel = request.POST.get('change_channel', 'lobby')
+    if request.method == "GET":
         chatpage = request.GET.get('chatpage', 1)
-        channel = '-'.join(re.findall('\w+',
-                                      channel))  # clear all symbols, e.g. @#$
+        channel = request.GET.get('channel', 'lobby')
         if not channel.strip(): channel = 'lobby'
-        if channel == "homepage-info":
-            request.session['channel'] = 'lobby'
-        else:
-            request.session['channel'] = channel
-            request.session['stay_channel'] = True
+        if channel == "homepage-info": channel = 'lobby'
+        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(chatpage)
+
+        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
     # change page by redirect
     else:
         chatpage = request.GET.get('chatpage', 1)
-        request.session['stay_channel'] = True
-
-    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
+        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
+        return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
 
 
 # /profile/[0-9]+
