@@ -79,7 +79,7 @@ input[type="text"] {
   border: 3px solid #2075c7;
 }
 .child-nav a {
-  color: #2075c799;
+  color: #2075c7;
   padding: 1px;
   font-size: 14px;
 }
@@ -106,7 +106,7 @@ input[type="text"] {
   color: #eee8d5;
 }
 .answered {
-  background: #859900cc;
+  background: #85d514;
   font-weight: bold;
   color: #eee8d5;
 }
@@ -115,4 +115,4 @@ input[type="text"] {
   padding-left: 10px;
 }
 body {
-    background: #fdf6e360;
+    background: #fff9f0;
