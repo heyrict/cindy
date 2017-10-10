@@ -1,118 +1,124 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# heyrict <xiezh0831@yahoo.co.jp>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.2\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-06 20:29+0900\n"
-"PO-Revision-Date: 2017-09-27 20:05+0800\n"
-"Last-Translator: heyrict <xiezh0831@yahoo.co.jp>\n"
-"Language: ja\n"
-"MIME-Version: 0.27\n"
+"POT-Creation-Date: 2017-10-06 20:42+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: cindy/settings.py:142
 msgid "Japanese"
-msgstr "日本語"
+msgstr ""
 
 #: cindy/settings.py:143
 msgid "English"
-msgstr "英語"
+msgstr ""
+
+#: cindy/settings.py:144
+msgid "Chinese"
+msgstr ""
 
 #: sui_hei/models.py:9
 msgid "nick_name"
-msgstr "ニックネーム"
+msgstr ""
 
 #: sui_hei/models.py:10
 msgid "profile"
-msgstr "プロフィール"
+msgstr ""
 
 #: sui_hei/models.py:34
 msgid "title"
-msgstr "タイトル"
+msgstr ""
 
 #: sui_hei/models.py:35
 msgid "yami"
-msgstr "闇スープ"
+msgstr ""
 
 #: sui_hei/models.py:36
 msgid "genre"
-msgstr "ジャンル"
+msgstr ""
 
 #: sui_hei/models.py:37 sui_hei/models.py:74
 msgid "content"
-msgstr "コンテンツ"
+msgstr ""
 
 #: sui_hei/models.py:38
 msgid "kaisetu"
-msgstr "解説"
+msgstr ""
 
 #: sui_hei/models.py:39
 msgid "seikai"
-msgstr "正解あり"
+msgstr ""
 
 #: sui_hei/models.py:40 sui_hei/templates/sui_hei/mondai.html:30
 #: sui_hei/templates/sui_hei/profile_mystar.html:40
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:44
 msgid "created"
-msgstr "作った時間"
+msgstr ""
 
 #: sui_hei/models.py:41
 msgid "modified"
-msgstr "最後変更時間"
+msgstr ""
 
 #: sui_hei/models.py:42 sui_hei/models.py:75
 msgid "score"
-msgstr "スコア"
+msgstr ""
 
 #: sui_hei/models.py:45
 msgid "Soup"
-msgstr "問題"
+msgstr ""
 
 #: sui_hei/models.py:55
 msgid "shitumon"
-msgstr "質問"
+msgstr ""
 
 #: sui_hei/models.py:56
 msgid "kaitou"
-msgstr "回答"
+msgstr ""
 
 #: sui_hei/models.py:57
 msgid "good_ques"
-msgstr "良い質問"
+msgstr ""
 
 #: sui_hei/models.py:58
 msgid "true_ques"
-msgstr "正解"
+msgstr ""
 
 #: sui_hei/models.py:59
 msgid "askedtime"
-msgstr "質問時間"
+msgstr ""
 
 #: sui_hei/models.py:60
 msgid "answeredtime"
-msgstr "回答時間"
+msgstr ""
 
 #: sui_hei/models.py:63
 msgid "Question"
-msgstr "質問"
+msgstr ""
 
 #: sui_hei/models.py:73
 msgid "channel"
-msgstr "チャンネル"
+msgstr ""
 
 #: sui_hei/models.py:78
 msgid "Can add homepage info"
-msgstr "ホームページインフォメーションを編集できる"
+msgstr ""
 
 #: sui_hei/models.py:79
 msgid "Lobby"
-msgstr "ロビー"
+msgstr ""
 
 #: sui_hei/models.py:88
 msgid "Value"
@@ -120,285 +126,264 @@ msgstr ""
 
 #: sui_hei/models.py:91 sui_hei/templates/sui_hei/mondai_show.html:184
 msgid "Star"
-msgstr "スター"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:4
 msgid "Welcome, "
-msgstr "こんにちは、"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:5
 msgid "logout"
-msgstr "ログアウト"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:7
 msgid "register"
-msgstr "サインイン"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:8
 msgid "login"
-msgstr "ログイン"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:13
 msgid "Site Navigations"
-msgstr "ナビゲーション"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:15
 msgid "homepage"
-msgstr "ホームページ"
+msgstr ""
 
 #: sui_hei/templates/frames/header.html:16
 msgid "mondai"
-msgstr "問題"
+msgstr ""
 
 #: sui_hei/templates/frames/leftbar_content.html:8
 msgid "Change channel"
-msgstr "チャンネル変更"
+msgstr ""
 
 #: sui_hei/templates/frames/leftbar_content.html:23
 #: sui_hei/templates/sui_hei/index.html:46
 #: sui_hei/templates/sui_hei/profile.html:31
 msgid "edit"
-msgstr "編集"
+msgstr ""
 
 #: sui_hei/templates/frames/leftbar_content.html:36
 msgid "Send"
-msgstr "発言"
+msgstr ""
 
 #: sui_hei/templates/frames/leftbar_content.html:36
 #: sui_hei/templates/sui_hei/mondai_show.html:216
 msgid "Update"
-msgstr "更新"
+msgstr ""
 
 #: sui_hei/templates/frames/mondai_child_navi.html:3
 msgid "NewSoup"
-msgstr "新問題"
+msgstr ""
 
 #: sui_hei/templates/frames/pagination.html:7
 #: sui_hei/templates/frames/pagination.html:10
 #: sui_hei/templates/sui_hei/profile_mystar.html:16
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:16
 msgid "prev"
-msgstr "<-前"
+msgstr ""
 
 #: sui_hei/templates/frames/pagination.html:20
 #: sui_hei/templates/frames/pagination.html:22
 #: sui_hei/templates/sui_hei/profile_mystar.html:24
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:24
 msgid "next"
-msgstr "次->"
+msgstr ""
 
 #: sui_hei/templates/frames/profile_child_navi.html:3
 #: sui_hei/templates/sui_hei/profile.html:24
 #: sui_hei/templates/sui_hei/profile.html:29
 msgid "Profile"
-msgstr "プロフィール"
+msgstr ""
 
 #: sui_hei/templates/frames/profile_child_navi.html:4
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:11
 msgid "Selled Soups"
-msgstr "出題した問題"
+msgstr ""
 
 #: sui_hei/templates/frames/profile_child_navi.html:5
 #: sui_hei/templates/sui_hei/profile_mystar.html:11
 msgid "MyStar"
-msgstr "マイスター"
+msgstr ""
 
 #: sui_hei/templates/registration/add.html:8
 msgid "Welcome to Cindy, a real-time website for lateral thinking games!"
 msgstr ""
-"「Cindy」へようこそ〜「Cindy」はリアルタイムラテラルシンキングを楽しめるサイ"
-"トです！"
 
 #: sui_hei/templates/registration/add.html:9
 msgid "You can register to cindy free and enjoy its contents in one more step!"
-msgstr "一歩だけで、あなたは無料で「Cindy」にサインイン出来ます！"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:33
 msgid "a replica for"
-msgstr "レプリカサイトオブ："
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:33
 msgid "suiheinet"
-msgstr "ウミガメスープ"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:33
 msgid "constructed by kamisugi."
-msgstr "制作者：上杉"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:34
 msgid "This HomePage is still under construction ...⏳"
-msgstr "このホームページは建設中です...⏳"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:38
 msgid "Information"
-msgstr "インフォメーション"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:57
 msgid "Add Info"
-msgstr "インフォメーションを追加する"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/index.html:66
 #: sui_hei/templates/sui_hei/profile.html:11
 msgid "Comments"
-msgstr "評価・コメント"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai.html:12
 msgid "All Soups"
-msgstr "すべての問題"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai.html:28
 #: sui_hei/templates/sui_hei/mondai_show.html:79
 #: sui_hei/templates/sui_hei/profile_mystar.html:38
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:42
 msgid "Giver"
-msgstr "出題者"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_add.html:39 sui_hei/views.py:383
 msgid "Content"
-msgstr "コンテンツ"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_add.html:39
 #: sui_hei/templates/sui_hei/mondai_add.html:44
 #: sui_hei/templates/sui_hei/mondai_show.html:220
 msgid "Preview"
-msgstr "プレビュー"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_add.html:44
 #: sui_hei/templates/sui_hei/mondai_show.html:172
 #: sui_hei/templates/sui_hei/mondai_show.html:210
 #: sui_hei/templates/sui_hei/mondai_show.html:220 sui_hei/views.py:384
 msgid "True Answer"
-msgstr "解説"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_add.html:47
 #: sui_hei/templates/sui_hei/profile_edit.html:26
 msgid "Confirm"
-msgstr "確認"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_change.html:14
 msgid "Commit Change"
-msgstr "変更実行"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:80
 msgid "Give time"
-msgstr "出題時間"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:105
 #: sui_hei/templates/sui_hei/mondai_show.html:118
 msgid "[edit]"
-msgstr "[編集]"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:129
 msgid "uncheck as good-question"
-msgstr "良い質問にしない"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:131
 msgid "check as good-question"
-msgstr "良い質問にする"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:135
 msgid "uncheck as true-answer"
-msgstr "正解にしない"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:137
 msgid "check as true-answer"
-msgstr "正解にする"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:152
 msgid "waiting to be answered"
-msgstr "回答はまだです"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:164
 msgid "Put Responds"
-msgstr "すべての質問を回答する"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:178
 msgid "Show Comments"
-msgstr "評価・コメントを見る"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:203
 msgid "Hello guest! I need to know who you are before you ask a question!"
-msgstr "こんにちは、ゲストさん。発言する前にログインしてくださいね^^。"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:213
 msgid "uncheck as yami"
-msgstr "闇スープにしない"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:213
 msgid "check as yami"
-msgstr "闇スープにする"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:215
 msgid "Put True Answer"
-msgstr "解説を出す"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:230
 msgid "Put Question"
-msgstr "質問する"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/profile.html:11
 msgid "Latest"
-msgstr "最新"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/profile.html:26
 msgid "Name"
-msgstr "名前"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/profile.html:27
 msgid "Created time"
-msgstr "作成時間"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/profile.html:28
 msgid "Last login"
-msgstr "最後のログイン時間"
+msgstr ""
 
 #: sui_hei/templates/sui_hei/profile.html:36
 msgid "Change password"
-msgstr "パスワードを変更する"
+msgstr ""
 
 #: sui_hei/templatetags/decodes.py:9 sui_hei/views.py:377
 msgid "Albatross"
-msgstr "ウミガメのスープ"
+msgstr ""
 
 #: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:378
 msgid "20th-Door"
-msgstr "２０の扉"
+msgstr ""
 
 #: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:379
 msgid "Little Albat"
-msgstr "亀夫君"
+msgstr ""
 
 #: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:380
 msgid "Others & Formal"
-msgstr "新・形式"
+msgstr ""
 
 #: sui_hei/views.py:373
 msgid "Title"
-msgstr "タイトル"
+msgstr ""
 
 #: sui_hei/views.py:375
 msgid "Genre"
-msgstr "ジャンル"
+msgstr ""
 
 #: sui_hei/views.py:382
 msgid "Yami"
-msgstr "闇スープ"
-
-#~ msgid "nickname"
-#~ msgstr "ニックネーム"
-
-#~ msgid ""
-#~ "`{}` is already registered by another user.\n"
-#~ "Try another one!"
-#~ msgstr ""
-#~ "`{}` はすでに他のユーザーに使用されました。\n"
-#~ "他を試してみてくださいね"
-
-#~ msgid "user_id"
-#~ msgstr "ユーザーID"
-
-#~ msgid "mondai_id"
-#~ msgstr "問題ID"
-
-#~ msgid "Lobby Chat"
-#~ msgstr "ロビーチャット"
+msgstr ""

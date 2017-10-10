@@ -132,39 +132,75 @@ This chapter is specially for explaning the whole project to programmers.
 ### Data structure
 ```
 .
-├── cindy                           # folder storing metadata for the project.
-│   ├── __init__.py                 #  you may not need to edit it unless you
-│   ├── settings.py                 #  know what you are doing.
+├── cindy                                   # folder storing metadata for the project.
+│   ├── __init__.py                         #  you may not need to edit it unless you
+│   ├── settings.py                         #  know what you are doing.
 │   ├── urls.py
 │   └── wsgi.py
-├── mysql.cnf                       # config for mysql
-├── LICENSE                         # licence file
-├── manage.py                       # auto-generated manage script by django
-├── README.md                       # the description file you are reading!
-├── README_jp.md                    # the description file in Japanese
-├── locale/                         # folder storing language files
-└── sui_hei                         # folder storing the main site project.
-    ├── admin.py
-    ├── apps.py                     # apps config file.
-    ├── __init__.py
+├── mysql.cnf.template                      # tempate of config of mysql. please
+│                                           #  rename it to `mysql.cnf` for your preferences.
+├── LICENSE                                 # licence file
+├── manage.py                               # auto-generated manage script by django
+├── README.md                               # the description file you are reading!
+├── README_jp.md                            # the description file in Japanese
+├── reset_database.sql                      # **warning**: you need to run this file
+│                                           #  ONLY when you want to reset database.
+├── locale/                                 # folder storing language files
+└── sui_hei                                 # folder storing the main site project.
+    ├── admin.py                            # modules visible in /admin
+    ├── apps.py                             # apps config file.
+    ├── context_processor.py                # generating global context
     ├── migrations/
-    ├── models.py                   # models storing data structure.
-    ├── static                      # folder storing static files, e.g. css, js, png, etc.
-    │   └── github-pandoc.css       #   initial stylesheet (which I used for styling markdown)
-    ├── templates                   # html templates.
-    │   │── frames                  #   folder storing the template of templates.
-    │   │   └── header_n_footer.html#     general template containing header and footer.
-    │   └── sui_hei                 #   html pages:
-    │       ├── index.html          #     /sui_hei
-    │       ├── lobby.html          #     /lobby
-    │       ├── mondai.html         #     /mondai
-    │       ├── mondai_show.html    #     /mondai/show/[0-9]+
-    │       ├── profile.html        #     /profile/[0-9]+
-    │       ├── users_add.html      #     /users/add
-    │       └── users_login.html    #     /users/login
-    ├── tests.py                    # file for testing the project
-    ├── urls.py                     # url patterns of the website
-    └── views.py                    # create pages from templates. Pass variables here.
+    ├── models.py                           # models storing data structure.
+    ├── static                              # folder storing static files, e.g. css, js, png, etc.
+    │   ├── base.css                        # CSS Files
+    │   ├── sidebar.css                     #
+    │   ├── github-pandoc.css               # included CSS Files
+    │   ├── jquery-ui.css                   #
+    │   ├── main.js                         # JavaScript Files
+    │   ├── mondai_show.js                  #
+    │   ├── sidebar.js                      #
+    │   ├── jquery.min.js                   # JavaScript Libraries
+    │   ├── jquery-ui.js                    #
+    │   ├── marked.min.js                   #
+    │   ├── velocity.min.js                 #
+    │   ├── require.js                      #
+    │   ├── sidebar.png                     # PNG files
+    │   └── star.png                        #
+    ├── templates                           # html templates.
+    │   │── frames                          #  folder storing the template of templates.
+    │   │   ├── base.html                   #   base template
+    │   │   ├── header.html                 #   = header.html
+    │   │   ├── footer.html                 #   + sidebar.html
+    │   │   ├── sidebar.html                #    (which includes leftbar_content.html)
+    │   │   ├── leftbar_content.html        #   + footer.html
+    │   │   ├── mondai_child_navi.html      #
+    │   │   ├── profile_child_navi.html     #
+    │   │   └── pagination.html             #
+    │   ├── registration                    #  folder storing the template for authentiation
+    │   │   ├── add.html                    #   /users/add
+    │   │   ├── login.html                  #   /users/login
+    │   │   └── users_password_change.html  #   /users/change_password
+    │   └── sui_hei                         #  html pages:
+    │       ├── index.html                  #   /sui_hei
+    │       ├── mondai.html                 #   /mondai
+    │       ├── mondai_add.html             #   /mondai/add
+    │       ├── mondai_change.html          #   /mondai/change/...
+    │       ├── mondai_show.html            #   /mondai/show/[0-9]+
+    │       ├── profile.html                #   /profile/[0-9]+
+    │       ├── profile_edit.html           #   /profile/edit
+    │       ├── profile_selledsoup.html     #   /profile/selledsoup
+    │       ├── profile_mystar.html         #   /profile/mystar
+    │       ├── users_add.html              #   /users/add
+    │       └── users_login.html            #   /users/login
+    ├── templatetags                        # folder containing filters for template
+    │   ├── __init__.py                     #  works like {{ var|filter }} in templates
+    │   ├── decodes.py                      #
+    │   ├── iterutil.py                     #
+    │   └── markdown.py                     #
+    ├── tests.py                            # file for testing the project
+    ├── urls.py                             # url patterns of the website
+    └── views.py                            # create pages from templates. Pass variables here.
 ```
 
 ### Trouble Shooting
@@ -180,5 +216,6 @@ python3 manage.py migrate
 
 Contributers
 ------------
-- kamisugi
+- [kamisugi](http://sui-hei.net/mondai/profile/1)
 - [kamisan](https://github.com/pb10001)
+- [shakkuri](http://sui-hei.net/mondai/profile/11752)
