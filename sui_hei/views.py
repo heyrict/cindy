@@ -346,7 +346,7 @@ class ProfileEdit(UpdateView):
         return reverse("sui_hei:profile", kwargs={'pk': self.request.user.id})
 
     def form_valid(self, form):
-        if re.findall(r'\([^\]]*sui-hei.net/mondai/profile/[0-9]+\)',
+        if re.findall(r'[^\]]*sui-hei.net/mondai/profile/[0-9]+',
                       str(form['profile'])):
             oldUserAward = Award.objects.get_or_create(name="☆ ラテシンの使者")[0]
             grantOldUserAward = UserAward.objects.get_or_create(
