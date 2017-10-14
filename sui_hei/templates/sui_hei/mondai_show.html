@@ -29,7 +29,6 @@ $(document).ready(function() {
             }
         });
 
-    marked.setOptions({tables: false})
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
 
     $("#kaisetu_textarea").on('input', function(){
