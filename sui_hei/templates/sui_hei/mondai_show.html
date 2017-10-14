@@ -93,7 +93,7 @@ $(document).ready(function() {
 <div class="mondai_qna">
     {% for qna in qnas %}
     <!-- if yami -->
-    {% if mondai.yami and qna.user_id != user and mondai.user_id != user %}
+    {% if mondai.yami and qna.user_id != user and mondai.user_id != user and not mondai.seikai %}
     {% else %}
     <div class="HBar">
         <div class="QBlock">
