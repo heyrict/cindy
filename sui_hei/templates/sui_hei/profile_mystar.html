@@ -36,7 +36,8 @@
         <a href="/star/show/{{ star.mondai_id.id }}">{{ star.mondai_id.title }} </a>
     </span>
     {% trans 'Giver' %}: 
-    <a href="/profile/{{ star.mondai_id.user_id.id }}">{{ star.mondai_id.user_id.nickname }}</a>
+    <b><a href="/profile/{{ star.mondai_id.user_id.id }}">{{ star.mondai_id.user_id.nickname }}</a>
+        {% if star.mondai_id.user_id.current_award %}[{{ star.mondai_id.user_id.current_award }}]{% endif %}</b>
     [{% trans 'created' %}: {{ star.mondai_id.created }}]
 </li>
 </ul>

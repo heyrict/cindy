@@ -9,11 +9,12 @@
 
 {% block content %} 
 <h2>{% trans 'Latest' %} {% trans 'Comments' %}</h2>
-<div class="subbar">
+<div class="latest_comments">
     <table style="width:100%;">
         {% for comment, mondai in comments %}
         <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
-            <td><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+            <td><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+                    {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
                 >> {{ comment.content }}
             </td>
         </tr>
@@ -26,6 +27,25 @@
     <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
     <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>
     <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
+    {% if user == sui_hei_user %}
+    <tr>
+        <th>{% trans "Award" %}</th>
+        <td>
+            <form action="{% url 'sui_hei:award_change' %}" method="post">
+                {% csrf_token %}
+                <select name="award">
+                    <option value="">{% trans 'None' %}</option>
+                    {% for award in available_awards %}
+                    <option value="{{ award.award_id.name }}" 
+                             {% if award.award_id == sui_hei_user.current_award %}selected="selected"{% endif %}>
+                    {{ award.award_id }}</option>
+                    {% endfor %}
+                    <input type="submit" name="award_change" value="{% trans 'change' %}" style="width:10%; font-size:14px; margin-top:0px;">
+                </select>
+            </form>
+        </td>
+    </tr>
+    {% endif %} 
     <tr><th>{% trans "Profile" %}
         {% if user == sui_hei_user %}
             <a href="/profile/edit"> [{% trans 'edit' %}] </a>
@@ -34,7 +54,7 @@
     </td></tr>
         {% if user == sui_hei_user %}
         <tr><th>{% trans "Change password" %}</th><td>
-            <a href="{% url 'sui_hei:password_change' %}">{% url 'sui_hei:password_change' %}</a>
+            <a href="{% url 'sui_hei:password_change' %}">Click Here</a>
         </td></tr>
         {% endif %} 
 </table>

@@ -21,7 +21,8 @@ class SuiheiUserChangeForm(UserChangeForm):
         model = User
         fields = UserCreationForm.Meta.fields + (
             'nickname',
-            'profile', )
+            'profile',
+            'current_award',)
 
 class SuiheiPasswordChangeForm(PasswordChangeForm):
     class Meta(PasswordChangeForm):
@@ -36,10 +37,12 @@ class SuiheiUserAdmin(UserAdmin):
     add_form = SuiheiUserCreationForm
     change_password_form = SuiheiPasswordChangeForm
     change_user_password_template = "registration/users_password_change.html"
-    fieldsets = UserAdmin.fieldsets + ((None,{'fields': ('nickname',)}),)
+    fieldsets = UserAdmin.fieldsets + ((None,{'fields': ('nickname', 'current_award',)}),)
 
 
 admin.site.register(User, SuiheiUserAdmin)
 admin.site.register(Mondai)
 admin.site.register(Shitumon)
 admin.site.register(Lobby)
+admin.site.register(Award)
+admin.site.register(UserAward)

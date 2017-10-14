@@ -1,10 +1,7 @@
 import re
 from datetime import datetime
-from django.template import RequestContext
 
-from django.views.decorators.csrf import csrf_exempt
 from django import forms
-from django.utils.translation import LANGUAGE_SESSION_KEY, activate
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required, permission_required
@@ -12,9 +9,12 @@ from django.core.paginator import Paginator
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render, reverse, render_to_response
+from django.shortcuts import (get_object_or_404, redirect, render,
+                              render_to_response, reverse)
 from django.template import RequestContext, loader
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import LANGUAGE_SESSION_KEY, activate
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from markdown import markdown as md
 
@@ -25,14 +25,16 @@ from .models import *
 # Create your views here.
 # /
 def index(request):
-    hpinfopage = request.GET.get('hpinfopage',1)
+    hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
     if request.method == "POST":
         if request.user.has_perm('sui_hei.can_add_info'):
             try:
                 content = request.POST.get("add_info", "")
                 chat = Lobby(
-                    user_id=request.user, content=content, channel="homepage-info")
+                    user_id=request.user,
+                    content=content,
+                    channel="homepage-info")
                 chat.save()
             except Exception as e:
                 print("Index_POST:", e)
@@ -44,7 +46,8 @@ def index(request):
                 for i in comments
             ]
 
-            infos = Lobby.objects.filter(channel="homepage-info").order_by('-id')
+            infos = Lobby.objects.filter(
+                channel="homepage-info").order_by('-id')
             hpinfo_list = Paginator(infos, 20)
             return render(request, 'sui_hei/index.html', {
                 'comments': zip(comments[:15], mondais[:15]),
@@ -83,31 +86,36 @@ def mondai_show(request, pk):
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
         try:
-            mycomment = Lobby.objects.get(channel="comments-%s"%pk, user_id=request.user)
+            mycomment = Lobby.objects.get(
+                channel="comments-%s" % pk, user_id=request.user)
         except:
             mycomment = None
         try:
-            mystar = Star.objects.get(mondai_id=mondai, user_id=request.user).value
+            mystar = Star.objects.get(
+                mondai_id=mondai, user_id=request.user).value
         except:
             mystar = 0
 
-        return render(request, 'sui_hei/mondai_show.html',
-                      {'mondai': mondai,
-                       'qnas': qnas,
-                       'mycomment': mycomment,
-                       'mystar': mystar})
+        return render(request, 'sui_hei/mondai_show.html', {
+            'mondai': mondai,
+            'qnas': qnas,
+            'mycomment': mycomment,
+            'mystar': mystar
+        })
 
 
 def mondai_star(request):
     try:
-        mondai = re.findall("(?<=/mondai/show/)[0-9]+", request.META['HTTP_REFERER'])[0]
+        mondai = re.findall("(?<=/mondai/show/)[0-9]+",
+                            request.META['HTTP_REFERER'])[0]
         mondai_id = Mondai.objects.get(id=mondai)
     except Exception as e:
-        print("MondaiStar:",e)
+        print("MondaiStar:", e)
         return redirect(request.META['HTTP_REFERER'])
 
     if request.method == "POST" and request.user.is_authenticated:
-        star = Star.objects.get_or_create(user_id=request.user, mondai_id=mondai_id)[0]
+        star = Star.objects.get_or_create(
+            user_id=request.user, mondai_id=mondai_id)[0]
         star.value = float(request.POST.get('starbarind', 0))
         star.save()
     return redirect(request.META['HTTP_REFERER'])
@@ -151,12 +159,21 @@ def mondai_show_update_soup(request):
             kaisetu = request.POST['change_kaisetu']
             seikai = request.POST.get('change_seikai')
             yami = request.POST.get('toggle_yami')
-            if kaisetu == '': raise ValueError("Empty Input Data")
 
+            # Validation
+            if kaisetu == '': raise ValueError("Empty Input Data")
+            if mondai_id.seikai:
+                raise ValidationError("This mondai is already finished")
+
+            # Update mondai
             mondai_id.kaisetu = kaisetu
             mondai_id.seikai = True if seikai else False
             if yami: mondai_id.yami = not mondai_id.yami
             mondai_id.save()
+
+            # Grant awards
+            pass
+
         except Exception as e:
             print("UpdateSoup:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
@@ -253,8 +270,13 @@ def lobby_chat(request):
             print("Lobby:", e)
 
         # render response
-        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
-        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
+        chatlist = Paginator(
+            Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
+        return render(request, 'frames/leftbar_content.html', {
+            'mode': 'open',
+            'channel': channel,
+            'chatlist': chatlist
+        })
 
     referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
     return redirect(referer_without_query)
@@ -268,14 +290,21 @@ def lobby_channel(request):
         channel = request.GET.get('channel', 'lobby')
         if not channel.strip(): channel = 'lobby'
         if channel == "homepage-info": channel = 'lobby'
-        chatlist = Paginator(Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(chatpage)
+        chatlist = Paginator(
+            Lobby.objects.filter(channel=channel).order_by('-id'),
+            10).page(chatpage)
 
-        return render(request, 'frames/leftbar_content.html', { 'mode': 'open', 'channel': channel, 'chatlist': chatlist})
+        return render(request, 'frames/leftbar_content.html', {
+            'mode': 'open',
+            'channel': channel,
+            'chatlist': chatlist
+        })
     # change page by redirect
     else:
         chatpage = request.GET.get('chatpage', 1)
         referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-        return redirect(referer_without_query + "?chatpage=%s&mode=open"%chatpage)
+        return redirect(referer_without_query +
+                        "?chatpage=%s&mode=open" % chatpage)
 
 
 # /profile/[0-9]+
@@ -286,11 +315,21 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
+
+        # get latest 10 comments in relation to `sui_hei_user`
         userid = context['sui_hei_user'].id
         mondais = Mondai.objects.filter(user_id=userid)
-        comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id) for i in mondais])
+        comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id)
+                                                     for i in mondais])
         context['comments'] = zip(comments[:10], mondais[:10])
         context['pk'] = self.kwargs['pk']
+
+        # get all awards
+        if self.request.user.id == userid:
+            available_awards = UserAward.objects.filter(user_id=userid)
+        else:
+            available_awards = []
+        context['available_awards'] = available_awards
         return context
 
 
@@ -306,6 +345,15 @@ class ProfileEdit(UpdateView):
     def get_success_url(self):
         return reverse("sui_hei:profile", kwargs={'pk': self.request.user.id})
 
+    def form_valid(self, form):
+        if re.findall(r'\([^\]]*sui-hei.net/mondai/profile/[0-9]+\)',
+                      str(form['profile'])):
+            oldUserAward = Award.objects.get_or_create(name="☆ ラテシンの使者")[0]
+            grantOldUserAward = UserAward.objects.get_or_create(
+                user_id=self.request.user, award_id=oldUserAward)[0]
+            grantOldUserAward.save()
+        return super(ProfileEdit, self).form_valid(form)
+
 
 # /profile/mysoup/[0-9]+
 class SelledSoupView(ListView):
@@ -315,7 +363,8 @@ class SelledSoupView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-id')
+        return self.model.objects.filter(
+            user_id=self.kwargs['pk']).order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(SelledSoupView, self).get_context_data(**kwargs)
@@ -330,7 +379,8 @@ class MyStarView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return self.model.objects.filter(user_id=self.kwargs['pk']).order_by('-value')
+        return self.model.objects.filter(
+            user_id=self.kwargs['pk']).order_by('-value')
 
     def get_context_data(self, **kwargs):
         context = super(MyStarView, self).get_context_data(**kwargs)
@@ -421,4 +471,14 @@ def set_language(request):
     if request.method == "POST":
         lang = request.POST.get('lang', 'en')
         request.session[LANGUAGE_SESSION_KEY] = lang
+    return redirect(request.META['HTTP_REFERER'])
+
+
+def award_change(request):
+    if request.method == "POST":
+        award_name = request.POST.get('award')
+        print(award_name)
+        award = Award.objects.get(name=award_name) if award_name else None
+        request.user.current_award = award
+        request.user.save()
     return redirect(request.META['HTTP_REFERER'])

@@ -32,7 +32,8 @@
         <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
     </span>
     {% trans 'Giver' %}: 
-    <a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
+    <b><a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
+        {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
     [{% trans 'created' %}: {{ mondai.created }}]
 </li>
 </ul>

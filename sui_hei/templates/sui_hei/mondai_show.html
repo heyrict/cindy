@@ -76,7 +76,9 @@ $(document).ready(function() {
 <!-- Content of Question -->
 <div class="mondai_content wrapper">
     <ul style="left: 10px;">
-        <li>{% trans "Giver" %}: {{ mondai.user_id.nickname }}</li>
+        <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
+                {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
+        </li>
         <li>{% trans "Give time" %}: {{ mondai.created }}</li>
     </ul>
     {{ mondai.content|text2md|safe }}
@@ -97,6 +99,7 @@ $(document).ready(function() {
         <div class="QBlock">
             <div style="width:29%; float:left; border-right: 1px solid #268bd288;">
                     <a href={% url 'sui_hei:profile' qna.user_id.id %}>{{ qna.user_id.nickname }}</a>
+                    {% if qna.user_id.current_award %}[{{ qna.user_id.current_award }}]{% endif %}
             </div>
             <div style="width:69%; float:right;">
                 <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
@@ -148,6 +151,7 @@ $(document).ready(function() {
                     </div>
                     <div style="width:29%; float:right;">
                         <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
+                        {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
                     </div>
                     {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
                     {% endif %}
