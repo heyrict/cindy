@@ -92,7 +92,9 @@ class Lobby(models.Model):
     score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
-        permissions = (("can_add_info", _("Can add homepage info")), )
+        permissions = (
+            ("can_add_info", _("Can add homepage info")),
+            ("can_grant_award", _("Can grant awards to users")), )
         verbose_name = _("Lobby")
 
     def __str__(self):

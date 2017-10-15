@@ -183,9 +183,8 @@ $(document).ready(function() {
 <!-- Answer of Question -->
 {% if mondai.seikai %}
 <div class="mondai_kaisetu wrapper">
-    <h3 id="true-answer">{% trans "True Answer" %}</h3>
     {{ mondai.kaisetu|text2md|safe }}
-
+    <br>
     <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->
