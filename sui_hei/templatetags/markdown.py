@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from django import template
 from django.template.defaultfilters import stringfilter
 from markdown import markdown as md
+from markdown.extensions.headerid import HeaderIdExtension
 
 register = template.Library()
 
@@ -15,7 +16,7 @@ def text2md(value):
     convert markdown-like text to html.
     strip header <p> and footer </p> if p is True.
     '''
-    returns = md(value, ['markdown.extensions.extra'])
+    returns = md(value, ['markdown.extensions.extra', HeaderIdExtension(level=4)])
     returns = BeautifulSoup(returns, 'html5lib').prettify(encoding="utf8")
     return returns.decode('utf8')
 
