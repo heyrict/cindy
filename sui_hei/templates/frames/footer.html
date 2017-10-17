@@ -5,18 +5,11 @@
     {% csrf_token %}
     <fieldset>
     <legend>Language</legend>
-    <span style="border:1px solid black; border-radius:5px; padding:5px; font-size:18px;">
-        <input type="radio" name="lang" value="en" checked>English
-    </span>
-    <span style="border:1px solid black; border-radius:5px; padding:5px; font-size:18px;">
-        <input type="radio" name="lang" value="ja">Japanese
-    </span>
-    <span style="border:1px solid black; border-radius:5px; padding:5px; font-size:18px;">
-        <input type="radio" name="lang" value="zh">Chinese
-    </span>
-    <span style="border:1px solid black; border-radius:5px; padding:5px; font-size:18px;">
-        <input type="radio" name="lang" value="fr">French(not translated yet)
-    </span>
-    <input type="submit" name="langbtn" value="select" style="width:150px; font-size:18px;">
-    </fieldset>
+    <select name="lang">
+        <option value="en">English
+        <option value="ja">Japanese
+        <option value="zh">Chinese
+        <option value="fr">French
+    </select>
+    <input type="submit" name="langbtn" value="select" style="width:150px; font-size:14px; margin-top:0px;">
 </form>

@@ -5,9 +5,18 @@ from django.utils.translation import ugettext_lazy as _
 
 
 # Create your models here.
+class Award(models.Model):
+    name = models.CharField(max_length=255, null=False)
+    description = models.TextField(default="")
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractUser):
     nickname = models.CharField(_('nick_name'), max_length=255, null=False)
     profile = models.TextField(_('profile'), default="")
+    current_award = models.ForeignKey(Award, null=True)
 
     REQUIRED_FIELDS = ['nickname']
 
@@ -19,6 +28,14 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nickname
+
+
+class UserAward(models.Model):
+    user_id = models.ForeignKey(User)
+    award_id = models.ForeignKey(Award)
+
+    def __str__(self):
+        return "[%s] owns [%s]" % (self.user_id.nickname, self.award_id)
 
 
 class Mondai(models.Model):
@@ -75,12 +92,15 @@ class Lobby(models.Model):
     score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
-        permissions = (("can_add_info", _("Can add homepage info")),)
+        permissions = (
+            ("can_add_info", _("Can add homepage info")),
+            ("can_grant_award", _("Can grant awards to users")), )
         verbose_name = _("Lobby")
 
     def __str__(self):
         return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
                                            self.content)
+
 
 class Star(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')

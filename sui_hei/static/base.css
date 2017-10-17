@@ -115,4 +115,12 @@ input[type="text"] {
   padding-left: 10px;
 }
 body {
-    background: #fff9f0;
+  background: #fff9f0;
+}
+a.bul {
+  color: #222;
+  text-decoration: underline;
+}
+a.bul:hover {
+  text-decoration: none;
+}

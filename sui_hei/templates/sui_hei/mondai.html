@@ -31,9 +31,10 @@
     <span class="title_label">
         <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
     </span>
-    {% trans 'Giver' %}: 
-    <a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
-    [{% trans 'created' %}: {{ mondai.created }}]
+    <span style="float:right; text-decoration:bold;"><a href="/profile/{{ mondai.user_id.id }}" class="bul">{{ mondai.user_id.nickname }}</a>
+        {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
+        <font color="#888">[{% trans 'created' %}: {{ mondai.created }}]</font></span>
+    <div class="clear"></div>
 </li>
 </ul>
 {% endfor %}

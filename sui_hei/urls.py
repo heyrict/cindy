@@ -28,5 +28,7 @@ urlpatterns = [
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^profile/selledsoup/(?P<pk>[0-9]+)$", views.SelledSoupView.as_view(), name="profile_selledsoup"),
     url(r"^profile/mystar/(?P<pk>[0-9]+)$", views.MyStarView.as_view(), name="profile_mystar"),
+    url(r"^profile/award_change", views.award_change, name="award_change"),
     url(r"^language$", views.set_language, name="set_language"),
+    # TODO: Add pages to apply for & grant awards
 ]

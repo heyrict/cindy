@@ -29,7 +29,6 @@ $(document).ready(function() {
             }
         });
 
-    marked.setOptions({tables: false})
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
 
     $("#kaisetu_textarea").on('input', function(){
@@ -55,18 +54,27 @@ $(document).ready(function() {
     .QBlock {
         float: left;
         width: 45%;
-        border: 1px solid #268bd288;
+        border: 1px solid #268bd2;
         border-radius: 5px;
         padding: 3px;
         font-size: 16px;
+        overflow: hidden;
     }
     .ABlock {
         float: right;
         width: 45%;
-        border: 1px solid #268bd288;
+        border: 1px solid #268bd2;
         border-radius: 5px;
         padding: 3px;
         font-size: 16px;
+        overflow: hidden;
+    }
+    .vertical_line {
+        padding-bottom: 20000px;
+        margin-bottom: -20000px;
+        width: 0px;
+        float: left;
+        border-right: 1px dashed #268bd2;
     }
 {% endblock %}
 
@@ -76,7 +84,9 @@ $(document).ready(function() {
 <!-- Content of Question -->
 <div class="mondai_content wrapper">
     <ul style="left: 10px;">
-        <li>{% trans "Giver" %}: {{ mondai.user_id.nickname }}</li>
+        <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
+                {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
+        </li>
         <li>{% trans "Give time" %}: {{ mondai.created }}</li>
     </ul>
     {{ mondai.content|text2md|safe }}
@@ -91,13 +101,15 @@ $(document).ready(function() {
 <div class="mondai_qna">
     {% for qna in qnas %}
     <!-- if yami -->
-    {% if mondai.yami and qna.user_id != user and mondai.user_id != user %}
+    {% if mondai.yami and qna.user_id != user and mondai.user_id != user and not mondai.seikai %}
     {% else %}
     <div class="HBar">
         <div class="QBlock">
-            <div style="width:29%; float:left; border-right: 1px solid #268bd288;">
+            <div style="width:29%; float:left">
                     <a href={% url 'sui_hei:profile' qna.user_id.id %}>{{ qna.user_id.nickname }}</a>
+                    {% if qna.user_id.current_award %}[{{ qna.user_id.current_award }}]{% endif %}
             </div>
+            <div class="vertical_line"></div>
             <div style="width:69%; float:right;">
                 <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
                 {{ qna.shitumon|line2md|safe }}
@@ -140,17 +152,19 @@ $(document).ready(function() {
             <!-- end for giver -->
             {% else %}
             <!-- for others -->
-                    {% if qna.kaitou %} 
-                    <div style="width:69%; float:left; border-right: 1px solid #268bd288">
-                        {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
-                        {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
-                        {{ qna.kaitou|line2md|safe }} 
-                    </div>
-                    <div style="width:29%; float:right;">
-                        <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
-                    </div>
-                    {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
-                    {% endif %}
+                {% if qna.kaitou %} 
+                <div style="width:69%; float:left">
+                    {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
+                    {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
+                    {{ qna.kaitou|line2md|safe }} 
+                </div>
+                <div class="vertical_line"></div>
+                <div style="width:29%; float:right;">
+                    <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
+                    {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
+                </div>
+                {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
+                {% endif %}
             <!-- end for others -->
             {% endif %}
         </div>
@@ -169,9 +183,8 @@ $(document).ready(function() {
 <!-- Answer of Question -->
 {% if mondai.seikai %}
 <div class="mondai_kaisetu wrapper">
-    <h3 id="true-answer">{% trans "True Answer" %}</h3>
     {{ mondai.kaisetu|text2md|safe }}
-
+    <br>
     <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->

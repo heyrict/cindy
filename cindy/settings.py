@@ -142,6 +142,7 @@ LANGUAGES = [
     ('ja', _('Japanese')),
     ('en', _('English')),
     ('zh', _('Chinese')),
+    ('fr', _('French')),
 ]
 
 # Authentiation

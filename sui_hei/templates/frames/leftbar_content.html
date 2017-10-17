@@ -15,7 +15,8 @@
         {% for chat in chatlist|inv %} 
         <tr>
             <th id="user" style="width: 33%;"> 
-                <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a> : 
+                <a href="/profile/{{ chat.user_id.id }}">{{ chat.user_id.nickname }}</a>
+                {% if chat.user_id.current_award %}[{{ chat.user_id.current_award }}]{% endif %}
             </th>
             <td id="message">{{ chat.content|line2md|safe }}
                 {% if chat.user_id == user %}
