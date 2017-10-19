@@ -25,7 +25,9 @@ def text2md(value):
 @stringfilter
 def line2md(value, p=True):
     returns = BeautifulSoup(value, 'html5lib').get_text()
-    returns = re.sub("^([*+-<>]) ", r"\\\1 ", returns)
+    returns = re.sub("([*+-]) ", r"\\\1 ", returns)     # prevent lists
+    returns = re.sub(r"(\d+)\. ", r"\1\\. ", returns)
+    returns = re.sub("([><])", r"\\\1", returns)        # prevent quotations
     returns = md(returns, ['markdown.extensions.extra'])
     if p: returns = returns[3:-4]
     return returns
