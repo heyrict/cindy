@@ -1,4 +1,12 @@
 {% load i18n static markdown iterutil %} 
+    <script type="text/javascript">
+    require(['jquery'], function ($) {
+        var PageURL = window.location.pathname;
+        $("a.chat_edit").each(function () {
+            this.href += '?next=' + PageURL;
+        });
+    });
+    </script>
 <div class="lobby_navigation_div">
     {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True next_click="NextChatPage" prev_click="PrevChatPage" %}
     <span class="channel">
@@ -20,7 +28,7 @@
             </th>
             <td id="message">{{ chat.content|line2md|safe }}
                 {% if chat.user_id == user %}
-                <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' chat.id %}?next={{ request.path }}">
+                <a class="chat_edit" href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' chat.id %}">
                 [{% trans 'edit' %}]</a>{% endif %}</td>
         </tr>
         {% endfor %} 

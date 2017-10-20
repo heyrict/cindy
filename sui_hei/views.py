@@ -206,13 +206,7 @@ def mondai_change(request, table_name, field_name, pk):
                 obj2upd.save()
 
                 # Redirect to relavant page
-                if table_name == "Shitumon":
-                    return redirect(
-                        reverse(
-                            "sui_hei:mondai_show",
-                            kwargs={'pk': obj2upd.mondai_id.id}))
-                else:
-                    return redirect(nextpage)
+                return redirect(nextpage)
             else:
                 return render(request, "sui_hei/mondai_change.html", {
                     'original':
