@@ -66,7 +66,9 @@ class MondaiView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Mondai.objects.order_by('seikai', '-created').select_related()
+        # TODO: Add searching & filtering from request.GET
+        # default behavior
+        return Mondai.objects.order_by('seikai', '-modified').select_related()
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
@@ -76,15 +78,19 @@ class MondaiView(ListView):
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
     # don't set channel automatically on user-triggered channel change.
+    # TODO: Move this post part to javascript, directly post to lobby_channel.
     if request.method == "POST" and request.user.is_authenticated:
         request.session['channel'] = 'comments-' + pk
         return lobby_chat(request)
 
     else:
+        # TODO: Add sorting for yami soup.
         request.session['channel'] = 'mondai-' + pk
 
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
+
+        # Check if current user has done some comments
         try:
             mycomment = Lobby.objects.get(
                 channel="comments-%s" % pk, user_id=request.user)
@@ -167,8 +173,11 @@ def mondai_show_update_soup(request):
 
             # Update mondai
             mondai_id.kaisetu = kaisetu
-            mondai_id.seikai = True if seikai else False
-            if yami: mondai_id.yami = not mondai_id.yami
+            if seikai:
+                mondai_id.seikai = True
+                mondai_id.modified = datetime.now()
+            if yami:
+                mondai_id.yami = not mondai_id.yami
             mondai_id.save()
 
             # Grant awards
@@ -295,10 +304,7 @@ def lobby_channel(request):
         })
     # change page by redirect
     else:
-        chatpage = request.GET.get('chatpage', 1)
-        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-        return redirect(referer_without_query +
-                        "?chatpage=%s&mode=open" % chatpage)
+        return redirect(reverse("sui_hei:index"))
 
 
 # /profile/[0-9]+

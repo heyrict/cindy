@@ -56,6 +56,7 @@ define(["jquery"], function($) {
     });
   }
 });
+
 function ChangeChannel() {
   jQuery.get(
     "/lobby/channel",
@@ -66,6 +67,7 @@ function ChangeChannel() {
   );
   return false;
 }
+
 function PostChat() {
   jQuery.post(
     "/lobby/chat",
@@ -79,23 +81,32 @@ function PostChat() {
   );
   return false;
 }
+
 function InputNorm() {
   var lc = jQuery("#LobbyChannel");
   lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
 }
+
 function PrevChatPage() {
   jQuery.get(
     "/lobby/channel",
-    { chatpage: jQuery("#lobby_nav_prev").val() },
+    {
+      chatpage: jQuery("#lobby_nav_prev").val(),
+      channel: jQuery("#channel").val()
+    },
     function(data) {
       jQuery(".leftbar_content").html(data);
     }
   );
 }
+
 function NextChatPage() {
   jQuery.get(
     "/lobby/channel",
-    { chatpage: jQuery("#lobby_nav_next").val() },
+    {
+      chatpage: jQuery("#lobby_nav_next").val(),
+      channel: jQuery("#channel").val()
+    },
     function(data) {
       jQuery(".leftbar_content").html(data);
     }
