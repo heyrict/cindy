@@ -24,11 +24,11 @@ define(["jquery"], function($) {
     // Calculate best width & height of sidebar
     var goodh = window.innerHeight - 20;
     if (goodh < 400) {
-      goodw = window.innerHeight;
+      goodh = window.innerHeight;
     }
-    var goodw = window.outerWidth * 0.45;
+    var goodw = Math.max(window.outerWidth, window.innerWidth) * 0.45;
     if (goodw < 400) {
-      goodw = window.outerWidth;
+      goodw = Math.max(window.outerWidth, window.innerWidth);
     }
     $(".leftbar_content").css("height", goodh + "px");
 
