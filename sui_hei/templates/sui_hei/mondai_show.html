@@ -3,6 +3,10 @@
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
+{% block pageTitle %}
+{{ mondai.title }} [{{ mondai.genre|genre }}] 
+{% endblock %}
+
 {% block child_navi %}
 {% include 'frames/mondai_child_navi.html' %}
 {% endblock %}

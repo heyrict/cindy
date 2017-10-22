@@ -20,21 +20,25 @@ define(["jquery"], function($) {
   function ToggleSidebar() {
     // Set mode on load
     var $leftbar = $(".leftbar");
-    var goodh = Math.max(window.innerHeight - 20, 400);
-    var goodw = Math.max(window.outerWidth * 0.45, 400);
+
+    // Calculate best width & height of sidebar
+    var goodh = window.innerHeight - 20;
+    if (goodh < 400) {
+      goodw = window.innerHeight;
+    }
+    var goodw = window.outerWidth * 0.45;
+    if (goodw < 400) {
+      goodw = window.outerWidth;
+    }
     $(".leftbar_content").css("height", goodh + "px");
 
     var $leftbarbtn = $(".leftbar_button");
     resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
-    $leftbarbtn.attr(
-      "style",
-      "height:" +
-        $leftbarbtn.height() / resize_rate +
-        "px;" +
-        "width:" +
-        $leftbarbtn.width() / resize_rate +
-        "px;"
-    );
+
+    // Scaling
+    $leftbarbtn
+      .css("height", $leftbarbtn.height() / resize_rate + "px")
+      .css("width", $leftbarbtn.width() / resize_rate + "px");
 
     // Toggle leftbar
     $(".leftbar_button").on("click", function() {

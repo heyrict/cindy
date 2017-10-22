@@ -2,21 +2,16 @@ import re
 from datetime import datetime
 
 from django import forms
-from django.contrib.auth import (authenticate, login, logout,
-                                 update_session_auth_hash)
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
-from django.db.utils import IntegrityError
 from django.forms import ValidationError
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import (get_object_or_404, redirect, render,
-                              render_to_response, reverse)
-from django.template import RequestContext, loader
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import LANGUAGE_SESSION_KEY, activate
+from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
-from markdown import markdown as md
+from django.views.generic import DetailView, ListView, UpdateView
 
 from .admin import *
 from .models import *
