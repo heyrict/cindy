@@ -27,7 +27,7 @@ def line2md(value, p=True):
     # convert all `<>` brackets to html symbol to make it html-safe.
     returns = re.sub("<", "&lt;", value)
     returns = re.sub(">", "&gt;", returns)
-    returns = re.sub(" ", "&nbsp;", returns)
+    returns = re.sub("(?<= ) ", "&nbsp;", returns)
 
     # prevent lists
     returns = re.sub("^([*+-]) ", r"\\\1 ", returns)
