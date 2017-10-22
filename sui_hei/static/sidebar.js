@@ -32,14 +32,6 @@ define(["jquery"], function($) {
     }
     $(".leftbar_content").css("height", goodh + "px");
 
-    var $leftbarbtn = $(".leftbar_button");
-    resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
-
-    // Scaling
-    $leftbarbtn
-      .css("height", $leftbarbtn.height() / resize_rate + "px")
-      .css("width", $leftbarbtn.width() / resize_rate + "px");
-
     // Toggle leftbar
     $(".leftbar_button").on("click", function() {
       var $this = $(".leftbar");
@@ -64,7 +56,7 @@ define(["jquery"], function($) {
 function ChangeChannel() {
   jQuery.get(
     "/lobby/channel",
-    { channel: jQuery("#LobbyChannel").val() },
+    { channel: jQuery("#lobby_nav_input").val() },
     function(data) {
       jQuery(".leftbar_content").html(data);
     }
@@ -77,7 +69,7 @@ function PostChat() {
     "/lobby/chat",
     {
       channel: jQuery("#channel").val(),
-      push_chat: jQuery("#LobbyContent").val()
+      push_chat: jQuery("#lobby_chat_input").val()
     },
     function(data) {
       jQuery(".leftbar_content").html(data);
@@ -87,7 +79,7 @@ function PostChat() {
 }
 
 function InputNorm() {
-  var lc = jQuery("#LobbyChannel");
+  var lc = jQuery("#lobby_nav_input");
   lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
 }
 

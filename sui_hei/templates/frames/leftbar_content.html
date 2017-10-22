@@ -1,18 +1,35 @@
 {% load i18n static markdown iterutil %} 
     <script type="text/javascript">
     require(['jquery'], function ($) {
+        // Set redirection url for `edit`
         var PageURL = window.location.pathname;
         $("a.chat_edit").each(function () {
             this.href += '?next=' + PageURL;
         });
+
+        // Set Height
+        var goodh = window.innerHeight - 20;
+        if (goodh < 400) { goodw = window.innerHeight; }
+        var $leftbarbtn = $(".leftbar_button");
+        resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
+        $leftbarbtn
+          .css("height", $leftbarbtn.height() / resize_rate + "px")
+          .css("width", $leftbarbtn.width() / resize_rate + "px");
+
+        var nav_height = 60;
+        var chat_height = 60;
+        var table_height = goodh - nav_height - chat_height - 5;
+        $(".lobby_navigation_div").css("height", nav_height + "px");
+        $(".lobby_chat_div").css("height", nav_height + "px");
+        $(".lobby_table_div").css("height", table_height + "px");
     });
     </script>
 <div class="lobby_navigation_div">
     {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True next_click="NextChatPage" prev_click="PrevChatPage" %}
     <form class="channel" id="change_channel_form" method="get" onsubmit="return ChangeChannel()">
-        <input id="LobbyChannel" name="change_channel" type="text" style="width:50%; font-size:14px; padding:3px;"
+        <input name="change_channel" type="text" id="lobby_nav_input"
         oninput="InputNorm()" placeholder="current_channel: {{ channel }}">
-        <input value="{% trans 'Change channel' %}" type="submit" style="width:35%; font-size:14px; margin-top:2px;">
+        <input value="{% trans 'Change channel' %}" type="submit" id="lobby_nav_submit">
     </form>
 </div>
 
@@ -38,8 +55,8 @@
 <form class="lobby_chat_div" action="{% url 'sui_hei:lobby_chat' %}" method="post" onsubmit="return PostChat()">
     {% csrf_token %}
     <table class="push_chat">
-        <input id="LobbyContent" name="push_chat" type="text" style="padding:3px; width:95%;">
-        <input value={% trans 'Send' %}/{% trans 'Update' %} type="submit" style="margin-top:2px; font-size:18px; width:95%;">
+        <input id="lobby_chat_input" name="push_chat" type="text">
+        <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="submit">
         <input id="channel" type="text" value="{{ channel }}" style="visibility:hidden">
     </table>
 </form>
