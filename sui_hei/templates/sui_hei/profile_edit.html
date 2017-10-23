@@ -6,10 +6,14 @@
 {% block script %}
 $(document).ready(function() {
   require(['marked'], function(marked){
-    $("#profile_preview")[0].innerHTML = marked($("#id_profile").val());
+    var inputs = marked($("#id_profile").val());
+    inputs = inputs.replace(/chat:\/\/([0-9a-zA-Z\-]+)/g, "javascript:OpenChat('$1');");
+    $("#profile_preview")[0].innerHTML = inputs;
 
     $("#id_profile").on('input', function(){
-      $("#profile_preview")[0].innerHTML = marked($("#id_profile").val());
+      var inputs = marked($("#id_profile").val());
+      inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");
+      $("#profile_preview")[0].innerHTML = inputs;
     });
   });
 });

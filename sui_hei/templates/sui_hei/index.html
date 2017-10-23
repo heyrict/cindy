@@ -16,7 +16,9 @@
 $(document).ready(function() {
   require(['marked'], function(marked){
     $("#info_textarea").on('input', function(){
-      $("#info_preview")[0].innerHTML = marked($("#info_textarea").val());
+      var inputs = marked($("#info_textarea").val());
+      inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");
+      $("#info_preview")[0].innerHTML = inputs;
     });
   });
 });
@@ -36,7 +38,7 @@ Cindy
         <div class="hline"></div><br>
     </div>
     {% for info in infos %}
-    <div class="wrapper" style="border:2px solid #268bd2;">
+    <div class="wrapper chat_message" style="border:2px solid #268bd2;">
         {{ info.content|text2md|safe }}
         {% if perms.sui_hei.can_add_info %}
         <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' info.id %}">[{% trans 'edit' %}]</a>
@@ -64,7 +66,7 @@ Cindy
     <table style="width:100%;">
         {% for comment, mondai in comments %}
         <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
-            <td><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+            <td class="chat_message"><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
                     {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
                 >> {{ comment.content }}
             </td>

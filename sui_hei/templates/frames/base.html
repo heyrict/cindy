@@ -29,6 +29,10 @@
     require(["jquery"], function($) {
         {% block script %}
         {% endblock %}
+        // handling chat://
+        var lc = $(".chat_message").each( function (index) {
+            $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
+        });
     });
   </script>
   {% block script_include %}{% endblock %}

@@ -50,7 +50,7 @@
         {% if user == sui_hei_user %}
             <a href="/profile/edit"> [{% trans 'edit' %}] </a>
         {% endif %} 
-            </th><td> {{ sui_hei_user.profile|text2md|safe }}
+            </th><td class="chat_message"> {{ sui_hei_user.profile|text2md|safe }}
     </td></tr>
         {% if user == sui_hei_user %}
         <tr><th>{% trans "Change password" %}</th><td>

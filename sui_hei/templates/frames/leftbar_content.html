@@ -1,5 +1,5 @@
 {% load i18n static markdown iterutil %} 
-    <script type="text/javascript">
+<script type="text/javascript">
     require(['jquery'], function ($) {
         // Set redirection url for `edit`
         var PageURL = window.location.pathname;
@@ -22,8 +22,13 @@
         $(".lobby_navigation_div").css("height", nav_height + "px");
         $(".lobby_chat_div").css("height", nav_height + "px");
         $(".lobby_table_div").css("height", table_height + "px");
+
+        // handling chat://
+        var lc = $("td#message").each( function (index) {
+            $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
+        });
     });
-    </script>
+</script>
 <div class="lobby_navigation_div">
     {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True next_click="NextChatPage" prev_click="PrevChatPage" %}
     <form class="channel" id="change_channel_form" method="get" onsubmit="return ChangeChannel()">
