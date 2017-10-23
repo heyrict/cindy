@@ -108,3 +108,25 @@ function NextChatPage() {
     }
   );
 }
+
+function OpenChat(channel) {
+  var $this = $(".leftbar");
+  var goodh = Math.max(window.innerHeight - 20, 400);
+  var goodw = Math.max(window.outerWidth * 0.45, 400);
+
+  jQuery.get(
+    "/lobby/channel",
+    { channel: channel },
+    function(data) {
+      jQuery(".leftbar_content").html(data);
+    }
+  );
+
+  if ($this.attr("mode") == "closed") {
+    $this.velocity({
+      left: "0%",
+      width: goodw + "px"
+    });
+    $this.attr("mode", "open");
+  }
+}
