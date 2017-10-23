@@ -48,7 +48,7 @@
     {% endif %} 
     <tr><th>{% trans "Profile" %}
         {% if user == sui_hei_user %}
-            <a href="/profile/edit"> [{% trans 'edit' %}] </a>
+        <a href="{% url 'sui_hei:profile_edit' %}"> [{% trans 'edit' %}] </a>
         {% endif %} 
             </th><td class="chat_message"> {{ sui_hei_user.profile|text2md|safe }}
     </td></tr>

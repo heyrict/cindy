@@ -9,23 +9,8 @@
 
 {% block content %}
 <h2>{% trans 'MyStar' %}</h2>
-{% if is_paginated %} 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %} 
-            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
-            {% endif %} 
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
-            </span>
-
-            {% if page_obj.has_next %} 
-            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
-            {% endif %} 
-        </span>
-    </div>
-{% endif %} 
+{% include 'frames/pagination.html' with id_prefix='star' %}
 
 {% for star in star_list %}
 <ul>
@@ -33,10 +18,10 @@
     <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
 
     <span class="title_label">
-        <a href="/star/show/{{ star.mondai_id.id }}">{{ star.mondai_id.title }} </a>
+        <a href="{% url 'sui_hei:mondai_show' star.mondai_id.id %}">{{ star.mondai_id.title }} </a>
     </span>
     {% trans 'Giver' %}: 
-    <b><a href="/profile/{{ star.mondai_id.user_id.id }}">{{ star.mondai_id.user_id.nickname }}</a>
+    <b><a href="{% url 'sui_hei:profile' star.mondai_id.user_id.id %}">{{ star.mondai_id.user_id.nickname }}</a>
         {% if star.mondai_id.user_id.current_award %}[{{ star.mondai_id.user_id.current_award }}]{% endif %}</b>
     [{% trans 'created' %}: {{ star.mondai_id.created }}]
 </li>
