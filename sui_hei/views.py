@@ -120,7 +120,8 @@ def mondai_star(request):
             user_id=request.user, mondai_id=mondai_id)[0]
         star.value = float(request.POST.get('starbarind', 0))
         star.save()
-        update_soup_score(star.mondai_id)
+        try: update_soup_score(star.mondai_id)
+        except: pass
     return redirect(request.META['HTTP_REFERER'])
 
 
