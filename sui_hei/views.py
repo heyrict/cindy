@@ -163,6 +163,7 @@ def mondai_show_update_soup(request):
             kaisetu = request.POST['change_kaisetu']
             seikai = request.POST.get('change_seikai')
             yami = request.POST.get('toggle_yami')
+            memo = request.POST.get('change_memo')
 
             # Validation
             if kaisetu == '': raise ValueError("Empty Input Data")
@@ -171,6 +172,7 @@ def mondai_show_update_soup(request):
 
             # Update mondai
             mondai_id.kaisetu = kaisetu
+            mondai_id.memo = memo
             if seikai:
                 mondai_id.seikai = True
                 mondai_id.modified = timezone.now()
@@ -318,8 +320,9 @@ class ProfileView(DetailView):
         userid = context['sui_hei_user'].id
         mondais = Mondai.objects.filter(user_id=userid)
         comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id)
-                                                     for i in mondais])
-        context['comments'] = zip(comments[:10], mondais[:10])
+                                                     for i in mondais])[:10]
+        com_mondais = [Mondai.objects.get(id=i.channel[9:]) for i in comments]
+        context['comments'] = zip(comments, com_mondais)
         context['pk'] = self.kwargs['pk']
 
         # get all awards
@@ -328,6 +331,14 @@ class ProfileView(DetailView):
         else:
             available_awards = []
         context['available_awards'] = available_awards
+
+        # get statistics
+        context['mondai_count'] = mondais.count()
+        put_ques = Shitumon.objects.filter(user_id=userid)
+        context['ques_count'] = put_ques.count()
+        context['goodques_count'] = put_ques.filter(good=True).count()
+        context['trueques_count'] = put_ques.filter(true=True).count()
+        context['comment_count'] = Lobby.objects.filter(channel__startswith="comments-", user_id=userid).count()
         return context
 
 

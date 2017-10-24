@@ -38,6 +38,10 @@ $(document).ready(function() {
     $("#kaisetu_textarea").on('input', function(){
       $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
     });
+
+    $("#memo_textarea").on('input', function(){
+      $("#memo_preview")[0].innerHTML = marked($("#memo_textarea").val());
+    });
   });
   require(['jquery'], function ($) {
       var PageURL = window.location.pathname;
@@ -220,6 +224,19 @@ $(document).ready(function() {
     <br>
     <!-- Evaluation Panel -->
 </div>
+<!-- giver panel -->
+<form class="wrapper" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
+    {% csrf_token %}
+    <span class="giver_panel">
+        <div>{% trans 'Memo' %}: 
+        <textarea id="memo_textarea" name="change_memo">{{ mondai.memo }}</textarea></div>
+
+        <input type="checkbox" name="toggle_yami">
+        {% if mondai.yami %}{% trans 'uncheck as yami' %}{% else %}{% trans 'check as yami' %}{% endif %}<br>
+        <input value="{% trans 'Update' %}" type="submit">
+    </span>
+</form><br>
+<!-- end giver panel -->
 {% else %}
     {% if not user.is_authenticated %}
     <!-- for guests -->
@@ -230,8 +247,14 @@ $(document).ready(function() {
     <form action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
         {% csrf_token %}
         <span class="giver_panel">
-            <p>{% trans 'True Answer' %}: 
-            <textarea id="kaisetu_textarea" name="change_kaisetu">{{ mondai.kaisetu }}</textarea></p>
+            <div style="float:left; width:44%;">{% trans 'Memo' %}: 
+            <textarea id="memo_textarea" name="change_memo">{{ mondai.memo }}</textarea></div>
+
+            <div style="float:right; width:55%;">{% trans 'True Answer' %}: 
+            <textarea id="kaisetu_textarea" name="change_kaisetu">{{ mondai.kaisetu }}</textarea></div>
+
+            <div class="clear"></div>
+
             <input type="checkbox" name="toggle_yami">
             {% if mondai.yami %}{% trans 'uncheck as yami' %}{% else %}{% trans 'check as yami' %}{% endif %}<br>
             <input type="checkbox" name="change_seikai" onclick="alert('You cannot revert change if you put the true answer!')">
@@ -257,5 +280,13 @@ $(document).ready(function() {
     {% endif %}
 {% endif %}
 <!-- End Answer of Question -->
+<!-- Start memo -->
+{% if mondai.memo or user == mondai.user_id %}
+<div class="wrapper" style="border:3px solid #728905;">
+    <font color=#52676f" size="5px" face="monospace">{% trans 'Memo' %}</font>
+    <div id="memo_preview">{{ mondai.memo|text2md|safe }}</div>
+</div>
+{% endif %}
+<!-- End memo -->
 
 {% endblock %} 

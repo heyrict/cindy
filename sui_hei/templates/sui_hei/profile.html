@@ -27,6 +27,11 @@
     <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
     <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>
     <tr><th>{% trans "Last login" %}</th><td>{{ sui_hei_user.last_login }} </td></tr>
+    <tr><th>{% trans "Mondai count" %}</th><td>{{ mondai_count }}</td></tr>
+    <tr><th>{% trans "Question count" %}</th><td>{{ ques_count }}</td></tr>
+    <tr><th>{% trans "Good Question count" %}</th><td>{{ goodques_count }}</td></tr>
+    <tr><th>{% trans "True Answer count" %}</th><td>{{ trueques_count }}</td></tr>
+    <tr><th>{% trans "Comment count" %}</th><td>{{ comment_count }}</td></tr>
     {% if user == sui_hei_user %}
     <tr>
         <th>{% trans "Award" %}</th>

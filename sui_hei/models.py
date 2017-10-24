@@ -64,6 +64,7 @@ class Mondai(models.Model):
     created = models.DateTimeField(_('created'), null=False)
     modified = models.DateTimeField(_('modified'), null=False)
     status = models.IntegerField(_('status'), default=0, null=False)
+    memo = models.TextField(_('memo'), default="")
     score = models.FloatField(_('score'), default=0, null=False)
 
     class Meta:
