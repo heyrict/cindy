@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from django.utils import timezone
 
 from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
@@ -15,6 +15,7 @@ from django.views.generic import DetailView, ListView, UpdateView
 
 from .admin import *
 from .models import *
+from scoring import *
 
 
 # Create your views here.
@@ -119,6 +120,7 @@ def mondai_star(request):
             user_id=request.user, mondai_id=mondai_id)[0]
         star.value = float(request.POST.get('starbarind', 0))
         star.save()
+        update_soup_score(star.mondai_id)
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -170,7 +172,7 @@ def mondai_show_update_soup(request):
             mondai_id.kaisetu = kaisetu
             if seikai:
                 mondai_id.seikai = True
-                mondai_id.modified = datetime.now()
+                mondai_id.modified = timezone.now()
             if yami:
                 mondai_id.yami = not mondai_id.yami
             mondai_id.save()
@@ -242,7 +244,7 @@ def mondai_show_push_ques(request):
             ques = Shitumon(
                 user_id=request.user,
                 shitumon=content.strip(),
-                askedtime=datetime.now(),
+                askedtime=timezone.now(),
                 mondai_id=mondai_id)
             ques.save()
         except Exception as e:
@@ -441,8 +443,8 @@ def mondai_add(request):
             content = form.cleaned_data['content']
             kaisetu = form.cleaned_data['kaisetu']
             userid = request.user
-            created = datetime.now()
-            modified = datetime.now()
+            created = timezone.now()
+            modified = timezone.now()
 
             _mondai = Mondai(
                 title=title,
