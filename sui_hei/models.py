@@ -97,7 +97,7 @@ class Lobby(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
-    score = models.SmallIntegerField(_('score'), default=50)
+    #score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
         permissions = (
