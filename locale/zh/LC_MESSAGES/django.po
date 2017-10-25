@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 23:58+0900\n"
+"POT-Creation-Date: 2017-10-26 10:08+0900\n"
 "PO-Revision-Date: 2017-10-06 19:08+0800\n"
 "Last-Translator: heyrict <heyrict@yahoo.co.jp>\n"
 "Language: zh\n"
@@ -29,7 +29,7 @@ msgstr "中文"
 
 #: cindy/settings.py:145
 msgid "French"
-msgstr ""
+msgstr "法语"
 
 #: sui_hei/models.py:13 sui_hei/templates/sui_hei/profile.html:37
 msgid "Award"
@@ -45,13 +45,11 @@ msgstr "简介"
 
 #: sui_hei/models.py:23
 msgid "experience"
-msgstr ""
+msgstr "经验值"
 
 #: sui_hei/models.py:42
-#, fuzzy
-#| msgid "Award"
 msgid "User-Award"
-msgstr "称号"
+msgstr "用户称号"
 
 #: sui_hei/models.py:58
 msgid "title"
@@ -77,9 +75,9 @@ msgstr "解说"
 msgid "seikai"
 msgstr "正解"
 
-#: sui_hei/models.py:64 sui_hei/templates/sui_hei/mondai.html:40
-#: sui_hei/templates/sui_hei/profile_mystar.html:26
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:30
+#: sui_hei/models.py:64 sui_hei/templates/sui_hei/mondai.html:43
+#: sui_hei/templates/sui_hei/profile_mystar.html:58
+#: sui_hei/templates/sui_hei/profile_selledsoup.html:35
 msgid "created"
 msgstr "料理时间"
 
@@ -89,11 +87,11 @@ msgstr "修改时间"
 
 #: sui_hei/models.py:66
 msgid "status"
-msgstr ""
+msgstr "状态"
 
 #: sui_hei/models.py:67
 msgid "memo"
-msgstr ""
+msgstr "备忘录"
 
 #: sui_hei/models.py:68
 msgid "score"
@@ -151,59 +149,63 @@ msgstr "大厅"
 msgid "Value"
 msgstr ""
 
-#: sui_hei/models.py:120 sui_hei/templates/sui_hei/mondai_show.html:211
+#: sui_hei/models.py:120 sui_hei/templates/sui_hei/mondai_show.html:187
 msgid "Star"
 msgstr "好评"
 
 #: sui_hei/templates/frames/base.html:10
-msgid "Chat With Lateral Thinking!"
-msgstr ""
+msgid "A website for playing situation puzzles"
+msgstr "海龟汤餐厅"
 
-#: sui_hei/templates/frames/header.html:4
+#: sui_hei/templates/frames/base.html:10
+msgid "Chat With Lateral Thinking!"
+msgstr "水平思考即佳肴"
+
+#: sui_hei/templates/frames/base.html:50
 msgid "Welcome, "
 msgstr "欢迎，"
 
-#: sui_hei/templates/frames/header.html:5
+#: sui_hei/templates/frames/base.html:51
 msgid "logout"
 msgstr "登出"
 
-#: sui_hei/templates/frames/header.html:7
+#: sui_hei/templates/frames/base.html:53
 msgid "register"
 msgstr "注册"
 
-#: sui_hei/templates/frames/header.html:8
+#: sui_hei/templates/frames/base.html:54
 msgid "login"
 msgstr "登入"
 
-#: sui_hei/templates/frames/header.html:13
+#: sui_hei/templates/frames/base.html:60
 msgid "Site Navigations"
 msgstr "网站导航"
 
-#: sui_hei/templates/frames/header.html:15
+#: sui_hei/templates/frames/base.html:62
 msgid "homepage"
 msgstr "主页"
 
-#: sui_hei/templates/frames/header.html:16
+#: sui_hei/templates/frames/base.html:63
 msgid "mondai"
 msgstr "问题"
 
-#: sui_hei/templates/frames/leftbar_content.html:37
+#: sui_hei/templates/frames/leftbar_content.html:32
 msgid "Change channel"
 msgstr "换频道"
 
-#: sui_hei/templates/frames/leftbar_content.html:52
+#: sui_hei/templates/frames/leftbar_content.html:47
 #: sui_hei/templates/sui_hei/index.html:44
 #: sui_hei/templates/sui_hei/profile.html:56
 msgid "edit"
 msgstr "修改"
 
-#: sui_hei/templates/frames/leftbar_content.html:64
+#: sui_hei/templates/frames/leftbar_content.html:59
 msgid "Send"
 msgstr "发送"
 
-#: sui_hei/templates/frames/leftbar_content.html:64
-#: sui_hei/templates/sui_hei/mondai_show.html:236
-#: sui_hei/templates/sui_hei/mondai_show.html:262
+#: sui_hei/templates/frames/leftbar_content.html:59
+#: sui_hei/templates/sui_hei/mondai_show.html:212
+#: sui_hei/templates/sui_hei/mondai_show.html:238
 msgid "Update"
 msgstr "更新"
 
@@ -233,7 +235,7 @@ msgid "Selled Soups"
 msgstr "已售出的汤"
 
 #: sui_hei/templates/frames/profile_child_navi.html:5
-#: sui_hei/templates/sui_hei/profile_mystar.html:11
+#: sui_hei/templates/sui_hei/profile_mystar.html:31
 msgid "MyStar"
 msgstr "我的好评"
 
@@ -278,19 +280,19 @@ msgstr "评论"
 msgid "All Soups"
 msgstr "海龟汤菜单"
 
-#: sui_hei/templates/sui_hei/mondai_add.html:38 sui_hei/views.py:442
+#: sui_hei/templates/sui_hei/mondai_add.html:38 sui_hei/views.py:443
 msgid "Content"
 msgstr "内容"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:38
 #: sui_hei/templates/sui_hei/mondai_add.html:43
-#: sui_hei/templates/sui_hei/mondai_show.html:266
+#: sui_hei/templates/sui_hei/mondai_show.html:242
 msgid "Preview"
 msgstr "预览"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:43
-#: sui_hei/templates/sui_hei/mondai_show.html:253
-#: sui_hei/templates/sui_hei/mondai_show.html:266 sui_hei/views.py:443
+#: sui_hei/templates/sui_hei/mondai_show.html:229
+#: sui_hei/templates/sui_hei/mondai_show.html:242 sui_hei/views.py:444
 msgid "True Answer"
 msgstr "解答"
 
@@ -303,74 +305,83 @@ msgstr "确认"
 msgid "Commit Change"
 msgstr "确认更改"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:101
-#: sui_hei/templates/sui_hei/profile_mystar.html:23
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:27
+#: sui_hei/templates/sui_hei/mondai_show.html:46
+msgid "You cannot revert change if you put the true answer!"
+msgstr "提出解答后将无法撤销！"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:46
+#: sui_hei/templates/sui_hei/profile_mystar.html:13
+#, fuzzy
+#| msgid "Content"
+msgid "Continue?"
+msgstr "内容"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:77
+#: sui_hei/templates/sui_hei/profile_mystar.html:55
 msgid "Giver"
 msgstr "厨师"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:104
+#: sui_hei/templates/sui_hei/mondai_show.html:80
 msgid "Give time"
 msgstr "制作时间"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:131
-#: sui_hei/templates/sui_hei/mondai_show.html:144
+#: sui_hei/templates/sui_hei/mondai_show.html:107
+#: sui_hei/templates/sui_hei/mondai_show.html:120
 msgid "[edit]"
 msgstr "[编辑]"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:155
+#: sui_hei/templates/sui_hei/mondai_show.html:131
 msgid "uncheck as good-question"
 msgstr "取消好问题"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:157
+#: sui_hei/templates/sui_hei/mondai_show.html:133
 msgid "check as good-question"
 msgstr "好问题"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:161
+#: sui_hei/templates/sui_hei/mondai_show.html:137
 msgid "uncheck as true-answer"
 msgstr "取消正解"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:163
+#: sui_hei/templates/sui_hei/mondai_show.html:139
 msgid "check as true-answer"
 msgstr "正解"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:180
+#: sui_hei/templates/sui_hei/mondai_show.html:156
 msgid "waiting to be answered"
 msgstr "等待回答..."
 
-#: sui_hei/templates/sui_hei/mondai_show.html:192
+#: sui_hei/templates/sui_hei/mondai_show.html:168
 msgid "Put Responds"
 msgstr "回复"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:205
+#: sui_hei/templates/sui_hei/mondai_show.html:181
 msgid "Show Comments"
 msgstr "展示评论"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:231
-#: sui_hei/templates/sui_hei/mondai_show.html:250
-#: sui_hei/templates/sui_hei/mondai_show.html:286
+#: sui_hei/templates/sui_hei/mondai_show.html:207
+#: sui_hei/templates/sui_hei/mondai_show.html:226
 msgid "Memo"
-msgstr ""
+msgstr "备忘录"
 
+#: sui_hei/templates/sui_hei/mondai_show.html:211
 #: sui_hei/templates/sui_hei/mondai_show.html:235
-#: sui_hei/templates/sui_hei/mondai_show.html:259
 msgid "uncheck as yami"
 msgstr "取消迷雾汤"
 
+#: sui_hei/templates/sui_hei/mondai_show.html:211
 #: sui_hei/templates/sui_hei/mondai_show.html:235
-#: sui_hei/templates/sui_hei/mondai_show.html:259
 msgid "check as yami"
 msgstr "变成迷雾汤"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:243
+#: sui_hei/templates/sui_hei/mondai_show.html:219
 msgid "Hello guest! I need to know who you are before you ask a question!"
 msgstr "路人你好！何不停下来喝碗海龟汤？"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:261
+#: sui_hei/templates/sui_hei/mondai_show.html:237
 msgid "Put True Answer"
 msgstr "上解答！"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:276
+#: sui_hei/templates/sui_hei/mondai_show.html:252
 msgid "Put Question"
 msgstr "提问"
 
@@ -392,29 +403,23 @@ msgstr "最后登录"
 
 #: sui_hei/templates/sui_hei/profile.html:30
 msgid "Mondai count"
-msgstr ""
+msgstr "海龟汤数目"
 
 #: sui_hei/templates/sui_hei/profile.html:31
-#, fuzzy
-#| msgid "Question"
 msgid "Question count"
-msgstr "问题"
+msgstr "提问数目"
 
 #: sui_hei/templates/sui_hei/profile.html:32
 msgid "Good Question count"
-msgstr ""
+msgstr "好问题数目"
 
 #: sui_hei/templates/sui_hei/profile.html:33
-#, fuzzy
-#| msgid "True Answer"
 msgid "True Answer count"
-msgstr "解答"
+msgstr "正解数目"
 
 #: sui_hei/templates/sui_hei/profile.html:34
-#, fuzzy
-#| msgid "Comments"
 msgid "Comment count"
-msgstr "评论"
+msgstr "评论数目"
 
 #: sui_hei/templates/sui_hei/profile.html:42
 msgid "None"
@@ -428,30 +433,38 @@ msgstr "更改"
 msgid "Change password"
 msgstr "更改密码"
 
-#: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:436
+#: sui_hei/templates/sui_hei/profile_mystar.html:13
+msgid "You cannot revert change if you delete the star!"
+msgstr "删除好评后将无法还原！"
+
+#: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:437
 msgid "Albatross"
 msgstr "海龟汤"
 
-#: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:437
+#: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:438
 msgid "20th-Door"
 msgstr "二十回廊"
 
-#: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:438
+#: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:439
 msgid "Little Albat"
 msgstr "小海龟之旅"
 
-#: sui_hei/templatetags/decodes.py:13 sui_hei/views.py:439
+#: sui_hei/templatetags/decodes.py:13 sui_hei/views.py:440
 msgid "Others & Formal"
 msgstr "其他 & 活动"
 
-#: sui_hei/views.py:432
+#: sui_hei/views.py:433
 msgid "Title"
 msgstr "标题"
 
-#: sui_hei/views.py:434
+#: sui_hei/views.py:435
 msgid "Genre"
 msgstr "类别"
 
-#: sui_hei/views.py:441
+#: sui_hei/views.py:442
 msgid "Yami"
 msgstr "迷雾汤"
+
+#: sui_hei/views.py:504
+msgid "You are not permitted to delete others star!"
+msgstr "你无权更改他人的好评"

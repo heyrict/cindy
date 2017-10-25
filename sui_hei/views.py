@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
@@ -20,6 +20,7 @@ from scoring import *
 
 # Create your views here.
 # /
+# TODO: Change database related POSTs to javascript
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
@@ -486,8 +487,23 @@ def set_language(request):
 def award_change(request):
     if request.method == "POST":
         award_name = request.POST.get('award')
-        print(award_name)
         award = Award.objects.get(name=award_name) if award_name else None
         request.user.current_award = award
         request.user.save()
     return redirect(request.META['HTTP_REFERER'])
+
+
+def remove_star(request):
+    if request.method == "POST":
+        star_id = request.POST.get('star_id')
+        try:
+            star = Star.objects.get(id=star_id)
+
+            # Validation
+            if star.user_id != request.user:
+                raise ValidationError(_("You are not permitted to delete others star!"))
+
+        except Exception as e:
+            return HttpResponse("RemoveStar:", e)
+        star.delete()
+    return HttpResponse(True)

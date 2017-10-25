@@ -41,6 +41,11 @@ require(['jquery', 'jquery-ui'], function($) {
       handle.css('margin-top', -7.5-ui.value+"px");
     }
   });
+  $("#change_seikai_ckbx").on("click", function() {
+    if (this.checked) {
+      return confirm("{% trans 'You cannot revert change if you put the true answer!' %}\n{% trans 'Continue?' %}")
+    }
+  });
 });
 {% endblock %}
 
@@ -228,7 +233,7 @@ require(['jquery', 'jquery-ui'], function($) {
 
             <input type="checkbox" name="toggle_yami">
             {% if mondai.yami %}{% trans 'uncheck as yami' %}{% else %}{% trans 'check as yami' %}{% endif %}<br>
-            <input type="checkbox" name="change_seikai" onclick="alert('You cannot revert change if you put the true answer!')">
+            <input type="checkbox" name="change_seikai" id="change_seikai_ckbx">
             {% trans 'Put True Answer' %}<br>
             <input value="{% trans 'Update' %}" type="submit">
         </span>

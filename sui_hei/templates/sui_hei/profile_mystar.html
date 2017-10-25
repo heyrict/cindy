@@ -7,6 +7,26 @@
 {% include 'frames/profile_child_navi.html' %}
 {% endblock %}
 
+{% block script %}
+$(".remove_star_button").on("click", function () {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  if (confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}")) {
+    jQuery.post(
+      "{% url 'sui_hei:mondai_star_remove' %}",
+      {
+        csrfmiddlewaretoken: csrftoken,
+        star_id: this.value,
+      },
+      function(data) {
+        if (data) {
+          location.reload();
+        }
+      }
+    );
+  }
+});
+{% endblock %}
+
 {% block content %}
 <h2>{% trans 'MyStar' %}</h2>
 
@@ -16,6 +36,10 @@
 <ul>
 <li>
     <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
+
+    {% if star.user_id == user %}
+    <button class="remove_star_button" style="padding:inherit;background:inherit;color:red;" value={{ star.id }}>⛔</button>
+    {% endif %}
 
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' star.mondai_id.id %}">{{ star.mondai_id.title }} </a>
@@ -36,4 +60,5 @@
 </li>
 </ul>
 {% endfor %}
+<div class="clear"></div>
 {% endblock %}

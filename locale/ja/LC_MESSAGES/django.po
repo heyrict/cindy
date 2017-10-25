@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 23:58+0900\n"
+"POT-Creation-Date: 2017-10-26 10:08+0900\n"
 "PO-Revision-Date: 2017-09-27 20:05+0800\n"
 "Last-Translator: heyrict <xiezh0831@yahoo.co.jp>\n"
 "Language: ja\n"
@@ -76,9 +76,9 @@ msgstr "解説"
 msgid "seikai"
 msgstr "正解あり"
 
-#: sui_hei/models.py:64 sui_hei/templates/sui_hei/mondai.html:40
-#: sui_hei/templates/sui_hei/profile_mystar.html:26
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:30
+#: sui_hei/models.py:64 sui_hei/templates/sui_hei/mondai.html:43
+#: sui_hei/templates/sui_hei/profile_mystar.html:58
+#: sui_hei/templates/sui_hei/profile_selledsoup.html:35
 msgid "created"
 msgstr "作った時間"
 
@@ -150,59 +150,63 @@ msgstr "ロビー"
 msgid "Value"
 msgstr ""
 
-#: sui_hei/models.py:120 sui_hei/templates/sui_hei/mondai_show.html:211
+#: sui_hei/models.py:120 sui_hei/templates/sui_hei/mondai_show.html:187
 msgid "Star"
 msgstr "スター"
+
+#: sui_hei/templates/frames/base.html:10
+msgid "A website for playing situation puzzles"
+msgstr "ウミガメのスープ出題サイト"
 
 #: sui_hei/templates/frames/base.html:10
 msgid "Chat With Lateral Thinking!"
 msgstr "ラテラルシンキングでチャットしよう！"
 
-#: sui_hei/templates/frames/header.html:4
+#: sui_hei/templates/frames/base.html:50
 msgid "Welcome, "
 msgstr "こんにちは、"
 
-#: sui_hei/templates/frames/header.html:5
+#: sui_hei/templates/frames/base.html:51
 msgid "logout"
 msgstr "ログアウト"
 
-#: sui_hei/templates/frames/header.html:7
+#: sui_hei/templates/frames/base.html:53
 msgid "register"
 msgstr "サインイン"
 
-#: sui_hei/templates/frames/header.html:8
+#: sui_hei/templates/frames/base.html:54
 msgid "login"
 msgstr "ログイン"
 
-#: sui_hei/templates/frames/header.html:13
+#: sui_hei/templates/frames/base.html:60
 msgid "Site Navigations"
 msgstr "ナビゲーション"
 
-#: sui_hei/templates/frames/header.html:15
+#: sui_hei/templates/frames/base.html:62
 msgid "homepage"
 msgstr "ホームページ"
 
-#: sui_hei/templates/frames/header.html:16
+#: sui_hei/templates/frames/base.html:63
 msgid "mondai"
 msgstr "問題"
 
-#: sui_hei/templates/frames/leftbar_content.html:37
+#: sui_hei/templates/frames/leftbar_content.html:32
 msgid "Change channel"
 msgstr "チャンネル変更"
 
-#: sui_hei/templates/frames/leftbar_content.html:52
+#: sui_hei/templates/frames/leftbar_content.html:47
 #: sui_hei/templates/sui_hei/index.html:44
 #: sui_hei/templates/sui_hei/profile.html:56
 msgid "edit"
 msgstr "編集"
 
-#: sui_hei/templates/frames/leftbar_content.html:64
+#: sui_hei/templates/frames/leftbar_content.html:59
 msgid "Send"
 msgstr "発言"
 
-#: sui_hei/templates/frames/leftbar_content.html:64
-#: sui_hei/templates/sui_hei/mondai_show.html:236
-#: sui_hei/templates/sui_hei/mondai_show.html:262
+#: sui_hei/templates/frames/leftbar_content.html:59
+#: sui_hei/templates/sui_hei/mondai_show.html:212
+#: sui_hei/templates/sui_hei/mondai_show.html:238
 msgid "Update"
 msgstr "更新"
 
@@ -232,7 +236,7 @@ msgid "Selled Soups"
 msgstr "出題した問題"
 
 #: sui_hei/templates/frames/profile_child_navi.html:5
-#: sui_hei/templates/sui_hei/profile_mystar.html:11
+#: sui_hei/templates/sui_hei/profile_mystar.html:31
 msgid "MyStar"
 msgstr "マイスター"
 
@@ -279,19 +283,19 @@ msgstr "評価・コメント"
 msgid "All Soups"
 msgstr "すべての問題"
 
-#: sui_hei/templates/sui_hei/mondai_add.html:38 sui_hei/views.py:442
+#: sui_hei/templates/sui_hei/mondai_add.html:38 sui_hei/views.py:443
 msgid "Content"
 msgstr "コンテンツ"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:38
 #: sui_hei/templates/sui_hei/mondai_add.html:43
-#: sui_hei/templates/sui_hei/mondai_show.html:266
+#: sui_hei/templates/sui_hei/mondai_show.html:242
 msgid "Preview"
 msgstr "プレビュー"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:43
-#: sui_hei/templates/sui_hei/mondai_show.html:253
-#: sui_hei/templates/sui_hei/mondai_show.html:266 sui_hei/views.py:443
+#: sui_hei/templates/sui_hei/mondai_show.html:229
+#: sui_hei/templates/sui_hei/mondai_show.html:242 sui_hei/views.py:444
 msgid "True Answer"
 msgstr "解説"
 
@@ -304,74 +308,81 @@ msgstr "確認"
 msgid "Commit Change"
 msgstr "変更実行"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:101
-#: sui_hei/templates/sui_hei/profile_mystar.html:23
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:27
+#: sui_hei/templates/sui_hei/mondai_show.html:46
+msgid "You cannot revert change if you put the true answer!"
+msgstr "正解を出すと二度と問題を編集出来ません"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:46
+#: sui_hei/templates/sui_hei/profile_mystar.html:13
+msgid "Continue?"
+msgstr "続きますか？"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:77
+#: sui_hei/templates/sui_hei/profile_mystar.html:55
 msgid "Giver"
 msgstr "出題者"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:104
+#: sui_hei/templates/sui_hei/mondai_show.html:80
 msgid "Give time"
 msgstr "出題時間"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:131
-#: sui_hei/templates/sui_hei/mondai_show.html:144
+#: sui_hei/templates/sui_hei/mondai_show.html:107
+#: sui_hei/templates/sui_hei/mondai_show.html:120
 msgid "[edit]"
 msgstr "[編集]"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:155
+#: sui_hei/templates/sui_hei/mondai_show.html:131
 msgid "uncheck as good-question"
 msgstr "良い質問にしない"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:157
+#: sui_hei/templates/sui_hei/mondai_show.html:133
 msgid "check as good-question"
 msgstr "良い質問にする"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:161
+#: sui_hei/templates/sui_hei/mondai_show.html:137
 msgid "uncheck as true-answer"
 msgstr "正解にしない"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:163
+#: sui_hei/templates/sui_hei/mondai_show.html:139
 msgid "check as true-answer"
 msgstr "正解にする"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:180
+#: sui_hei/templates/sui_hei/mondai_show.html:156
 msgid "waiting to be answered"
 msgstr "回答はまだです"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:192
+#: sui_hei/templates/sui_hei/mondai_show.html:168
 msgid "Put Responds"
 msgstr "すべての質問を回答する"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:205
+#: sui_hei/templates/sui_hei/mondai_show.html:181
 msgid "Show Comments"
 msgstr "評価・コメントを見る"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:231
-#: sui_hei/templates/sui_hei/mondai_show.html:250
-#: sui_hei/templates/sui_hei/mondai_show.html:286
+#: sui_hei/templates/sui_hei/mondai_show.html:207
+#: sui_hei/templates/sui_hei/mondai_show.html:226
 msgid "Memo"
 msgstr "メモ"
 
+#: sui_hei/templates/sui_hei/mondai_show.html:211
 #: sui_hei/templates/sui_hei/mondai_show.html:235
-#: sui_hei/templates/sui_hei/mondai_show.html:259
 msgid "uncheck as yami"
 msgstr "闇スープにしない"
 
+#: sui_hei/templates/sui_hei/mondai_show.html:211
 #: sui_hei/templates/sui_hei/mondai_show.html:235
-#: sui_hei/templates/sui_hei/mondai_show.html:259
 msgid "check as yami"
 msgstr "闇スープにする"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:243
+#: sui_hei/templates/sui_hei/mondai_show.html:219
 msgid "Hello guest! I need to know who you are before you ask a question!"
 msgstr "こんにちは、ゲストさん。発言する前にログインしてくださいね^^。"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:261
+#: sui_hei/templates/sui_hei/mondai_show.html:237
 msgid "Put True Answer"
 msgstr "解説を出す"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:276
+#: sui_hei/templates/sui_hei/mondai_show.html:252
 msgid "Put Question"
 msgstr "質問する"
 
@@ -423,33 +434,41 @@ msgstr "更改"
 msgid "Change password"
 msgstr "パスワードを変更する"
 
-#: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:436
+#: sui_hei/templates/sui_hei/profile_mystar.html:13
+msgid "You cannot revert change if you delete the star!"
+msgstr "スターを削除すると戻せません。"
+
+#: sui_hei/templatetags/decodes.py:10 sui_hei/views.py:437
 msgid "Albatross"
 msgstr "ウミガメのスープ"
 
-#: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:437
+#: sui_hei/templatetags/decodes.py:11 sui_hei/views.py:438
 msgid "20th-Door"
 msgstr "２０の扉"
 
-#: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:438
+#: sui_hei/templatetags/decodes.py:12 sui_hei/views.py:439
 msgid "Little Albat"
 msgstr "亀夫君"
 
-#: sui_hei/templatetags/decodes.py:13 sui_hei/views.py:439
+#: sui_hei/templatetags/decodes.py:13 sui_hei/views.py:440
 msgid "Others & Formal"
 msgstr "新・形式"
 
-#: sui_hei/views.py:432
+#: sui_hei/views.py:433
 msgid "Title"
 msgstr "タイトル"
 
-#: sui_hei/views.py:434
+#: sui_hei/views.py:435
 msgid "Genre"
 msgstr "ジャンル"
 
-#: sui_hei/views.py:441
+#: sui_hei/views.py:442
 msgid "Yami"
 msgstr "闇スープ"
+
+#: sui_hei/views.py:504
+msgid "You are not permitted to delete others star!"
+msgstr "あなたはスターを削除するパーミッションを持っていない。"
 
 #~ msgid "nickname"
 #~ msgstr "ニックネーム"

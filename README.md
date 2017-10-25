@@ -75,11 +75,10 @@ e `open a terminal` in the right-click menu.
 
 TODO
 -----
-1. This is almost an empty project! Anything will help!
-1. Rich the database
-    - add `profile` to table `Users` just as suiheinet do
-1. Q&A frame in `sui_hei/mondai/show` (giving space to infrastructure)
 1. **A MORE BUILTIFUL LAYOUT**
+1. Move some part of POSTs to javascript
+1. Add Pages (esp. wiki or something) for editing website on client side.
+1. separate the forum to different languages.
 
 Contribute
 ----------
