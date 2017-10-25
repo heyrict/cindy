@@ -43,12 +43,41 @@
     {% block title %} 
     {% endblock %} 
 </h1>
-{% include 'frames/header.html' %} 
-<div id="sidebar">
-{% include 'frames/sidebar.html' %} 
+
+<!-- header -->
+<span>
+{% if user.is_authenticated %}
+{% trans "Welcome, "%} <a href="/profile/{{ user.id }}">{{ user.nickname }}</a>.
+    [<a href="/users/logout">{% trans 'logout' %}</a>]
+{% else %}
+[<a href="/users/add">{% trans 'register' %}</a>]
+[<a href="/users/login">{% trans 'login' %}</a>]
+{% endif %}
+</span>
+<!-- end header -->
+
+<!-- site-navigation -->
+<h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
+<ul class="list-nav">
+    <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
+    <li><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></li>
+</ul>
+<!-- end site-navigation -->
+
+<!-- lobby chat -->
+<div class="leftbar" mode={{ mode|default:"closed" }} >
+    <img class="leftbar_button" src={% static 'sidebar.png' %}>
+    <div class="leftbar_content">
+        {% include 'frames/leftbar_content.html' %}
+    </div>
 </div>
+<!-- end lobby chat -->
+
 {% block child_navi %} 
 {% endblock %} 
+
+{% block extra_header %}
+{% endblock %}
 </header>
 
 <body>

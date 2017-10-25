@@ -22,17 +22,33 @@ define(["jquery"], function($) {
     var $leftbar = $(".leftbar");
 
     // Calculate best width & height of sidebar
-    var goodh = window.innerHeight - 20;
+    goodh = window.innerHeight - 20;
     if (goodh < 400) {
       goodh = window.innerHeight;
     }
-    var goodw = Math.max(window.outerWidth, window.innerWidth) * 0.45;
+    windoww = Math.max(window.outerWidth, window.innerWidth);
+    goodw = windoww * 0.45;
+    small_screen = false;
     if (goodw < 400) {
       goodw = Math.max(window.outerWidth, window.innerWidth);
+      small_screen = true;
     }
-    $(".leftbar_content").css("height", goodh + "px");
 
-    // Toggle leftbar
+    $(".leftbar_content").css("height", goodh + "px");
+    var $leftbarbtn = $(".leftbar_button");
+    resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
+    $leftbarbtn
+      .css("height", $leftbarbtn.height() / resize_rate + "px")
+      .css("width", $leftbarbtn.width() / resize_rate + "px");
+
+    $(".memobar_content").css("height", goodh + "px");
+    var $memobarbtn = $(".memobar_button");
+    resize_rate = $memobarbtn.height() / (window.innerHeight * 0.45);
+    $memobarbtn
+      .css("height", $memobarbtn.height() / resize_rate + "px")
+      .css("width", $memobarbtn.width() / resize_rate + "px");
+
+    // Toggle sidebar
     $(".leftbar_button").on("click", function() {
       var $this = $(".leftbar");
 
@@ -42,12 +58,59 @@ define(["jquery"], function($) {
           width: goodw + "px"
         });
         $this.attr("mode", "open");
+
+        if (small_screen) {
+          $(".rightbar").velocity({
+            left: windoww + goodw + "px"
+          });
+          $(".rightbar").attr("mode", "closed");
+        }
       } else if ($this.attr("mode") == "open") {
         $(".leftbar").velocity({
           left: -goodw * 0.792 + "px",
           width: goodw + "px"
         });
         $this.attr("mode", "closed");
+
+        if (small_screen) {
+          $(".rightbar").velocity({
+            left: windoww - 18 + "px"
+          });
+          $(".rightbar").attr("mode", "closed");
+        }
+      }
+    });
+
+    $(".rightbar_button").on("click", function() {
+      var $this = $(".rightbar");
+
+      if ($this.attr("mode") == "closed") {
+        $this.velocity({
+          left: windoww - goodw * 0.792 + "px",
+          width: goodw + "px"
+        });
+        $this.attr("mode", "open");
+
+        if (small_screen) {
+          $(".leftbar").velocity({
+            left: -goodw + "px"
+          });
+          $(".leftbar").attr("mode", "closed");
+        }
+      } else if ($this.attr("mode") == "open") {
+        $(".rightbar").velocity({
+          left: windoww - 18 + "px",
+          width: goodw + "px"
+        });
+        $this.attr("mode", "closed");
+
+        if (small_screen) {
+          $(".leftbar").velocity({
+            left: -goodw * 0.792 + "px",
+            width: goodw + "px"
+          });
+          $(".leftbar").attr("mode", "closed");
+        }
       }
     });
   }
@@ -111,22 +174,21 @@ function NextChatPage() {
 
 function OpenChat(channel) {
   var $this = $(".leftbar");
-  var goodh = Math.max(window.innerHeight - 20, 400);
-  var goodw = Math.max(window.outerWidth * 0.45, 400);
 
-  jQuery.get(
-    "/lobby/channel",
-    { channel: channel },
-    function(data) {
-      jQuery(".leftbar_content").html(data);
-    }
-  );
+  jQuery.get("/lobby/channel", { channel: channel }, function(data) {
+    jQuery(".leftbar_content").html(data);
+  });
 
   if ($this.attr("mode") == "closed") {
     $this.velocity({
       left: "0%",
       width: goodw + "px"
     });
-    $this.attr("mode", "open");
+    if (small_screen) {
+      $(".rightbar").velocity({
+        left: windoww + goodw + "px"
+      });
+      $(".rightbar").attr("mode", "closed");
+    }
   }
 }

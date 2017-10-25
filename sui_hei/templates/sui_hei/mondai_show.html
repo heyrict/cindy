@@ -59,9 +59,6 @@ $(document).ready(function() {
       margin-top: -7.5px;
       text-align: center;
     }
-    .clear {
-        clear: both
-    }
     .HBar {
         padding-bottom: 10px;
     }
@@ -90,6 +87,23 @@ $(document).ready(function() {
         float: left;
         border-right: 1px dashed #268bd2;
     }
+{% endblock %}
+
+{% block extra_header %}
+{% if mondai.memo %}
+<div class="memobar rightbar" mode={{ mode|default:"closed" }} >
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+            // handling chat://
+            $(".memobar_content").html($(".memobar_content").html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
+        });
+    </script>
+    <img class="memobar_button rightbar_button" src={% static 'memobar.png' %}>
+    <div class="memobar_content rightbar_content">
+        {{ mondai.memo|text2md|safe }}
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block content %} 
@@ -280,13 +294,5 @@ $(document).ready(function() {
     {% endif %}
 {% endif %}
 <!-- End Answer of Question -->
-<!-- Start memo -->
-{% if mondai.memo or user == mondai.user_id %}
-<div class="wrapper" style="border:3px solid #728905;">
-    <font color=#52676f" size="5px" face="monospace">{% trans 'Memo' %}</font>
-    <div id="memo_preview">{{ mondai.memo|text2md|safe }}</div>
-</div>
-{% endif %}
-<!-- End memo -->
 
 {% endblock %} 
