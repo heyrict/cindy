@@ -74,7 +74,7 @@ define(["jquery"], function($) {
 
         if (small_screen) {
           $(".rightbar").velocity({
-            left: windoww - 18 + "px"
+            left: windoww + "px"
           });
           $(".rightbar").attr("mode", "closed");
         }
@@ -99,7 +99,7 @@ define(["jquery"], function($) {
         }
       } else if ($this.attr("mode") == "open") {
         $(".rightbar").velocity({
-          left: windoww - 18 + "px",
+          left: windoww + "px",
           width: goodw + "px"
         });
         $this.attr("mode", "closed");

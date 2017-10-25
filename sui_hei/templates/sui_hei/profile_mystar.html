@@ -20,10 +20,19 @@
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' star.mondai_id.id %}">{{ star.mondai_id.title }} </a>
     </span>
+
+    {% if star.mondai_id.score > 0 or star.mondai_id.user_id == user and star.mondai_id.star_set.count > 0 %}
+    <span class="mondai_score">
+        {{ star.mondai_id.score|normalize_star }}✯{{ star.mondai_id.star_set.count }}
+    </span>
+    {% endif %}
+
+    <span style="float:right; text-decoration:bold;">
     {% trans 'Giver' %}: 
     <b><a href="{% url 'sui_hei:profile' star.mondai_id.user_id.id %}">{{ star.mondai_id.user_id.nickname }}</a>
         {% if star.mondai_id.user_id.current_award %}[{{ star.mondai_id.user_id.current_award }}]{% endif %}</b>
     [{% trans 'created' %}: {{ star.mondai_id.created }}]
+    </span>
 </li>
 </ul>
 {% endfor %}

@@ -121,8 +121,7 @@ input[type="text"] {
   margin-left: 10px;
   font-weight: bolder;
   color: #bcc045;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px;
 }
 body {
   background: #fff9f0;

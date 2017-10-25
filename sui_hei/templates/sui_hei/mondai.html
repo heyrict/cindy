@@ -32,9 +32,12 @@
         <a href="{% url 'sui_hei:mondai_show' mondai.id %}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
     </span>
 
-    {% if mondai.score > 0 %}
-    <span class="mondai_score">{{ mondai.score|normalize_star }}</span>
+    {% if mondai.score > 0 or mondai.user_id == user and mondai.star_set.count > 0 %}
+    <span class="mondai_score">
+        {{ mondai.score|normalize_star }}✯{{ mondai.star_set.count }}
+    </span>
     {% endif %}
+
     <span style="float:right; text-decoration:bold;"><a href="{% url 'sui_hei:profile' mondai.user_id.id %}" class="bul">{{ mondai.user_id.nickname }}</a>
         {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
         <font color="#888">[{% trans 'created' %}: {{ mondai.created }}]</font></span>

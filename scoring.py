@@ -15,7 +15,7 @@ def softmax(X):
 
 
 def calc_score(stars):
-    if stars.count() <= 1: return 0
+    if stars.count() < 1: return 0
     userexp = np.array([s.user_id.experience for s in stars.all()])
     userstar = np.array(stars.values_list('value', flat=True))
     userw = softmax(userexp / userexp.mean())
