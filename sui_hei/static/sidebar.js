@@ -184,6 +184,7 @@ function OpenChat(channel) {
       left: "0%",
       width: goodw + "px"
     });
+    $this.attr("mode", "open");
     if (small_screen) {
       $(".rightbar").velocity({
         left: windoww + goodw + "px"

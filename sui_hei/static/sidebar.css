@@ -66,6 +66,7 @@
   border: 4px solid #edb700;
   border-radius: 10px;
   position: absolute;
+  overflow: auto;
   left: 0;
   top: 0;
   right: 20%;

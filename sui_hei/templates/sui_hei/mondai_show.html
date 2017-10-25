@@ -16,77 +16,32 @@
 {% endblock %}
 
 {% block script_include %}
+<link rel="stylesheet" href="{% static 'mondai_show.css' %}">
 <script src={% static 'mondai_show.js' %}></script>
 {% endblock %}
 
 {% block script %}
-$(document).ready(function() {
-  require(['marked', 'jquery-ui'], function(marked){
-    var handle = $("#starbar_handle");
-    $("#starbar").slider({max:5, min:-5, step:0.02, value:{{ mystar }},
-        create: function(event, ui) { $("#starbarind").val(ui.value);},
-        slide: function(event, ui){
-            $("#starbarind").val(ui.value);
-            handle.css('width', 30+2*ui.value+"px");
-            handle.css('height', 30+2*ui.value+"px");
-            handle.css('margin-top', -7.5-ui.value+"px");
-            }
-        });
-
-    $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
-
-    $("#kaisetu_textarea").on('input', function(){
-      $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
-    });
-
-    $("#memo_textarea").on('input', function(){
-      $("#memo_preview")[0].innerHTML = marked($("#memo_textarea").val());
-    });
-  });
-  require(['jquery'], function ($) {
-      var PageURL = window.location.pathname;
-      $("a.qna_edit").each(function () {
-          this.href += '?next=' + PageURL;
-      });
+require(['jquery', 'jquery-ui'], function($) {
+  var handle = $("#starbar_handle");
+  $("#starbar").slider({
+    max: 5,
+    min: -5,
+    step: 0.01,
+    value: {{ mystar }},
+    create: function(event, ui) {
+      $("#starbarind").val({{ mystar }});
+      handle.css('width', 30+2*{{ mystar }}+"px");
+      handle.css('height', 30+2*{{ mystar }}+"px");
+      handle.css('margin-top', -7.5-{{ mystar }}+"px");
+    },
+    slide: function(event, ui){
+      $("#starbarind").val(ui.value);
+      handle.css('width', 30+2*ui.value+"px");
+      handle.css('height', 30+2*ui.value+"px");
+      handle.css('margin-top', -7.5-ui.value+"px");
+    }
   });
 });
-{% endblock %}
-
-{% block style %}
-    #starbar_handle {
-      width: 30px;
-      height: 30px;
-      margin-top: -7.5px;
-      text-align: center;
-    }
-    .HBar {
-        padding-bottom: 10px;
-    }
-    .QBlock {
-        float: left;
-        width: 45%;
-        border: 1px solid #268bd2;
-        border-radius: 5px;
-        padding: 3px;
-        font-size: 16px;
-        overflow: hidden;
-    }
-    .ABlock {
-        float: right;
-        width: 45%;
-        border: 1px solid #268bd2;
-        border-radius: 5px;
-        padding: 3px;
-        font-size: 16px;
-        overflow: hidden;
-    }
-    .vertical_line {
-        padding-bottom: 20000px;
-        margin-bottom: -20000px;
-        width: 0px;
-        float: left;
-        border-right: 1px dashed #268bd2;
-    }
 {% endblock %}
 
 {% block extra_header %}
