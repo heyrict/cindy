@@ -193,7 +193,7 @@ require(['jquery', 'jquery-ui'], function($) {
         {% csrf_token %}
         <span class="paticipants_panel">
             <input id="comment_input" name="push_chat" type="text" style="width:78%;">
-            <input value="Add Comments" type="submit" style="width:20%; font-size: 17px;">
+            <input value="{% trans 'Add Comments' %}" type="submit" style="width:20%; font-size: 17px;">
         </span>
     </form>
     {% endif %}

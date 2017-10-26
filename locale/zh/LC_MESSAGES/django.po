@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-26 10:08+0900\n"
+"POT-Creation-Date: 2017-10-26 19:15+0900\n"
 "PO-Revision-Date: 2017-10-06 19:08+0800\n"
 "Last-Translator: heyrict <heyrict@yahoo.co.jp>\n"
 "Language: zh\n"
@@ -311,10 +311,8 @@ msgstr "提出解答后将无法撤销！"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:46
 #: sui_hei/templates/sui_hei/profile_mystar.html:13
-#, fuzzy
-#| msgid "Content"
 msgid "Continue?"
-msgstr "内容"
+msgstr "继续？"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:77
 #: sui_hei/templates/sui_hei/profile_mystar.html:55
@@ -357,6 +355,10 @@ msgstr "回复"
 #: sui_hei/templates/sui_hei/mondai_show.html:181
 msgid "Show Comments"
 msgstr "展示评论"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:196
+msgid "Add Comments"
+msgstr "撰写评论"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:207
 #: sui_hei/templates/sui_hei/mondai_show.html:226

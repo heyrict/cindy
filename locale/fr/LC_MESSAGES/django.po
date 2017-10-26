@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-26 10:08+0900\n"
+"POT-Creation-Date: 2017-10-26 19:15+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -363,6 +363,12 @@ msgstr "Répondre à toutes les questions posées"
 #: sui_hei/templates/sui_hei/mondai_show.html:181
 msgid "Show Comments"
 msgstr "Voir les commentaires"
+
+#: sui_hei/templates/sui_hei/mondai_show.html:196
+#, fuzzy
+#| msgid "Comments"
+msgid "Add Comments"
+msgstr "Commentaires"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:207
 #: sui_hei/templates/sui_hei/mondai_show.html:226
