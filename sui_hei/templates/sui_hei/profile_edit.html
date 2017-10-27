@@ -4,8 +4,8 @@
 {% block title %} Cindy - register {% endblock %} 
 
 {% block script %}
-$(document).ready(function() {
-  require(['marked'], function(marked){
+require(['jquery', 'marked'], function($, marked){
+  $(document).ready(function() {
     var inputs = marked($("#id_profile").val());
     inputs = inputs.replace(/chat:\/\/([0-9a-zA-Z\-]+)/g, "javascript:OpenChat('$1');");
     $("#profile_preview")[0].innerHTML = inputs;

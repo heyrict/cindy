@@ -19,9 +19,9 @@
   {% block style_include %}{% endblock %}
   <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
   <script type="text/javascript">
-  require(['jquery'], function ($) { {% block script %} {% endblock %} });
+  require(['base', 'sidebar', 'jquery', 'velocity']);
+  {% block script %} {% endblock %}
   </script>
-  <script src="{% static 'base.js' %}"></script>
   {% block script_include %}{% endblock %}
 </head>
 

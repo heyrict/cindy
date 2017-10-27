@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block script %}
-$(document).ready(function() {
-  require(['marked'], function(marked){
+require(['jquery', 'marked'], function($, marked){
+  $(document).ready(function() {
     $("#info_textarea").on('input', function(){
       var inputs = marked($("#info_textarea").val());
       inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");

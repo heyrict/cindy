@@ -37,7 +37,7 @@ def index(request):
                 print("Index_POST:", e)
     else:
         try:
-            comments = Lobby.objects.filter(channel__startswith="comments-")
+            comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
             mondais = [
                 Mondai.objects.get(id=i.channel[len("comments-"):])
                 for i in comments
@@ -47,7 +47,7 @@ def index(request):
                 channel="homepage-info").order_by('-id')
             hpinfo_list = Paginator(infos, 20)
             return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments[:15], mondais[:15]),
+                'comments': zip(comments, mondais),
                 'infos': hpinfo_list.page(hpinfopage),
             })
         except Exception as e:

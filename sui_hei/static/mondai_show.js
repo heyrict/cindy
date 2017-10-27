@@ -1,4 +1,4 @@
-require(["marked", "jquery"], function(marked, $) {
+define("mondai_show", ['marked', 'jquery'], function(marked, $) {
   $(document).ready(function() {
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
 

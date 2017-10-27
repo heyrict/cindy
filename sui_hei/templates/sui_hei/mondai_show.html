@@ -17,10 +17,10 @@
 
 {% block script_include %}
 <link rel="stylesheet" href="{% static 'mondai_show.css' %}">
-<script src={% static 'mondai_show.js' %}></script>
 {% endblock %}
 
 {% block script %}
+require(['mondai_show']);
 require(['jquery', 'jquery-ui'], function($) {
   var handle = $("#starbar_handle");
   $("#starbar").slider({
