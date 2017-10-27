@@ -4,7 +4,7 @@
 {% block title %} Cindy - mondai - show {% endblock %} 
 
 {% block pageTitle %}
-{{ mondai.title }} [{{ mondai.genre|genre }}] 
+[{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
 {% endblock %}
 
 {% block child_navi %}
@@ -69,7 +69,7 @@ require(['jquery', 'jquery-ui'], function($) {
 {% endblock %}
 
 {% block content %} 
-<h2>{{ mondai.title }} [{{ mondai.genre|genre }}]</h2>
+<h2>[{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}</h2>
 
 <!-- Content of Question -->
 <div class="mondai_content wrapper">
