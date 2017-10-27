@@ -18,4 +18,8 @@ require(["jquery"], function($) {
       return true;
     });
   });
+
+  $(".chat_message").each(function(index) {
+      $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
+  });
 });
