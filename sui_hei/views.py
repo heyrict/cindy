@@ -149,6 +149,13 @@ def mondai_show_push_answ(request):
 
             for _, obj in to_update.items():
                 obj.save()
+
+            # Update Mondai's modified time
+            mondai = re.findall("(?<=/mondai/show/)[0-9]+",
+                                request.META['HTTP_REFERER'])[0]
+            mondai_id = Mondai.objects.get(id=mondai)
+            mondai_id.modified = timezone.now()
+            mondai_id.save()
         except Exception as e:
             print("PushAnsw:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])

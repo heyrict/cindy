@@ -22,7 +22,10 @@
     {% endif %}
 
     <span class="title_label">
-        <a href="{% url 'sui_hei:mondai_show' mondai.id %}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+        <a href="{% url 'sui_hei:mondai_show' mondai.id %}">
+            [{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            {{ mondai.title }}
+        </a>
     </span>
 
     {% if mondai.score > 0 or mondai.user_id == user and mondai.star_set.count > 0 %}
