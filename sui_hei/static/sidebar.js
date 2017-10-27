@@ -127,14 +127,17 @@ function ChangeChannel() {
   return false;
 }
 
-function PostChat() {
+function PostChat(channel, message) {
   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  if (!channel.match("^[A-Za-z0-9-]+$")) {
+    return false;
+  }
   jQuery.post(
     "/lobby/chat",
     {
       csrfmiddlewaretoken: csrftoken,
-      channel: jQuery("#channel").val(),
-      push_chat: jQuery("#lobby_chat_input").val()
+      channel: channel,
+      push_chat: message
     },
     function(data) {
       jQuery(".leftbar_content").html(data);

@@ -18,8 +18,23 @@
         $(".lobby_chat_div").css("height", nav_height + "px");
         $(".lobby_table_div").css("height", table_height + "px");
 
+        $("#lobby_chat_input").on("keypress", function(e) {
+            if (e.which == 13) {
+                $("#lobby_chat_submit").click();
+            }
+        });
+
+        lobby_chat_can_submit = true
+        $("#lobby_chat_submit").on("click", function() {
+            if (!lobby_chat_can_submit) {
+              return false;
+            }
+            lobby_chat_can_submit = false;
+            PostChat("{{ channel }}", $("#lobby_chat_input").val());
+        });
+
         // handling chat://
-        var lc = $("td#message").each( function (index) {
+        $("td#message").each( function (index) {
             $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
         });
     });
@@ -52,13 +67,9 @@
 
 {% if channel|startswith:"comments-" %}
 {% elif user.is_authenticated %} 
-<form class="lobby_chat_div" action="{% url 'sui_hei:lobby_chat' %}" method="post" onsubmit="return PostChat()">
-    {% csrf_token %}
-    <table class="push_chat">
-        <input id="lobby_chat_input" name="push_chat" type="text">
-        <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="submit">
-        <input id="channel" type="text" value="{{ channel }}" style="visibility:hidden">
-    </table>
-</form>
+<div class="lobby_chat_div">
+    <input id="lobby_chat_input" name="push_chat" type="text">
+    <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
+</div>
 {% endif %} 
 

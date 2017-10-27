@@ -19,22 +19,9 @@
   {% block style_include %}{% endblock %}
   <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
   <script type="text/javascript">
-    requirejs.config({
-        base_url: '/static',
-        paths: {
-            jquery: 'jquery.min',
-            marked: 'marked.min',
-        }
-    });
-    require(["jquery"], function($) {
-        {% block script %}
-        {% endblock %}
-        // handling chat://
-        var lc = $(".chat_message").each( function (index) {
-            $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
-        });
-    });
+  require(['jquery'], function ($) { {% block script %} {% endblock %} });
   </script>
+  <script src="{% static 'base.js' %}"></script>
   {% block script_include %}{% endblock %}
 </head>
 

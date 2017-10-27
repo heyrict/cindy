@@ -133,3 +133,6 @@ a.bul {
 a.bul:hover {
   text-decoration: none;
 }
+sub {
+  position: inherit;
+}
