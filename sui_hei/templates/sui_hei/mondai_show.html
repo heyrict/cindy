@@ -275,6 +275,7 @@ require(['jquery', 'jquery-ui'], function($) {
     {% else %}
     <!-- paticipants panel -->
     <form action="{% url 'sui_hei:mondai_show_push_ques' %}" method="post">
+        {% csrf_token %}
         <span class="paticipants_panel">
             <input id="ques_input" name="push_ques" type="text">
             <input value="{% trans 'Put Question' %}" type="submit">
