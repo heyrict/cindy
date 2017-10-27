@@ -128,9 +128,11 @@ function ChangeChannel() {
 }
 
 function PostChat() {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
   jQuery.post(
     "/lobby/chat",
     {
+      csrfmiddlewaretoken: csrftoken,
       channel: jQuery("#channel").val(),
       push_chat: jQuery("#lobby_chat_input").val()
     },

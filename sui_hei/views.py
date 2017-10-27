@@ -74,13 +74,7 @@ class MondaiView(ListView):
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
-    # don't set channel automatically on user-triggered channel change.
-    # TODO: Move this post part to javascript, directly post to lobby_channel.
-    if request.method == "POST" and request.user.is_authenticated:
-        request.session['channel'] = 'comments-' + pk
-        return lobby_chat(request)
-
-    else:
+    if request.method == "GET":
         # TODO: Add sorting for yami soup.
         request.session['channel'] = 'mondai-' + pk
 
@@ -105,25 +99,20 @@ def mondai_show(request, pk):
             'mycomment': mycomment,
             'mystar': mystar
         })
+    else:
+        return redirect(reverse("sui_hei:mondai"))
 
 
 def mondai_star(request):
-    try:
-        mondai = re.findall("(?<=/mondai/show/)[0-9]+",
-                            request.META['HTTP_REFERER'])[0]
-        mondai_id = Mondai.objects.get(id=mondai)
-    except Exception as e:
-        print("MondaiStar:", e)
-        return redirect(request.META['HTTP_REFERER'])
-
     if request.method == "POST" and request.user.is_authenticated:
+        mondai = Mondai.objects.get(id=request.POST.get("mondai"))
         star = Star.objects.get_or_create(
-            user_id=request.user, mondai_id=mondai_id)[0]
-        star.value = float(request.POST.get('starbarind', 0))
+            user_id=request.user, mondai_id=mondai)[0]
+        star.value = float(request.POST.get('stars', 0))
         star.save()
         try: update_soup_score(star.mondai_id)
         except: pass
-    return redirect(request.META['HTTP_REFERER'])
+    return HttpResponse(True)
 
 
 def mondai_show_push_answ(request):
@@ -264,7 +253,6 @@ def mondai_show_push_ques(request):
 
 
 # /lobby
-@csrf_exempt
 def lobby_chat(request):
     # get current channel
     channel = request.POST.get('channel', 'lobby')
@@ -293,7 +281,6 @@ def lobby_chat(request):
     return redirect(referer_without_query)
 
 
-@csrf_exempt
 def lobby_channel(request):
     # change channel by submit button
     if request.method == "GET":

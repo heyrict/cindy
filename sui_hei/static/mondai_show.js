@@ -1,8 +1,3 @@
-function ShowComments() {
-  // switch channel
-  OpenChat(jQuery("#show_comments").attr("channel"));
-}
-
 require(["marked", "jquery"], function(marked, $) {
   $(document).ready(function() {
     $("#kaisetu_preview")[0].innerHTML = marked($("#kaisetu_textarea").val());
