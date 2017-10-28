@@ -145,6 +145,10 @@ def mondai_show_push_answ(request):
             mondai_id = Mondai.objects.get(id=mondai)
             mondai_id.modified = timezone.now()
             mondai_id.save()
+
+            # update user last active event
+            request.user.last_login = timezone.now()
+            request.user.save()
         except Exception as e:
             print("PushAnsw:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
@@ -247,6 +251,10 @@ def mondai_show_push_ques(request):
                 askedtime=timezone.now(),
                 mondai_id=mondai_id)
             ques.save()
+
+            # update user last active event
+            request.user.last_login = timezone.now()
+            request.user.save()
         except Exception as e:
             print("PushQues:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
