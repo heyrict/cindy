@@ -13,7 +13,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
-define("sidebar", ["jquery"], function($) {
+require(["jquery", "velocity"], function($) {
   $(document).ready(function() {
     ToggleSidebar();
   });
