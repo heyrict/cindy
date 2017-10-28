@@ -1,6 +1,6 @@
 {% load i18n static markdown iterutil %} 
 <script type="text/javascript">
-    require(['jquery', 'sidebar'], function ($) {
+    require(['jquery', 'sidebar', "velocity"], function ($) {
         // Set redirection url for `edit`
         var PageURL = window.location.pathname;
         $("a.chat_edit").each(function () {
@@ -31,6 +31,12 @@
             }
             lobby_chat_can_submit = false;
             PostChat("{{ channel }}", $("#lobby_chat_input").val());
+        });
+
+        $(".lobby_table_div").velocity("scroll", {
+            offset: $(".lobby_table_div").prop("scrollHeight"),
+            container: $(".lobby_table_div"),
+            duration: 0,
         });
 
         // handling chat://
