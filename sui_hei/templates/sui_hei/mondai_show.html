@@ -230,6 +230,7 @@ require(['jquery', 'jquery-ui'], function($) {
     <!-- Evaluation Panel -->
 </div>
 <!-- giver panel -->
+{% if user == mondai.user_id %}
 <form class="wrapper" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
     {% csrf_token %}
     <span class="giver_panel">
@@ -241,6 +242,7 @@ require(['jquery', 'jquery-ui'], function($) {
         <input value="{% trans 'Update' %}" type="submit">
     </span>
 </form><br>
+{% endif %}
 <!-- end giver panel -->
 {% else %}
     {% if not user.is_authenticated %}
