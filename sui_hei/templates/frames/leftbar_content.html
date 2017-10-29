@@ -7,42 +7,11 @@
             this.href += '?next=' + PageURL;
         });
 
-        // Set Height
-        var goodh = window.innerHeight - 20;
-        if (goodh < 400) { goodh = window.innerHeight; }
-
-        var nav_height = 60;
-        var chat_height = 60;
-        var table_height = goodh - nav_height - chat_height - 5;
-        $(".lobby_navigation_div").css("height", nav_height + "px");
-        $(".lobby_chat_div").css("height", nav_height + "px");
-        $(".lobby_table_div").css("height", table_height + "px");
-
-        $("#lobby_chat_input").on("keypress", function(e) {
-            if (e.which == 13) {
-                $("#lobby_chat_submit").click();
-            }
-        });
-
-        lobby_chat_can_submit = true
-        $("#lobby_chat_submit").on("click", function() {
-            if (!lobby_chat_can_submit) {
-              return false;
-            }
-            lobby_chat_can_submit = false;
-            PostChat("{{ channel }}", $("#lobby_chat_input").val());
-        });
-
-        $(".lobby_table_div").velocity("scroll", {
-            offset: $(".lobby_table_div").prop("scrollHeight"),
-            container: $(".lobby_table_div"),
-            duration: 0,
-        });
-
         // handling chat://
         $("td#message").each( function (index) {
             $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
         });
+        ResizeSidebarContent();
     });
 </script>
 <div class="lobby_navigation_div">
