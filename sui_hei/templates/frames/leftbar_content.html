@@ -1,17 +1,26 @@
 {% load i18n static markdown iterutil %} 
 <script type="text/javascript">
     require(['jquery', 'sidebar', "velocity"], function ($) {
+        ResizeSidebarContent();
         // Set redirection url for `edit`
         var PageURL = window.location.pathname;
         $("a.chat_edit").each(function () {
             this.href += '?next=' + PageURL;
         });
 
+        lobby_chat_can_submit = true;
+        $("#lobby_chat_submit").on("click", function() {
+          if (!lobby_chat_can_submit) {
+            return false;
+          }
+          lobby_chat_can_submit = false;
+          PostChat("{{ channel }}", $("#lobby_chat_input").val());
+        });
+
         // handling chat://
         $("td#message").each( function (index) {
             $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
         });
-        ResizeSidebarContent();
     });
 </script>
 <div class="lobby_navigation_div">

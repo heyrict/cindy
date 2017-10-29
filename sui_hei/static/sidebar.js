@@ -49,15 +49,6 @@ function ResizeSidebarContent() {
       }
     });
 
-    lobby_chat_can_submit = true;
-    $("#lobby_chat_submit").on("click", function() {
-      if (!lobby_chat_can_submit) {
-        return false;
-      }
-      lobby_chat_can_submit = false;
-      PostChat("{{ channel }}", $("#lobby_chat_input").val());
-    });
-
     $(".lobby_table_div").velocity("scroll", {
       offset: $(".lobby_table_div").prop("scrollHeight"),
       container: $(".lobby_table_div"),
