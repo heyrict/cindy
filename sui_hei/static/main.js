@@ -25,3 +25,5 @@ requirejs.config({
     mondai_show: ["jquery", "marked"]
   }
 });
+
+require(['base', 'sidebar', 'jquery', 'velocity']);

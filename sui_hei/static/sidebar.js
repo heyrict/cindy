@@ -1,40 +1,5 @@
-var getUrlParameter = function getUrlParameter(sParam) {
-  var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-    sURLVariables = sPageURL.split("&"),
-    sParameterName,
-    i;
-
-  for (i = 0; i < sURLVariables.length; i++) {
-    sParameterName = sURLVariables[i].split("=");
-
-    if (sParameterName[0] === sParam) {
-      return sParameterName[1] === undefined ? true : sParameterName[1];
-    }
-  }
-};
-
-require(["jquery", "velocity"], function($) {
-  $(document).ready(function() {
-    ToggleSidebar();
-  });
-
-  $(window).on("load", function() {
-    //Calculate the good width&height, resize, with toggle event handles
-    CalcGoodRect();
-    ResizeSidebar();
-    ResizeSidebarContent();
-  });
-
-  $(window).on("resize", function() {
-    // Recalculate the good width/height and resize
-    CalcGoodRect();
-    ResizeSidebar();
-    ResizeSidebarContent();
-  });
-});
-
-function ResizeSidebarContent() {
-  require(["jquery", "velocity"], function($) {
+define(["jquery", "velocity"], function($) {
+  function ResizeSidebarContent() {
     // Set Height
     var nav_height = 60;
     var chat_height = 60;
@@ -54,11 +19,9 @@ function ResizeSidebarContent() {
       container: $(".lobby_table_div"),
       duration: 0
     });
-  });
-}
+  }
 
-function ResizeSidebar() {
-  require(["jquery", "velocity"], function($) {
+  function ResizeSidebar() {
     var $leftbar = $(".leftbar");
     $leftbar.css("width", goodw + "px");
     if ($leftbar.attr("mode") == "open") {
@@ -90,27 +53,25 @@ function ResizeSidebar() {
     $memobarbtn
       .css("height", $memobarbtn.height() / resize_rate + "px")
       .css("width", $memobarbtn.width() / resize_rate + "px");
-  });
-}
-
-var goodh, goodw, windoww, small_screen;
-function CalcGoodRect() {
-  // Calculate best width & height of sidebar
-  goodh = window.innerHeight - 20;
-  if (goodh < 400) {
-    goodh = window.innerHeight;
   }
-  windoww = Math.max(window.outerWidth, window.innerWidth);
-  goodw = windoww * 0.45;
-  small_screen = false;
-  if (goodw < 400) {
-    goodw = Math.max(window.outerWidth, window.innerWidth);
-    small_screen = true;
-  }
-}
 
-function ToggleSidebar() {
-  require(["jquery", "velocity"], function($) {
+  var goodh, goodw, windoww, small_screen;
+  function CalcGoodRect() {
+    // Calculate best width & height of sidebar
+    goodh = window.innerHeight - 20;
+    if (goodh < 400) {
+      goodh = window.innerHeight;
+    }
+    windoww = Math.max(window.outerWidth, window.innerWidth);
+    goodw = windoww * 0.45;
+    small_screen = false;
+    if (goodw < 400) {
+      goodw = Math.max(window.outerWidth, window.innerWidth);
+      small_screen = true;
+    }
+  }
+
+  function ToggleSidebar() {
     // Toggle sidebar
     $(".leftbar_button").on("click", function() {
       var $leftbar = $(".leftbar");
@@ -179,82 +140,95 @@ function ToggleSidebar() {
         }
       }
     });
-  });
-}
+  }
 
-function ChangeChannel() {
-  OpenChat(jQuery("#lobby_nav_input").val());
-  return false;
-}
-
-function PostChat(channel, message) {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  if (!channel.match("^[A-Za-z0-9-]+$")) {
+  function ChangeChannel() {
+    OpenChat(jQuery("#lobby_nav_input").val());
     return false;
   }
-  jQuery.post(
-    "/lobby/chat",
-    {
-      csrfmiddlewaretoken: csrftoken,
-      channel: channel,
-      push_chat: message
-    },
-    function(data) {
-      jQuery(".leftbar_content").html(data);
+
+  function PostChat(channel, message) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    if (!channel.match("^[A-Za-z0-9-]+$")) {
+      return false;
     }
-  );
-  return false;
-}
+    jQuery.post(
+      "/lobby/chat",
+      {
+        csrfmiddlewaretoken: csrftoken,
+        channel: channel,
+        push_chat: message
+      },
+      function(data) {
+        jQuery(".leftbar_content").html(data);
+      }
+    );
+    return false;
+  }
 
-function InputNorm() {
-  var lc = jQuery("#lobby_nav_input");
-  lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
-}
+  function InputNorm() {
+    var lc = jQuery("#lobby_nav_input");
+    lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
+  }
 
-function PrevChatPage() {
-  jQuery.get(
-    "/lobby/channel",
-    {
-      chatpage: jQuery("#lobby_nav_prev").val(),
-      channel: jQuery("#channel").val()
-    },
-    function(data) {
+  function PrevChatPage() {
+    jQuery.get(
+      "/lobby/channel",
+      {
+        chatpage: jQuery("#lobby_nav_prev").val(),
+        channel: jQuery("#channel").val()
+      },
+      function(data) {
+        jQuery(".leftbar_content").html(data);
+      }
+    );
+  }
+
+  function NextChatPage() {
+    jQuery.get(
+      "/lobby/channel",
+      {
+        chatpage: jQuery("#lobby_nav_next").val(),
+        channel: jQuery("#channel").val()
+      },
+      function(data) {
+        jQuery(".leftbar_content").html(data);
+      }
+    );
+  }
+
+  function OpenChat(channel) {
+    var $this = $(".leftbar");
+
+    jQuery.get("/lobby/channel", { channel: channel }, function(data) {
       jQuery(".leftbar_content").html(data);
-    }
-  );
-}
-
-function NextChatPage() {
-  jQuery.get(
-    "/lobby/channel",
-    {
-      chatpage: jQuery("#lobby_nav_next").val(),
-      channel: jQuery("#channel").val()
-    },
-    function(data) {
-      jQuery(".leftbar_content").html(data);
-    }
-  );
-}
-
-function OpenChat(channel) {
-  var $this = $(".leftbar");
-
-  jQuery.get("/lobby/channel", { channel: channel }, function(data) {
-    jQuery(".leftbar_content").html(data);
-  });
-
-  if ($this.attr("mode") == "closed") {
-    $this.velocity({
-      left: "0%",
-      duration: 1000
     });
-    $this.attr("mode", "open");
-    if (small_screen) {
-      $(".rightbar").velocity({
-        left: windoww + goodw + "px"
+
+    if ($this.attr("mode") == "closed") {
+      $this.velocity({
+        left: "0%",
+        duration: 1000
       });
-      $(".rightbar").attr("mode", "hide");
+      $this.attr("mode", "open");
+      if (small_screen) {
+        $(".rightbar").velocity({
+          left: windoww + goodw + "px"
+        });
+        $(".rightbar").attr("mode", "hide");
+      }
     }
   }
-}
+
+  return {
+    CalcGoodRect: CalcGoodRect,
+    ResizeSidebar: ResizeSidebar,
+    ResizeSidebarContent: ResizeSidebarContent,
+    ToggleSidebar: ToggleSidebar,
+    InputNorm: InputNorm,
+    NextChatPage: NextChatPage,
+    PrevChatPage: PrevChatPage,
+    ChangeChannel: ChangeChannel,
+    OpenChat: OpenChat,
+    PostChat: PostChat,
+  };
+});

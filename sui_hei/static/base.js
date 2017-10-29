@@ -1,4 +1,5 @@
-define("base", ["jquery"], function($) {
+define("base", ["jquery", "sidebar"], function($, sidebar) {
+  // Prevent multiple form submission
   can_submit = {};
   $("form").each(function(index) {
     can_submit[index] = true;
@@ -11,7 +12,27 @@ define("base", ["jquery"], function($) {
     });
   });
 
+  // Replace chat://
   $(".chat_message").each(function(index) {
-      $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
+      $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:require(['sidebar'],function(sidebar) { sidebar.OpenChat('$1')});;\""));
+  });
+
+  // Sidebar related
+  $(document).ready(function() {
+    sidebar.ToggleSidebar();
+  });
+
+  $(window).on("load", function() {
+    //Calculate the good width&height, resize, with toggle event handles
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
+  });
+
+  $(window).on("resize", function() {
+    // Recalculate the good width/height and resize
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
   });
 });

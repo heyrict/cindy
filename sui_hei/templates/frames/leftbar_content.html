@@ -1,33 +1,9 @@
 {% load i18n static markdown iterutil %} 
-<script type="text/javascript">
-    require(['jquery', 'sidebar', "velocity"], function ($) {
-        ResizeSidebarContent();
-        // Set redirection url for `edit`
-        var PageURL = window.location.pathname;
-        $("a.chat_edit").each(function () {
-            this.href += '?next=' + PageURL;
-        });
-
-        lobby_chat_can_submit = true;
-        $("#lobby_chat_submit").on("click", function() {
-          if (!lobby_chat_can_submit) {
-            return false;
-          }
-          lobby_chat_can_submit = false;
-          PostChat("{{ channel }}", $("#lobby_chat_input").val());
-        });
-
-        // handling chat://
-        $("td#message").each( function (index) {
-            $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
-        });
-    });
-</script>
+<script src="{% static 'leftbar_content.js' %}"></script>
 <div class="lobby_navigation_div">
-    {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True next_click="NextChatPage" prev_click="PrevChatPage" %}
-    <form class="channel" id="change_channel_form" method="get" onsubmit="return ChangeChannel()">
-        <input name="change_channel" type="text" id="lobby_nav_input"
-        oninput="InputNorm()" placeholder="current_channel: {{ channel }}">
+    {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True %}
+    <form class="channel" id="change_channel_form" method="get">
+        <input name="change_channel" type="text" id="lobby_nav_input" placeholder="current_channel: {{ channel }}">
         <input value="{% trans 'Change channel' %}" type="submit" id="lobby_nav_submit">
     </form>
 </div>
