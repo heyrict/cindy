@@ -43,7 +43,7 @@ $(document).ready(function(){
         },
         function(data) {
           $("#evaluation_panel").html("");
-          OpenChat(comment_channel);
+          sidebar.OpenChat(comment_channel);
         }
       );
     }
@@ -64,6 +64,15 @@ $(document).ready(function(){
       }
     );
   });
+  // handling chat://
+  $(".memobar_content").html(
+    $(".memobar_content")
+      .html()
+      .replace(
+        /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
+        "\"javascript:sidebar.OpenChat('$1');\""
+      )
+  );
   mondaiShowUI.initUI({{ mystar }});
 });
 {% endblock %}
@@ -71,10 +80,6 @@ $(document).ready(function(){
 {% block extra_header %}
 {% if mondai.memo %}
 <div class="memobar rightbar" mode={{ mode|default:"closed" }} >
-    <script type="text/javascript">
-    // handling chat://
-    $(".memobar_content").html($(".memobar_content").html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
-    </script>
     <img class="memobar_button rightbar_button" src={% static 'pictures/memobar.png' %}>
     <div class="memobar_content rightbar_content">
         <div style="margin-right:15px;">
@@ -196,7 +201,7 @@ $(document).ready(function(){
 
     <!-- Evaluation Panel -->
     <input value="{% trans 'Show Comments' %}" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:3.5%;"
-                                                             onclick="OpenChat('comments-{{ mondai.id }}');">
+                                                             onclick="sidebar.OpenChat('comments-{{ mondai.id }}');">
     <br>
     <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
         <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div>

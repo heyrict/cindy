@@ -10392,41 +10392,50 @@ module.exports = __webpack_require__(10);
 /***/ (function(module, exports, __webpack_require__) {
 
 new Promise(function(resolve) { resolve(); }).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(1), __webpack_require__(4)]; (function($, sidebar) {
-  // Prevent multiple form submission
-  can_submit = {};
-  $("form").each(function(index) {
-    can_submit[index] = true;
-    $(this).on("submit", function() {
-      if (!can_submit[index]) {
-        return false;
-      }
-      can_submit[index] = false;
-      return true;
-    });
-  });
-
-  // Replace chat://
-  $(".chat_message").each(function(index) {
-      $(this).html($(this).html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:require(['sidebar'],function(sidebar) { sidebar.OpenChat('$1')});;\""));
-  });
-
-  // Sidebar related
   $(document).ready(function() {
-    sidebar.ToggleSidebar();
-  });
+    // Prevent multiple form submission
+    can_submit = {};
+    $("form").each(function(index) {
+      can_submit[index] = true;
+      $(this).on("submit", function() {
+        if (!can_submit[index]) {
+          return false;
+        }
+        can_submit[index] = false;
+        return true;
+      });
+    });
 
-  $(window).on("load", function() {
-    //Calculate the good width&height, resize, with toggle event handles
-    sidebar.CalcGoodRect();
-    sidebar.ResizeSidebar();
-    sidebar.ResizeSidebarContent();
-  });
+    // Replace chat://
+    $(".chat_message").each(function(index) {
+      $(this).html(
+        $(this)
+          .html()
+          .replace(
+            /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
+            "\"javascript:sidebar.OpenChat('$1');\""
+          )
+      );
+    });
 
-  $(window).on("resize", function() {
-    // Recalculate the good width/height and resize
-    sidebar.CalcGoodRect();
-    sidebar.ResizeSidebar();
-    sidebar.ResizeSidebarContent();
+    // Sidebar related
+    $(document).ready(function() {
+      sidebar.ToggleSidebar();
+    });
+
+    $(window).on("load", function() {
+      //Calculate the good width&height, resize, with toggle event handles
+      sidebar.CalcGoodRect();
+      sidebar.ResizeSidebar();
+      sidebar.ResizeSidebarContent();
+    });
+
+    $(window).on("resize", function() {
+      // Recalculate the good width/height and resize
+      sidebar.CalcGoodRect();
+      sidebar.ResizeSidebar();
+      sidebar.ResizeSidebarContent();
+    });
   });
 }.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}).catch(__webpack_require__.oe);
 
@@ -15510,7 +15519,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
           .html()
           .replace(
             /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-            "\"javascript:require(['sidebar'],function(m){m.OpenChat('$1');});void(0);\""
+            "\"javascript:sidebar.OpenChat('$1');void(0);\""
           )
       );
     });

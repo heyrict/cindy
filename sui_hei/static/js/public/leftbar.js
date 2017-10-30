@@ -199,7 +199,7 @@ __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIR
         .html()
         .replace(
           /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-          "\"javascript:require(['sidebar'],function(m){m.OpenChat('$1');});void(0);\""
+          "\"javascript:m.OpenChat('$1');void(0);\""
         )
     );
   });

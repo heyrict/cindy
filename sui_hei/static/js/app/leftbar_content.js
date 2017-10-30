@@ -47,7 +47,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
           .html()
           .replace(
             /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-            "\"javascript:require(['sidebar'],function(m){m.OpenChat('$1');});void(0);\""
+            "\"javascript:sidebar.OpenChat('$1');void(0);\""
           )
       );
     });
