@@ -25,7 +25,7 @@ def calc_score(stars):
 def update_user_exp(recent=None):
     if recent:
         users = User.objects.filter(
-            last_login__gt=recent + timezone.now()).all()
+            last_login__gt=timezone.now() - recent).all()
     else:
         users = User.objects.all()
     comments = Lobby.objects.filter(channel__startswith="comments-")
@@ -37,6 +37,7 @@ def update_user_exp(recent=None):
         put_comments = comments.filter(user_id=user).count()
         user.experience = calc_exp(put_soups, put_goodques, put_trueques,
                                    put_comments)
+        print("Update: %s exp->%.2f" % (user.nickname, user.experience))
 
         # TODO: grant awards to users depend on experience here.
         user.save()

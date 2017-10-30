@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n markdown static %}
+{% load i18n markdown %}
 
 {% block style %}
 .mainbar {
@@ -13,13 +13,11 @@
 {% endblock %}
 
 {% block script %}
-require(['jquery', 'marked'], function($, marked){
-  $(document).ready(function() {
-    $("#info_textarea").on('input', function(){
-      var inputs = marked($("#info_textarea").val());
-      inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");
-      $("#info_preview")[0].innerHTML = inputs;
-    });
+$(document).ready(function() {
+  $("#info_textarea").on('input', function(){
+    var inputs = marked($("#info_textarea").val());
+    inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:sidebar.OpenChat('$1');\"");
+    $("#info_preview")[0].innerHTML = inputs;
   });
 });
 {% endblock %}

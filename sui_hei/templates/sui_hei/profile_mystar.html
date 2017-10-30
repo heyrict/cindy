@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static markdown decodes %}
+{% load i18n markdown decodes %}
 
 {% block title %} cindy - profile - mysoup {% endblock %} 
 
@@ -8,24 +8,22 @@
 {% endblock %}
 
 {% block script %}
-require(['jquery'], function($){
-  $(".remove_star_button").on("click", function () {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    if (confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}")) {
-      jQuery.post(
-        "{% url 'sui_hei:mondai_star_remove' %}",
-        {
-          csrfmiddlewaretoken: csrftoken,
-          star_id: this.value,
-        },
-        function(data) {
-          if (data) {
-            location.reload();
-          }
+$(".remove_star_button").on("click", function () {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  if (confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}")) {
+    jQuery.post(
+      "{% url 'sui_hei:mondai_star_remove' %}",
+      {
+        csrfmiddlewaretoken: csrftoken,
+        star_id: this.value,
+      },
+      function(data) {
+        if (data) {
+          location.reload();
         }
-      );
-    }
-  });
+      }
+    );
+  }
 });
 {% endblock %}
 

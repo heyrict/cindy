@@ -16,8 +16,8 @@
 }
 .leftbar_button {
   left: 78%;
-  width: 84px;
-  height: 357px;
+  width: 0.84px;
+  height: 3.57px;
   position: absolute;
   top: 60px;
   z-index: 98;
@@ -74,8 +74,8 @@
 }
 .memobar_button {
   right: 99%;
-  width: 84px;
-  height: 357px;
+  width: 0.84px;
+  height: 3.57px;
   position: absolute;
   top: 60px;
   z-index: 30;
