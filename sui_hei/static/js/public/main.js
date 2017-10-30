@@ -10450,8 +10450,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
     var nav_height = 60;
     var chat_height = 60;
     var table_height = goodh - nav_height - chat_height - 5;
-    $(".lobby_navigation_div").css("height", nav_height + "px");
-    $(".lobby_chat_div").css("height", nav_height + "px");
+    $(".lobby_navigation_div").velocity({ height: nav_height + "px" });
+    $(".lobby_chat_div").velocity({ height: nav_height + "px" });
     $(".lobby_table_div").css("height", table_height + "px");
 
     $("#lobby_chat_input").on("keypress", function(e) {
@@ -10469,6 +10469,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
   function ResizeSidebar() {
     var $leftbar = $(".leftbar");
+    var $rightbar = $(".rightbar");
+    var $leftbarbtn = $(".leftbar_button");
+    var $memobarbtn = $(".memobar_button");
+
     $leftbar.css("width", goodw + "px");
     if ($leftbar.attr("mode") == "open") {
       $leftbar.css("left", "0%");
@@ -10477,7 +10481,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
       $leftbar.attr("mode", "closed");
     }
 
-    var $rightbar = $(".rightbar");
     $rightbar.css("width", goodw + "px");
     if ($rightbar.attr("mode") == "open") {
       $rightbar.css("left", windoww - goodw * 0.792 + "px");
@@ -10487,14 +10490,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
     }
 
     $(".leftbar_content").css("height", goodh + "px");
-    var $leftbarbtn = $(".leftbar_button");
+    $(".memobar_content").css("height", goodh + "px");
+
     resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
     $leftbarbtn
       .css("height", $leftbarbtn.height() / resize_rate + "px")
       .css("width", $leftbarbtn.width() / resize_rate + "px");
 
-    $(".memobar_content").css("height", goodh + "px");
-    var $memobarbtn = $(".memobar_button");
     resize_rate = $memobarbtn.height() / (window.innerHeight * 0.45);
     $memobarbtn
       .css("height", $memobarbtn.height() / resize_rate + "px")
@@ -10650,7 +10652,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
       jQuery(".leftbar_content").html(data);
     });
 
-    if ($this.attr("mode") == "closed") {
+    if ($this.attr("mode") != "open") {
       $this.velocity({
         left: "0%",
         duration: 1000
@@ -10675,7 +10677,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
     PrevChatPage: PrevChatPage,
     ChangeChannel: ChangeChannel,
     OpenChat: OpenChat,
-    PostChat: PostChat,
+    PostChat: PostChat
   };
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
