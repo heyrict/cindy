@@ -24,24 +24,24 @@ require(["jquery", "./sidebar"], function($, sidebar) {
           )
       );
     });
+  });
 
-    // Sidebar related
-    $(document).ready(function() {
-      sidebar.ToggleSidebar();
-    });
+  // Sidebar related
+  $(document).ready(function() {
+    sidebar.ToggleSidebar();
+  });
 
-    $(window).on("load", function() {
-      //Calculate the good width&height, resize, with toggle event handles
-      sidebar.CalcGoodRect();
-      sidebar.ResizeSidebar();
-      sidebar.ResizeSidebarContent();
-    });
+  $(window).on("load", function() {
+    //Calculate the good width&height, resize, with toggle event handles
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
+  });
 
-    $(window).on("resize", function() {
-      // Recalculate the good width/height and resize
-      sidebar.CalcGoodRect();
-      sidebar.ResizeSidebar();
-      sidebar.ResizeSidebarContent();
-    });
+  $(window).on("resize", function() {
+    // Recalculate the good width/height and resize
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
   });
 });

@@ -10417,25 +10417,25 @@ new Promise(function(resolve) { resolve(); }).then(function() { var __WEBPACK_AM
           )
       );
     });
+  });
 
-    // Sidebar related
-    $(document).ready(function() {
-      sidebar.ToggleSidebar();
-    });
+  // Sidebar related
+  $(document).ready(function() {
+    sidebar.ToggleSidebar();
+  });
 
-    $(window).on("load", function() {
-      //Calculate the good width&height, resize, with toggle event handles
-      sidebar.CalcGoodRect();
-      sidebar.ResizeSidebar();
-      sidebar.ResizeSidebarContent();
-    });
+  $(window).on("load", function() {
+    //Calculate the good width&height, resize, with toggle event handles
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
+  });
 
-    $(window).on("resize", function() {
-      // Recalculate the good width/height and resize
-      sidebar.CalcGoodRect();
-      sidebar.ResizeSidebar();
-      sidebar.ResizeSidebarContent();
-    });
+  $(window).on("resize", function() {
+    // Recalculate the good width/height and resize
+    sidebar.CalcGoodRect();
+    sidebar.ResizeSidebar();
+    sidebar.ResizeSidebarContent();
   });
 }.apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}).catch(__webpack_require__.oe);
 
