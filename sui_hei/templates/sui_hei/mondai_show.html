@@ -65,15 +65,17 @@ $(document).ready(function(){
     );
   });
   // handling chat://
-  $(".memobar_content").html(
-    $(".memobar_content")
-      .html()
-      .replace(
-        /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-        "\"javascript:sidebar.OpenChat('$1');\""
-      )
-  );
-  mondaiShowUI.initUI({{ mystar }});
+  if ($(".memobar_content").length > 0) {
+    $(".memobar_content").html(
+      $(".memobar_content")
+        .html()
+        .replace(
+          /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
+          "\"javascript:sidebar.OpenChat('$1');\""
+        )
+    );
+  }
+  mondaiShowUI.initUI({{ mystar|default:0 }});
 });
 {% endblock %}
 
