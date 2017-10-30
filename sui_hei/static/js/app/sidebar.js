@@ -1,4 +1,4 @@
-define(["jquery", "velocity"], function($) {
+define(["jquery", "velocity-animate"], function($) {
   function ResizeSidebarContent() {
     // Set Height
     var nav_height = 60;

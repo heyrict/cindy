@@ -9,15 +9,15 @@
   <title>
       Cindy - {% block pageTitle %} {% trans 'A website for playing situation puzzles' %}: {% trans 'Chat With Lateral Thinking!' %} {% endblock %}
   </title>
-  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
-  <link rel="stylesheet" href="{% static 'base.css' %}">
-  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/github-pandoc.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
   <style type="text/css">
     {% block style %} 
     {% endblock %} 
   </style>
   {% block style_include %}{% endblock %}
-  <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
+  <script src="{% static 'js/public/main.js' %}"></script>
   <script type="text/javascript">
   {% block script %} {% endblock %}
   </script>
@@ -52,7 +52,7 @@
 
 <!-- lobby chat -->
 <div class="leftbar" mode={{ mode|default:"closed" }} >
-    <img class="leftbar_button" src={% static 'sidebar.png' %}>
+    <img class="leftbar_button" src={% static 'pictures/sidebar.png' %}>
     <div class="leftbar_content">
         {% include 'frames/leftbar_content.html' %}
     </div>

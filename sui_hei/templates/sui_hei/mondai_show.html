@@ -12,36 +12,21 @@
 {% endblock %}
 
 {% block style_include %}
-<link rel="stylesheet" href="{% static 'jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
 {% endblock %}
 
 {% block script_include %}
-<link rel="stylesheet" href="{% static 'mondai_show.css' %}">
+<link rel="stylesheet" href="{% static 'css/mondai_show.css' %}">
+<script src="{% static 'js/public/mondai_show.js' %}"></script>
 {% endblock %}
 
 {% block script %}
-require(['mondai_show']);
-require(['jquery', 'jquery-ui'], function($) {
-  var handle = $("#starbar_handle");
-  $("#starbar").slider({
-    max: 5,
-    min: -5,
-    step: 0.01,
-    value: {{ mystar }},
-    create: function(event, ui) {
-      handle.css('width', 30+2*({{ mystar }})+"px");
-      handle.css('height', 30+2*({{ mystar }})+"px");
-      handle.css('margin-top', -7.5-({{ mystar }})+"px");
-    },
-    slide: function(event, ui){
-      handle.css('width', 30+2*ui.value+"px");
-      handle.css('height', 30+2*ui.value+"px");
-      handle.css('margin-top', -7.5-ui.value+"px");
-    }
-  });
+$(document).ready(function(){
   $("#change_seikai_ckbx").on("click", function() {
     if (this.checked) {
-      return confirm("{% trans 'You cannot revert change if you put the true answer!' %}\n{% trans 'Continue?' %}")
+      return confirm(
+        "{% trans 'You cannot revert change if you put the true answer!' %}\n{% trans 'Continue?' %}"
+      );
     }
   });
   $("#comment_submit").on("click", function() {
@@ -54,9 +39,9 @@ require(['jquery', 'jquery-ui'], function($) {
         {
           csrfmiddlewaretoken: csrftoken,
           channel: comment_channel,
-          push_chat: commentmsg,
+          push_chat: commentmsg
         },
-        function (data) {
+        function(data) {
           $("#evaluation_panel").html("");
           OpenChat(comment_channel);
         }
@@ -72,13 +57,14 @@ require(['jquery', 'jquery-ui'], function($) {
         stars: $("#starbar").slider("value"),
         mondai: {{ mondai.id }}
       },
-      function (data) {
+      function(data) {
         if (data) {
           alert("{% trans 'Thank you for your voting!' %}");
         }
       }
     );
   });
+  mondaiShowUI.initUI({{ mystar }});
 });
 {% endblock %}
 
@@ -86,12 +72,10 @@ require(['jquery', 'jquery-ui'], function($) {
 {% if mondai.memo %}
 <div class="memobar rightbar" mode={{ mode|default:"closed" }} >
     <script type="text/javascript">
-        require(['jquery'], function ($) {
-            // handling chat://
-            $(".memobar_content").html($(".memobar_content").html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
-        });
+    // handling chat://
+    $(".memobar_content").html($(".memobar_content").html().replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\""));
     </script>
-    <img class="memobar_button rightbar_button" src={% static 'memobar.png' %}>
+    <img class="memobar_button rightbar_button" src={% static 'pictures/memobar.png' %}>
     <div class="memobar_content rightbar_content">
         <div style="margin-right:15px;">
         {{ mondai.memo|text2md|safe }}
@@ -215,7 +199,7 @@ require(['jquery', 'jquery-ui'], function($) {
                                                              onclick="OpenChat('comments-{{ mondai.id }}');">
     <br>
     <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
-        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'star.png' %}"></img></div>
+        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div>
         <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </div>
     <div class="clear"></div>

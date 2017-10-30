@@ -1,20 +1,18 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static %}
+{% load i18n %}
 
 {% block title %} Cindy - register {% endblock %} 
 
 {% block script %}
-require(['jquery', 'marked'], function($, marked){
-  $(document).ready(function() {
-    var inputs = marked($("#id_profile").val());
-    inputs = inputs.replace(/chat:\/\/([0-9a-zA-Z\-]+)/g, "javascript:OpenChat('$1');");
-    $("#profile_preview")[0].innerHTML = inputs;
+$(document).ready(function() {
+  var inputs = marked($("#id_profile").val());
+  inputs = inputs.replace(/chat:\/\/([0-9a-zA-Z\-]+)/g, "javascript:OpenChat('$1');");
+  $("#profile_preview")[0].innerHTML = inputs;
 
-    $("#id_profile").on('input', function(){
-      var inputs = marked($("#id_profile").val());
-      inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");
-      $("#profile_preview")[0].innerHTML = inputs;
-    });
+  $("#id_profile").on('input', function(){
+    var inputs = marked($("#id_profile").val());
+    inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:OpenChat('$1');\"");
+    $("#profile_preview")[0].innerHTML = inputs;
   });
 });
 {% endblock %}

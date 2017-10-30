@@ -1,5 +1,4 @@
 {% load i18n static markdown iterutil %} 
-<script src="{% static 'leftbar_content.js' %}"></script>
 <div class="lobby_navigation_div">
     {% include 'frames/pagination.html' with page_obj=chatlist is_paginated=True id_prefix="lobby_nav_" isbtn=True %}
     <form class="channel" id="change_channel_form" method="get">
@@ -31,5 +30,8 @@
     <input id="lobby_chat_input" name="push_chat" type="text">
     <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
 </div>
+<script type="text/javascript">
+leftbar.init();
+</script>
 {% endif %} 
 

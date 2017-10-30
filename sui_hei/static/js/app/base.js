@@ -1,4 +1,4 @@
-define("base", ["jquery", "sidebar"], function($, sidebar) {
+require(["jquery", "./sidebar"], function($, sidebar) {
   // Prevent multiple form submission
   can_submit = {};
   $("form").each(function(index) {
