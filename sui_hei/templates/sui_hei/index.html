@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n markdown static %}
+{% load i18n markdown %}
 
 {% block style %}
 .mainbar {
@@ -9,16 +9,15 @@
 .subbar {
     float: left;
     width: 40%;
-    padding-right: 20px;
 }
 {% endblock %}
 
 {% block script %}
 $(document).ready(function() {
-  require(['marked'], function(marked){
-    $("#info_textarea").on('input', function(){
-      $("#info_preview")[0].innerHTML = marked($("#info_textarea").val());
-    });
+  $("#info_textarea").on('input', function(){
+    var inputs = marked($("#info_textarea").val());
+    inputs = inputs.replace(/\"chat:\/\/([0-9a-zA-Z\-]+)\"/g, "\"javascript:sidebar.OpenChat('$1');\"");
+    $("#info_preview")[0].innerHTML = inputs;
   });
 });
 {% endblock %}
@@ -36,27 +35,25 @@ Cindy
         <font color="#52676f" size="5px" bold>{% trans 'Information' %}</font><br>
         <div class="hline"></div><br>
     </div>
-    <table style="width:100%">
-        {% for info in infos %}
-        <div class="wrapper" style="border:2px solid #268bd2;">
-            {{ info.content|text2md|safe }}
-            {% if perms.sui_hei.can_add_info %}
-            <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' info.id %}">[{% trans 'edit' %}]</a>
-            {% endif %}
-        </div>
-        {% endfor %}
-        {% include 'frames/pagination.html' with ln_prefix="?hpinfopage=" is_paginated=True page_obj=infos %}
+    {% for info in infos %}
+    <div class="wrapper chat_message" style="border:2px solid #268bd2;">
+        {{ info.content|text2md|safe }}
         {% if perms.sui_hei.can_add_info %}
-        <form action="{% url 'sui_hei:index' %}" method="post">
-            {% csrf_token %}
-            <span>
-                <textarea id="info_textarea" name="add_info" type="text"></textarea>
-                <div id="info_preview" class="wrapper"></div>
-                <input value="{% trans 'Add Info' %}" type="submit">
-            </span>
-        </form>
+        <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' info.id %}">[{% trans 'edit' %}]</a>
         {% endif %}
-    </table>
+    </div>
+    {% endfor %}
+    {% include 'frames/pagination.html' with ln_prefix="?hpinfopage=" is_paginated=True page_obj=infos %}
+    {% if perms.sui_hei.can_add_info %}
+    <form action="{% url 'sui_hei:index' %}" method="post">
+        {% csrf_token %}
+        <span>
+            <textarea id="info_textarea" name="add_info" type="text"></textarea>
+            <div id="info_preview" class="wrapper"></div>
+            <input value="{% trans 'Add Info' %}" type="submit">
+        </span>
+    </form>
+    {% endif %}
 </div>
 
 <div class="subbar">
@@ -67,7 +64,7 @@ Cindy
     <table style="width:100%;">
         {% for comment, mondai in comments %}
         <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
-            <td><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
+            <td class="chat_message"><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
                     {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
                 >> {{ comment.content }}
             </td>

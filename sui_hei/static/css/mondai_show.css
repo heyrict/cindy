@@ -1,0 +1,34 @@
+#starbar_handle {
+  width: 30px;
+  height: 30px;
+  margin-top: -7.5px;
+  text-align: center;
+}
+.HBar {
+  padding-bottom: 10px;
+}
+.QBlock {
+  float: left;
+  width: 45%;
+  border: 1px solid #268bd2;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 16px;
+  overflow: hidden;
+}
+.ABlock {
+  float: right;
+  width: 45%;
+  border: 1px solid #268bd2;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 16px;
+  overflow: hidden;
+}
+.vertical_line {
+  padding-bottom: 20000px;
+  margin-bottom: -20000px;
+  width: 0px;
+  float: left;
+  border-right: 1px dashed #268bd2;
+}

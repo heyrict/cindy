@@ -18,8 +18,6 @@ def normalize_star(value):
     return '%.1f' % ((value+5)*10)
 
 @register.filter
-def get_unanswered(value):
-    try:
-        return value.filter(Q(kaitou="") | Q(kaitou__isnull=True)).aggregate(Count('id'))['id__count']
-    except:
-        return 0
+def get_quescount(ques):
+    unanswered = ques.filter(Q(kaitou="") | Q(kaitou__isnull=True))
+    return {'ques': ques.count(), 'unanswered': unanswered.count()}

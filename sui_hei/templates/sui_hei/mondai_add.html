@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static %}
+{% load i18n %}
 
 {% block child_navi %}
 {% include 'frames/mondai_child_navi.html' %}
@@ -9,17 +9,15 @@
 
 {% block script %}
 $(document).ready(function() {
-  require(['marked'], function(marked){
+  $("#content_preview")[0].innerHTML = marked($("#id_content").val());
+  $("#kaisetu_preview")[0].innerHTML = marked($("#id_kaisetu").val());
+
+  $("#id_content").on('input', function(){
     $("#content_preview")[0].innerHTML = marked($("#id_content").val());
+  });
+
+  $("#id_kaisetu").on('input', function(){
     $("#kaisetu_preview")[0].innerHTML = marked($("#id_kaisetu").val());
-
-    $("#id_content").on('input', function(){
-      $("#content_preview")[0].innerHTML = marked($("#id_content").val());
-    });
-
-    $("#id_kaisetu").on('input', function(){
-      $("#kaisetu_preview")[0].innerHTML = marked($("#id_kaisetu").val());
-    });
   });
 });
 {% endblock %}

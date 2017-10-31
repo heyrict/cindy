@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static decodes %}
+{% load i18n decodes %}
 
 {% block title %} Cindy - mondai {% endblock%} 
 
@@ -11,7 +11,7 @@
 
 <h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
 
-{% include 'frames/pagination.html' with ln_prefix="/mondai?page=" %}
+{% include 'frames/pagination.html' with ln_prefix='?page=' %}
 
 {% for mondai in mondai_list %}
 <ul>
@@ -22,18 +22,34 @@
         <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
     {% endif %}
     
-    {% if mondai.shitumon_set|get_unanswered %}
-    <span class="process_label unanswered" style="margin-left:5px;">{{ mondai.shitumon_set|get_unanswered }}</span>
-    {% else %}
-    <span class="process_label answered" style="margin-left:5px;">{{ mondai.shitumon_set|get_unanswered }}</span>
-    {% endif %}
+    {% with quescount=mondai.shitumon_set|get_quescount %}
+        {% if quescount.unanswered %}
+        <span class="process_label unanswered" style="margin-left:5px;">{{ quescount.unanswered }}<sub>{{ quescount.ques }}</sub></span>
+        {% else %}
+        <span class="process_label answered" style="margin-left:5px;">{{ quescount.unanswered }}<sub>{{ quescount.ques }}</sub></span>
+        {% endif %}
+    {% endwith %}
 
     <span class="title_label">
-        <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+        <a href="{% url 'sui_hei:mondai_show' mondai.id %}">
+            [{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            {{ mondai.title }}
+        </a>
     </span>
-    <span style="float:right; text-decoration:bold;"><a href="/profile/{{ mondai.user_id.id }}" class="bul">{{ mondai.user_id.nickname }}</a>
-        {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
-        <font color="#888">[{% trans 'created' %}: {{ mondai.created }}]</font></span>
+
+    {% if mondai.score > 0 or mondai.user_id == user and mondai.star_set.count > 0 %}
+    <span class="mondai_score">
+        {{ mondai.score|normalize_star }}✯{{ mondai.star_set.count }}
+    </span>
+    {% endif %}
+
+    {% with mondai_user=mondai.user_id %}
+    <span style="float:right; text-decoration:bold;">
+        <a href="{% url 'sui_hei:profile' mondai_user.id %}" class="bul">{{ mondai_user.nickname }}</a>
+        {% if mondai_user.current_award %}[{{ mondai_user.current_award }}]{% endif %}
+        <font color="#888">[{% trans 'created' %}: {{ mondai.created }}]</font>
+    </span>
+    {% endwith %}
     <div class="clear"></div>
 </li>
 </ul>

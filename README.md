@@ -9,11 +9,11 @@ which comes from the popular original character of
 
 **THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
 
-Dependency
+Requisitories
 -----------
 - [Python3.5](http://www.python.org)
 - MySQL Server
-- django, pymysql, markdown
+- django, pymysql, markdown (python3 packages)
 
     ```bash
     # Windows
@@ -21,6 +21,17 @@ Dependency
 
     # Mac or Linux
     sudo -H pip3 install django pymysql markdown
+    ```
+- nodejs manager (npm or bower)
+
+    ```bash
+    cd cindy/sui_hei/static/js
+
+    # Use npm (bower is somewhat alike)
+    npm install
+
+    # generate ./dist dir. run this command each time you edit the js files.
+    npm run postinstall
     ```
 - (Under Windows) mysqlclient
 
@@ -75,11 +86,10 @@ e `open a terminal` in the right-click menu.
 
 TODO
 -----
-1. This is almost an empty project! Anything will help!
-1. Rich the database
-    - add `profile` to table `Users` just as suiheinet do
-1. Q&A frame in `sui_hei/mondai/show` (giving space to infrastructure)
 1. **A MORE BUILTIFUL LAYOUT**
+1. Move some part of POSTs to javascript (JSONize or django REST frame)
+1. Add Pages (esp. wiki or something) for editing website on client side.
+1. separate the forum to different languages.
 
 Contribute
 ----------
@@ -153,20 +163,29 @@ This chapter is specially for explaning the whole project to programmers.
     ├── migrations/
     ├── models.py                           # models storing data structure.
     ├── static                              # folder storing static files, e.g. css, js, png, etc.
-    │   ├── base.css                        # CSS Files
-    │   ├── sidebar.css                     #
-    │   ├── github-pandoc.css               # included CSS Files
-    │   ├── jquery-ui.css                   #
-    │   ├── main.js                         # JavaScript Files
-    │   ├── mondai_show.js                  #
-    │   ├── sidebar.js                      #
-    │   ├── jquery.min.js                   # JavaScript Libraries
-    │   ├── jquery-ui.js                    #
-    │   ├── marked.min.js                   #
-    │   ├── velocity.min.js                 #
-    │   ├── require.js                      #
-    │   ├── sidebar.png                     # PNG files
-    │   └── star.png                        #
+    │   ├── pictures/
+    │   ├── css/
+    │   │   ├── base.css
+    │   │   ├── github-pandoc.css
+    │   │   ├── jquery-ui.css
+    │   │   ├── mondai_show.css
+    │   │   └── sidebar.css
+    │   └── js
+    │       ├── app
+    │       │   ├── base.js
+    │       │   ├── leftbar_content.js
+    │       │   ├── mondai_show.js
+    │       │   ├── mondai_show_ui.js
+    │       │   └── sidebar.js
+    │       ├── lib
+    │       │   ├── jquery.js
+    │       │   ├── jquery-ui.js
+    │       │   ├── marked.js
+    │       │   ├── require.js
+    │       │   └── velocity.js
+    │       ├── node_modules*                   # not exist in this repo, download with npm/bower.
+    │       ├── public/                         # stores the bundled files
+    │       └── webpack.config.js               # config file for webpack
     ├── templates                           # html templates.
     │   │── frames                          #  folder storing the template of templates.
     │   │   ├── base.html                   #   base template

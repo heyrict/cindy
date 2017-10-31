@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static markdown decodes %}
+{% load i18n markdown decodes %}
 
 {% block title %} cindy - profile - mysoup {% endblock %} 
 
@@ -9,23 +9,8 @@
 
 {% block content %}
 <h2>{% trans 'Selled Soups' %}</h2>
-{% if is_paginated %} 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %} 
-            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
-            {% endif %} 
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
-            </span>
-
-            {% if page_obj.has_next %} 
-            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
-            {% endif %} 
-        </span>
-    </div>
-{% endif %} 
+{% include 'frames/pagination.html' with id_prefix='selled_soups' %}
 
 {% for mondai in mondai_list %}
 <ul>
@@ -37,12 +22,21 @@
     {% endif %}
 
     <span class="title_label">
-        <a href="/mondai/show/{{ mondai.id }}">{{ mondai.title }} [{{ mondai.genre|genre }}]</a>
+        <a href="{% url 'sui_hei:mondai_show' mondai.id %}">
+            [{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            {{ mondai.title }}
+        </a>
     </span>
-    {% trans 'Giver' %}: 
-    <b><a href="/profile/{{ mondai.user_id.id }}">{{ mondai.user_id.nickname }}</a>
-        {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
+
+    {% if mondai.score > 0 or mondai.user_id == user and mondai.star_set.count > 0 %}
+    <span class="mondai_score">
+        {{ mondai.score|normalize_star }}✯{{ mondai.star_set.count }}
+    </span>
+    {% endif %}
+
+    <span style="float:right; text-decoration:bold;">
     [{% trans 'created' %}: {{ mondai.created }}]
+    </span>
 </li>
 </ul>
 {% endfor %}

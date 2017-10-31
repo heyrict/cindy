@@ -1,29 +1,26 @@
 import re
-from datetime import datetime
+from django.utils import timezone
 
 from django import forms
-from django.contrib.auth import (authenticate, login, logout,
-                                 update_session_auth_hash)
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
-from django.db.utils import IntegrityError
 from django.forms import ValidationError
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import (get_object_or_404, redirect, render,
-                              render_to_response, reverse)
-from django.template import RequestContext, loader
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import LANGUAGE_SESSION_KEY, activate
+from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
-from markdown import markdown as md
+from django.views.generic import DetailView, ListView, UpdateView
 
 from .admin import *
 from .models import *
+from scoring import *
 
 
 # Create your views here.
 # /
+# TODO: Change database related POSTs to javascript
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
@@ -40,7 +37,7 @@ def index(request):
                 print("Index_POST:", e)
     else:
         try:
-            comments = Lobby.objects.filter(channel__startswith="comments-")
+            comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
             mondais = [
                 Mondai.objects.get(id=i.channel[len("comments-"):])
                 for i in comments
@@ -50,7 +47,7 @@ def index(request):
                 channel="homepage-info").order_by('-id')
             hpinfo_list = Paginator(infos, 20)
             return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments[:15], mondais[:15]),
+                'comments': zip(comments, mondais),
                 'infos': hpinfo_list.page(hpinfopage),
             })
         except Exception as e:
@@ -66,7 +63,9 @@ class MondaiView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Mondai.objects.order_by('seikai', '-created').select_related()
+        # TODO: Add searching & filtering from request.GET
+        # default behavior
+        return Mondai.objects.order_by('seikai', '-modified').select_related()
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
@@ -75,16 +74,14 @@ class MondaiView(ListView):
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
-    # don't set channel automatically on user-triggered channel change.
-    if request.method == "POST" and request.user.is_authenticated:
-        request.session['channel'] = 'comments-' + pk
-        return lobby_chat(request)
-
-    else:
+    if request.method == "GET":
+        # TODO: Add sorting for yami soup.
         request.session['channel'] = 'mondai-' + pk
 
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
+
+        # Check if current user has done some comments
         try:
             mycomment = Lobby.objects.get(
                 channel="comments-%s" % pk, user_id=request.user)
@@ -102,23 +99,20 @@ def mondai_show(request, pk):
             'mycomment': mycomment,
             'mystar': mystar
         })
+    else:
+        return redirect(reverse("sui_hei:mondai"))
 
 
 def mondai_star(request):
-    try:
-        mondai = re.findall("(?<=/mondai/show/)[0-9]+",
-                            request.META['HTTP_REFERER'])[0]
-        mondai_id = Mondai.objects.get(id=mondai)
-    except Exception as e:
-        print("MondaiStar:", e)
-        return redirect(request.META['HTTP_REFERER'])
-
     if request.method == "POST" and request.user.is_authenticated:
+        mondai = Mondai.objects.get(id=request.POST.get("mondai"))
         star = Star.objects.get_or_create(
-            user_id=request.user, mondai_id=mondai_id)[0]
-        star.value = float(request.POST.get('starbarind', 0))
+            user_id=request.user, mondai_id=mondai)[0]
+        star.value = float(request.POST.get('stars', 0))
         star.save()
-    return redirect(request.META['HTTP_REFERER'])
+        try: update_soup_score(star.mondai_id)
+        except: pass
+    return HttpResponse(True)
 
 
 def mondai_show_push_answ(request):
@@ -144,6 +138,17 @@ def mondai_show_push_answ(request):
 
             for _, obj in to_update.items():
                 obj.save()
+
+            # Update Mondai's modified time
+            mondai = re.findall("(?<=/mondai/show/)[0-9]+",
+                                request.META['HTTP_REFERER'])[0]
+            mondai_id = Mondai.objects.get(id=mondai)
+            mondai_id.modified = timezone.now()
+            mondai_id.save()
+
+            # update user last active event
+            request.user.last_login = timezone.now()
+            request.user.save()
         except Exception as e:
             print("PushAnsw:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
@@ -159,6 +164,7 @@ def mondai_show_update_soup(request):
             kaisetu = request.POST['change_kaisetu']
             seikai = request.POST.get('change_seikai')
             yami = request.POST.get('toggle_yami')
+            memo = request.POST.get('change_memo')
 
             # Validation
             if kaisetu == '': raise ValueError("Empty Input Data")
@@ -167,8 +173,12 @@ def mondai_show_update_soup(request):
 
             # Update mondai
             mondai_id.kaisetu = kaisetu
-            mondai_id.seikai = True if seikai else False
-            if yami: mondai_id.yami = not mondai_id.yami
+            mondai_id.memo = memo
+            if seikai:
+                mondai_id.seikai = True
+                mondai_id.modified = timezone.now()
+            if yami:
+                mondai_id.yami = not mondai_id.yami
             mondai_id.save()
 
             # Grant awards
@@ -206,13 +216,7 @@ def mondai_change(request, table_name, field_name, pk):
                 obj2upd.save()
 
                 # Redirect to relavant page
-                if table_name == "Shitumon":
-                    return redirect(
-                        reverse(
-                            "sui_hei:mondai_show",
-                            kwargs={'pk': obj2upd.mondai_id.id}))
-                else:
-                    return redirect(nextpage)
+                return redirect(nextpage)
             else:
                 return render(request, "sui_hei/mondai_change.html", {
                     'original':
@@ -244,16 +248,19 @@ def mondai_show_push_ques(request):
             ques = Shitumon(
                 user_id=request.user,
                 shitumon=content.strip(),
-                askedtime=datetime.now(),
+                askedtime=timezone.now(),
                 mondai_id=mondai_id)
             ques.save()
+
+            # update user last active event
+            request.user.last_login = timezone.now()
+            request.user.save()
         except Exception as e:
             print("PushQues:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
 # /lobby
-@csrf_exempt
 def lobby_chat(request):
     # get current channel
     channel = request.POST.get('channel', 'lobby')
@@ -282,7 +289,6 @@ def lobby_chat(request):
     return redirect(referer_without_query)
 
 
-@csrf_exempt
 def lobby_channel(request):
     # change channel by submit button
     if request.method == "GET":
@@ -301,10 +307,7 @@ def lobby_channel(request):
         })
     # change page by redirect
     else:
-        chatpage = request.GET.get('chatpage', 1)
-        referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-        return redirect(referer_without_query +
-                        "?chatpage=%s&mode=open" % chatpage)
+        return redirect(reverse("sui_hei:index"))
 
 
 # /profile/[0-9]+
@@ -320,8 +323,9 @@ class ProfileView(DetailView):
         userid = context['sui_hei_user'].id
         mondais = Mondai.objects.filter(user_id=userid)
         comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id)
-                                                     for i in mondais])
-        context['comments'] = zip(comments[:10], mondais[:10])
+                                                     for i in mondais])[:10]
+        com_mondais = [Mondai.objects.get(id=i.channel[9:]) for i in comments]
+        context['comments'] = zip(comments, com_mondais)
         context['pk'] = self.kwargs['pk']
 
         # get all awards
@@ -330,6 +334,14 @@ class ProfileView(DetailView):
         else:
             available_awards = []
         context['available_awards'] = available_awards
+
+        # get statistics
+        context['mondai_count'] = mondais.count()
+        put_ques = Shitumon.objects.filter(user_id=userid)
+        context['ques_count'] = put_ques.count()
+        context['goodques_count'] = put_ques.filter(good=True).count()
+        context['trueques_count'] = put_ques.filter(true=True).count()
+        context['comment_count'] = Lobby.objects.filter(channel__startswith="comments-", user_id=userid).count()
         return context
 
 
@@ -446,8 +458,8 @@ def mondai_add(request):
             content = form.cleaned_data['content']
             kaisetu = form.cleaned_data['kaisetu']
             userid = request.user
-            created = datetime.now()
-            modified = datetime.now()
+            created = timezone.now()
+            modified = timezone.now()
 
             _mondai = Mondai(
                 title=title,
@@ -477,8 +489,23 @@ def set_language(request):
 def award_change(request):
     if request.method == "POST":
         award_name = request.POST.get('award')
-        print(award_name)
         award = Award.objects.get(name=award_name) if award_name else None
         request.user.current_award = award
         request.user.save()
     return redirect(request.META['HTTP_REFERER'])
+
+
+def remove_star(request):
+    if request.method == "POST":
+        star_id = request.POST.get('star_id')
+        try:
+            star = Star.objects.get(id=star_id)
+
+            # Validation
+            if star.user_id != request.user:
+                raise ValidationError(_("You are not permitted to delete others star!"))
+
+        except Exception as e:
+            return HttpResponse("RemoveStar:", e)
+        star.delete()
+    return HttpResponse(True)

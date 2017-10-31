@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static markdown decodes %}
+{% load i18n markdown decodes %}
 
 {% block title %} cindy - profile - mysoup {% endblock %} 
 
@@ -7,39 +7,65 @@
 {% include 'frames/profile_child_navi.html' %}
 {% endblock %}
 
+{% block script %}
+$(".remove_star_button").on("click", function () {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  if (confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}")) {
+    jQuery.post(
+      "{% url 'sui_hei:mondai_star_remove' %}",
+      {
+        csrfmiddlewaretoken: csrftoken,
+        star_id: this.value,
+      },
+      function(data) {
+        if (data) {
+          location.reload();
+        }
+      }
+    );
+  }
+});
+{% endblock %}
+
 {% block content %}
 <h2>{% trans 'MyStar' %}</h2>
-{% if is_paginated %} 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %} 
-            <a href="{{ page_obj.previous_page_number }}">{% trans 'prev' %}</a>
-            {% endif %} 
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
-            </span>
-
-            {% if page_obj.has_next %} 
-            <a href="{{ page_obj.next_page_number }}">{% trans 'next' %}</a>
-            {% endif %} 
-        </span>
-    </div>
-{% endif %} 
+{% include 'frames/pagination.html' with id_prefix='star' ln_prefix='page?' %}
 
 {% for star in star_list %}
 <ul>
 <li>
     <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
 
+    {% if star.user_id == user %}
+    <button class="remove_star_button" style="padding:inherit;background:inherit;color:red;" value={{ star.id }}>⛔</button>
+    {% endif %}
+
+    {% with starred_mondai=star.mondai_id %}
     <span class="title_label">
-        <a href="/star/show/{{ star.mondai_id.id }}">{{ star.mondai_id.title }} </a>
+        <a href="{% url 'sui_hei:mondai_show' starred_mondai.id %}">
+            [{{ starred_mondai.genre|genre }}{% if starred_mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            {{ starred_mondai.title }}
+        </a>
     </span>
+
+    {% if starred_mondai.score > 0 or starred_mondai.user_id == user and starred_mondai.star_set.count > 0 %}
+    <span class="mondai_score">
+        {{ starred_mondai.score|normalize_star }}✯{{ starred_mondai.star_set.count }}
+    </span>
+    {% endif %}
+
+    {% with starred_mondai_user=starred_mondai.user_id %}
+    <span style="float:right; text-decoration:bold;">
     {% trans 'Giver' %}: 
-    <b><a href="/profile/{{ star.mondai_id.user_id.id }}">{{ star.mondai_id.user_id.nickname }}</a>
-        {% if star.mondai_id.user_id.current_award %}[{{ star.mondai_id.user_id.current_award }}]{% endif %}</b>
-    [{% trans 'created' %}: {{ star.mondai_id.created }}]
+    <b><a href="{% url 'sui_hei:profile' starred_mondai_user.id %}">{{ starred_mondai_user.nickname }}</a>
+        {% if starred_mondai_user.current_award %}[{{ starred_mondai_user.current_award }}]{% endif %}</b>
+    [{% trans 'created' %}: {{ starred_mondai.created }}]
+    </span>
+    {% endwith %}
+    {% endwith %}
 </li>
 </ul>
 {% endfor %}
+<div class="clear"></div>
 {% endblock %}

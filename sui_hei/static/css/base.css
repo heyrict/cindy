@@ -114,6 +114,15 @@ input[type="text"] {
   width: 50%;
   padding-left: 10px;
 }
+.mondai_score {
+  border: 2px solid #bcc045;
+  border-radius: 20px;
+  font-family: Courier;
+  margin-left: 10px;
+  font-weight: bolder;
+  color: #bcc045;
+  padding: 4px;
+}
 body {
   background: #fff9f0;
 }
@@ -123,4 +132,7 @@ a.bul {
 }
 a.bul:hover {
   text-decoration: none;
+}
+sub {
+  position: inherit;
 }

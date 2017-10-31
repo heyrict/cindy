@@ -5,28 +5,21 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <link rel="stylesheet" href="{% static 'github-pandoc.css' %}">
-  <link rel="stylesheet" href="{% static 'base.css' %}">
-  <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>
+      Cindy - {% block pageTitle %} {% trans 'A website for playing situation puzzles' %}: {% trans 'Chat With Lateral Thinking!' %} {% endblock %}
+  </title>
+  <link rel="stylesheet" href="{% static 'css/github-pandoc.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
   <style type="text/css">
     {% block style %} 
     {% endblock %} 
   </style>
   {% block style_include %}{% endblock %}
-  <script data-main="{% static 'main.js' %}" src="{% static 'require.js' %}"></script>
+  <script src="{% static 'js/dist/main.js' %}"></script>
   <script type="text/javascript">
-    requirejs.config({
-        base_url: '/static',
-        paths: {
-            jquery: 'jquery.min',
-            marked: 'marked.min',
-        }
-    });
-    require(["jquery"], function($) {
-        {% block script %}
-        {% endblock %}
-    });
+  {% block script %} {% endblock %}
   </script>
   {% block script_include %}{% endblock %}
 </head>
@@ -36,12 +29,41 @@
     {% block title %} 
     {% endblock %} 
 </h1>
-{% include 'frames/header.html' %} 
-<div id="sidebar">
-{% include 'frames/sidebar.html' %} 
+
+<!-- header -->
+<span>
+{% if user.is_authenticated %}
+{% trans "Welcome, "%} <a href="/profile/{{ user.id }}">{{ user.nickname }}</a>.
+    [<a href="/users/logout">{% trans 'logout' %}</a>]
+{% else %}
+[<a href="/users/add">{% trans 'register' %}</a>]
+[<a href="/users/login">{% trans 'login' %}</a>]
+{% endif %}
+</span>
+<!-- end header -->
+
+<!-- site-navigation -->
+<h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
+<ul class="list-nav">
+    <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
+    <li><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></li>
+</ul>
+<!-- end site-navigation -->
+
+<!-- lobby chat -->
+<div class="leftbar" mode={{ mode|default:"closed" }} >
+    <img class="leftbar_button" src={% static 'pictures/sidebar.png' %}>
+    <div class="leftbar_content">
+        {% include 'frames/leftbar_content.html' %}
+    </div>
 </div>
+<!-- end lobby chat -->
+
 {% block child_navi %} 
 {% endblock %} 
+
+{% block extra_header %}
+{% endblock %}
 </header>
 
 <body>

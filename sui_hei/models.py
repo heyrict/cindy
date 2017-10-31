@@ -9,6 +9,9 @@ class Award(models.Model):
     name = models.CharField(max_length=255, null=False)
     description = models.TextField(default="")
 
+    class Meta:
+        verbose_name = _("Award")
+
     def __str__(self):
         return self.name
 
@@ -17,6 +20,7 @@ class User(AbstractUser):
     nickname = models.CharField(_('nick_name'), max_length=255, null=False)
     profile = models.TextField(_('profile'), default="")
     current_award = models.ForeignKey(Award, null=True)
+    experience = models.IntegerField(_('experience'), default=0)
 
     REQUIRED_FIELDS = ['nickname']
 
@@ -33,6 +37,9 @@ class User(AbstractUser):
 class UserAward(models.Model):
     user_id = models.ForeignKey(User)
     award_id = models.ForeignKey(Award)
+
+    class Meta:
+        verbose_name = _("User-Award")
 
     def __str__(self):
         return "[%s] owns [%s]" % (self.user_id.nickname, self.award_id)
@@ -56,6 +63,8 @@ class Mondai(models.Model):
     seikai = models.BooleanField(_('seikai'), null=False)
     created = models.DateTimeField(_('created'), null=False)
     modified = models.DateTimeField(_('modified'), null=False)
+    status = models.IntegerField(_('status'), default=0, null=False)
+    memo = models.TextField(_('memo'), default="")
     score = models.FloatField(_('score'), default=0, null=False)
 
     class Meta:
@@ -89,7 +98,7 @@ class Lobby(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
-    score = models.SmallIntegerField(_('score'), default=50)
+    #score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
         permissions = (
