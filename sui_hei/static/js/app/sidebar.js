@@ -208,7 +208,7 @@ define(["jquery", "velocity-animate"], function($) {
 
   function LinkNormAll(selector) {
     if ($(selector).length > 0) {
-      $("td#message").each(function(index) {
+      $(selector).each(function(index) {
         $(this).html(LinkNorm($(this).html()));
       });
     }
