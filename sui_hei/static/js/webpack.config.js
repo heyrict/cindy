@@ -1,5 +1,6 @@
 module.exports = {
   entry: {
+    common: [ "./app/common.js"],
     main: ["./app/base.js", "./app/sidebar.js", "./app/leftbar_content.js"],
     mondai_show: ["./app/mondai_show.js", "./app/mondai_show_ui.js"]
   },

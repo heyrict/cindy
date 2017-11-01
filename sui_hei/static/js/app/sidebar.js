@@ -203,6 +203,26 @@ define(["jquery", "velocity-animate"], function($) {
     }
   }
 
+  function OpenMemo() {
+    var $this = $(".rightbar");
+
+    if ($this.attr("mode") == "closed") {
+      $this.velocity({
+        left: windoww - goodw * 0.792 + "px",
+        duration: 1000
+      });
+      $this.attr("mode", "open");
+
+      if (small_screen) {
+        $(".leftbar").velocity({
+          left: -goodw + "px",
+          duration: 1000
+        });
+        $(".leftbar").attr("mode", "hide");
+      }
+    }
+  }
+
   function LinkNorm(string) {
     return string.replace(
       /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
@@ -227,6 +247,7 @@ define(["jquery", "velocity-animate"], function($) {
     LinkNorm: LinkNorm,
     LinkNormAll: LinkNormAll,
     OpenChat: OpenChat,
+    OpenMemo: OpenMemo,
     PostChat: PostChat,
     GetChannel: getCurrentChannel
   };
