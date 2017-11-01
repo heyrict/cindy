@@ -13,23 +13,26 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
         return false;
       }
       lobby_chat_can_submit = false;
-      channel = $("#lobby_nav_input")
-        .attr("placeholder")
-        .substr(17);
+      channel = sidebar.GetChannel();
       sidebar.PostChat(channel, $("#lobby_chat_input").val());
     });
 
-    $("#lobby_nav_input").on("input", function() {
-      sidebar.InputNorm();
-    });
-    $("#lobby_nav_submit").on("click", function() {
-      return sidebar.ChangeChannel();
+    $("#lobby_nav_input").on("input", sidebar.InputNorm);
+    $("#lobby_nav_submit").on("click", function(e) {
+      channel = $("#lobby_nav_input").val();
+      sidebar.OpenChat(channel);
+      //return false;
+      e.preventDefault();
     });
     $("#lobby_nav_next").on("click", function() {
-      sidebar.NextChatPage();
+      chatpage = $(this).val();
+      channel = sidebar.GetChannel();
+      sidebar.OpenChat(channel, chatpage);
     });
     $("#lobby_nav_prev").on("click", function() {
-      sidebar.PrevChatPage();
+      chatpage = $(this).val();
+      channel = sidebar.GetChannel();
+      sidebar.OpenChat(channel, chatpage);
     });
 
     $(document).ready(function() {
@@ -41,17 +44,8 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
     });
 
     // handling chat://
-    $("td#message").each(function(index) {
-      $(this).html(
-        $(this)
-          .html()
-          .replace(
-            /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-            "\"javascript:sidebar.OpenChat('$1');void(0);\""
-          )
-      );
-    });
+    sidebar.LinkNormAll("td#message");
   }
 
-  return {init: init};
+  return { init: init };
 });
