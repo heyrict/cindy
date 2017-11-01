@@ -212,7 +212,7 @@ msgstr "更新"
 
 #: sui_hei/templates/frames/mondai_child_navi.html:3
 msgid "NewSoup"
-msgstr "新問題"
+msgstr "出題"
 
 #: sui_hei/templates/frames/pagination.html:7
 #: sui_hei/templates/frames/pagination.html:10
@@ -238,7 +238,7 @@ msgstr "出題した問題"
 #: sui_hei/templates/frames/profile_child_navi.html:5
 #: sui_hei/templates/sui_hei/profile_mystar.html:31
 msgid "MyStar"
-msgstr "マイスター"
+msgstr "スター"
 
 #: sui_hei/templates/registration/add.html:8
 msgid "Welcome to Cindy, a real-time website for lateral thinking games!"
@@ -315,7 +315,7 @@ msgstr "正解を出すと二度と問題を編集出来ません"
 #: sui_hei/templates/sui_hei/mondai_show.html:46
 #: sui_hei/templates/sui_hei/profile_mystar.html:13
 msgid "Continue?"
-msgstr "続きますか？"
+msgstr "続けますか？"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:77
 #: sui_hei/templates/sui_hei/profile_mystar.html:55
@@ -432,7 +432,7 @@ msgstr "なし"
 
 #: sui_hei/templates/sui_hei/profile.html:48
 msgid "change"
-msgstr "更改"
+msgstr "更新"
 
 #: sui_hei/templates/sui_hei/profile.html:61
 msgid "Change password"
