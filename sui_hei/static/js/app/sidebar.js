@@ -175,7 +175,11 @@ define(["jquery", "velocity-animate"], function($) {
     lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
   }
 
-  function OpenChat(channel = "lobby", chatpage = 1) {
+  function OpenChat(channel, chatpage) {
+    // set default values
+    channel = channel || "lobby";
+    chatpage = chatpage || 1;
+
     var $this = $(".leftbar");
 
     $.get("/lobby/channel", { channel: channel, chatpage: chatpage }, function(
