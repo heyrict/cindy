@@ -119,7 +119,7 @@ $(document).ready(function(){
             <div style="width:69%; float:right;">
                 <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
                 {{ qna.shitumon|line2md|safe }}
-                {% if qna.user_id == user %}
+                {% if qna.user_id == user and not qna.kaitou %}
                 <a class="qna_edit" href="{% url 'sui_hei:mondai_change' 'Shitumon' 'shitumon' qna.id %}">{% trans '[edit]' %}</a>
                 {% endif %}
             </div>
