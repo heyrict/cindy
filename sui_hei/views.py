@@ -6,6 +6,7 @@ from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
@@ -39,10 +40,12 @@ def index(request):
     else:
         try:
             comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
-            mondais = [
-                Mondai.objects.get(id=i.channel[len("comments-"):])
-                for i in comments
-            ]
+            mondais = []
+            for i in comments:
+                try:
+                    mondais.append(Mondai.objects.get(id=i.channel[len("comments-"):]))
+                except ObjectDoesNotExist:
+                    continue
 
             infos = Lobby.objects.filter(
                 channel="homepage-info").order_by('-id')
