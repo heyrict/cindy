@@ -53,8 +53,7 @@ def index(request):
             })
         except Exception as e:
             print("Index:", e)
-            return redirect(reverse("sui_hei:index"))
-    return redirect(request.META['HTTP_REFERER'])
+    return render(request, "sui_hei/index.html")
 
 
 # /mondai
