@@ -4,7 +4,7 @@
 {% block title %} Cindy - mondai - show {% endblock %} 
 
 {% block pageTitle %}
-[{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
+[{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
 {% endblock %}
 
 {% block child_navi %}
@@ -85,8 +85,23 @@ $(document).ready(function(){
 {% endblock %}
 
 {% block content %} 
-<h2>[{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}</h2>
+<h2>
+    [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
+    {% if mondai.status >= 2 %}
+    <font color=gray>({{ mondai.status|mondai_status }})</font>
+    {% endif %}
+</h2>
 
+{% if mondai.user_id != user and mondai.status > 2 %}
+<!-- Hidden Question -->
+<div class="mondai_content wrapper">
+    {% blocktrans with status=mondai.status|mondai_status %}
+    This soup's status is set to {{ status }},
+    which means you cannot view it.
+    {% endblocktrans %}
+</div>
+<br />
+{% else %}
 <!-- Content of Question -->
 <div class="mondai_content wrapper">
     <ul style="left: 10px;">
@@ -107,7 +122,7 @@ $(document).ready(function(){
 <div class="mondai_qna">
     {% for qna in qnas %}
     <!-- if yami -->
-    {% if mondai.yami and qna.user_id != user and mondai.user_id != user and not mondai.seikai %}
+    {% if mondai.yami and qna.user_id != user and mondai.user_id != user and mondai.status == 0 %}
     {% else %}
     <div class="HBar">
         <div class="QBlock">
@@ -127,8 +142,8 @@ $(document).ready(function(){
         <div class="ABlock">
             {% if user == mondai.user_id %}
             <!-- for giver -->
-                {% if qna.kaitou %}
                 <div>
+                {% if qna.kaitou %}
                     <div style="width:100%; float:left;">
                         {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
                         {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
@@ -186,8 +201,9 @@ $(document).ready(function(){
 </form>
 <!-- End Q&A -->
 <br>
+{% endif %}
 <!-- Answer of Question -->
-{% if mondai.seikai %}
+{% if mondai.status == 1 or mondai.status == 2 %} <!-- Solved or Dazed -->
 <div class="mondai_kaisetu wrapper">
     {{ mondai.kaisetu|text2md|safe }}
     <br>
@@ -213,8 +229,10 @@ $(document).ready(function(){
     <br>
     <!-- Evaluation Panel -->
 </div>
+{% endif %}
+
+{% if user == mondai.user_id and mondai.status == 1 or mondai.status == 2 or mondai.status == 3 %} <!-- Display giver panel if solved-->
 <!-- giver panel -->
-{% if user == mondai.user_id %}
 <form class="wrapper" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
     {% csrf_token %}
     <span class="giver_panel">
@@ -223,12 +241,16 @@ $(document).ready(function(){
 
         <input type="checkbox" name="toggle_yami">
         {% if mondai.yami %}{% trans 'uncheck as yami' %}{% else %}{% trans 'check as yami' %}{% endif %}<br>
+
+        {% if mondai.status <= 3 %}
+        <input type="checkbox" name="toggle_status_hidden">
+        {% if mondai.status == 3 %}{% trans 'uncheck as hidden' %}{% else %}{% trans 'check as hidden' %}{% endif %}<br>
+        {% endif %}
         <input value="{% trans 'Update' %}" type="submit">
     </span>
 </form><br>
-{% endif %}
 <!-- end giver panel -->
-{% else %}
+{% elif mondai.status == 0 %}
     {% if not user.is_authenticated %}
     <!-- for guests -->
     <a href="{% url "sui_hei:login" %}">{% trans 'Hello guest! I need to know who you are before you ask a question!' %}</a>

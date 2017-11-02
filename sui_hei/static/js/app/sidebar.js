@@ -37,6 +37,8 @@ define(["jquery", "velocity-animate"], function($) {
     $leftbar.css("width", goodw + "px");
     if ($leftbar.attr("mode") == "open") {
       $leftbar.css("left", "0%");
+    } else if ($leftbar.attr("mode") == "hide") {
+      $leftbar.css("left", -goodw + "px");
     } else {
       $leftbar.css("left", -goodw * 0.792 + "px");
       $leftbar.attr("mode", "closed");
@@ -45,6 +47,8 @@ define(["jquery", "velocity-animate"], function($) {
     $rightbar.css("width", goodw + "px");
     if ($rightbar.attr("mode") == "open") {
       $rightbar.css("left", windoww - goodw * 0.792 + "px");
+    } else if ($rightbar.attr("mode") == "hide") {
+      $rightbar.css("left", windoww + goodw + "px");
     } else {
       $rightbar.css("left", windoww + "px");
       $rightbar.attr("mode", "closed");

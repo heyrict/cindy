@@ -46,7 +46,7 @@ $(document).ready(function() {
     {% with starred_mondai=star.mondai_id %}
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' starred_mondai.id %}">
-            [{{ starred_mondai.genre|genre }}{% if starred_mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            [{{ starred_mondai.genre|mondai_genre }}{% if starred_mondai.yami %} × {% trans 'yami' %}{% endif %}]
             {{ starred_mondai.title }}
         </a>
     </span>

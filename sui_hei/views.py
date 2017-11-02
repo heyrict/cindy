@@ -1,4 +1,5 @@
 import re
+from itertools import chain
 from django.utils import timezone
 
 from django import forms
@@ -65,11 +66,16 @@ class MondaiView(ListView):
     def get_queryset(self):
         # TODO: Add searching & filtering from request.GET
         # default behavior
-        return Mondai.objects.order_by('seikai', '-modified').select_related()
+        others = Mondai.objects.filter(status__gte=1).order_by('-modified').select_related()
+        return others
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
-        return super(MondaiView, self).get_context_data(**kwargs)
+
+        context = super(MondaiView, self).get_context_data(**kwargs)
+        unsolved = Mondai.objects.filter(status__exact=0).order_by('-modified').select_related()
+        context['unsolved_mondai_list'] = unsolved
+        return context
 
 
 # /mondai/show/[0-9]+
@@ -161,28 +167,31 @@ def mondai_show_update_soup(request):
                 Mondai,
                 id=re.findall(r"(?<=/mondai/show/)[0-9]+",
                               request.META['HTTP_REFERER'])[0])
-            kaisetu = request.POST['change_kaisetu']
+            kaisetu = request.POST.get('change_kaisetu')
             seikai = request.POST.get('change_seikai')
+            hidden = request.POST.get('toggle_status_hidden')
             yami = request.POST.get('toggle_yami')
             memo = request.POST.get('change_memo')
 
             # Validation
             if kaisetu == '': raise ValueError("Empty Input Data")
-            if mondai_id.seikai:
-                raise ValidationError("This mondai is already finished")
 
             # Update mondai
-            mondai_id.kaisetu = kaisetu
+            if kaisetu and mondai_id.status == 0:
+                mondai_id.kaisetu = kaisetu
             mondai_id.memo = memo
             if seikai:
-                mondai_id.seikai = True
+                mondai_id.status = 0
                 mondai_id.modified = timezone.now()
             if yami:
                 mondai_id.yami = not mondai_id.yami
+            if hidden and mondai_id.status in [0, 1]:
+                mondai_id.status = 3
+            elif hidden and mondai_id.status == 3:
+                mondai_id.status = 1
             mondai_id.save()
 
-            # Grant awards
-            pass
+            # TODO: Grant awards here
 
         except Exception as e:
             print("UpdateSoup:", e)
@@ -467,7 +476,7 @@ def mondai_add(request):
                 genre=genre,
                 content=content,
                 kaisetu=kaisetu,
-                seikai=0,
+                status=0,
                 user_id=userid,
                 created=created,
                 modified=modified, )

@@ -15,15 +15,19 @@
 {% for mondai in mondai_list %}
 <ul>
 <li>
-    {% if mondai.seikai %}
-        <span class="status_label solved"><font color="#859900">solved</font></span>
-    {% else %}
+    {% if mondai.status == 0 %}
         <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+    {% elif mondai.status == 1 %}
+        <span class="status_label solved"><font color="#859900">solved</font></span>
+    {% elif mondai.status == 2 %}
+        <span class="status_label dazed"><font color="#259185">dazed</font></span>
+    {% else %}
+        <span class="status_label hidden"><font color="gray">hidden</font></span>
     {% endif %}
 
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' mondai.id %}">
-            [{{ mondai.genre|genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
             {{ mondai.title }}
         </a>
     </span>

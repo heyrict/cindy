@@ -95,6 +95,12 @@ input[type="text"] {
 .unsolved {
   border: 1px solid #cb4b16;
 }
+.dazed {
+  border: 1px solid #259185;
+}
+.hidden {
+  border: 1px solid gray;
+}
 .process_label {
   text-align: center;
   padding: 3px;
