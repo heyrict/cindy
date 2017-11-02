@@ -180,10 +180,10 @@ def mondai_show_update_soup(request):
 
             # Update mondai
             if kaisetu and mondai_id.status == 0:
-                mondai_id.status = 1
+                mondai_id.kaisetu = kaisetu
             mondai_id.memo = memo
             if seikai:
-                mondai_id.status = 0
+                mondai_id.status = 1
                 mondai_id.modified = timezone.now()
             if yami:
                 mondai_id.yami = not mondai_id.yami
