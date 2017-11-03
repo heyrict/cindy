@@ -1,4 +1,5 @@
 require("marked");
+require("../lib/bootstrap.min.js");
 require(["jquery", "./sidebar"], function($, sidebar) {
   $(document).ready(function() {
     // Prevent multiple form submission

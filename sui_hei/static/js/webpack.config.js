@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     common: [ "./app/common.js"],
-    main: ["./app/base.js", "./app/sidebar.js", "./app/leftbar_content.js"],
+    main: ["./app/base.js", "./app/sidebar.js", "./app/leftbar_content.js", "./lib/bootstrap.min.js", "./lib/less.min.js"],
     mondai_show: ["./app/mondai_show.js", "./app/mondai_show_ui.js"]
   },
   output: {
@@ -22,6 +22,16 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "jQuery"
+          }
+        ]
+      },
+      // bootstrap
+      {
+        test: require.resolve("./lib/bootstrap.min.js"),
+        use: [
+          {
+            loader: "expose-loader",
+            options: "bootstrap"
           }
         ]
       },

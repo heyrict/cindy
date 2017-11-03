@@ -15,13 +15,13 @@
 <ul>
 <li>
     {% if mondai.status == 0 %}
-        <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+        <span class="status_label status_unsolved"><font color="#cb4b16">unsolved</font></span>
     {% elif mondai.status == 1 %}
-        <span class="status_label solved"><font color="#859900">solved</font></span>
+        <span class="status_label status_solved"><font color="#859900">solved</font></span>
     {% elif mondai.status == 2 %}
-        <span class="status_label dazed"><font color="#259185">dazed</font></span>
+        <span class="status_label status_dazed"><font color="#259185">dazed</font></span>
     {% else %}
-        <span class="status_label hidden"><font color="gray">hidden</font></span>
+        <span class="status_label status_hidden"><font color="gray">hidden</font></span>
     {% endif %}
     
     {% with quescount=mondai.shitumon_set|get_quescount %}
@@ -57,7 +57,8 @@
 </ul>
 {% endfor %}
 
-<div align="center" style="border-top:1px solid #ccc;"></div></div>
+<div align="center" style="border-top:1px solid #ccc;"><br /></div>
+</div>
 
 {% include 'frames/pagination.html' with ln_prefix='?page=' %}
 
@@ -65,13 +66,13 @@
 <ul>
 <li>
     {% if mondai.status == 0 %}
-        <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+        <span class="status_label status_unsolved"><font color="#cb4b16">unsolved</font></span>
     {% elif mondai.status == 1 %}
-        <span class="status_label solved"><font color="#859900">solved</font></span>
+        <span class="status_label status_solved"><font color="#859900">solved</font></span>
     {% elif mondai.status == 2 %}
-        <span class="status_label dazed"><font color="#259185">dazed</font></span>
+        <span class="status_label status_dazed"><font color="#259185">dazed</font></span>
     {% else %}
-        <span class="status_label hidden"><font color="gray">hidden</font></span>
+        <span class="status_label status_hidden"><font color="gray">hidden</font></span>
     {% endif %}
     
     {% with quescount=mondai.shitumon_set|get_quescount %}

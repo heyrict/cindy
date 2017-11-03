@@ -1,4 +1,4 @@
-define(["jquery", "jqueryui"], function($) {
+define(["jquery", "../lib/jquery-ui.js"], function($) {
   function initUI(prevStar) {
     var handle = $("#starbar_handle");
     $("#starbar").slider({

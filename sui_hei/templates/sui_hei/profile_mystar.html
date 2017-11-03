@@ -1,7 +1,7 @@
 {% extends 'frames/base.html' %} 
 {% load i18n markdown decodes %}
 
-{% block title %} cindy - profile - mysoup {% endblock %} 
+{% block title %} Cindy - profile - mystar {% endblock %} 
 
 {% block child_navi %}
 {% include 'frames/profile_child_navi.html' %}
@@ -37,7 +37,7 @@ $(document).ready(function() {
 {% for star in star_list %}
 <ul>
 <li>
-    <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
+    <span class="status_label status_unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
 
     {% if star.user_id == user %}
     <button class="remove_star_button" style="padding:inherit;background:inherit;color:red;" value={{ star.id }}>⛔</button>
