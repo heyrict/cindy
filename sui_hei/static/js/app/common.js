@@ -1,4 +1,4 @@
-define([], function() {
+define(["jquery"], function() {
   function setCookie(c_name, value, expiredays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + expiredays);
@@ -37,6 +37,6 @@ define([], function() {
   return {
     hash: hash,
     getCookie: getCookie,
-    setCookie: setCookie
+    setCookie: setCookie,
   };
 });

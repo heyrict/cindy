@@ -6,6 +6,7 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
 ) {
   $(document).ready(function() {
     // Previews
+    var PageURL = window.location.pathname;
     if ($("#kaisetu_textarea").length > 0) {
       $("#kaisetu_preview").html(marked($("#kaisetu_textarea").val()));
     }
@@ -18,10 +19,24 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
       $("#memo_preview").html(marked($("#memo_textarea").val()));
     });
 
-    // add redirect link to [edit]
-    var PageURL = window.location.pathname;
-    $("a.qna_edit").each(function() {
-      this.href += "?next=" + PageURL;
+    // qna_edit
+    $(".qna_edit").each(function() {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var pk = $(this).attr("value");
+      var target = $(this).attr("target");
+      $(this).on("click", function() {
+        $.post(
+          "/mondai/edit",
+          { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
+          function(data) {
+            $("#message_edit_modal_body").html(
+              `<textarea id="message_edit_modal_content">${data.content}</textarea>`
+            );
+            $("#message_edit_modal_content").attr("target", target);
+            $("#message_edit_modal_content").attr("value", pk);
+          }
+        );
+      });
     });
 
     // if memo updates, open memo bar
@@ -39,7 +54,7 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
       }
       // clean the object list
       memoHashObjKeys = Object.keys(memoHashObj).reverse();
-      while (memoHashObjKeys.length > 10) {
+      while (memoHashObjKeys.length > 20) {
         key2del = memoHashObj.Keys.pop();
         delete memoHashObj[key2del];
       }

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
@@ -184,50 +184,48 @@ def mondai_show_update_soup(request):
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
-def mondai_change(request, table_name, field_name, pk):
-    acceptable = {"Shitumon": Shitumon, 'Lobby': Lobby}
-    nextpage = request.GET.get('next', reverse("sui_hei:index"))
-    if table_name in acceptable:
+def shitumon_edit(request):
+    pk = int(request.POST.get("pk"))
+    target = request.POST.get("target")
+    content = request.POST.get("content")
+
+    if target in ["lobby", "homepage"]:
+        inst = Lobby.objects.get(id=pk)
+    elif target in ["shitumon", "kaitou"]:
+        inst = Shitumon.objects.get(id=pk)
+    else:
+        return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+
+    if content is not None:
+        # validate, save message, return True
+        error_message = None
         try:
-            obj2upd = get_object_or_404(acceptable[table_name], id=pk)
-
-            # Validation
-            if field_name == 'kaitou':
-                if obj2upd.mondai_id.user_id != request.user:
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
-            elif table_name == "Lobby" and obj2upd.channel == "homepage-info":
-                if not request.user.has_perm('sui_hei.can_add_info'):
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
+            if target in ["lobby", "homepage"] and request.user == inst.user_id:
+                if content == "":
+                    inst.delete();
+                else:
+                    inst.content = content
+                    inst.save()
+            elif target == "shitumon" and request.user == inst.user_id:
+                inst.shitumon = content
+                inst.save()
+            elif target == "kaitou" and request.user == inst.mondai_id.user_id:
+                inst.kaitou = content
+                inst.save()
             else:
-                if obj2upd.user_id != request.user:
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
-
-            # Process
-            if request.method == "POST":
-                obj2upd.__setattr__(field_name, request.POST['push_change'])
-                obj2upd.save()
-
-                # Redirect to relavant page
-                return redirect(nextpage)
-            else:
-                return render(request, "sui_hei/mondai_change.html", {
-                    'original':
-                    obj2upd.__getattribute__(field_name),
-                    'table_name':
-                    table_name,
-                    'field_name':
-                    field_name,
-                    'pk':
-                    pk,
-                })
-
-        except Exception as e:
-            return render(request, "sui_hei/mondai_change.html",
-                          {'error_message': e})
-    return redirect(request.META['HTTP_REFERER'])
+                raise ValidationError(_("You are not permitted to do this!"))
+        except ValidationError as e:
+            error_message = e
+        return JsonResponse({'error_message': error_message})
+    else:
+        if target in ["lobby", "homepage"]:
+            return JsonResponse({'content': inst.content})
+        elif target == "shitumon":
+            return JsonResponse({'content': inst.shitumon})
+        elif target == "kaitou":
+            return JsonResponse({'content': inst.kaitou})
+        else:
+            return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
 
 
 def mondai_show_push_ques(request):

@@ -7,14 +7,6 @@
 [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
 {% endblock %}
 
-{% block child_navi %}
-{% include 'frames/mondai_child_navi.html' %}
-{% endblock %}
-
-{% block style_include %}
-<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
-{% endblock %}
-
 {% block script_include %}
 <link rel="stylesheet" href="{% static 'css/mondai_show.css' %}">
 <script src="{% static 'js/dist/mondai_show.js' %}"></script>
@@ -22,10 +14,16 @@
 
 {% block script %}
 $(document).ready(function(){
-  $("#change_seikai_ckbx").on("click", function() {
+  $("#change_seikai_ckbx").on("click", function(e) {
     if (this.checked) {
-      return confirm(
-        "{% trans 'You cannot revert change if you put the true answer!' %}\n{% trans 'Continue?' %}"
+      bootbox.confirm(
+        "<h3>{% trans 'Warning' %}</h3>" + 
+        "<p>{% trans 'You cannot revert change if you put the true answer!' %}</p><p>{% trans 'Continue?' %}</p>",
+        function(conf) {
+          if (!conf) {
+            $("#change_seikai_ckbx").prop("checked", false);
+          }
+        }
       );
     }
   });
@@ -54,12 +52,12 @@ $(document).ready(function(){
       "{% url 'sui_hei:mondai_star' %}",
       {
         csrfmiddlewaretoken: csrftoken,
-        stars: $("#starbar").slider("value"),
+        stars: $("#starbar").val(),
         mondai: {{ mondai.id }}
       },
       function(data) {
         if (data) {
-          alert("{% trans 'Thank you for your voting!' %}");
+          bootbox.alert("<h3>Thanks!</h3><p>{% trans 'Thank you for your voting!' %}</p>");
         }
       }
     );
@@ -67,7 +65,7 @@ $(document).ready(function(){
   // handling chat://
   sidebar.LinkNormAll(".memobar_content");
 
-  mondaiShowUI.initUI({{ mystar|default:0 }});
+  mondaiShowUI.initUI();
 });
 {% endblock %}
 
@@ -94,7 +92,7 @@ $(document).ready(function(){
 
 {% if mondai.user_id != user and mondai.status > 2 %}
 <!-- Hidden Question -->
-<div class="mondai_content wrapper">
+<div class="mondai_content well">
     {% blocktrans with status=mondai.status|mondai_status %}
     This soup's status is set to {{ status }},
     which means you cannot view it.
@@ -103,7 +101,7 @@ $(document).ready(function(){
 <br />
 {% else %}
 <!-- Content of Question -->
-<div class="mondai_content wrapper">
+<div class="mondai_content well" style="background:inherit">
     <ul style="left: 10px;">
         <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
                 {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
@@ -135,7 +133,9 @@ $(document).ready(function(){
                 <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
                 {{ qna.shitumon|line2md|safe }}
                 {% if qna.user_id == user and not qna.kaitou %}
-                <a class="qna_edit" href="{% url 'sui_hei:mondai_change' 'Shitumon' 'shitumon' qna.id %}">{% trans '[edit]' %}</a>
+                <a class="qna_edit" target="shitumon" value="{{ qna.id }}" href="javascript:void(0);"
+                    role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+                    {% trans '[edit]' %}</a>
                 {% endif %}
             </div>
         </div>
@@ -148,7 +148,9 @@ $(document).ready(function(){
                         {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
                         {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
                         {{ qna.kaitou|line2md|safe }} 
-                        <a class="qna_edit" href="{% url 'sui_hei:mondai_change' 'Shitumon' 'kaitou' qna.id %}">{% trans '[edit]' %}</a>
+                        <a class="qna_edit" target="kaitou" value="{{ qna.id }}" href="javascript:void(0);"
+                            role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+                            {% trans '[edit]' %}</a>
                     </div>
                 {% else %}
                     <div style="width:100%; float:left;">
@@ -204,7 +206,7 @@ $(document).ready(function(){
 {% endif %}
 <!-- Answer of Question -->
 {% if mondai.status == 1 or mondai.status == 2 %} <!-- Solved or Dazed -->
-<div class="mondai_kaisetu wrapper">
+<div class="mondai_kaisetu well" style="background:inherit;">
     {{ mondai.kaisetu|text2md|safe }}
     <br>
     <div align="center"><div class="hline"></div></div>
@@ -213,9 +215,16 @@ $(document).ready(function(){
     <input value="{% trans 'Show Comments' %}" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:3.5%;"
                                                              onclick="sidebar.OpenChat('comments-{{ mondai.id }}');">
     <br>
+    {% comment %}
     <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
-        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div>
+        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div><br />
         <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
+    </div>
+    {% endcomment %}
+    <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
+      <input id="starbar" data-slider-id='starbar_slider' type="text" data-slider-min="0" data-slider-max="100"
+        data-slider-step=".1" data-slider-value="{{ mystar|default:"50" }}" data-slider-handle="custom" />
+      <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </div>
     <div class="clear"></div>
     {% if mycomment %}
@@ -233,7 +242,7 @@ $(document).ready(function(){
 
 {% if user == mondai.user_id and mondai.status == 1 or mondai.status == 2 or mondai.status == 3 %} <!-- Display giver panel if solved-->
 <!-- giver panel -->
-<form class="wrapper" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
+<form class="well" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
     {% csrf_token %}
     <span class="giver_panel">
         <div>{% trans 'Memo' %}: 
@@ -275,7 +284,7 @@ $(document).ready(function(){
             <input value="{% trans 'Update' %}" type="submit">
         </span>
     </form><br>
-    <div class="wrapper" style="border:3px solid #728905;">
+    <div class="well" style="border:3px solid #728905;">
         <font color=#52676f" size="5px" face="monospace">{% trans 'True Answer' %} {% trans 'Preview' %}</font>
         <div id="kaisetu_preview"></div>
     </div>

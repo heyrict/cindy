@@ -29,15 +29,15 @@
   z-index: 101;
 }
 #lobby_nav_input {
-  width: 50%;
+  width: 53%;
   font-size: 14px;
-  padding: 1px;
+  padding: 3px;
 }
 #lobby_nav_submit {
-  width: 35%;
+  width: 43%;
   font-size: 14px;
   margin-top: 2px;
-  padding: 5px;
+  padding: 6px;
 }
 #lobby_chat_input {
   width: 94%;

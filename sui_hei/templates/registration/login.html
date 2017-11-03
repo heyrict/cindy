@@ -14,12 +14,17 @@
     {% endif %}
 {% endif %}
 
+<br />
 <form action="{% url 'sui_hei:login' %}" method="post">
 {% csrf_token %}
-<p>
-{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
-</p>
-<table>{{ form.as_table }}</table> <input type="submit" value="Confirm" />
+<div class="offset2 span8">
+  {% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
+  <legend>{% trans 'login' %}</legend>
+  <table class="table">
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Confirm" />
+</div>
 
 <input type="hidden" name="next" value="{{ next }}" />
 </form>

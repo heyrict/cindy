@@ -1,27 +1,23 @@
 {% extends 'frames/base.html' %} 
 {% load i18n decodes %}
 
-{% block title %} Cindy - mondai {% endblock%} 
-
-{% block child_navi %}
-{% include 'frames/mondai_child_navi.html' %}
-{% endblock %}
+{% block title %} Cindy - mondai {% endblock %} 
 
 {% block content %} 
 
-<h2 id="trans-all-soups">{% trans 'All Soups' %}</h2>
+<h2 id="trans-all-soups" style="border-bottom:1px solid #ccc;">{% trans 'All Soups' %}</h2>
 
 {% for mondai in unsolved_mondai_list %}
 <ul>
 <li>
     {% if mondai.status == 0 %}
-        <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+        <span class="status_label status_unsolved"><font color="#cb4b16">unsolved</font></span>
     {% elif mondai.status == 1 %}
-        <span class="status_label solved"><font color="#859900">solved</font></span>
+        <span class="status_label status_solved"><font color="#859900">solved</font></span>
     {% elif mondai.status == 2 %}
-        <span class="status_label dazed"><font color="#259185">dazed</font></span>
+        <span class="status_label status_dazed"><font color="#259185">dazed</font></span>
     {% else %}
-        <span class="status_label hidden"><font color="gray">hidden</font></span>
+        <span class="status_label status_hidden"><font color="gray">hidden</font></span>
     {% endif %}
     
     {% with quescount=mondai.shitumon_set|get_quescount %}
@@ -34,7 +30,7 @@
 
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' mondai.id %}">
-            [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} &times; {% trans 'yami' %}{% endif %}]
             {{ mondai.title }}
         </a>
     </span>
@@ -57,7 +53,7 @@
 </ul>
 {% endfor %}
 
-<div align="center" style="border-top:1px solid #ccc;"></div></div>
+<div align="center" style="border-top:1px solid #ccc;"><br /></div>
 
 {% include 'frames/pagination.html' with ln_prefix='?page=' %}
 
@@ -65,13 +61,13 @@
 <ul>
 <li>
     {% if mondai.status == 0 %}
-        <span class="status_label unsolved"><font color="#cb4b16">unsolved</font></span>
+        <span class="status_label status_unsolved"><font color="#cb4b16">unsolved</font></span>
     {% elif mondai.status == 1 %}
-        <span class="status_label solved"><font color="#859900">solved</font></span>
+        <span class="status_label status_solved"><font color="#859900">solved</font></span>
     {% elif mondai.status == 2 %}
-        <span class="status_label dazed"><font color="#259185">dazed</font></span>
+        <span class="status_label status_dazed"><font color="#259185">dazed</font></span>
     {% else %}
-        <span class="status_label hidden"><font color="gray">hidden</font></span>
+        <span class="status_label status_hidden"><font color="gray">hidden</font></span>
     {% endif %}
     
     {% with quescount=mondai.shitumon_set|get_quescount %}

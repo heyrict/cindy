@@ -28,10 +28,9 @@ def mark_mondai_as_dazed(recent=7):
     now = timezone.now()
     recent_days_ago = now - timedelta(days=recent)
     unsolved = Mondai.objects.filter(
-        seikai=False, status=0, modified__lt=recent_days_ago)
+        status=0, modified__lt=recent_days_ago)
     for dazed_mondai in unsolved:
         print("Mark dazed: ", dazed_mondai.id, "-", dazed_mondai.title)
-        dazed_mondai.seikai = True
         dazed_mondai.status = 1
         dazed_mondai.modified = now
         dazed_mondai.save()
