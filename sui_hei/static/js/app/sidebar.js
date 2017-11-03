@@ -155,7 +155,7 @@ define(["jquery", "velocity-animate"], function($) {
     });
   }
 
-  function PostChat(channel, message) {
+  function PostChat(channel, message, callback) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     if (!channel.match("^[A-Za-z0-9-]+$")) {
       return false;
@@ -168,7 +168,11 @@ define(["jquery", "velocity-animate"], function($) {
         push_chat: message
       },
       function(data) {
-        $(".leftbar_content").html(data);
+        if (callback) {
+          return callback(data);
+        } else {
+          $(".leftbar_content").html(data);
+        }
       }
     );
     return false;

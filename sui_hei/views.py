@@ -26,37 +26,21 @@ from scoring import *
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
-    if request.method == "POST":
-        if request.user.has_perm('sui_hei.can_add_info'):
-            try:
-                content = request.POST.get("add_info", "")
-                chat = Lobby(
-                    user_id=request.user,
-                    content=content,
-                    channel="homepage-info")
-                chat.save()
-            except Exception as e:
-                print("Index_POST:", e)
-    else:
+    comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
+    mondais = []
+    for i in comments:
         try:
-            comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
-            mondais = []
-            for i in comments:
-                try:
-                    mondais.append(Mondai.objects.get(id=i.channel[len("comments-"):]))
-                except ObjectDoesNotExist:
-                    continue
+            mondais.append(Mondai.objects.get(id=i.channel[len("comments-"):]))
+        except ObjectDoesNotExist:
+            continue
 
-            infos = Lobby.objects.filter(
-                channel="homepage-info").order_by('-id')
-            hpinfo_list = Paginator(infos, 20)
-            return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments, mondais),
-                'infos': hpinfo_list.page(hpinfopage),
-            })
-        except Exception as e:
-            print("Index:", e)
-    return render(request, "sui_hei/index.html")
+    infos = Lobby.objects.filter(
+        channel="homepage-info").order_by('-id')
+    hpinfo_list = Paginator(infos, 20)
+    return render(request, 'sui_hei/index.html', {
+        'comments': zip(comments, mondais),
+        'infos': hpinfo_list.page(hpinfopage),
+    })
 
 
 # /mondai
@@ -278,14 +262,11 @@ def lobby_chat(request):
 
     # update
     if request.method == "POST" and request.user.is_authenticated:
-        try:
-            content = request.POST.get('push_chat', '')
-            if content != '':
-                chat = Lobby(
-                    user_id=request.user, content=content, channel=channel)
-                chat.save()
-        except Exception as e:
-            print("Lobby:", e)
+        content = request.POST.get('push_chat', '')
+        if content != '':
+            chat = Lobby(
+                user_id=request.user, content=content, channel=channel)
+            chat.save()
 
         # render response
         chatlist = Paginator(

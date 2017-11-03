@@ -14,10 +14,17 @@
 
 {% block script %}
 $(document).ready(function() {
-  $("#info_textarea").on('input', function(){
+  $("#info_textarea").on('input', function() {
     var inputs = marked($("#info_textarea").val());
     inputs = sidebar.LinkNorm(inputs)
     $("#info_preview")[0].innerHTML = inputs;
+  });
+
+  $("#info_submit").on('click', function() {
+    var inputs = $("#info_textarea").val();
+    sidebar.PostChat("homepage-info", inputs, function(data) {
+      window.location.reload();
+    });
   });
 });
 {% endblock %}
@@ -45,14 +52,11 @@ Cindy
     {% endfor %}
     {% include 'frames/pagination.html' with ln_prefix="?hpinfopage=" is_paginated=True page_obj=infos %}
     {% if perms.sui_hei.can_add_info %}
-    <form action="{% url 'sui_hei:index' %}" method="post">
-        {% csrf_token %}
-        <span>
-            <textarea id="info_textarea" name="add_info" type="text"></textarea>
-            <div id="info_preview" class="wrapper"></div>
-            <input value="{% trans 'Add Info' %}" type="submit">
-        </span>
-    </form>
+    <div>
+        <textarea id="info_textarea" name="add_info" type="text"></textarea>
+        <div id="info_preview" class="wrapper"></div>
+        <input type="submit" id="info_submit" value="{% trans 'Add Info' %}">
+    </div>
     {% endif %}
 </div>
 
