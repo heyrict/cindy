@@ -50,7 +50,7 @@ $(document).ready(function(){
       "{% url 'sui_hei:mondai_star' %}",
       {
         csrfmiddlewaretoken: csrftoken,
-        stars: $("#starbar").slider("value"),
+        stars: $("#starbar").val(),
         mondai: {{ mondai.id }}
       },
       function(data) {
@@ -215,8 +215,11 @@ $(document).ready(function(){
         <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </div>
     {% endcomment %}
-    <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20"
-        data-slider-step="1" data-slider-value="{{ mystar }}"/>
+    <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
+      <input id="starbar" data-slider-id='starbar_slider' type="text" data-slider-min="0" data-slider-max="100"
+        data-slider-step=".1" data-slider-value="{{ mystar }}" data-slider-handle="custom" />
+      <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
+    </div>
     <div class="clear"></div>
     {% if mycomment %}
     {% else %}
