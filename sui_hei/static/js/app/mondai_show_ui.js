@@ -20,7 +20,7 @@ define(["jquery", "../lib/bootstrap-slider.min.js"], function($) {
     });
   }
   */
-  function initUI(prevStar) {
+  function initUI() {
     $("#starbar").bootstrapSlider({
       formatter: function(value) {
         return value;
