@@ -6,14 +6,15 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
       Cindy - {% block pageTitle %} {% trans 'A website for playing situation puzzles' %}: {% trans 'Chat With Lateral Thinking!' %} {% endblock %}
   </title>
-  <link rel="stylesheet" href="{% static 'css/github-pandoc.css' %}">
+  <!--<link rel="stylesheet" href="{% static 'css/github-pandoc.css' %}">-->
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-responsive.min.css' %}">
   <style type="text/css">
     {% block style %} 
     {% endblock %} 
@@ -26,30 +27,77 @@
   {% block script_include %}{% endblock %}
 </head>
 
-<header>
-<h1>
-    {% block title %} 
-    {% endblock %} 
-</h1>
+<header><div class="container">
 
 <!-- header -->
 <span>
-{% if user.is_authenticated %}
-{% trans "Welcome, "%} <a href="/profile/{{ user.id }}">{{ user.nickname }}</a>.
-    [<a href="/users/logout">{% trans 'logout' %}</a>]
-{% else %}
-[<a href="/users/add">{% trans 'register' %}</a>]
-[<a href="/users/login">{% trans 'login' %}</a>]
-{% endif %}
 </span>
 <!-- end header -->
 
 <!-- site-navigation -->
-<h4 id='site-navigations'>{% trans 'Site Navigations' %}</h4>
+<div class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    <a class="brand">{% block title %}Cindy{% endblock %}</a>
+    <div class="nav-collapse collapse">
+      <ul class="nav">
+        <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            {% trans 'mondai' %} <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href='/mondai'>{% trans 'All Soups' %}</a>
+              <a href='/mondai/add'>{% trans 'NewSoup' %}</a>
+            </li>
+          </ul>
+        </li>
+        {% block users_nav %}
+        {% endblock users_nav %}
+      </ul>
+      <!-- user dropdown menu -->
+      <ul class="nav pull-right">
+        <li class="dropdown">
+        {% if user.is_authenticated %}
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            {{ user.nickname }} <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{% url 'sui_hei:profile' user.id %}">{% trans 'Profile' %}</a>
+              <a href="{% url 'sui_hei:logout' %}">{% trans 'logout' %}</a>
+            </li>
+          </ul>
+        {% else %}
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            {% trans 'Welcome, guest.' %} <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/users/add">{% trans 'register' %}</a>
+            </li>
+            <li>
+              <a href="/users/login">{% trans 'login' %}</a>
+            </li>
+          </ul>
+        {% endif %}
+        </li>
+      </ul>
+      <!-- end user dropdown menu -->
+    </div>
+  </div>
+</div>
+{% comment %}    
 <ul class="list-nav">
     <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
     <li><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></li>
 </ul>
+{% endcomment %}
 <!-- end site-navigation -->
 
 <!-- lobby chat -->
@@ -66,14 +114,18 @@
 
 {% block extra_header %}
 {% endblock %}
-</header>
+</div></header>
 
 <body>
+  <div class="container">
+    <br />
     {% block content %} 
     {% endblock %} 
+    <br />
+  </div>
 </body>
 
-<footer>
+<footer><div class="container">
     {% include 'frames/footer.html' %}
-</footer>
+</div></footer>
 </html>

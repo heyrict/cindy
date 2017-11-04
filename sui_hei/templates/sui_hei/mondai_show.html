@@ -7,10 +7,6 @@
 [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
 {% endblock %}
 
-{% block child_navi %}
-{% include 'frames/mondai_child_navi.html' %}
-{% endblock %}
-
 {% block style_include %}
 <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
 {% endblock %}
@@ -94,7 +90,7 @@ $(document).ready(function(){
 
 {% if mondai.user_id != user and mondai.status > 2 %}
 <!-- Hidden Question -->
-<div class="mondai_content wrapper">
+<div class="mondai_content well">
     {% blocktrans with status=mondai.status|mondai_status %}
     This soup's status is set to {{ status }},
     which means you cannot view it.
@@ -103,7 +99,7 @@ $(document).ready(function(){
 <br />
 {% else %}
 <!-- Content of Question -->
-<div class="mondai_content wrapper">
+<div class="mondai_content well" style="background:inherit">
     <ul style="left: 10px;">
         <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
                 {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
@@ -204,7 +200,7 @@ $(document).ready(function(){
 {% endif %}
 <!-- Answer of Question -->
 {% if mondai.status == 1 or mondai.status == 2 %} <!-- Solved or Dazed -->
-<div class="mondai_kaisetu wrapper">
+<div class="mondai_kaisetu well" style="background:inherit;">
     {{ mondai.kaisetu|text2md|safe }}
     <br>
     <div align="center"><div class="hline"></div></div>
@@ -213,10 +209,14 @@ $(document).ready(function(){
     <input value="{% trans 'Show Comments' %}" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:3.5%;"
                                                              onclick="sidebar.OpenChat('comments-{{ mondai.id }}');">
     <br>
+    {% comment %}
     <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
         <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div><br />
         <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </div>
+    {% endcomment %}
+    <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20"
+        data-slider-step="1" data-slider-value="{{ mystar }}"/>
     <div class="clear"></div>
     {% if mycomment %}
     {% else %}
@@ -233,7 +233,7 @@ $(document).ready(function(){
 
 {% if user == mondai.user_id and mondai.status == 1 or mondai.status == 2 or mondai.status == 3 %} <!-- Display giver panel if solved-->
 <!-- giver panel -->
-<form class="wrapper" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
+<form class="well" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
     {% csrf_token %}
     <span class="giver_panel">
         <div>{% trans 'Memo' %}: 
@@ -275,7 +275,7 @@ $(document).ready(function(){
             <input value="{% trans 'Update' %}" type="submit">
         </span>
     </form><br>
-    <div class="wrapper" style="border:3px solid #728905;">
+    <div class="well" style="border:3px solid #728905;">
         <font color=#52676f" size="5px" face="monospace">{% trans 'True Answer' %} {% trans 'Preview' %}</font>
         <div id="kaisetu_preview"></div>
     </div>

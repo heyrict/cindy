@@ -1,4 +1,5 @@
-define(["jquery", "../lib/jquery-ui.js"], function($) {
+define(["jquery", "../lib/bootstrap-slider.min.js"], function($) {
+  /*
   function initUI(prevStar) {
     var handle = $("#starbar_handle");
     $("#starbar").slider({
@@ -17,6 +18,10 @@ define(["jquery", "../lib/jquery-ui.js"], function($) {
         handle.css("margin-top", -7.5 - ui.value + "px");
       }
     });
+  }
+  */
+  function initUI(prevStar) {
+    return
   }
 
   return { initUI: initUI };

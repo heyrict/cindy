@@ -15,7 +15,7 @@ def mondai_status(value):
 
 @register.filter
 def normalize_star(value):
-    return '%.1f' % ((value+5)*10)
+    return '%.1f' % value
 
 @register.filter
 def get_quescount(ques):

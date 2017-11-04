@@ -21,6 +21,12 @@ define(["jquery", "velocity-animate"], function($) {
       }
     });
 
+    $("#lobby_nav_input").on("keypress", function(e) {
+      if (e.which == 13) {
+        $("#lobby_nav_submit").click();
+      }
+    });
+
     $(".lobby_table_div").velocity("scroll", {
       offset: $(".lobby_table_div").prop("scrollHeight"),
       container: $(".lobby_table_div"),
