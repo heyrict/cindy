@@ -19,6 +19,9 @@ h1, h2, h3, h4, h5, h6 {
 select {
   margin-top: 8px;
 }
+li {
+  padding: 2px;
+}
 textarea {
   padding: 6px;
   font-size: 15px;
@@ -141,6 +144,7 @@ input[type="text"] {
 }
 body {
   background: #fff9f0;
+  line-height: normal;
 }
 a.bul {
   color: #222;

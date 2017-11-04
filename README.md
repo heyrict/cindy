@@ -1,5 +1,6 @@
 Cindy
 =====
+<img align="right" style="width:38.2%;" src="https://raw.githubusercontent.com/heyrict/cindy/master/sui_hei/static/pictures/cindylogo.png" />
 A (non-)replica project for replicating the
 website of [sui-hei.net](http://sui-hei.net) by `Django`.
 
@@ -8,6 +9,8 @@ which comes from the popular original character of
 [Cindy](http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3).
 
 **THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
+
+<div style="clear:both;" />
 
 Requisitories
 -----------
@@ -235,6 +238,7 @@ python3 manage.py migrate
 
 Contributers
 ------------
-- [kamisugi](http://sui-hei.net/mondai/profile/1)
-- [kamisan](https://github.com/pb10001)
-- [shakkuri](http://sui-hei.net/mondai/profile/11752)
+- [kamisugi(上杉)](http://sui-hei.net/mondai/profile/1)
+- [kamisan(上参)](https://github.com/pb10001)
+- [shakkuri(しゃっくり)](http://sui-hei.net/mondai/profile/11752)
+- [sarubobo(さるぼぼ)](http://sui-hei.net/mondai/profile/6664)
