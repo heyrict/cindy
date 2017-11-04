@@ -30,16 +30,6 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js"], function(
     });
   });
 
-  // bootstrap related
-  $(document).ready(function() {
-    $(".dropdown-toggle").each(function() {
-      $(this).on("click", function(e) {
-        $(this).dropdown();
-        e.preventDefault();
-      });
-    });
-  });
-
   // Sidebar related
   $(document).ready(function() {
     sidebar.ToggleSidebar();
