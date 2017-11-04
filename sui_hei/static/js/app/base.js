@@ -1,6 +1,8 @@
 require("marked");
-require(["jquery", "../lib/bootstrap.min.js"]);
-require(["jquery", "./sidebar"], function($, sidebar) {
+require(["jquery", "./sidebar", "../lib/bootstrap.min.js"], function(
+  $,
+  sidebar
+) {
   $(document).ready(function() {
     // Prevent multiple form submission
     can_submit = {};
@@ -25,6 +27,16 @@ require(["jquery", "./sidebar"], function($, sidebar) {
             "\"javascript:sidebar.OpenChat('$1');\""
           )
       );
+    });
+  });
+
+  // bootstrap related
+  $(document).ready(function() {
+    $(".dropdown-toggle").each(function() {
+      $(this).on("click", function(e) {
+        $(this).dropdown();
+        e.preventDefault();
+      });
     });
   });
 
