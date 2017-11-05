@@ -1,7 +1,13 @@
 module.exports = {
   entry: {
-    common: [ "./app/common"],
-    main: ["./app/base", "./app/sidebar", "./app/leftbar_content", "./lib/bootstrap.min"],
+    common: ["./app/common"],
+    index: ["./app/index"],
+    main: [
+      "./app/base",
+      "./app/sidebar",
+      "./app/leftbar_content",
+      "./lib/bootstrap.min"
+    ],
     mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
   },
   output: {
