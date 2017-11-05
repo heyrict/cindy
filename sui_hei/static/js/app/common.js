@@ -1,4 +1,4 @@
-define(["../lib/jquery.js", "../lib/bootstrap.min.js"], function() {
+define(["jquery"], function() {
   function setCookie(c_name, value, expiredays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + expiredays);
@@ -34,18 +34,9 @@ define(["../lib/jquery.js", "../lib/bootstrap.min.js"], function() {
     return hash;
   }
 
-  // common alert function
-  function alert(string, title) {
-    title = title || "Warning";
-    $("#alert_modal_title").html(title);
-    $("#alert_modal_body").html(string);
-    $("#alert_modal").modal("show");
-  }
-
   return {
     hash: hash,
     getCookie: getCookie,
     setCookie: setCookie,
-    alert: alert
   };
 });

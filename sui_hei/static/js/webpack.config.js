@@ -25,13 +25,13 @@ module.exports = {
           }
         ]
       },
-      // bootstrap
+      // bootbox
       {
-        test: require.resolve("./lib/bootstrap.min.js"),
+        test: require.resolve("./lib/bootbox.min.js"),
         use: [
           {
             loader: "expose-loader",
-            options: "bootstrap"
+            options: "bootbox"
           }
         ]
       },
@@ -52,16 +52,6 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "marked"
-          }
-        ]
-      },
-      // common
-      {
-        test: require.resolve("./app/common.js"),
-        use: [
-          {
-            loader: "expose-loader",
-            options: "common"
           }
         ]
       },

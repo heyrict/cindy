@@ -7,10 +7,6 @@
 [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
 {% endblock %}
 
-{% block style_include %}
-<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
-{% endblock %}
-
 {% block script_include %}
 <link rel="stylesheet" href="{% static 'css/mondai_show.css' %}">
 <script src="{% static 'js/dist/mondai_show.js' %}"></script>
@@ -18,10 +14,16 @@
 
 {% block script %}
 $(document).ready(function(){
-  $("#change_seikai_ckbx").on("click", function() {
+  $("#change_seikai_ckbx").on("click", function(e) {
     if (this.checked) {
-      return confirm(
-        "{% trans 'You cannot revert change if you put the true answer!' %}\n{% trans 'Continue?' %}"
+      bootbox.confirm(
+        "<h3>{% trans 'Warning' %}</h3>" + 
+        "<p>{% trans 'You cannot revert change if you put the true answer!' %}</p><p>{% trans 'Continue?' %}</p>",
+        function(conf) {
+          if (!conf) {
+            $("#change_seikai_ckbx").prop("checked", false);
+          }
+        }
       );
     }
   });
@@ -55,7 +57,7 @@ $(document).ready(function(){
       },
       function(data) {
         if (data) {
-          common.alert("{% trans 'Thank you for your voting!' %}", "<b>Thanks!</b>");
+          bootbox.alert("<h3>Thanks!</h3><p>{% trans 'Thank you for your voting!' %}</p>");
         }
       }
     );
