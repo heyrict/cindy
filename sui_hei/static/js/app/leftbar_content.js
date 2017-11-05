@@ -42,15 +42,17 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
       $(".lobby_message_edit").each(function() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var pk = $(this).attr("value");
+        var target = $(this).attr("target") || "lobby";
         $(this).on("click", function() {
           $.post(
-            "/lobby/edit",
-            { csrfmiddlewaretoken: csrftoken, pk: pk },
+            "/mondai/edit",
+            { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
             function(data) {
               $("#message_edit_modal_body").html(
-                `<textarea id="message_edit_modal_content" value="${pk}">${data.content}</textarea>`
+                `<textarea id="message_edit_modal_content">${data.content}</textarea>`
               );
-              $("#message_edit_modal_content").attr("target", "lobby");
+              $("#message_edit_modal_content").attr("target", target);
+              $("#message_edit_modal_content").attr("value", pk);
             }
           );
         });

@@ -57,9 +57,8 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js"], function(
       var pk = $("#message_edit_modal_content").attr("value");
       var content = $("#message_edit_modal_content").val();
       var target = $("#message_edit_modal_content").attr("target");
-      var post_link = target == "lobby" ? "/lobby/edit" : "/mondai/edit";
       $.post(
-        post_link,
+        "/mondai/edit",
         {
           csrfmiddlewaretoken: csrftoken,
           pk: pk,

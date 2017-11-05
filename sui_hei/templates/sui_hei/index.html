@@ -67,7 +67,9 @@ Cindy
     <div class="wrapper chat_message" style="border:2px solid #268bd2;">
         {{ info.content|text2md|safe }}
         {% if perms.sui_hei.can_add_info %}
-        <a href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' info.id %}">[{% trans 'edit' %}]</a>
+        <a class="lobby_message_edit" target="homepage" value="{{ info.id }}" href="javascript:void(0);"
+            role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal"> 
+            [{% trans 'edit' %}]</a>
         {% endif %}
     </div>
     {% endfor %}

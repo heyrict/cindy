@@ -39,7 +39,6 @@
         {% if chat.user_id == user %}
         <a class="lobby_message_edit" target="lobby" value="{{ chat.id }}" href="javascript:void(0);"
             role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-            <!--<a class="chat_edit" value="{{ chat.id }}" href="{% url 'sui_hei:mondai_change' 'Lobby' 'content' chat.id %}">-->
         [{% trans 'edit' %}]</a>{% endif %}</td>
     </tr>
     {% endfor %} 
