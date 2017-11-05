@@ -55,7 +55,7 @@ $(document).ready(function(){
       },
       function(data) {
         if (data) {
-          alert("{% trans 'Thank you for your voting!' %}");
+          common.alert("{% trans 'Thank you for your voting!' %}", "<b>Thanks!</b>");
         }
       }
     );

@@ -42,7 +42,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
       $(".lobby_message_edit").each(function() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var pk = $(this).attr("value");
-        var target = $(this).attr("target") || "lobby";
+        var target = $(this).attr("target");
         $(this).on("click", function() {
           $.post(
             "/mondai/edit",

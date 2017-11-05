@@ -55,6 +55,16 @@ module.exports = {
           }
         ]
       },
+      // common
+      {
+        test: require.resolve("./app/common.js"),
+        use: [
+          {
+            loader: "expose-loader",
+            options: "common"
+          }
+        ]
+      },
       // sidebar
       {
         test: require.resolve("./app/sidebar"),

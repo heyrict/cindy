@@ -189,21 +189,23 @@ def shitumon_edit(request):
     target = request.POST.get("target")
     content = request.POST.get("content")
 
-    print(target)
     if target in ["lobby", "homepage"]:
         inst = Lobby.objects.get(id=pk)
     elif target in ["shitumon", "kaitou"]:
         inst = Shitumon.objects.get(id=pk)
     else:
-        return HttpResponse(None)
+        return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
 
     if content is not None:
         # validate, save message, return True
         error_message = None
         try:
             if target in ["lobby", "homepage"] and request.user == inst.user_id:
-                inst.content = content
-                inst.save()
+                if content == "":
+                    inst.delete();
+                else:
+                    inst.content = content
+                    inst.save()
             elif target == "shitumon" and request.user == inst.user_id:
                 inst.shitumon = content
                 inst.save()
@@ -223,7 +225,7 @@ def shitumon_edit(request):
         elif target == "kaitou":
             return JsonResponse({'content': inst.kaitou})
         else:
-            return HttpResponse(None)
+            return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
 
 
 def mondai_show_push_ques(request):
