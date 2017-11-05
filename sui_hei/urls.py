@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^$", views.index, name="index"),
     url(r"^lobby/chat$", views.lobby_chat, name="lobby_chat"),
     url(r"^lobby/channel$", views.lobby_channel, name="lobby_channel"),
+    url(r"^lobby/edit$", views.lobby_edit, name="lobby_edit"),
     #url(r"^lobby/(?P<page>[0-9]+)$", views.lobby, name="lobby"),
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
     url(r"^mondai/add$", views.mondai_add, name="mondai_add"),

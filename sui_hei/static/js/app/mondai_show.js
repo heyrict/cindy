@@ -39,7 +39,7 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
       }
       // clean the object list
       memoHashObjKeys = Object.keys(memoHashObj).reverse();
-      while (memoHashObjKeys.length > 10) {
+      while (memoHashObjKeys.length > 20) {
         key2del = memoHashObj.Keys.pop();
         delete memoHashObj[key2del];
       }

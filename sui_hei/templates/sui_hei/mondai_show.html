@@ -217,7 +217,7 @@ $(document).ready(function(){
     {% endcomment %}
     <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
       <input id="starbar" data-slider-id='starbar_slider' type="text" data-slider-min="0" data-slider-max="100"
-        data-slider-step=".1" data-slider-value="{{ mystar }}" data-slider-handle="custom" />
+        data-slider-step=".1" data-slider-value="{{ mystar|default:"50" }}" data-slider-handle="custom" />
       <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
     </div>
     <div class="clear"></div>

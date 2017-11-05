@@ -41,6 +41,40 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
           sidebar.OpenChat($(this).val());
         });
       });
+
+      $(".lobby_message_edit").each(function() {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        var pk = $(this).attr("value");
+        $(this).on("click", function() {
+          $.post(
+            "/lobby/edit",
+            { csrfmiddlewaretoken: csrftoken, pk: pk },
+            function(data) {
+              $("#message_edit_modal_body").html(
+                `<textarea id="message_edit_modal_content" value="${pk}">${data.content}</textarea>`
+              );
+            }
+          );
+        });
+      });
+
+      $("#message_edit_modal_save").on("click", function() {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.post(
+          "/lobby/edit",
+          {
+            csrfmiddlewaretoken: csrftoken,
+            pk: $("#message_edit_modal_content").attr("value"),
+            content: $("#message_edit_modal_content").val()
+          },
+          function(data) {
+            if (data.error_message) {
+              alert(data.error_message);
+            }
+            sidebar.OpenChat(sidebar.GetChannel, 1);
+          }
+        );
+      });
     });
 
     // handling chat://

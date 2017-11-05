@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
@@ -182,6 +182,26 @@ def mondai_show_update_soup(request):
         except Exception as e:
             print("UpdateSoup:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
+
+
+def lobby_edit(request):
+    pk = int(request.POST.get("pk"))
+    content = request.POST.get("content")
+    lobby_inst = Lobby.objects.get(id=pk)
+    if content:
+        # validate, save message, return True
+        error_message = None
+        try:
+            if request.user == lobby_inst.user_id:
+                lobby_inst.content = content
+                lobby_inst.save()
+            else:
+                raise ValidationError(_("You are not permitted to do this!"))
+        except ValidationError as e:
+            error_message = e
+        return JsonResponse({'error_message': error_message})
+    else:
+        return JsonResponse({'content': lobby_inst.content})
 
 
 def mondai_change(request, table_name, field_name, pk):
