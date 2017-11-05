@@ -48,4 +48,35 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js"], function(
     sidebar.ResizeSidebar();
     sidebar.ResizeSidebarContent();
   });
+
+  // Edit modal related
+  $(document).ready(function() {
+    // message_edit modal
+    $("#message_edit_modal_save").on("click", function() {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var pk = $("#message_edit_modal_content").attr("value");
+      var content = $("#message_edit_modal_content").val();
+      var target = $("#message_edit_modal_content").attr("target");
+      var post_link = target == "lobby" ? "/lobby/edit" : "/mondai/edit";
+      $.post(
+        post_link,
+        {
+          csrfmiddlewaretoken: csrftoken,
+          pk: pk,
+          content: content,
+          target: target
+        },
+        function(data) {
+          if (data.error_message) {
+            alert(data.error_message);
+          }
+          if (target == "lobby") {
+            sidebar.OpenChat(sidebar.GetChannel, 1);
+          } else {
+            window.location.reload();
+          }
+        }
+      );
+    });
+  });
 });

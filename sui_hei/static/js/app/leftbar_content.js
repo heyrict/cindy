@@ -1,12 +1,8 @@
 define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
   function init() {
     sidebar.ResizeSidebarContent();
-    // Set redirection url for `edit`
-    var PageURL = window.location.pathname;
-    $("a.chat_edit").each(function() {
-      this.href += "?next=" + PageURL;
-    });
 
+    // buttons & inputs
     lobby_chat_can_submit = true;
     $("#lobby_chat_submit").on("click", function() {
       if (!lobby_chat_can_submit) {
@@ -42,6 +38,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
         });
       });
 
+      // message_edit
       $(".lobby_message_edit").each(function() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var pk = $(this).attr("value");
@@ -53,27 +50,10 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
               $("#message_edit_modal_body").html(
                 `<textarea id="message_edit_modal_content" value="${pk}">${data.content}</textarea>`
               );
+              $("#message_edit_modal_content").attr("target", "lobby");
             }
           );
         });
-      });
-
-      $("#message_edit_modal_save").on("click", function() {
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-        $.post(
-          "/lobby/edit",
-          {
-            csrfmiddlewaretoken: csrftoken,
-            pk: $("#message_edit_modal_content").attr("value"),
-            content: $("#message_edit_modal_content").val()
-          },
-          function(data) {
-            if (data.error_message) {
-              alert(data.error_message);
-            }
-            sidebar.OpenChat(sidebar.GetChannel, 1);
-          }
-        );
       });
     });
 

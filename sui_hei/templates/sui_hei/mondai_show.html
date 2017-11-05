@@ -131,7 +131,9 @@ $(document).ready(function(){
                 <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
                 {{ qna.shitumon|line2md|safe }}
                 {% if qna.user_id == user and not qna.kaitou %}
-                <a class="qna_edit" href="{% url 'sui_hei:mondai_change' 'Shitumon' 'shitumon' qna.id %}">{% trans '[edit]' %}</a>
+                <a class="qna_edit" target="shitumon" value="{{ qna.id }}" href="javascript:void(0);"
+                    role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+                    {% trans '[edit]' %}</a>
                 {% endif %}
             </div>
         </div>
@@ -144,7 +146,9 @@ $(document).ready(function(){
                         {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
                         {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
                         {{ qna.kaitou|line2md|safe }} 
-                        <a class="qna_edit" href="{% url 'sui_hei:mondai_change' 'Shitumon' 'kaitou' qna.id %}">{% trans '[edit]' %}</a>
+                        <a class="qna_edit" target="kaitou" value="{{ qna.id }}" href="javascript:void(0);"
+                            role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+                            {% trans '[edit]' %}</a>
                     </div>
                 {% else %}
                     <div style="width:100%; float:left;">

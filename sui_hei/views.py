@@ -188,7 +188,7 @@ def lobby_edit(request):
     pk = int(request.POST.get("pk"))
     content = request.POST.get("content")
     lobby_inst = Lobby.objects.get(id=pk)
-    if content:
+    if content is not None:
         # validate, save message, return True
         error_message = None
         try:
@@ -202,6 +202,36 @@ def lobby_edit(request):
         return JsonResponse({'error_message': error_message})
     else:
         return JsonResponse({'content': lobby_inst.content})
+
+
+def shitumon_edit(request):
+    pk = int(request.POST.get("pk"))
+    target = request.POST.get("target")
+    content = request.POST.get("content")
+    shitumon_inst = Shitumon.objects.get(id=pk)
+    if content is not None:
+        # validate, save message, return True
+        error_message = None
+        try:
+            if target == "shitumon" and request.user == shitumon_inst.user_id:
+                shitumon_inst.shitumon = content
+                shitumon_inst.save()
+            elif target == "kaitou" and request.user == shitumon_inst.mondai_id.user_id:
+                shitumon_inst.kaitou = content
+                shitumon_inst.save()
+            else:
+                raise ValidationError(_("You are not permitted to do this!"))
+        except ValidationError as e:
+            error_message = e
+        return JsonResponse({'error_message': error_message})
+    else:
+        if target == "shitumon":
+            return JsonResponse({'content': shitumon_inst.shitumon})
+        elif target == "kaitou":
+            return JsonResponse({'content': shitumon_inst.kaitou})
+        else:
+            return HttpResponse(None)
+
 
 
 def mondai_change(request, table_name, field_name, pk):
