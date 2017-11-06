@@ -60,7 +60,6 @@ class Mondai(models.Model):
     genre = models.IntegerField(_('genre'), default=0, null=False)
     content = models.TextField(_('content'), null=False)
     kaisetu = models.TextField(_('kaisetu'), null=False)
-    seikai = models.BooleanField(_('seikai'), null=False)
     created = models.DateTimeField(_('created'), null=False)
     modified = models.DateTimeField(_('modified'), null=False)
     status = models.IntegerField(_('status'), default=0, null=False)
@@ -72,6 +71,21 @@ class Mondai(models.Model):
 
     def __str__(self):
         return self.title
+
+
+mondai_genre_enum = dict([
+    (0, _("Albatross")),
+    (1, _("20th-Door")),
+    (2, _("Little Albat")),
+    (3, _("Others & Formal"))])
+
+
+mondai_status_enum = dict([
+    (0, _("Unsolved")),
+    (1, _("Solved")),
+    (2, _("Dazed")),
+    (3, _("Hidden")),
+    (4, _("Forced Hidden"))])
 
 
 class Shitumon(models.Model):

@@ -1,4 +1,11 @@
 define(["jquery", "velocity-animate"], function($) {
+  function getCurrentChannel() {
+    channel = $("#lobby_nav_input")
+      .attr("placeholder")
+      .substr(17);
+    return channel;
+  }
+
   function ResizeSidebarContent() {
     // Set Height
     var nav_height = 60;
@@ -11,6 +18,12 @@ define(["jquery", "velocity-animate"], function($) {
     $("#lobby_chat_input").on("keypress", function(e) {
       if (e.which == 13) {
         $("#lobby_chat_submit").click();
+      }
+    });
+
+    $("#lobby_nav_input").on("keypress", function(e) {
+      if (e.which == 13) {
+        $("#lobby_nav_submit").click();
       }
     });
 
@@ -30,6 +43,8 @@ define(["jquery", "velocity-animate"], function($) {
     $leftbar.css("width", goodw + "px");
     if ($leftbar.attr("mode") == "open") {
       $leftbar.css("left", "0%");
+    } else if ($leftbar.attr("mode") == "hide") {
+      $leftbar.css("left", -goodw + "px");
     } else {
       $leftbar.css("left", -goodw * 0.792 + "px");
       $leftbar.attr("mode", "closed");
@@ -38,6 +53,8 @@ define(["jquery", "velocity-animate"], function($) {
     $rightbar.css("width", goodw + "px");
     if ($rightbar.attr("mode") == "open") {
       $rightbar.css("left", windoww - goodw * 0.792 + "px");
+    } else if ($rightbar.attr("mode") == "hide") {
+      $rightbar.css("left", windoww + goodw + "px");
     } else {
       $rightbar.css("left", windoww + "px");
       $rightbar.attr("mode", "closed");
@@ -144,17 +161,12 @@ define(["jquery", "velocity-animate"], function($) {
     });
   }
 
-  function ChangeChannel() {
-    OpenChat(jQuery("#lobby_nav_input").val());
-    return false;
-  }
-
-  function PostChat(channel, message) {
+  function PostChat(channel, message, callback) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     if (!channel.match("^[A-Za-z0-9-]+$")) {
       return false;
     }
-    jQuery.post(
+    $.post(
       "/lobby/chat",
       {
         csrfmiddlewaretoken: csrftoken,
@@ -162,48 +174,32 @@ define(["jquery", "velocity-animate"], function($) {
         push_chat: message
       },
       function(data) {
-        jQuery(".leftbar_content").html(data);
+        if (callback) {
+          return callback(data);
+        } else {
+          $(".leftbar_content").html(data);
+        }
       }
     );
     return false;
   }
 
   function InputNorm() {
-    var lc = jQuery("#lobby_nav_input");
+    var lc = $("#lobby_nav_input");
     lc.val(lc.val().replace(/[^0-9a-zA-Z]+/g, "-"));
   }
 
-  function PrevChatPage() {
-    jQuery.get(
-      "/lobby/channel",
-      {
-        chatpage: jQuery("#lobby_nav_prev").val(),
-        channel: jQuery("#channel").val()
-      },
-      function(data) {
-        jQuery(".leftbar_content").html(data);
-      }
-    );
-  }
+  function OpenChat(channel, chatpage) {
+    // set default values
+    channel = channel || "lobby";
+    chatpage = chatpage || 1;
 
-  function NextChatPage() {
-    jQuery.get(
-      "/lobby/channel",
-      {
-        chatpage: jQuery("#lobby_nav_next").val(),
-        channel: jQuery("#channel").val()
-      },
-      function(data) {
-        jQuery(".leftbar_content").html(data);
-      }
-    );
-  }
-
-  function OpenChat(channel) {
     var $this = $(".leftbar");
 
-    jQuery.get("/lobby/channel", { channel: channel }, function(data) {
-      jQuery(".leftbar_content").html(data);
+    $.get("/lobby/channel", { channel: channel, chatpage: chatpage }, function(
+      data
+    ) {
+      $(".leftbar_content").html(data);
     });
 
     if ($this.attr("mode") != "open") {
@@ -221,16 +217,52 @@ define(["jquery", "velocity-animate"], function($) {
     }
   }
 
+  function OpenMemo() {
+    var $this = $(".rightbar");
+
+    if ($this.attr("mode") == "closed") {
+      $this.velocity({
+        left: windoww - goodw * 0.792 + "px",
+        duration: 1000
+      });
+      $this.attr("mode", "open");
+
+      if (small_screen) {
+        $(".leftbar").velocity({
+          left: -goodw + "px",
+          duration: 1000
+        });
+        $(".leftbar").attr("mode", "hide");
+      }
+    }
+  }
+
+  function LinkNorm(string) {
+    return string.replace(
+      /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
+      "\"javascript:sidebar.OpenChat('$1');\""
+    );
+  }
+
+  function LinkNormAll(selector) {
+    if ($(selector).length > 0) {
+      $(selector).each(function(index) {
+        $(this).html(LinkNorm($(this).html()));
+      });
+    }
+  }
+
   return {
     CalcGoodRect: CalcGoodRect,
     ResizeSidebar: ResizeSidebar,
     ResizeSidebarContent: ResizeSidebarContent,
     ToggleSidebar: ToggleSidebar,
     InputNorm: InputNorm,
-    NextChatPage: NextChatPage,
-    PrevChatPage: PrevChatPage,
-    ChangeChannel: ChangeChannel,
+    LinkNorm: LinkNorm,
+    LinkNormAll: LinkNormAll,
     OpenChat: OpenChat,
-    PostChat: PostChat
+    OpenMemo: OpenMemo,
+    PostChat: PostChat,
+    GetChannel: getCurrentChannel
   };
 });

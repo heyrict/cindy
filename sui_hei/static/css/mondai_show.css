@@ -1,15 +1,9 @@
-#starbar_handle {
-  width: 30px;
-  height: 30px;
-  margin-top: -7.5px;
-  text-align: center;
-}
 .HBar {
   padding-bottom: 10px;
 }
 .QBlock {
   float: left;
-  width: 45%;
+  width: 48%;
   border: 1px solid #268bd2;
   border-radius: 5px;
   padding: 3px;
@@ -18,7 +12,7 @@
 }
 .ABlock {
   float: right;
-  width: 45%;
+  width: 48%;
   border: 1px solid #268bd2;
   border-radius: 5px;
   padding: 3px;
@@ -31,4 +25,15 @@
   width: 0px;
   float: left;
   border-right: 1px dashed #268bd2;
+}
+#starbar_slider {
+  width: 100%;
+  margin-bottom:5px;
+}
+.slider-handle.custom {
+  background: url(/static/pictures/star.png);
+  background-size: cover;
+}
+.slider-handle.custom::before {
+	content: '';
 }

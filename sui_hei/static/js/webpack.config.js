@@ -1,7 +1,14 @@
 module.exports = {
   entry: {
-    main: ["./app/base.js", "./app/sidebar.js", "./app/leftbar_content.js"],
-    mondai_show: ["./app/mondai_show.js", "./app/mondai_show_ui.js"]
+    common: ["./app/common"],
+    index: ["./app/index"],
+    main: [
+      "./app/base",
+      "./app/sidebar",
+      "./app/leftbar_content",
+      "./lib/bootstrap.min"
+    ],
+    mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
   },
   output: {
     publicPath: "/static/js/",
@@ -21,6 +28,16 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "jQuery"
+          }
+        ]
+      },
+      // bootbox
+      {
+        test: require.resolve("./lib/bootbox.min.js"),
+        use: [
+          {
+            loader: "expose-loader",
+            options: "bootbox"
           }
         ]
       },

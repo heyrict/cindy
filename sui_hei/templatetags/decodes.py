@@ -1,21 +1,21 @@
 from django import template
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Q
+from ..models import mondai_genre_enum, mondai_status_enum
 
 register = template.Library()
 
 @register.filter
-def genre(value):
-    genred = dict([
-        (0, _("Albatross")),
-        (1, _("20th-Door")),
-        (2, _("Little Albat")),
-        (3, _("Others & Formal"))])
-    return genred[value]
+def mondai_genre(value):
+    return mondai_genre_enum[value]
+
+@register.filter
+def mondai_status(value):
+    return mondai_status_enum[value]
 
 @register.filter
 def normalize_star(value):
-    return '%.1f' % ((value+5)*10)
+    return '%.1f' % value
 
 @register.filter
 def get_quescount(ques):

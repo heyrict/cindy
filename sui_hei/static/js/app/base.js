@@ -1,5 +1,8 @@
 require("marked");
-require(["jquery", "./sidebar"], function($, sidebar) {
+require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "../lib/bootbox.min.js"], function(
+  $,
+  sidebar
+) {
   $(document).ready(function() {
     // Prevent multiple form submission
     can_submit = {};
@@ -44,5 +47,41 @@ require(["jquery", "./sidebar"], function($, sidebar) {
     sidebar.CalcGoodRect();
     sidebar.ResizeSidebar();
     sidebar.ResizeSidebarContent();
+  });
+
+  // Edit modal related
+  $(document).ready(function() {
+    // message_edit modal
+    $("#message_edit_modal_alert").on("click", function(e) {
+        $(this).hide();
+    });
+    $("#message_edit_modal_save").on("click", function(e) {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var pk = $("#message_edit_modal_content").attr("value");
+      var content = $("#message_edit_modal_content").val();
+      var target = $("#message_edit_modal_content").attr("target");
+      $.post(
+        "/mondai/edit",
+        {
+          csrfmiddlewaretoken: csrftoken,
+          pk: pk,
+          content: content,
+          target: target
+        },
+        function(data) {
+          if (data.error_message) {
+            $("#message_edit_modal_alert_content").html(data.error_message);
+            $("#message_edit_modal_alert").show();
+            return;
+          }
+          $("#message_edit_modal").modal("hide");
+          if (target == "lobby") {
+            sidebar.OpenChat(sidebar.GetChannel, 1);
+          } else {
+            window.location.reload();
+          }
+        }
+      );
+    });
   });
 });

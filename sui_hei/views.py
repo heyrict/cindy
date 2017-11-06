@@ -1,12 +1,14 @@
 import re
+from itertools import chain
 from django.utils import timezone
 
 from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
@@ -24,36 +26,21 @@ from scoring import *
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
-    if request.method == "POST":
-        if request.user.has_perm('sui_hei.can_add_info'):
-            try:
-                content = request.POST.get("add_info", "")
-                chat = Lobby(
-                    user_id=request.user,
-                    content=content,
-                    channel="homepage-info")
-                chat.save()
-            except Exception as e:
-                print("Index_POST:", e)
-    else:
+    comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
+    mondais = []
+    for i in comments:
         try:
-            comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
-            mondais = [
-                Mondai.objects.get(id=i.channel[len("comments-"):])
-                for i in comments
-            ]
+            mondais.append(Mondai.objects.get(id=i.channel[len("comments-"):]))
+        except ObjectDoesNotExist:
+            continue
 
-            infos = Lobby.objects.filter(
-                channel="homepage-info").order_by('-id')
-            hpinfo_list = Paginator(infos, 20)
-            return render(request, 'sui_hei/index.html', {
-                'comments': zip(comments, mondais),
-                'infos': hpinfo_list.page(hpinfopage),
-            })
-        except Exception as e:
-            print("Index:", e)
-            return redirect(reverse("sui_hei:index"))
-    return redirect(request.META['HTTP_REFERER'])
+    infos = Lobby.objects.filter(
+        channel="homepage-info").order_by('-id')
+    hpinfo_list = Paginator(infos, 20)
+    return render(request, 'sui_hei/index.html', {
+        'comments': zip(comments, mondais),
+        'infos': hpinfo_list.page(hpinfopage),
+    })
 
 
 # /mondai
@@ -65,11 +52,16 @@ class MondaiView(ListView):
     def get_queryset(self):
         # TODO: Add searching & filtering from request.GET
         # default behavior
-        return Mondai.objects.order_by('seikai', '-modified').select_related()
+        others = Mondai.objects.filter(status__gte=1).order_by('-modified').select_related()
+        return others
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
-        return super(MondaiView, self).get_context_data(**kwargs)
+
+        context = super(MondaiView, self).get_context_data(**kwargs)
+        unsolved = Mondai.objects.filter(status__exact=0).order_by('-modified').select_related()
+        context['unsolved_mondai_list'] = unsolved
+        return context
 
 
 # /mondai/show/[0-9]+
@@ -161,78 +153,79 @@ def mondai_show_update_soup(request):
                 Mondai,
                 id=re.findall(r"(?<=/mondai/show/)[0-9]+",
                               request.META['HTTP_REFERER'])[0])
-            kaisetu = request.POST['change_kaisetu']
+            kaisetu = request.POST.get('change_kaisetu')
             seikai = request.POST.get('change_seikai')
+            hidden = request.POST.get('toggle_status_hidden')
             yami = request.POST.get('toggle_yami')
             memo = request.POST.get('change_memo')
 
             # Validation
             if kaisetu == '': raise ValueError("Empty Input Data")
-            if mondai_id.seikai:
-                raise ValidationError("This mondai is already finished")
 
             # Update mondai
-            mondai_id.kaisetu = kaisetu
+            if kaisetu and mondai_id.status == 0:
+                mondai_id.kaisetu = kaisetu
             mondai_id.memo = memo
             if seikai:
-                mondai_id.seikai = True
+                mondai_id.status = 1
                 mondai_id.modified = timezone.now()
             if yami:
                 mondai_id.yami = not mondai_id.yami
+            if hidden and mondai_id.status in [0, 1]:
+                mondai_id.status = 3
+            elif hidden and mondai_id.status == 3:
+                mondai_id.status = 1
             mondai_id.save()
 
-            # Grant awards
-            pass
+            # TODO: Grant awards here
 
         except Exception as e:
             print("UpdateSoup:", e)
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
-def mondai_change(request, table_name, field_name, pk):
-    acceptable = {"Shitumon": Shitumon, 'Lobby': Lobby}
-    nextpage = request.GET.get('next', reverse("sui_hei:index"))
-    if table_name in acceptable:
+def shitumon_edit(request):
+    pk = int(request.POST.get("pk"))
+    target = request.POST.get("target")
+    content = request.POST.get("content")
+
+    if target in ["lobby", "homepage"]:
+        inst = Lobby.objects.get(id=pk)
+    elif target in ["shitumon", "kaitou"]:
+        inst = Shitumon.objects.get(id=pk)
+    else:
+        return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+
+    if content is not None:
+        # validate, save message, return True
+        error_message = None
         try:
-            obj2upd = get_object_or_404(acceptable[table_name], id=pk)
-
-            # Validation
-            if field_name == 'kaitou':
-                if obj2upd.mondai_id.user_id != request.user:
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
-            elif table_name == "Lobby" and obj2upd.channel == "homepage-info":
-                if not request.user.has_perm('sui_hei.can_add_info'):
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
+            if target in ["lobby", "homepage"] and request.user == inst.user_id:
+                if content == "":
+                    inst.delete();
+                else:
+                    inst.content = content
+                    inst.save()
+            elif target == "shitumon" and request.user == inst.user_id:
+                inst.shitumon = content
+                inst.save()
+            elif target == "kaitou" and request.user == inst.mondai_id.user_id:
+                inst.kaitou = content
+                inst.save()
             else:
-                if obj2upd.user_id != request.user:
-                    raise ValidationError(
-                        "You are not authenticated to access this page!")
-
-            # Process
-            if request.method == "POST":
-                obj2upd.__setattr__(field_name, request.POST['push_change'])
-                obj2upd.save()
-
-                # Redirect to relavant page
-                return redirect(nextpage)
-            else:
-                return render(request, "sui_hei/mondai_change.html", {
-                    'original':
-                    obj2upd.__getattribute__(field_name),
-                    'table_name':
-                    table_name,
-                    'field_name':
-                    field_name,
-                    'pk':
-                    pk,
-                })
-
-        except Exception as e:
-            return render(request, "sui_hei/mondai_change.html",
-                          {'error_message': e})
-    return redirect(request.META['HTTP_REFERER'])
+                raise ValidationError(_("You are not permitted to do this!"))
+        except ValidationError as e:
+            error_message = e
+        return JsonResponse({'error_message': error_message})
+    else:
+        if target in ["lobby", "homepage"]:
+            return JsonResponse({'content': inst.content})
+        elif target == "shitumon":
+            return JsonResponse({'content': inst.shitumon})
+        elif target == "kaitou":
+            return JsonResponse({'content': inst.kaitou})
+        else:
+            return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
 
 
 def mondai_show_push_ques(request):
@@ -267,14 +260,11 @@ def lobby_chat(request):
 
     # update
     if request.method == "POST" and request.user.is_authenticated:
-        try:
-            content = request.POST.get('push_chat', '')
-            if content != '':
-                chat = Lobby(
-                    user_id=request.user, content=content, channel=channel)
-                chat.save()
-        except Exception as e:
-            print("Lobby:", e)
+        content = request.POST.get('push_chat', '')
+        if content != '':
+            chat = Lobby(
+                user_id=request.user, content=content, channel=channel)
+            chat.save()
 
         # render response
         chatlist = Paginator(
@@ -467,7 +457,7 @@ def mondai_add(request):
                 genre=genre,
                 content=content,
                 kaisetu=kaisetu,
-                seikai=0,
+                status=0,
                 user_id=userid,
                 created=created,
                 modified=modified, )

@@ -1,10 +1,6 @@
 {% extends 'frames/base.html' %} 
 {% load i18n %}
 
-{% block child_navi %}
-{% include 'frames/mondai_child_navi.html' %}
-{% endblock %}
-
 {% block title %} Cindy - mondai - add {% endblock %} 
 
 {% block script %}
@@ -25,22 +21,24 @@ $(document).ready(function() {
 {% block content %} 
 
 <form action="" method="post">
-<div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
-{% csrf_token %}
-<div>
-    <table style="width:100%;">
+  <legend>{% trans 'NewSoup' %}</legend>
+  <div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
+  {% csrf_token %}
+  <div>
+    <table class="table">
     {{ form.as_table }} 
     </table>
-</div>
-<div class="wrapper" style="border:3px solid #728905;">
+  </div>
+  <div class="wrapper" style="border:3px solid #728905;">
     <font color=#52676f" size="5px" face="monospace">{% trans 'Content' %} {% trans 'Preview' %}</font>
     <div id="content_preview"></div>
-</div>
-<br>
-<div class="wrapper" style="border:3px solid #728905;">
+  </div>
+  <br>
+  <div class="wrapper" style="border:3px solid #728905;">
     <font color=#52676f" size="5px" face="monospace">{% trans 'True Answer' %} {% trans 'Preview' %}</font>
     <div id="kaisetu_preview"></div>
-</div>
-<div><input type="submit" value="{% trans "Confirm" %}" /></div>
+  </div>
+  <div><input type="submit" value="{% trans "Confirm" %}" /></div>
+</form>
 
 {% endblock %} 

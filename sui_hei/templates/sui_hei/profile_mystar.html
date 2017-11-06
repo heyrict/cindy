@@ -1,29 +1,34 @@
 {% extends 'frames/base.html' %} 
 {% load i18n markdown decodes %}
 
-{% block title %} cindy - profile - mysoup {% endblock %} 
+{% block title %} Cindy - profile - mystar {% endblock %} 
 
 {% block child_navi %}
 {% include 'frames/profile_child_navi.html' %}
 {% endblock %}
 
 {% block script %}
-$(".remove_star_button").on("click", function () {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  if (confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}")) {
-    jQuery.post(
-      "{% url 'sui_hei:mondai_star_remove' %}",
-      {
-        csrfmiddlewaretoken: csrftoken,
-        star_id: this.value,
-      },
-      function(data) {
-        if (data) {
-          location.reload();
-        }
+$(document).ready(function() {
+  $(".remove_star_button").on("click", function () {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    var star_id = this.value;
+    bootbox.confirm("{% trans 'You cannot revert change if you delete the star!' %}\n{% trans 'Continue?' %}",function(conf) {
+      if (conf) {
+        jQuery.post(
+          "{% url 'sui_hei:mondai_star_remove' %}",
+          {
+            csrfmiddlewaretoken: csrftoken,
+            star_id: star_id,
+          },
+          function(data) {
+            if (data) {
+              location.reload();
+            }
+          }
+        );
       }
-    );
-  }
+    });
+  });
 });
 {% endblock %}
 
@@ -35,7 +40,7 @@ $(".remove_star_button").on("click", function () {
 {% for star in star_list %}
 <ul>
 <li>
-    <span class="status_label unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
+    <span class="status_label status_unsolved"><font color="#cb4b16">{{ star.value|normalize_star }}</font></span>
 
     {% if star.user_id == user %}
     <button class="remove_star_button" style="padding:inherit;background:inherit;color:red;" value={{ star.id }}>⛔</button>
@@ -44,7 +49,7 @@ $(".remove_star_button").on("click", function () {
     {% with starred_mondai=star.mondai_id %}
     <span class="title_label">
         <a href="{% url 'sui_hei:mondai_show' starred_mondai.id %}">
-            [{{ starred_mondai.genre|genre }}{% if starred_mondai.yami %} × {% trans 'yami' %}{% endif %}]
+            [{{ starred_mondai.genre|mondai_genre }}{% if starred_mondai.yami %} × {% trans 'yami' %}{% endif %}]
             {{ starred_mondai.title }}
         </a>
     </span>
@@ -66,6 +71,6 @@ $(".remove_star_button").on("click", function () {
     {% endwith %}
 </li>
 </ul>
-{% endfor %}
 <div class="clear"></div>
+{% endfor %}
 {% endblock %}
