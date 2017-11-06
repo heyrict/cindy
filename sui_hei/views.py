@@ -1,23 +1,24 @@
 import re
 from itertools import chain
-from django.utils import timezone
 
 from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, UpdateView
 
+from scoring import *
+
 from .admin import *
 from .models import *
-from scoring import *
 
 
 # Create your views here.
@@ -26,7 +27,8 @@ from scoring import *
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
-    comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
+    comments = Lobby.objects.filter(
+        channel__startswith="comments-").order_by("-id")[:15]
     mondais = []
     for i in comments:
         try:
@@ -34,8 +36,7 @@ def index(request):
         except ObjectDoesNotExist:
             continue
 
-    infos = Lobby.objects.filter(
-        channel="homepage-info").order_by('-id')
+    infos = Lobby.objects.filter(channel="homepage-info").order_by('-id')
     hpinfo_list = Paginator(infos, 20)
     return render(request, 'sui_hei/index.html', {
         'comments': zip(comments, mondais),
@@ -52,16 +53,55 @@ class MondaiView(ListView):
     def get_queryset(self):
         # TODO: Add searching & filtering from request.GET
         # default behavior
-        others = Mondai.objects.filter(status__gte=1).order_by('-modified').select_related()
+        others = Mondai.objects.filter(
+            status__gte=1).order_by('-modified').select_related()
         return others
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
 
         context = super(MondaiView, self).get_context_data(**kwargs)
-        unsolved = Mondai.objects.filter(status__exact=0).order_by('-modified').select_related()
+        unsolved = Mondai.objects.filter(
+            status__exact=0).order_by('-modified').select_related()
         context['unsolved_mondai_list'] = unsolved
         return context
+
+
+def mondai_list_api(request):
+    # get requested page number
+    page = int(request.POST.get("page", 1))
+    items_per_page = int(request.POST.get("items_per_page", 20))
+
+    # query the database, build the paginator
+    unsolved = Mondai.objects.filter(
+        status__exact=0).order_by('-modified').select_related()
+    others = Mondai.objects.filter(
+        status__gte=1).order_by('-modified').select_related()
+    others_paginator = Paginator(others, items_per_page)
+
+    # check whether any object exists.
+    if others_paginator.count <= 0:
+        return JsonResponse({"page": page, "num_pages": 0})
+    else:
+        # normalize page number:
+        #   page = page <= 0 ? page : 1
+        #   page = page > max_pagenum ? max_pagenum : page
+        page = min(max(1, page), others_paginator.num_pages)
+        returns = {
+            "page": page,
+            "num_pages": others_paginator.num_pages,
+            "data": {
+                "unsolved": [m.stringify_meta() for m in unsolved],
+                "others":
+                [m.stringify_meta() for m in others_paginator.page(page)]
+            }
+        }
+        return JsonResponse(returns)
+
+
+def mondai_show_api(request):
+    # TODO: Implement works
+    pass
 
 
 # /mondai/show/[0-9]+
@@ -102,8 +142,10 @@ def mondai_star(request):
             user_id=request.user, mondai_id=mondai)[0]
         star.value = float(request.POST.get('stars', 0))
         star.save()
-        try: update_soup_score(star.mondai_id)
-        except: pass
+        try:
+            update_soup_score(star.mondai_id)
+        except:
+            pass
     return HttpResponse(True)
 
 
@@ -184,7 +226,7 @@ def mondai_show_update_soup(request):
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
-def mondai_edit(request):
+def mondai_edit_api(request):
     pk = int(request.POST.get("pk"))
     target = request.POST.get("target")
     content = request.POST.get("content")
@@ -194,15 +236,19 @@ def mondai_edit(request):
     elif target in ["shitumon", "kaitou"]:
         inst = Shitumon.objects.get(id=pk)
     else:
-        return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+        return JsonResponse({
+            'error_message':
+            "Target unrecognized. Please report to administrator."
+        })
 
     if content is not None:
         # validate, save message, return True
         error_message = None
         try:
-            if target in ["lobby", "homepage"] and request.user == inst.user_id:
+            if target in ["lobby", "homepage"
+                          ] and request.user == inst.user_id:
                 if content == "":
-                    inst.delete();
+                    inst.delete()
                 else:
                     inst.content = content
                     inst.save()
@@ -225,7 +271,10 @@ def mondai_edit(request):
         elif target == "kaitou":
             return JsonResponse({'content': inst.kaitou})
         else:
-            return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+            return JsonResponse({
+                'error_message':
+                "Target unrecognized. Please report to administrator."
+            })
 
 
 def mondai_show_push_ques(request):
@@ -331,7 +380,8 @@ class ProfileView(DetailView):
         context['ques_count'] = put_ques.count()
         context['goodques_count'] = put_ques.filter(good=True).count()
         context['trueques_count'] = put_ques.filter(true=True).count()
-        context['comment_count'] = Lobby.objects.filter(channel__startswith="comments-", user_id=userid).count()
+        context['comment_count'] = Lobby.objects.filter(
+            channel__startswith="comments-", user_id=userid).count()
         return context
 
 
@@ -493,7 +543,8 @@ def remove_star(request):
 
             # Validation
             if star.user_id != request.user:
-                raise ValidationError(_("You are not permitted to delete others star!"))
+                raise ValidationError(
+                    _("You are not permitted to delete others star!"))
 
         except Exception as e:
             return HttpResponse("RemoveStar:", e)

@@ -15,6 +15,16 @@ class Award(models.Model):
     def __str__(self):
         return self.name
 
+    def stringify(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
+
+    def stringify_meta(self):
+        return {"id": self.id, "name": self.name}
+
 
 class User(AbstractUser):
     nickname = models.CharField(_('nick_name'), max_length=255, null=False)
@@ -32,6 +42,39 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nickname
+
+    def stringify(self):
+        if self.current_award:
+            current_award_str = self.current_award.stringify_meta()
+        else:
+            current_award_str = None
+
+        available_awards = [
+            ua.award_id.stringify_meta()
+            for ua in UserAward.objects.filter(user_id=self)
+        ]
+        return {
+            "id": self.id,
+            "nickname": self.nickname,
+            "profile": self.profile,
+            "current_award": current_award_str,
+            "available_awards": available_awards,
+            "experience": self.experience,
+            "username": self.username
+        }
+
+    def stringify_meta(self):
+        if self.current_award:
+            current_award_str = self.current_award.stringify_meta()
+        else:
+            current_award_str = None
+        return {
+            "id": self.id,
+            "nickname": self.nickname,
+            "current_award": current_award_str,
+            "experience": self.experience,
+            "username": self.username
+        }
 
 
 class UserAward(models.Model):
@@ -72,20 +115,53 @@ class Mondai(models.Model):
     def __str__(self):
         return self.title
 
+    def stringify(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "title": self.title,
+            "yami": self.yami,
+            "genre": self.genre,
+            "content": self.content,
+            "kaisetu": self.kaisetu,
+            "created": self.created,
+            "modified": self.modified,
+            "status": self.status,
+            "memo": self.memo,
+            "score": self.score
+        }
 
-mondai_genre_enum = dict([
-    (0, _("Albatross")),
-    (1, _("20th-Door")),
-    (2, _("Little Albat")),
-    (3, _("Others & Formal"))])
+    def stringify_meta(self):
+        ques = Shitumon.objects.filter(mondai_id=self)
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "title": self.title,
+            "yami": self.yami,
+            "genre": self.genre,
+            "created": self.created,
+            "modified": self.modified,
+            "status": self.status,
+            "score": self.score,
+            "quescount_all": ques.count(),
+            "quescount_unanswered": ques.filter(kaitou__isnull=False).count()
+        }
 
 
-mondai_status_enum = dict([
-    (0, _("Unsolved")),
-    (1, _("Solved")),
-    (2, _("Dazed")),
-    (3, _("Hidden")),
-    (4, _("Forced Hidden"))])
+mondai_genre_enum = {
+    0: _("Albatross"),
+    1: _("20th-Door"),
+    2: _("Little Albat"),
+    3: _("Others & Formal")
+}
+
+mondai_status_enum = {
+    0: _("Unsolved"),
+    1: _("Solved"),
+    2: _("Dazed"),
+    3: _("Hidden"),
+    4: _("Forced Hidden")
+}
 
 
 class Shitumon(models.Model):
@@ -106,12 +182,28 @@ class Shitumon(models.Model):
         return "[%s]%s: {%s} puts {%50s}" % (self.mondai_id.id, self.mondai_id,
                                              self.user_id, self.shitumon)
 
+    def stringify_meta(self):
+        return self.stringify()
+
+    def stringify(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "shitumon": self.shitumon,
+            "kaitou": self.kaitou,
+            "good": self.good,
+            "true": self.true,
+            "askedtime": self.askedtime,
+            "answeredtime": self.answeredtime
+        }
+
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
     user_id = models.ForeignKey(User, db_column='user_id')
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
+
     #score = models.SmallIntegerField(_('score'), default=50)
 
     class Meta:
@@ -123,6 +215,17 @@ class Lobby(models.Model):
     def __str__(self):
         return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
                                            self.content)
+
+    def stringify_meta(self):
+        return self.stringify()
+
+    def stringify(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "channel": self.channel,
+            "content": self.content
+        }
 
 
 class Star(models.Model):
