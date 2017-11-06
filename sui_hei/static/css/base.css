@@ -239,3 +239,9 @@ sub {
 .tab-pane {
   padding-top: 5px;
 }
+.lobby_table_div .popover {
+  position: relative;
+  display: block;
+  margin: 20px;
+  max-width: inherit;
+}

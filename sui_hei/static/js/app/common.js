@@ -1,4 +1,8 @@
-define(["jquery", "moment", "moment-countdown"], function($, moment) {
+define(["jquery", "marked", "moment", "moment-countdown"], function(
+  $,
+  marked,
+  moment
+) {
   function setCookie(c_name, value, expiredays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + expiredays);
@@ -49,6 +53,7 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
     mondai_show_update_soup: "/mondai/show/update_soup",
     mondai_star: "/mondai/show/star",
     mondai_star_remove: "/mondai/show/remove_star",
+    mondai_comment: "/mondai/comment",
     profile: pk => "/profile/" + pk,
     profile_edit: "/profile/edit",
     profile_selledsoup: pk => "/profile/selledsoup/" + pk,
@@ -58,7 +63,9 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
     mondai_list_api: "/api/mondai_list",
     mondai_edit_api: "/api/mondai_edit",
     profile_api: "/api/profile",
-    star_api: "/api/star"
+    star_api: "/api/star",
+    lobby_api: "/api/lobby",
+    comment_api: "/api/comment"
   };
 
   function _norm_openchat(string) {
@@ -96,6 +103,17 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
     return string;
   }
 
+  function line2md(string) {
+    string = string
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/^([*+-]) /g, "\\$1 ")
+      .replace(/^(\d+)\. /g, "$1\\. ")
+      .replace(/\n/g, "<br />");
+
+    return marked(string).replace(/<\/?p>/g, "");
+  }
+
   function LinkNormAll(selector) {
     if ($(selector).length > 0) {
       $(selector).each(function(index) {
@@ -109,6 +127,7 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
     getCookie: getCookie,
     setCookie: setCookie,
     urls: urls,
+    line2md: line2md,
     LinkNorm: LinkNorm,
     LinkNormAll: LinkNormAll,
     StartCountdown: StartCountdown

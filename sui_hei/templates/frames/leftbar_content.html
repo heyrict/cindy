@@ -45,13 +45,10 @@
   </table>
 </div>
 
-{% if channel|startswith:"comments-" %}
-{% elif user.is_authenticated %} 
 <div class="lobby_chat_div">
     <input id="lobby_chat_input" name="push_chat" type="text">
     <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
 </div>
-{% endif %} 
 
 <script type="text/javascript">
 leftbar.init();

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.conf.urls import include
+from django.db.models import Count
 
 from . import views
 from .admin import *
@@ -26,6 +27,7 @@ urlpatterns = [
     url(r"^mondai/show/update_soup", views.mondai_show_update_soup, name="mondai_show_update_soup"),
     url(r"^mondai/show/star", views.mondai_star, name="mondai_star"),
     url(r"^mondai/show/remove_star", views.remove_star, name="mondai_star_remove"),
+    url(r"^mondai/comment", views.mondai_comment, name="mondai_comment"),
     #url(r"^mondai/change/(?P<table_name>[a-zA-Z]+)/(?P<field_name>[a-zA-Z]+)/(?P<pk>[0-9]+)$", views.mondai_change, name="mondai_change"),
     url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
@@ -33,8 +35,10 @@ urlpatterns = [
     url(r"^profile/mystar/(?P<pk>[0-9]+)$", views.MyStarView.as_view(), name="profile_mystar"),
     url(r"^profile/award_change", views.award_change, name="award_change"),
     # TODO: Add pages to apply for & grant awards
-    url(r"^api/mondai_list$", views.mondai_list_api, name="mondai_list_api"),
+    url(r"^api/mondai_list$", views.APIListProvider(Mondai,lambda x: x.annotate(Count('star'))).as_api, name="mondai_list_api"),
     url(r"^api/mondai_edit$", views.mondai_edit_api, name="mondai_edit_api"),
     url(r"^api/profile$", views.profile_api, name="profile_api"),
-    url(r"^api/star$", views.star_api, name="star_api"),
+    url(r"^api/star$", views.APIListProvider(Star).as_api, name="star_api"),
+    url(r"^api/comment$", views.APIListProvider(Comment).as_api, name="comment_api"),
+    url(r"^api/lobby$", views.APIListProvider(Lobby).as_api, name="lobby_api"),
 ]

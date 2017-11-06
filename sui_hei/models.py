@@ -231,6 +231,27 @@ class Lobby(models.Model):
         }
 
 
+class Comment(models.Model):
+    user_id = models.ForeignKey(User, db_column='user_id')
+    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
+    content = models.TextField(_('content'), null=False)
+    spoiler = models.BooleanField(_('spoiler'), default=False)
+
+    def __str__(self):
+        return "{%s} commented on {%s}" % (self.user_id, self.mondai_id.title)
+
+    def stringify_meta(self):
+        return self.stringify()
+
+    def stringify(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "mondai_id": self.mondai_id.stringify_meta(),
+            "content": self.content
+        }
+
+
 class Star(models.Model):
     user_id = models.ForeignKey(User, db_column='user_id')
     mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')

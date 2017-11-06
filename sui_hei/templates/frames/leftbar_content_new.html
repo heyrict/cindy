@@ -1,0 +1,23 @@
+{% load i18n static %}
+<div class="lobby_navigation_div">
+  <!-- paginator -->
+  <div class="lobby_pagination_div">
+  </div>
+  <!-- end paginator -->
+  <!-- channel changer -->
+  <div class="input-append" style="width:99%;">
+    <input id="lobby_nav_input" type="text" data-provide="typeahead" 
+        data-items=4 data-source='["mondai-","lobby","tutorial"]' auto-complete="off">
+    <button id="lobby_nav_submit">{% trans 'Change channel' %}</button>
+  </div>
+  <!-- end channel changer -->
+</div>
+
+<div class="lobby_table_div" id="lobby_table_div">
+</div>
+
+<div class="lobby_chat_div">
+    <input id="lobby_chat_input" name="push_chat" type="text">
+    <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
+</div>
+<script type="text/javascript" src="{% static 'js/dist/leftbar.js' %}"></script>

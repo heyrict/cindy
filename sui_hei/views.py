@@ -29,20 +29,13 @@ from .models import *
 # TODO: Change database related POSTs to javascript
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
-    request.session['channel'] = 'lobby'
-    comments = Lobby.objects.filter(
-        channel__startswith="comments-").order_by("-id")[:15]
+    comments = Comment.objects.order_by('-id')[:15]
     mondais = []
-    for i in comments:
-        try:
-            mondais.append(Mondai.objects.get(id=i.channel[len("comments-"):]))
-        except ObjectDoesNotExist:
-            continue
 
     infos = Lobby.objects.filter(channel="homepage-info").order_by('-id')
     hpinfo_list = Paginator(infos, 20)
     return render(request, 'sui_hei/index.html', {
-        'comments': zip(comments, mondais),
+        'comments': comments,
         'infos': hpinfo_list.page(hpinfopage),
     })
 
@@ -60,8 +53,6 @@ class MondaiView(ListView):
         return others
 
     def get_context_data(self, **kwargs):
-        self.request.session['channel'] = 'lobby'
-
         context = super(MondaiView, self).get_context_data(**kwargs)
         unsolved = Mondai.objects.filter(
             status__exact=0).order_by('-modified').select_related()
@@ -69,54 +60,78 @@ class MondaiView(ListView):
         return context
 
 
-def mondai_list_api(request):
-    '''
-    API for getting mondai objects.
+class APIListProvider(object):
+    def __init__(self, baseClass, queryExtra=None):
+        '''
+        Initialize an APIProvider.
 
-    Parameters
-    ----------
-    items_per_page: int, or None if no paginator is wanted.
-    page: int, defaults to 1. Works only when `items_per_page` is set.
-    filter: dict, or None if no filtering is wanted.
-    order: str, or None if no order_by is wanted.
-    '''
-    # get requested page number
-    items_per_page = request.POST.get("items_per_page")
-    filter = request.POST.get("filter")
-    order = request.POST.get("order")
+        Parameters
+        ----------
+        baseClass: class. The base class for querying
+        queryExtra: function.
+        '''
+        self.baseClass = baseClass
+        self.queryExtra = queryExtra
 
-    # query database
-    mondai_list = Mondai.objects.select_related().annotate(Count('star'))
-    if filter:
-        filter = json.loads(filter)
-        mondai_list = mondai_list.filter(**filter)
-    if order:
-        mondai_list = mondai_list.order_by(order)
+    def query(self, filter, order):
+        objectList = self.baseClass.objects.select_related()
+        if self.queryExtra:
+            objectList = self.queryExtra(objectList)
 
-    # need paginator
-    if items_per_page:
-        items_per_page = int(items_per_page)
-        page = int(request.POST.get("page", 1))
-        paginator = Paginator(mondai_list, items_per_page)
+        if filter:
+            filter = json.loads(filter)
+            objectList = objectList.filter(**filter)
+        if order:
+            objectList = objectList.order_by(order)
 
-        # check whether any object exists.
-        if paginator.count <= 0:
-            return JsonResponse({"page": page, "num_pages": 0})
+        return objectList
+
+    def to_dict(self, queryDict, items_per_page, page):
+        if items_per_page:
+            items_per_page = int(items_per_page)
+            page = int(page)
+            paginator = Paginator(queryDict, items_per_page)
+
+            # check whether any object exists.
+            if paginator.count <= 0:
+                return {"page": page, "num_pages": 0}
+            else:
+                # normalize page number:
+                #   page = page <= 0 ? page : 1
+                #   page = page > max_pagenum ? max_pagenum : page
+                page = min(max(1, page), paginator.num_pages)
+                returns = {
+                    "page": page,
+                    "num_pages": paginator.num_pages,
+                    "data": [m.stringify_meta() for m in paginator.page(page)]
+                }
+        # don't need paginator
         else:
-            # normalize page number:
-            #   page = page <= 0 ? page : 1
-            #   page = page > max_pagenum ? max_pagenum : page
-            page = min(max(1, page), paginator.num_pages)
-            returns = {
-                "page": page,
-                "num_pages": paginator.num_pages,
-                "data": [m.stringify_meta() for m in paginator.page(page)]
-            }
-    # don't need paginator
-    else:
-        returns = {"data": [m.stringify_meta() for m in mondai_list]}
+            returns = {"data": [m.stringify_meta() for m in queryDict]}
 
-    return JsonResponse(returns)
+        return returns
+
+    def as_api(self, request):
+        '''
+        API for getting objects.
+
+        Parameters
+        ----------
+        items_per_page: int, or None if no paginator is wanted.
+        page: int, defaults to 1. Works only when `items_per_page` is set.
+        filter: dict, or None if no filtering is wanted.
+        order: str, or None if no order_by is wanted.
+        '''
+        # get requested page number
+        filter = request.POST.get("filter")
+        order = request.POST.get("order")
+        objectList = self.query(filter, order)
+
+        # need paginator
+        page = int(request.POST.get("page", 1))
+        items_per_page = request.POST.get("items_per_page")
+
+        return JsonResponse(self.to_dict(objectList, items_per_page, page))
 
 
 def mondai_list(request):
@@ -132,56 +147,6 @@ def profile_api(request):
         return HttpResponseNotFound()
 
 
-def star_api(request):
-    '''
-    API for getting mystar objects given a user's id.
-
-    Parameters
-    ----------
-    items_per_page: int, or None if no paginator is wanted.
-    page: int, defaults to 1. Works only when `items_per_page` is set.
-    filter: dict, or None if no filtering is wanted.
-    order: str, or None if no order_by is wanted.
-    '''
-    # get requested page number
-    items_per_page = request.POST.get("items_per_page")
-    filter = request.POST.get("filter")
-    order = request.POST.get("order")
-
-    # query database
-    star_list = Star.objects.select_related()
-    if filter:
-        filter = json.loads(filter)
-        star_list = star_list.filter(**filter)
-    if order:
-        star_list = star_list.order_by(order)
-
-    # need paginator
-    if items_per_page:
-        items_per_page = int(items_per_page)
-        page = int(request.POST.get("page", 1))
-        paginator = Paginator(star_list, items_per_page)
-
-        # check whether any object exists.
-        if paginator.count <= 0:
-            return JsonResponse({"page": page, "num_pages": 0})
-        else:
-            # normalize page number:
-            #   page = page <= 0 ? page : 1
-            #   page = page > max_pagenum ? max_pagenum : page
-            page = min(max(1, page), paginator.num_pages)
-            returns = {
-                "page": page,
-                "num_pages": paginator.num_pages,
-                "data": [m.stringify_meta() for m in paginator.page(page)]
-            }
-    # don't need paginator
-    else:
-        returns = {"data": [m.stringify_meta() for m in star_list]}
-
-    return JsonResponse(returns)
-
-
 def mondai_show_api(request):
     # TODO: Implement works
     pass
@@ -191,15 +156,13 @@ def mondai_show_api(request):
 def mondai_show(request, pk):
     if request.method == "GET":
         # TODO: Add sorting for yami soup.
-        request.session['channel'] = 'mondai-' + pk
-
         mondai = Mondai.objects.get(id=pk)
         qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
 
         # Check if current user has done some comments
         try:
-            mycomment = Lobby.objects.get(
-                channel="comments-%s" % pk, user_id=request.user)
+            mycomment = Comment.objects.get(
+                mondai_id=mondai, user_id=request.user)
         except:
             mycomment = None
         try:
@@ -362,27 +325,41 @@ def mondai_edit_api(request):
 
 def mondai_show_push_ques(request):
     if request.method == "POST" and request.user.is_authenticated:
-        try:
-            mondai_id = get_object_or_404(
-                Mondai,
-                id=re.findall(r"(?<=/mondai/show/)[0-9]+",
-                              request.META['HTTP_REFERER'])[0])
-            content = request.POST['push_ques']
-            if content == '': raise ValueError("Empty Input Data")
+        mondai_id = get_object_or_404(
+            Mondai,
+            id=re.findall(r"(?<=/mondai/show/)[0-9]+",
+                          request.META['HTTP_REFERER'])[0])
+        content = request.POST['push_ques']
+        if content == '': raise ValueError("Empty Input Data")
 
-            ques = Shitumon(
-                user_id=request.user,
-                shitumon=content.strip(),
-                askedtime=timezone.now(),
-                mondai_id=mondai_id)
-            ques.save()
+        ques = Shitumon(
+            user_id=request.user,
+            shitumon=content.strip(),
+            askedtime=timezone.now(),
+            mondai_id=mondai_id)
+        ques.save()
 
-            # update user last active event
-            request.user.last_login = timezone.now()
-            request.user.save()
-        except Exception as e:
-            print("PushQues:", e)
+        # update user last active event
+        request.user.last_login = timezone.now()
+        request.user.save()
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
+
+
+def mondai_comment(request):
+    try:
+        mondai = get_object_or_404(Mondai, id=request.POST["mondai_id"])
+        content = request.POST.get("content")
+        if not content:
+            raise ValidationError("Content is blank!")
+
+        comment = Comment.objects.get_or_create(
+            user_id=request.user, mondai_id=mondai)[0]
+        comment.content = content
+        comment.save()
+
+        return JsonResponse({'error_message': None})
+    except Exception as e:
+        return JsonResponse({'error_message': e})
 
 
 # /lobby

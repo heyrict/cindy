@@ -4,13 +4,8 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
   entry: {
     index: ["./app/index"],
-    main: [
-      "jquery",
-      "./lib/bootstrap.min.js",
-      "./app/base",
-      "./app/sidebar",
-      "./app/leftbar_content"
-    ],
+    main: ["jquery", "./lib/bootstrap.min.js", "./app/base", "./app/sidebar"],
+    leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
     mondai: ["./app/mondai_list"],

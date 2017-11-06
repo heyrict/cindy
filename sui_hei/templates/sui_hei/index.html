@@ -34,8 +34,8 @@ Cindy
         <div class="hline"></div>
     </div>
     <table class="table table-bordered table-hover">
-        {% for comment, mondai in comments %}
-        <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
+        {% for comment in comments %}
+        <tr><th><a href={% url 'sui_hei:mondai_show' comment.mondai_id.id %}>{{ comment.mondai_id }}</a></th>
             <td class="chat_message"><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
                     {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
                 >> {{ comment.content }}

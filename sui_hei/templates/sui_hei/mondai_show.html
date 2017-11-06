@@ -26,6 +26,7 @@
 {% endblock %}
 
 {% block content %} 
+<div id="default_channel" class="hidden" value="mondai-{{ mondai.id }}"></div>
 <h2>
     [{{ mondai.genre|mondai_genre }}{% if mondai.yami %} × {% trans 'yami' %}{% endif %}] {{ mondai.title }}
     {% if mondai.status >= 2 %}
@@ -55,6 +56,8 @@
     </div>
     <div class="mondai_content_content">
         {{ mondai.content|text2md|safe }}
+    </div>
+    <br /><div class="mondai_content_comments">
     </div>
 </div>
 <!-- End Content of Question -->
@@ -161,16 +164,7 @@
     <div align="center"><div class="hline"></div></div>
 
     <!-- Evaluation Panel -->
-    <input value="{% trans 'Show Comments' %}" type="button" style="font-size: 17px; width:40%; float:left; padding-left:5%; margin-top:3.5%;"
-                                                             onclick="sidebar.OpenChat('comments-{{ mondai.id }}');">
-    <br>
-    {% comment %}
-    <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
-        <div id="starbar"><img id="starbar_handle" class="ui-slider-handle" src="{% static 'pictures/star.png' %}"></img></div><br />
-        <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">
-    </div>
-    {% endcomment %}
-    <div id="mondai_star_form" style="width:40%; float:right; padding-right:5%;">
+    <div id="mondai_star_form">
       <input id="starbar" data-slider-id='starbar_slider' type="text" data-slider-min="0" data-slider-max="100"
         data-slider-step=".1" data-slider-value="{{ mystar|default:"0" }}" data-slider-handle="custom" />
       <input id="starbutton" type="submit" value="{% trans 'Star' %}" style="font-size: 17px;">

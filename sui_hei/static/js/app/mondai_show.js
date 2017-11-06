@@ -3,7 +3,8 @@ require([
   "jquery",
   "./common",
   "./sidebar",
-  "./mondai_show_ui.js"
+  "./mondai_show_ui.js",
+  "velocity-animate"
 ], function(marked, $, common, sidebar, mondaiShowUI) {
   $(document).ready(function() {
     // Previews
@@ -103,28 +104,27 @@ require([
     $("#comment_submit").on("click", function() {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();
       var commentmsg = $("#comment_input").val();
-      var comment_channel = "comments-" + mondai_id;
       if (commentmsg) {
         $.post(
-          common.urls['lobby_chat'],
+          common.urls["mondai_comment"],
           {
             csrfmiddlewaretoken: csrftoken,
-            channel: comment_channel,
-            push_chat: commentmsg
+            mondai_id: mondai_id,
+            content: commentmsg
           },
           function(data) {
             $("#evaluation_panel").html("");
-            sidebar.OpenChat(comment_channel);
+            update_comments();
+            $(".mondai_content_comments").velocity("scroll");
           }
         );
       }
     });
     $("#starbutton").on("click", function() {
-      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
       $.post(
         common.urls["mondai_star"],
         {
-          csrfmiddlewaretoken: csrftoken,
+          csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
           stars: $("#starbar").val(),
           mondai: mondai_id
         },
@@ -137,6 +137,38 @@ require([
         }
       );
     });
+
+    $("#comment_input").on("keypress", function(e) {
+      if (e.which == 13) {
+        $("#comment_submit").click();
+      }
+    });
+
+
+    function update_comments() {
+      $.post(
+        common.urls.comment_api,
+        {
+          csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+          filter: JSON.stringify({ mondai_id: mondai_id })
+        },
+        function(data) {
+          var commentstr = String();
+          data.data.forEach(function(comment) {
+            commentstr += "<div class='well' style='background:#e2d6b2;'>";
+            commentstr += `<div>${comment.content}</div>`;
+            commentstr += `<div class="pull-right">——<a style="color:#333" 
+            href="${common.urls.profile(comment.user_id.id)}">
+              ${comment.user_id.nickname} </a>
+            </div>`;
+            commentstr += "</div>";
+          });
+          $(".mondai_content_comments").html(commentstr);
+        }
+      );
+    }
+
+    update_comments();
 
     mondaiShowUI.initUI();
   });

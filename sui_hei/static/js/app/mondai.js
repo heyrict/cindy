@@ -17,11 +17,11 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     $.post(common.urls.mondai_list_api, params, function(data) {
       var listhtml = _render_data(data.data);
       if (data.page) {
-        listhtml += _render_paginator(
-          data.page,
-          data.num_pages,
-          settings.paginator_class
-        );
+        listhtml += _render_paginator({
+          current_page: data.page,
+          num_pages: data.num_pages,
+          classname: settings.paginator_class
+        });
       }
       $(settings.domid).html(listhtml);
     });
@@ -42,17 +42,29 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       },
       queryObject || {}
     );
-    console.log(params);
     $.post(common.urls.star_api, params, function(data) {
       var listhtml = _render_mystar_data(data.data);
       if (data.page) {
-        listhtml += _render_paginator(
-          data.page,
-          data.num_pages,
-          settings.paginator_class
-        );
+        listhtml += _render_paginator({
+          current_page: data.page,
+          num_pages: data.num_pages,
+          classname: settings.paginator_class
+        });
       }
       $(settings.domid).html(listhtml);
+    });
+  }
+
+  function RenderLobbyData(data) {
+    return _render_lobby_data(data.data);
+  }
+
+  function RenderLobbyPaginator(data, paginator_class) {
+    return _render_paginator({
+      current_page: data.page || 1,
+      num_pages: data.num_pages || 1,
+      classname: paginator_class || "lobby_paginator",
+      paginator_classname: "pagination-mini pagination-centered"
     });
   }
 
@@ -142,6 +154,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_data(listobj) {
     var output = String();
+    listobj = listobj || [];
     listobj.forEach(function(mondai) {
       output += "<ul><li>";
 
@@ -161,6 +174,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_mystar_data(listobj) {
     var output = String();
+    listobj = listobj || [];
     listobj.forEach(function(star) {
       mondai = star.mondai_id;
       output += "<ul><li>";
@@ -180,33 +194,82 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return output;
   }
 
-  function _render_paginator(current_page, num_pages, classname) {
-    classname = classname || "paginator";
-    var returns = "<div class='pagination pagination-centered'><ul>";
+  function _render_lobby_data(listobj) {
+    var output = String();
+    listobj = listobj || [];
+    listobj.reverse().forEach(function(lobby) {
+      lobby.content = common.line2md(lobby.content);
+      var isMyChat = window.django.user_id == lobby.user_id.id ? true : false;
 
-    returns += `<li class="previous ${current_page > 1
+      output += `<div class='popover ${isMyChat ? "left" : "right"}'>`;
+      output += "<div class='arrow'></div>";
+      output += "<div class='popover-content'>";
+
+      output += `<span class='pull-${isMyChat
+        ? "left"
+        : "right"}' style='max-width:75%;'>`;
+      output += lobby.content;
+      if (isMyChat)
+        output += `<a class="lobby_message_edit" value="${lobby.id}" 
+                      target="lobby" href="javascript:void(0);" role="button"
+                      data-toggle="modal" data-target="#message_edit_modal">[edit]</a>`;
+      output += "</span>";
+
+      output += `<span class='pull-${isMyChat
+        ? "right"
+        : "left"}' style='max-width:25%;'>`;
+      output += `<a href="${lobby.user_id.id}" style="color:#333">${lobby
+        .user_id.nickname}</a>`;
+      output += lobby.user_id.current_award
+        ? `[${lobby.user_id.current_award.name}]`
+        : "";
+      output += "</span>";
+
+      output += "<div class='clearfix'></div>";
+      output += "</div></div>";
+    });
+    return output;
+  }
+
+  function _render_paginator(params) {
+    params = $.extend(
+      {
+        current_page: 1,
+        num_pages: 1,
+        classname: "paginator",
+        paginator_classname: "pagination-centered"
+      },
+      params
+    );
+    var returns = `<div class='pagination ${params.paginator_classname}'><ul>`;
+
+    returns += `<li class="previous ${params.current_page > 1
       ? ""
-      : "disabled"}"><a href="javascript:void(0);" value="${current_page -
-      1}" class="${classname}">${gettext("prev")}</a></li>`;
-
-    for (i = Math.max(current_page - 5, 1); i < current_page; ++i) {
-      returns += `<li><a href="javascript:void(0);" value="${i}" class="${classname}">${i}</a></li>`;
-    }
-
-    returns += `<li class="active"><a href="javascript:void(0);" value="${current_page}" class="${classname}">${current_page}</a></li>`;
+      : "disabled"}"><a href="javascript:void(0);" value="${params.current_page -
+      1}" class="${params.classname}">${gettext("prev")}</a></li>`;
 
     for (
-      i = current_page + 1;
-      i <= Math.min(current_page + 5, num_pages);
+      i = Math.max(params.current_page - 5, 1);
+      i < params.current_page;
       ++i
     ) {
-      returns += `<li><a href="javascript:void(0);" value="${i}" class="${classname}">${i}</a></li>`;
+      returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
-    returns += `<li class="next ${current_page < num_pages
+    returns += `<li class="active"><a href="javascript:void(0);" value="${params.current_page}" class="${params.classname}">${params.current_page}</a></li>`;
+
+    for (
+      i = params.current_page + 1;
+      i <= Math.min(params.current_page + 5, params.num_pages);
+      ++i
+    ) {
+      returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
+    }
+
+    returns += `<li class="next ${params.current_page < params.num_pages
       ? ""
-      : "disabled"}"><a href="javascript:void(0);" value="${current_page +
-      1}" class="${classname}">${gettext("next")}</a></li>`;
+      : "disabled"}"><a href="javascript:void(0);" value="${params.current_page +
+      1}" class="${params.classname}">${gettext("next")}</a></li>`;
 
     returns += "</ul></div>";
     return returns;
@@ -214,6 +277,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   return {
     UpdateMondaiList: UpdateMondaiList,
-    UpdateMystarList: UpdateMystarList
+    UpdateMystarList: UpdateMystarList,
+    RenderLobbyData: RenderLobbyData,
+    RenderLobbyPaginator: RenderLobbyPaginator
   };
 });

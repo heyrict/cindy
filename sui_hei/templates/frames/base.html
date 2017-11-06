@@ -22,7 +22,10 @@
   </style>
   {% block style_include %}{% endblock %}
   {% get_current_language as LANGUAGE_CODE %}
-    <script type="text/javascript">LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";</script>
+  <script type="text/javascript">
+      LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";
+      window.django = { user_id: {{ request.user.id }}};
+  </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/commons.chunk.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/main.js' %}"></script>
@@ -104,19 +107,13 @@
     </div>
   </div>
 </div>
-{% comment %}    
-<ul class="list-nav">
-    <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
-    <li><a href='/mondai' class='uri'>{% trans 'mondai' %}</a></li>
-</ul>
-{% endcomment %}
 <!-- end site-navigation -->
 
 <!-- lobby chat -->
-<div class="leftbar" mode={{ mode|default:"closed" }} >
+<div class="leftbar" mode="{{ mode|default:"closed" }}" >
     <img class="leftbar_button" src={% static 'pictures/sidebar.png' %}>
     <div class="leftbar_content">
-        {% include 'frames/leftbar_content.html' %}
+        {% include 'frames/leftbar_content_new.html' %}
     </div>
 </div>
 <!-- end lobby chat -->
@@ -129,6 +126,7 @@
 </div></header>
 
 <body>
+  <noscript>This appication requires javascript to function</noscript>
   <div class="container">
     <br />
     {% block content %} 

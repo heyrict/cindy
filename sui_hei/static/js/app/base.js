@@ -79,7 +79,7 @@ require([
           }
           $("#message_edit_modal").modal("hide");
           if (target == "lobby") {
-            sidebar.OpenChat(sidebar.GetChannel, 1);
+            sidebar.OpenChat(sidebar.GetChannel(), 1);
           } else {
             window.location.reload();
           }
