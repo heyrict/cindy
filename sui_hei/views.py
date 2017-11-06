@@ -15,10 +15,13 @@ from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, UpdateView
 
+import django_filters
+from rest_framework import viewsets, filters
+
 from .admin import *
 from .models import *
 from scoring import *
-
+from .serializer import *
 
 # Create your views here.
 # /
@@ -499,3 +502,8 @@ def remove_star(request):
             return HttpResponse("RemoveStar:", e)
         star.delete()
     return HttpResponse(True)
+
+class MondaiViewSet(viewsets.ModelViewSet):
+    #viewset for REST API
+    queryset = Mondai.objects.all()
+    serializer_class = MondaiSerializer
