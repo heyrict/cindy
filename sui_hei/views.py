@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.forms import ValidationError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -97,6 +97,16 @@ def mondai_list_api(request):
             }
         }
         return JsonResponse(returns)
+
+
+def profile_api(request):
+    user_id = request.POST.get("user_id")
+    print(user_id)
+    try:
+        user = get_object_or_404(User, id=user_id)
+        return JsonResponse(user.stringify())
+    except Http404:
+        return HttpResponseNotFound()
 
 
 def mondai_show_api(request):

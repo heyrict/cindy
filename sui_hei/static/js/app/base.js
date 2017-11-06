@@ -61,7 +61,7 @@ require(["jquery", "./sidebar", "bootstrap", "bootbox"], function(
       var content = $("#message_edit_modal_content").val();
       var target = $("#message_edit_modal_content").attr("target");
       $.post(
-        "/mondai/edit",
+        "/api/mondai_edit",
         {
           csrfmiddlewaretoken: csrftoken,
           pk: pk,

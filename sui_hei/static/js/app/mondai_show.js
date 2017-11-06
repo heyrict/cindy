@@ -26,7 +26,7 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
       var target = $(this).attr("target");
       $(this).on("click", function() {
         $.post(
-          "/mondai/edit",
+          "/api/mondai_edit",
           { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
           function(data) {
             $("#message_edit_modal_body").html(
