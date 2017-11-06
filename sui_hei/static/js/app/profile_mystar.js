@@ -1,4 +1,4 @@
-require(["jquery", "bootstrap", "bootbox"], function($) {
+require(["jquery", "../lib/bootstrap.min.js", "bootbox"], function($) {
   function init() {
     $(".remove_star_button").on("click", function() {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();

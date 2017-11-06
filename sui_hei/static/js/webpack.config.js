@@ -7,7 +7,7 @@ module.exports = {
     index: ["./app/index"],
     main: [
       "jquery",
-      "bootstrap",
+      "./lib/bootstrap.min.js",
       "./app/base",
       "./app/sidebar",
       "./app/leftbar_content"

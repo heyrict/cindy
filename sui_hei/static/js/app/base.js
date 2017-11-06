@@ -1,5 +1,5 @@
 require("marked");
-require(["jquery", "./sidebar", "bootstrap", "bootbox"], function(
+require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "bootbox"], function(
   $,
   sidebar
 ) {

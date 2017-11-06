@@ -1,4 +1,4 @@
-define(["jquery", "bootstrap", "bootstrap-slider"], function($) {
+define(["jquery", "../lib/bootstrap.min.js", "bootstrap-slider"], function($) {
   function initUI() {
     if ($("#starbar").length > 0) {
       var starbarSlider = $("#starbar").bootstrapSlider({
