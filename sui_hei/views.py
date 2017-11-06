@@ -101,7 +101,6 @@ def mondai_list_api(request):
 
 def profile_api(request):
     user_id = request.POST.get("user_id")
-    print(user_id)
     try:
         user = get_object_or_404(User, id=user_id)
         return JsonResponse(user.stringify())
