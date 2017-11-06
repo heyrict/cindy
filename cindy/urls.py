@@ -21,5 +21,5 @@ from sui_hei.urls import router as sui_hei_router
 urlpatterns = [
     url(r'^', include('sui_hei.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include(sui_hei_router.urls)),
+    url(r'^api/', include(sui_hei_router.urls)), #for REST API
 ]

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sui_hei',
-    'rest_framework',
+    'rest_framework', #for REST API
 ]
 
 MIDDLEWARE = [

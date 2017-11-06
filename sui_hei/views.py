@@ -504,5 +504,6 @@ def remove_star(request):
     return HttpResponse(True)
 
 class MondaiViewSet(viewsets.ModelViewSet):
+    #viewset for REST API
     queryset = Mondai.objects.all()
     serializer_class = MondaiSerializer

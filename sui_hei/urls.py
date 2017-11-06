@@ -37,5 +37,6 @@ urlpatterns = [
     # TODO: Add pages to apply for & grant awards
 ]
 
+#register ViewSet for REST API
 router = routers.DefaultRouter()
 router.register(r'mondais', MondaiViewSet)
