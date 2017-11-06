@@ -4,6 +4,8 @@ from django.conf.urls import include
 
 from . import views
 from .admin import *
+from .views import MondaiViewSet
+from rest_framework import routers
 
 app_name = "sui_hei"
 
@@ -34,3 +36,7 @@ urlpatterns = [
     url(r"^language$", views.set_language, name="set_language"),
     # TODO: Add pages to apply for & grant awards
 ]
+
+#register ViewSet for REST API
+router = routers.DefaultRouter()
+router.register(r'mondais', MondaiViewSet)
