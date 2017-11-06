@@ -184,7 +184,7 @@ def mondai_show_update_soup(request):
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
-def shitumon_edit(request):
+def mondai_edit(request):
     pk = int(request.POST.get("pk"))
     target = request.POST.get("target")
     content = request.POST.get("content")

@@ -1,4 +1,4 @@
-require(["jquery", "./sidebar"], function() {
+require(["jquery", "./sidebar"], function($, sidebar) {
   $(document).ready(function() {
     $("#info_textarea").on("input", function() {
       var inputs = marked($("#info_textarea").val());
@@ -13,7 +13,8 @@ require(["jquery", "./sidebar"], function() {
       });
     });
 
-    $(".lobby_message_edit").each(function() {
+    sidebar.LinkNormAll(".homepage_message");
+    $(".homepage_message_edit").each(function() {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();
       var pk = $(this).attr("value");
       var target = $(this).attr("target");

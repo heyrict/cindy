@@ -60,7 +60,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
     });
 
     // handling chat://
-    sidebar.LinkNormAll("td#message");
+    sidebar.LinkNormAll("td.lobby_message");
   }
 
   return { init: init };
