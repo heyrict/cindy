@@ -17,6 +17,7 @@ urlpatterns = [
     url(r"^lobby/channel$", views.lobby_channel, name="lobby_channel"),
     #url(r"^lobby/(?P<page>[0-9]+)$", views.lobby, name="lobby"),
     url(r"^mondai$", views.MondaiView.as_view(), name="mondai"),
+    url(r"^mondai_list$", views.mondai_list, name="mondai_list"),
     url(r"^mondai/add$", views.mondai_add, name="mondai_add"),
     url(r"^mondai/show/(?P<pk>[0-9]+)$", views.mondai_show, name="mondai_show"),
     url(r"^mondai/show/push_ques", views.mondai_show_push_ques, name="mondai_show_push_ques"),

@@ -143,6 +143,7 @@ class Mondai(models.Model):
             "modified": self.modified,
             "status": self.status,
             "score": self.score,
+            "star_count": self.star_set.count(),
             "quescount_all": ques.count(),
             "quescount_unanswered": ques.filter(kaitou__isnull=False).count()
         }

@@ -1,0 +1,20 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static %}
+
+{% block title %} Cindy - mondai {% endblock %} 
+
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/mondai.js' %}"></script>
+{% endblock %}
+
+{% block content %} 
+
+<h2 id="trans-all-soups" style="border-bottom:1px solid #ccc;">{% trans 'All Soups' %}</h2>
+
+<div id="mondai_list_unsolved"></div>
+
+<div class="hline"></div><br />
+
+<div id="mondai_list_others"></div>
+
+{% endblock %} 

@@ -35,7 +35,7 @@
         </a>
     </span>
 
-    {% if mondai.score > 0 or mondai.user_id == user and mondai.star_set.count > 0 %}
+    {% if mondai.score > 50 or mondai.user_id == user and mondai.star_set.count > 0 %}
     <span class="mondai_score">
         {{ mondai.score|normalize_star }}✯{{ mondai.star_set.count }}
     </span>

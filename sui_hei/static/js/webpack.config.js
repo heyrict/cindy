@@ -13,7 +13,7 @@ module.exports = {
       "./app/leftbar_content"
     ],
     profile_mystar: ["./app/profile_mystar"],
-    mondai: ["./app/mondai"],
+    mondai: ["./app/mondai_list"],
     mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
   },
   output: {

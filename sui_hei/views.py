@@ -98,6 +98,9 @@ def mondai_list_api(request):
         }
         return JsonResponse(returns)
 
+def mondai_list(request):
+    return render(request, "sui_hei/mondai_list.html")
+
 
 def profile_api(request):
     user_id = request.POST.get("user_id")
