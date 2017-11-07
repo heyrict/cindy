@@ -145,7 +145,7 @@ class Mondai(models.Model):
             "score": self.score,
             "star_count": self.star_set.count(),
             "quescount_all": ques.count(),
-            "quescount_unanswered": ques.filter(kaitou="").count()
+            "quescount_unanswered": ques.filter(kaitou__isnull=True).count()
         }
 
 
