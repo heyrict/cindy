@@ -1,4 +1,4 @@
-define(["jquery", "velocity-animate"], function($) {
+define(["jquery", "./common", "velocity-animate"], function($, common) {
   function getCurrentChannel() {
     channel = $("#lobby_nav_input")
       .attr("placeholder")
@@ -167,7 +167,7 @@ define(["jquery", "velocity-animate"], function($) {
       return false;
     }
     $.post(
-      "/lobby/chat",
+      common.urls.lobby_chat,
       {
         csrfmiddlewaretoken: csrftoken,
         channel: channel,
@@ -196,7 +196,7 @@ define(["jquery", "velocity-animate"], function($) {
 
     var $this = $(".leftbar");
 
-    $.get("/lobby/channel", { channel: channel, chatpage: chatpage }, function(
+    $.get(common.urls.lobby_channel, { channel: channel, chatpage: chatpage }, function(
       data
     ) {
       $(".leftbar_content").html(data);

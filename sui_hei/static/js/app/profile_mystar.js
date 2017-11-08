@@ -10,7 +10,7 @@ require(["jquery", "../lib/bootstrap.min.js", "bootbox"], function($) {
         function(conf) {
           if (conf) {
             jQuery.post(
-              "{% url 'sui_hei:mondai_star_remove' %}",
+              common.urls.mondai_star_remove,
               {
                 csrfmiddlewaretoken: csrftoken,
                 star_id: star_id

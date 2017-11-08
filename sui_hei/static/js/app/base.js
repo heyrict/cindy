@@ -1,8 +1,11 @@
 require("marked");
-require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "bootbox"], function(
-  $,
-  sidebar
-) {
+require([
+  "jquery",
+  "./sidebar",
+  "./common",
+  "../lib/bootstrap.min.js",
+  "bootbox"
+], function($, sidebar, common) {
   $(document).ready(function() {
     // Prevent multiple form submission
     can_submit = {};
@@ -53,7 +56,7 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "bootbox"], function(
   $(document).ready(function() {
     // message_edit modal
     $("#message_edit_modal_alert").on("click", function(e) {
-        $(this).hide();
+      $(this).hide();
     });
     $("#message_edit_modal_save").on("click", function(e) {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -61,7 +64,7 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "bootbox"], function(
       var content = $("#message_edit_modal_content").val();
       var target = $("#message_edit_modal_content").attr("target");
       $.post(
-        "/api/mondai_edit",
+        common.urls.mondai_edit_api,
         {
           csrfmiddlewaretoken: csrftoken,
           pk: pk,

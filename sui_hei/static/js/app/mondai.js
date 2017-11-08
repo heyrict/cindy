@@ -1,9 +1,9 @@
-define(["jquery"], function($) {
+define(["jquery", "./common"], function($, common) {
   function UpdateMondaiList(page) {
     page = page || 1;
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     return $.post(
-      "/api/mondai_list",
+      common.urls.mondai_list_api,
       {
         csrfmiddlewaretoken: csrftoken,
         page: page,
@@ -60,14 +60,15 @@ define(["jquery"], function($) {
   }
 
   function _render_score(score, star_count) {
+    var scale_one = num => Math.floor(num * 10) / 10;
     return score > 50
-      ? `<span class="mondai_score">${score}✯${star_count}</span>`
+      ? `<span class="mondai_score">${scale_one(score)}✯${star_count}</span>`
       : "";
   }
 
   function _render_giver(user) {
     var award = user.current_award ? `[${user.current_award.name}]` : "";
-    return `<a href="/profile/${user.id}" class="bul">${user.nickname}</a><b>${award}</b>`;
+    return `<a href="${common.urls.profile(user.id)}" class="bul">${user.nickname}</a><b>${award}</b>`;
   }
 
   function _render_data(listobj) {
@@ -80,7 +81,7 @@ define(["jquery"], function($) {
         mondai.quescount_all,
         mondai.quescount_unanswered
       );
-      output += `<span class="title_label"><a href="/mondai/show/${mondai.id}">${_render_genre(
+      output += `<span class="title_label"><a href="${common.urls.mondai_show(mondai.id)}">${_render_genre(
         mondai.genre,
         mondai.yami
       ) + mondai.title}</a></span>`;

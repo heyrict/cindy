@@ -3,7 +3,6 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
   entry: {
-    common: ["./app/common"],
     index: ["./app/index"],
     main: [
       "jquery",

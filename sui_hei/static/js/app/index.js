@@ -1,4 +1,4 @@
-require(["jquery", "./sidebar"], function($, sidebar) {
+require(["jquery", "./sidebar", "./common"], function($, sidebar, common) {
   $(document).ready(function() {
     $("#info_textarea").on("input", function() {
       var inputs = marked($("#info_textarea").val());
@@ -20,7 +20,7 @@ require(["jquery", "./sidebar"], function($, sidebar) {
       var target = $(this).attr("target");
       $(this).on("click", function() {
         $.post(
-          "/api/mondai_edit",
+          common.urls.mondai_edit_api,
           { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
           function(data) {
             $("#message_edit_modal_body").html(
