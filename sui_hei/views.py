@@ -1,5 +1,6 @@
 import re
 from itertools import chain
+import json
 
 from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
@@ -69,35 +70,61 @@ class MondaiView(ListView):
 
 
 def mondai_list_api(request):
-    # get requested page number
-    page = int(request.POST.get("page", 1))
-    items_per_page = int(request.POST.get("items_per_page", 20))
+    '''
+    API for getting mondai objects.
 
-    # query the database, build the paginator
-    unsolved = Mondai.objects.filter(
-        status__exact=0).order_by('-modified').select_related()
-    others = Mondai.objects.filter(
-        status__gte=1).order_by('-modified').select_related()
-    others_paginator = Paginator(others, items_per_page)
+    Parameters
+    ----------
+    items_per_page: int, or None if no paginator is wanted.
+    page: int, defaults to 1. Works only when `items_per_page` is set.
+    filter: dict, or None if no filtering is wanted.
+    order: str, or None if no order_by is wanted.
+    '''
+    # get requested page number
+    items_per_page = request.POST.get("items_per_page")
+    filter = request.POST.get("filter")
+    order = request.POST.get("order")
+
+    # query database
+    mondai_list = Mondai.objects.select_related()
+    if filter:
+        filter = json.loads(filter)
+        mondai_list = mondai_list.filter(**filter)
+    if order:
+        mondai_list = mondai_list.order_by(order)
+
+    # need paginator
+    if items_per_page:
+        items_per_page = int(items_per_page)
+        page = int(request.POST.get("page", 1))
+        paginator = Paginator(mondai_list, items_per_page)
+
+    #unsolved = Mondai.objects.filter(
+    #    status__exact=0).order_by('-modified').select_related()
+    #others = Mondai.objects.filter(
+    #    status__gte=1).order_by('-modified').select_related()
+    #others_paginator = Paginator(others, items_per_page)
 
     # check whether any object exists.
-    if others_paginator.count <= 0:
-        return JsonResponse({"page": page, "num_pages": 0})
-    else:
-        # normalize page number:
-        #   page = page <= 0 ? page : 1
-        #   page = page > max_pagenum ? max_pagenum : page
-        page = min(max(1, page), others_paginator.num_pages)
-        returns = {
-            "page": page,
-            "num_pages": others_paginator.num_pages,
-            "data": {
-                "unsolved": [m.stringify_meta() for m in unsolved],
-                "others":
-                [m.stringify_meta() for m in others_paginator.page(page)]
+        if paginator.count <= 0:
+            return JsonResponse({"page": page, "num_pages": 0})
+        else:
+            # normalize page number:
+            #   page = page <= 0 ? page : 1
+            #   page = page > max_pagenum ? max_pagenum : page
+            page = min(max(1, page), paginator.num_pages)
+            returns = {
+                "page": page,
+                "num_pages": paginator.num_pages,
+                "data": [m.stringify_meta() for m in paginator.page(page)]
             }
+    # don't need paginator
+    else:
+        returns = {
+            "data": [m.stringify_meta() for m in mondai_list]
         }
-        return JsonResponse(returns)
+
+    return JsonResponse(returns)
 
 
 def mondai_list(request):

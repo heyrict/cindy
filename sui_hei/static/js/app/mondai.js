@@ -1,16 +1,32 @@
 define(["jquery", "./common", "moment"], function($, common, moment) {
-  function UpdateMondaiList(page) {
-    page = page || 1;
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    return $.post(
-      common.urls.mondai_list_api,
+  function UpdateMondaiList(settings, queryObject) {
+    settings = $.extend(
       {
-        csrfmiddlewaretoken: csrftoken,
-        page: page,
-        items_per_page: 20
+        domid: "test",
+        paginator_class: "paginator",
+        onFinish: function() {}
       },
-      RenderMondaiList
+      settings || {}
     );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "-modified"
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.mondai_list_api, params, function(data) {
+      var listhtml = _render_data(data.data);
+      if (data.page) {
+        listhtml += _render_paginator(
+          data.page,
+          data.num_pages,
+          settings.paginator_class
+        );
+      }
+      $(settings.domid).html(listhtml);
+      settings.onFinish();
+    });
   }
 
   _status_class_dict = {
@@ -99,13 +115,39 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return output;
   }
 
-  function RenderMondaiList(data) {
-    $("#mondai_list_unsolved").html(_render_data(data.data.unsolved));
-    $("#mondai_list_others").html(_render_data(data.data.others));
+  function _render_paginator(current_page, num_pages, classname) {
+    classname = classname || "paginator";
+    var returns = "<div class='pagination pagination-centered'><ul>";
+
+    returns += `<li class="previous ${current_page > 1
+      ? ""
+      : "disabled"}"><a href="javascript:void(0);" value="${current_page -
+      1}" class="${classname}">${gettext("prev")}</a></li>`;
+
+    for (i = Math.max(current_page - 5, 1); i < current_page; ++i) {
+      returns += `<li><a href="javascript:void(0);" value="${i}" class="${classname}">${i}</a></li>`;
+    }
+
+    returns += `<li class="active"><a href="javascript:void(0);" value="${current_page}" class="${classname}">${current_page}</a></li>`;
+
+    for (
+      i = current_page + 1;
+      i <= Math.min(current_page + 5, num_pages);
+      ++i
+    ) {
+      returns += `<li><a href="javascript:void(0);" value="${i}" class="${classname}">${i}</a></li>`;
+    }
+
+    returns += `<li class="next ${current_page < num_pages
+      ? ""
+      : "disabled"}"><a href="javascript:void(0);" value="${current_page +
+      1}" class="${classname}">${gettext("next")}</a></li>`;
+
+    returns += "</ul></div>";
+    return returns;
   }
 
   return {
-    UpdateMondaiList: UpdateMondaiList,
-    RenderMondaiList: RenderMondaiList
+    UpdateMondaiList: UpdateMondaiList
   };
 });
