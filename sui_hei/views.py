@@ -3,6 +3,7 @@ from itertools import chain
 import json
 
 from django import forms
+from django.db.models import Count
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -86,7 +87,7 @@ def mondai_list_api(request):
     order = request.POST.get("order")
 
     # query database
-    mondai_list = Mondai.objects.select_related()
+    mondai_list = Mondai.objects.select_related().annotate(Count('star'))
     if filter:
         filter = json.loads(filter)
         mondai_list = mondai_list.filter(**filter)
@@ -98,12 +99,6 @@ def mondai_list_api(request):
         items_per_page = int(items_per_page)
         page = int(request.POST.get("page", 1))
         paginator = Paginator(mondai_list, items_per_page)
-
-    #unsolved = Mondai.objects.filter(
-    #    status__exact=0).order_by('-modified').select_related()
-    #others = Mondai.objects.filter(
-    #    status__gte=1).order_by('-modified').select_related()
-    #others_paginator = Paginator(others, items_per_page)
 
     # check whether any object exists.
         if paginator.count <= 0:

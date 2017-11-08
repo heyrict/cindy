@@ -55,6 +55,8 @@ require(["jquery", "./mondai.js"], function($, mondai) {
       else if ($(this).attr("id") == "time_desc_btn") order = "-modified";
       else if ($(this).attr("id") == "score_asc_btn") order = "score";
       else if ($(this).attr("id") == "score_desc_btn") order = "-score";
+      else if ($(this).attr("id") == "star_count_asc_btn") order = "star__count";
+      else if ($(this).attr("id") == "star_count_desc_btn") order = "-star__count";
 
       update_others(1);
     });
