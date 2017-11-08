@@ -3,8 +3,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     settings = $.extend(
       {
         domid: "test",
-        paginator_class: "paginator",
-        onFinish: function() {}
+        paginator_class: "paginator"
       },
       settings || {}
     );
@@ -25,7 +24,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         );
       }
       $(settings.domid).html(listhtml);
-      settings.onFinish();
     });
   }
 
