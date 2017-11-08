@@ -21,6 +21,8 @@
     {% endblock %} 
   </style>
   {% block style_include %}{% endblock %}
+  {% get_current_language as LANGUAGE_CODE %}
+    <script type="text/javascript">LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";</script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/commons.chunk.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/main.js' %}"></script>

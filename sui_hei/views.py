@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.forms import ValidationError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404, HttpResponseNotFound
+from django.http import (Http404, HttpResponse, HttpResponseNotFound,
+                         HttpResponseRedirect, JsonResponse)
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -97,6 +98,7 @@ def mondai_list_api(request):
             }
         }
         return JsonResponse(returns)
+
 
 def mondai_list(request):
     return render(request, "sui_hei/mondai_list.html")
@@ -529,13 +531,6 @@ def mondai_add(request):
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
     return render(request, 'sui_hei/mondai_add.html',
                   {'form': MondaiAddForm()})
-
-
-def set_language(request):
-    if request.method == "POST":
-        lang = request.POST.get('lang', 'en')
-        request.session[LANGUAGE_SESSION_KEY] = lang
-    return redirect(request.META['HTTP_REFERER'])
 
 
 def award_change(request):

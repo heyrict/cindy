@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.utils import timezone
 from django.views.decorators.http import last_modified
@@ -24,8 +25,8 @@ last_modified_date = timezone.now()
 urlpatterns = [
     url(r'^', include('sui_hei.urls')),
     url(r'^admin/', admin.site.urls),
+] + i18n_patterns(
     url(r'^jsi18n/$',
-        last_modified(lambda req, **kw: last_modified_date)(
-            JavaScriptCatalog.as_view()),
-        name='jsi18n'),
-]
+        last_modified(lambda req, **kw: last_modified_date)
+        (JavaScriptCatalog.as_view()),
+        name='jsi18n'))

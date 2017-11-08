@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-07 21:39+0900\n"
+"POT-Creation-Date: 2017-11-08 10:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,29 +19,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: sui_hei/static/js/app/mondai.js:24 sui_hei/static/js/dist/3.js:73
+#: sui_hei/static/js/app/mondai.js:38 sui_hei/static/js/dist/0.js:14963
 msgid "Albatross"
 msgstr "ウミガメのスープ"
 
-#: sui_hei/static/js/app/mondai.js:25 sui_hei/static/js/dist/3.js:74
+#: sui_hei/static/js/app/mondai.js:39 sui_hei/static/js/dist/0.js:14964
 msgid "20th-Door"
 msgstr "２０の扉"
 
-#: sui_hei/static/js/app/mondai.js:26 sui_hei/static/js/dist/3.js:75
+#: sui_hei/static/js/app/mondai.js:40 sui_hei/static/js/dist/0.js:14965
 msgid "Little Albat"
 msgstr "亀夫君"
 
-#: sui_hei/static/js/app/mondai.js:27 sui_hei/static/js/dist/3.js:76
+#: sui_hei/static/js/app/mondai.js:41 sui_hei/static/js/dist/0.js:14966
 msgid "Others & Formal"
 msgstr "新＆形式"
 
-#: sui_hei/static/js/app/mondai.js:44 sui_hei/static/js/dist/3.js:93
+#: sui_hei/static/js/app/mondai.js:59 sui_hei/static/js/dist/0.js:14984
 msgid "yami"
 msgstr "闇スープ"
-
-#: sui_hei/static/js/app/mondai.js:75 sui_hei/static/js/dist/3.js:124
-msgid "created"
-msgstr "製作時間"
 
 #: sui_hei/static/js/app/profile_mystar.js:8
 #: sui_hei/static/js/dist/profile_mystar.js:21
@@ -147,3 +143,6 @@ msgstr ""
 #: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
 msgid "void"
 msgstr ""
+
+#~ msgid "created"
+#~ msgstr "製作時間"

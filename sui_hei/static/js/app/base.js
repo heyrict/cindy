@@ -1,4 +1,7 @@
 require("marked");
+require(["moment"], function(moment){
+    moment.locale(LANGUAGE_CODE || "en");
+});
 require([
   "jquery",
   "./sidebar",

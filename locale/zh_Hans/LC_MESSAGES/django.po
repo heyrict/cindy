@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 11:35+0900\n"
+"POT-Creation-Date: 2017-11-08 10:50+0900\n"
 "PO-Revision-Date: 2017-10-06 19:08+0800\n"
 "Last-Translator: heyrict <heyrict@yahoo.co.jp>\n"
 "Language: zh\n"
@@ -35,159 +35,159 @@ msgstr "法语"
 msgid "Award"
 msgstr "称号"
 
-#: sui_hei/models.py:20
+#: sui_hei/models.py:30
 msgid "nick_name"
 msgstr "昵称"
 
-#: sui_hei/models.py:21
+#: sui_hei/models.py:31
 msgid "profile"
 msgstr "简介"
 
-#: sui_hei/models.py:23
+#: sui_hei/models.py:33
 msgid "experience"
 msgstr "经验值"
 
-#: sui_hei/models.py:42
+#: sui_hei/models.py:85
 msgid "User-Award"
 msgstr "用户称号"
 
-#: sui_hei/models.py:58
+#: sui_hei/models.py:101
 msgid "title"
 msgstr "标题"
 
-#: sui_hei/models.py:59 sui_hei/templates/sui_hei/mondai.html:33
+#: sui_hei/models.py:102 sui_hei/templates/sui_hei/mondai.html:33
 #: sui_hei/templates/sui_hei/mondai.html:83
 #: sui_hei/templates/sui_hei/mondai_show.html:7
 #: sui_hei/templates/sui_hei/mondai_show.html:87
-#: sui_hei/templates/sui_hei/profile_mystar.html:52
+#: sui_hei/templates/sui_hei/profile_mystar.html:31
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:30
 msgid "yami"
 msgstr "迷雾汤"
 
-#: sui_hei/models.py:60
+#: sui_hei/models.py:103
 msgid "genre"
 msgstr "类别"
 
-#: sui_hei/models.py:61 sui_hei/models.py:114
+#: sui_hei/models.py:104 sui_hei/models.py:206
 msgid "content"
 msgstr "内容"
 
-#: sui_hei/models.py:62
+#: sui_hei/models.py:105
 msgid "kaisetu"
 msgstr "解说"
 
-#: sui_hei/models.py:63 sui_hei/templates/sui_hei/mondai.html:48
+#: sui_hei/models.py:106 sui_hei/templates/sui_hei/mondai.html:48
 #: sui_hei/templates/sui_hei/mondai.html:98
-#: sui_hei/templates/sui_hei/profile_mystar.html:68
+#: sui_hei/templates/sui_hei/profile_mystar.html:47
 #: sui_hei/templates/sui_hei/profile_selledsoup.html:42
 msgid "created"
 msgstr "料理时间"
 
-#: sui_hei/models.py:64
+#: sui_hei/models.py:107
 msgid "modified"
 msgstr "修改时间"
 
-#: sui_hei/models.py:65
+#: sui_hei/models.py:108
 msgid "status"
 msgstr "状态"
 
-#: sui_hei/models.py:66
+#: sui_hei/models.py:109
 msgid "memo"
 msgstr "备忘录"
 
-#: sui_hei/models.py:67
+#: sui_hei/models.py:110
 msgid "score"
 msgstr "得点"
 
-#: sui_hei/models.py:70
+#: sui_hei/models.py:113
 msgid "Soup"
 msgstr "海龟汤"
 
-#: sui_hei/models.py:77 sui_hei/views.py:429
+#: sui_hei/models.py:153 sui_hei/views.py:491
 msgid "Albatross"
 msgstr "海龟汤"
 
-#: sui_hei/models.py:78 sui_hei/views.py:430
+#: sui_hei/models.py:154 sui_hei/views.py:492
 msgid "20th-Door"
 msgstr "二十回廊"
 
-#: sui_hei/models.py:79 sui_hei/views.py:431
+#: sui_hei/models.py:155 sui_hei/views.py:493
 msgid "Little Albat"
 msgstr "小海龟之旅"
 
-#: sui_hei/models.py:80 sui_hei/views.py:432
+#: sui_hei/models.py:156 sui_hei/views.py:494
 msgid "Others & Formal"
 msgstr "其他 & 活动"
 
-#: sui_hei/models.py:84
+#: sui_hei/models.py:160
 msgid "Unsolved"
 msgstr ""
 
-#: sui_hei/models.py:85
+#: sui_hei/models.py:161
 msgid "Solved"
 msgstr ""
 
-#: sui_hei/models.py:86
+#: sui_hei/models.py:162
 msgid "Dazed"
 msgstr ""
 
-#: sui_hei/models.py:87
+#: sui_hei/models.py:163
 msgid "Hidden"
 msgstr ""
 
-#: sui_hei/models.py:88
+#: sui_hei/models.py:164
 msgid "Forced Hidden"
 msgstr ""
 
-#: sui_hei/models.py:95
+#: sui_hei/models.py:172
 msgid "shitumon"
 msgstr "提问"
 
-#: sui_hei/models.py:96
+#: sui_hei/models.py:173
 msgid "kaitou"
 msgstr "回答"
 
-#: sui_hei/models.py:97
+#: sui_hei/models.py:174
 msgid "good_ques"
 msgstr "好问题"
 
-#: sui_hei/models.py:98
+#: sui_hei/models.py:175
 msgid "true_ques"
 msgstr "正解"
 
-#: sui_hei/models.py:99
+#: sui_hei/models.py:176
 msgid "askedtime"
 msgstr "提问时间"
 
-#: sui_hei/models.py:100
+#: sui_hei/models.py:177
 msgid "answeredtime"
 msgstr "回答时间"
 
-#: sui_hei/models.py:103
+#: sui_hei/models.py:180
 msgid "Question"
 msgstr "问题"
 
-#: sui_hei/models.py:113
+#: sui_hei/models.py:205
 msgid "channel"
 msgstr "频道"
 
-#: sui_hei/models.py:119
+#: sui_hei/models.py:212
 msgid "Can add homepage info"
 msgstr "能修改主页信息栏"
 
-#: sui_hei/models.py:120
+#: sui_hei/models.py:213
 msgid "Can grant awards to users"
 msgstr "称号赋予权"
 
-#: sui_hei/models.py:121
+#: sui_hei/models.py:214
 msgid "Lobby"
 msgstr "大厅"
 
-#: sui_hei/models.py:131
+#: sui_hei/models.py:235
 msgid "Value"
 msgstr ""
 
-#: sui_hei/models.py:134 sui_hei/templates/sui_hei/mondai_show.html:228
+#: sui_hei/models.py:238 sui_hei/templates/sui_hei/mondai_show.html:228
 msgid "Star"
 msgstr "好评"
 
@@ -199,46 +199,47 @@ msgstr "海龟汤餐厅"
 msgid "Chat With Lateral Thinking!"
 msgstr "水平思考即佳肴"
 
-#: sui_hei/templates/frames/base.html:50
+#: sui_hei/templates/frames/base.html:53
 msgid "homepage"
 msgstr "主页"
 
-#: sui_hei/templates/frames/base.html:53
+#: sui_hei/templates/frames/base.html:56
 msgid "mondai"
 msgstr "问题"
 
-#: sui_hei/templates/frames/base.html:57
+#: sui_hei/templates/frames/base.html:60 sui_hei/templates/frames/base.html:63
 #: sui_hei/templates/sui_hei/mondai.html:8
+#: sui_hei/templates/sui_hei/mondai_list.html:12
 msgid "All Soups"
 msgstr "海龟汤菜单"
 
-#: sui_hei/templates/frames/base.html:60
+#: sui_hei/templates/frames/base.html:66
 #: sui_hei/templates/sui_hei/mondai_add.html:24
 msgid "NewSoup"
 msgstr "新问题"
 
-#: sui_hei/templates/frames/base.html:76
+#: sui_hei/templates/frames/base.html:82
 #: sui_hei/templates/frames/profile_child_navi.html:4
 #: sui_hei/templates/sui_hei/profile.html:25
 #: sui_hei/templates/sui_hei/profile.html:54
 msgid "Profile"
 msgstr "个人简介"
 
-#: sui_hei/templates/frames/base.html:79
+#: sui_hei/templates/frames/base.html:85
 msgid "logout"
 msgstr "登出"
 
-#: sui_hei/templates/frames/base.html:84
+#: sui_hei/templates/frames/base.html:90
 #, fuzzy
 #| msgid "Welcome, "
 msgid "Welcome, guest."
 msgstr "欢迎，"
 
-#: sui_hei/templates/frames/base.html:88
+#: sui_hei/templates/frames/base.html:94
 msgid "register"
 msgstr "注册"
 
-#: sui_hei/templates/frames/base.html:91
+#: sui_hei/templates/frames/base.html:97
 #: sui_hei/templates/registration/login.html:22
 msgid "login"
 msgstr "登入"
@@ -281,7 +282,7 @@ msgid "Selled Soups"
 msgstr "已售出的汤"
 
 #: sui_hei/templates/frames/profile_child_navi.html:6
-#: sui_hei/templates/sui_hei/profile_mystar.html:36
+#: sui_hei/templates/sui_hei/profile_mystar.html:15
 msgid "MyStar"
 msgstr "我的好评"
 
@@ -312,7 +313,7 @@ msgstr "公告"
 msgid "Add Info"
 msgstr "添加公告"
 
-#: sui_hei/templates/sui_hei/mondai_add.html:33 sui_hei/views.py:435
+#: sui_hei/templates/sui_hei/mondai_add.html:33 sui_hei/views.py:497
 msgid "Content"
 msgstr "内容"
 
@@ -324,7 +325,7 @@ msgstr "预览"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:38
 #: sui_hei/templates/sui_hei/mondai_show.html:276
-#: sui_hei/templates/sui_hei/mondai_show.html:289 sui_hei/views.py:436
+#: sui_hei/templates/sui_hei/mondai_show.html:289 sui_hei/views.py:498
 msgid "True Answer"
 msgstr "解答"
 
@@ -346,7 +347,6 @@ msgid "You cannot revert change if you put the true answer!"
 msgstr "提出解答后将无法撤销！"
 
 #: sui_hei/templates/sui_hei/mondai_show.html:21
-#: sui_hei/templates/sui_hei/profile_mystar.html:15
 msgid "Continue?"
 msgstr "继续？"
 
@@ -364,7 +364,7 @@ msgid ""
 msgstr ""
 
 #: sui_hei/templates/sui_hei/mondai_show.html:106
-#: sui_hei/templates/sui_hei/profile_mystar.html:65
+#: sui_hei/templates/sui_hei/profile_mystar.html:44
 msgid "Giver"
 msgstr "厨师"
 
@@ -500,31 +500,30 @@ msgstr "更改"
 msgid "Change password"
 msgstr "更改密码"
 
-#: sui_hei/templates/sui_hei/profile_mystar.html:15
-msgid "You cannot revert change if you delete the star!"
-msgstr "删除好评后将无法还原！"
-
-#: sui_hei/views.py:216
+#: sui_hei/views.py:274
 #, fuzzy
 #| msgid "You are not permitted to delete others star!"
 msgid "You are not permitted to do this!"
 msgstr "你无权更改他人的好评"
 
-#: sui_hei/views.py:425
+#: sui_hei/views.py:487
 msgid "Title"
 msgstr "标题"
 
-#: sui_hei/views.py:427
+#: sui_hei/views.py:489
 msgid "Genre"
 msgstr "类别"
 
-#: sui_hei/views.py:434
+#: sui_hei/views.py:496
 msgid "Yami"
 msgstr "迷雾汤"
 
-#: sui_hei/views.py:496
+#: sui_hei/views.py:559
 msgid "You are not permitted to delete others star!"
 msgstr "你无权更改他人的好评"
+
+#~ msgid "You cannot revert change if you delete the star!"
+#~ msgstr "删除好评后将无法还原！"
 
 #~ msgid "seikai"
 #~ msgstr "正解"

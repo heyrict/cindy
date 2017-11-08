@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-07 21:39+0900\n"
+"POT-Creation-Date: 2017-11-08 10:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +18,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sui_hei/static/js/app/mondai.js:24 sui_hei/static/js/dist/3.js:73
+#: sui_hei/static/js/app/mondai.js:38 sui_hei/static/js/dist/0.js:14963
 msgid "Albatross"
-msgstr ""
+msgstr "海龟汤"
 
-#: sui_hei/static/js/app/mondai.js:25 sui_hei/static/js/dist/3.js:74
+#: sui_hei/static/js/app/mondai.js:39 sui_hei/static/js/dist/0.js:14964
 msgid "20th-Door"
-msgstr ""
+msgstr "二十回廊"
 
-#: sui_hei/static/js/app/mondai.js:26 sui_hei/static/js/dist/3.js:75
+#: sui_hei/static/js/app/mondai.js:40 sui_hei/static/js/dist/0.js:14965
 msgid "Little Albat"
-msgstr ""
+msgstr "小海龟之旅"
 
-#: sui_hei/static/js/app/mondai.js:27 sui_hei/static/js/dist/3.js:76
+#: sui_hei/static/js/app/mondai.js:41 sui_hei/static/js/dist/0.js:14966
 msgid "Others & Formal"
-msgstr ""
+msgstr "其他 & 活动"
 
-#: sui_hei/static/js/app/mondai.js:44 sui_hei/static/js/dist/3.js:93
+#: sui_hei/static/js/app/mondai.js:59 sui_hei/static/js/dist/0.js:14984
 msgid "yami"
-msgstr ""
-
-#: sui_hei/static/js/app/mondai.js:75 sui_hei/static/js/dist/3.js:124
-msgid "created"
-msgstr ""
+msgstr "迷雾汤"
 
 #: sui_hei/static/js/app/profile_mystar.js:8
 #: sui_hei/static/js/dist/profile_mystar.js:21
 msgid "You cannot revert change if you delete the star!"
-msgstr ""
+msgstr "删除好评后将无法还原！"
 
 #: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
 msgid " "
@@ -146,3 +142,6 @@ msgstr ""
 #: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
 msgid "void"
 msgstr ""
+
+#~ msgid "created"
+#~ msgstr "料理时间"

@@ -9,6 +9,7 @@ app_name = "sui_hei"
 
 urlpatterns = [
     url(r'^users/', include('django.contrib.auth.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r"^users/add$", views.users_add, name="register"),
     url(r"^users/password_change$", views.password_change, name="password_change"),
     #url(r"^users/password_reset$", views.password_reset, name="password_reset"),
@@ -31,7 +32,6 @@ urlpatterns = [
     url(r"^profile/selledsoup/(?P<pk>[0-9]+)$", views.SelledSoupView.as_view(), name="profile_selledsoup"),
     url(r"^profile/mystar/(?P<pk>[0-9]+)$", views.MyStarView.as_view(), name="profile_mystar"),
     url(r"^profile/award_change", views.award_change, name="award_change"),
-    url(r"^language$", views.set_language, name="set_language"),
     # TODO: Add pages to apply for & grant awards
     url(r"^api/mondai_list$", views.mondai_list_api, name="mondai_list_api"),
     url(r"^api/mondai_edit$", views.mondai_edit_api, name="mondai_edit_api"),

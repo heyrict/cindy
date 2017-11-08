@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-07 21:39+0900\n"
+"POT-Creation-Date: 2017-11-08 10:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,28 +19,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: sui_hei/static/js/app/mondai.js:24 sui_hei/static/js/dist/3.js:73
+#: sui_hei/static/js/app/mondai.js:38 sui_hei/static/js/dist/0.js:14963
 msgid "Albatross"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:25 sui_hei/static/js/dist/3.js:74
+#: sui_hei/static/js/app/mondai.js:39 sui_hei/static/js/dist/0.js:14964
 msgid "20th-Door"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:26 sui_hei/static/js/dist/3.js:75
+#: sui_hei/static/js/app/mondai.js:40 sui_hei/static/js/dist/0.js:14965
 msgid "Little Albat"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:27 sui_hei/static/js/dist/3.js:76
+#: sui_hei/static/js/app/mondai.js:41 sui_hei/static/js/dist/0.js:14966
 msgid "Others & Formal"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:44 sui_hei/static/js/dist/3.js:93
+#: sui_hei/static/js/app/mondai.js:59 sui_hei/static/js/dist/0.js:14984
 msgid "yami"
-msgstr ""
-
-#: sui_hei/static/js/app/mondai.js:75 sui_hei/static/js/dist/3.js:124
-msgid "created"
 msgstr ""
 
 #: sui_hei/static/js/app/profile_mystar.js:8

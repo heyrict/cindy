@@ -1,4 +1,4 @@
-define(["jquery", "./common"], function($, common) {
+define(["jquery", "./common", "moment"], function($, common, moment) {
   function UpdateMondaiList(page) {
     page = page || 1;
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -56,7 +56,7 @@ define(["jquery", "./common"], function($, common) {
   function _render_genre(genre_code, yami) {
     return `[${_genre_code_dict[
       genre_code
-    ]} ${yami ? "&times;" + gettext("yami") : ""} ]`;
+    ]}${yami ? " &times; " + gettext("yami") : ""}]`;
   }
 
   function _render_score(score, star_count) {
@@ -68,7 +68,9 @@ define(["jquery", "./common"], function($, common) {
 
   function _render_giver(user) {
     var award = user.current_award ? `[${user.current_award.name}]` : "";
-    return `<a href="${common.urls.profile(user.id)}" class="bul">${user.nickname}</a><b>${award}</b>`;
+    return `<a href="${common.urls.profile(
+      user.id
+    )}" class="bul">${user.nickname}</a><b>${award}</b>`;
   }
 
   function _render_data(listobj) {
@@ -81,16 +83,16 @@ define(["jquery", "./common"], function($, common) {
         mondai.quescount_all,
         mondai.quescount_unanswered
       );
-      output += `<span class="title_label"><a href="${common.urls.mondai_show(mondai.id)}">${_render_genre(
-        mondai.genre,
-        mondai.yami
-      ) + mondai.title}</a></span>`;
+      output += `<span class="title_label"><a href="${common.urls.mondai_show(
+        mondai.id
+      )}">${_render_genre(mondai.genre, mondai.yami) +
+        mondai.title}</a></span>`;
       output += _render_score(mondai.score, mondai.star_count);
       output += `<span style="float:right; text-decoration:bold;"> ${_render_giver(
         mondai.user_id
-      )} <font color=#888>[${gettext(
-        "created"
-      )}:${mondai.created}]</font></span>`;
+      )} <font color=#888>[${gettext("created")}:${moment(
+        mondai.created
+      ).calendar()}]</font></span>`;
 
       output += "</li></ul><div class='clearfix'></div>";
     });
