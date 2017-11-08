@@ -1,6 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
                                         BaseUserManager)
 from django.db import connections, models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -133,6 +134,7 @@ class Mondai(models.Model):
 
     def stringify_meta(self):
         ques = Shitumon.objects.filter(mondai_id=self)
+        unanswered = ques.filter(Q(kaitou__isnull=True) | Q(kaitou__exact=""))
         return {
             "id": self.id,
             "user_id": self.user_id.stringify_meta(),
@@ -145,7 +147,7 @@ class Mondai(models.Model):
             "score": self.score,
             "star_count": self.star_set.count(),
             "quescount_all": ques.count(),
-            "quescount_unanswered": ques.filter(kaitou__isnull=True).count()
+            "quescount_unanswered": unanswered.count()
         }
 
 

@@ -1,6 +1,8 @@
 require("marked");
-require(["moment"], function(moment){
-    moment.locale(LANGUAGE_CODE || "en");
+require(["moment"], function(moment) {
+  if (!LANGUAGE_CODE) LANGUAGE_CODE = "en";
+  var lang = LANGUAGE_CODE == "zh-hans" ? "zh-cn" : LANGUAGE_CODE;
+  moment.locale(lang);
 });
 require([
   "jquery",
