@@ -55,7 +55,7 @@ require(["marked", "jquery", "./common", "./sidebar"], function(
       // clean the object list
       memoHashObjKeys = Object.keys(memoHashObj).reverse();
       while (memoHashObjKeys.length > 20) {
-        key2del = memoHashObj.Keys.pop();
+        key2del = memoHashObjKeys.pop();
         delete memoHashObj[key2del];
       }
       // updates cookie
