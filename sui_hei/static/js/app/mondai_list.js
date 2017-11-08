@@ -8,8 +8,10 @@ require(["jquery", "./mondai.js"], function($, mondai) {
     );
   }
 
+  var order = "-modified";
   function update_others(page) {
     page = page || 1;
+      console.log(page, order);
     mondai.UpdateMondaiList(
       {
         domid: "#mondai_list_others",
@@ -17,6 +19,7 @@ require(["jquery", "./mondai.js"], function($, mondai) {
       },
       {
         filter: JSON.stringify({ status__gt: 0 }),
+        order: order,
         items_per_page: 20,
         page: page
       }
@@ -44,6 +47,16 @@ require(["jquery", "./mondai.js"], function($, mondai) {
         $("#mondai_unsolved_update").click();
         e.preventDefault();
       }
+    });
+
+    // sorting buttons
+    $(".mondai_list_others_sort").on("click", function() {
+      if ($(this).attr("id") == "time_asc_btn") order = "modified";
+      else if ($(this).attr("id") == "time_desc_btn") order = "-modified";
+      else if ($(this).attr("id") == "score_asc_btn") order = "score";
+      else if ($(this).attr("id") == "score_desc_btn") order = "-score";
+
+      update_others(1);
     });
   });
 });
