@@ -77,10 +77,13 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
   function StartCountdown(selector) {
     window.setInterval(function() {
       $(selector || ".countdownobj").each(function() {
+        until = moment($(this).attr("until"));
         $(this).html(
-          moment($(this).attr("until"))
-            .countdown()
-            .toString()
+          moment().diff(until) < 0
+            ? moment()
+                .countdown()
+                .toString()
+            : `<font color='red'>${gettext("Time Out")}</font>`
         );
       });
     }, 1000);
