@@ -81,7 +81,7 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
         $(this).html(
           moment().diff(until) < 0
             ? moment()
-                .countdown()
+                .countdown(until)
                 .toString()
             : `<font color='red'>${gettext("Time Out")}</font>`
         );
