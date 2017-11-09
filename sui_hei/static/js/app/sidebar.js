@@ -1,4 +1,4 @@
-define(["jquery", "velocity-animate"], function($) {
+define(["jquery", "./common", "velocity-animate"], function($, common) {
   function getCurrentChannel() {
     channel = $("#lobby_nav_input")
       .attr("placeholder")
@@ -167,7 +167,7 @@ define(["jquery", "velocity-animate"], function($) {
       return false;
     }
     $.post(
-      "/lobby/chat",
+      common.urls.lobby_chat,
       {
         csrfmiddlewaretoken: csrftoken,
         channel: channel,
@@ -196,7 +196,7 @@ define(["jquery", "velocity-animate"], function($) {
 
     var $this = $(".leftbar");
 
-    $.get("/lobby/channel", { channel: channel, chatpage: chatpage }, function(
+    $.get(common.urls.lobby_channel, { channel: channel, chatpage: chatpage }, function(
       data
     ) {
       $(".leftbar_content").html(data);
@@ -237,29 +237,12 @@ define(["jquery", "velocity-animate"], function($) {
     }
   }
 
-  function LinkNorm(string) {
-    return string.replace(
-      /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-      "\"javascript:sidebar.OpenChat('$1');\""
-    );
-  }
-
-  function LinkNormAll(selector) {
-    if ($(selector).length > 0) {
-      $(selector).each(function(index) {
-        $(this).html(LinkNorm($(this).html()));
-      });
-    }
-  }
-
   return {
     CalcGoodRect: CalcGoodRect,
     ResizeSidebar: ResizeSidebar,
     ResizeSidebarContent: ResizeSidebarContent,
     ToggleSidebar: ToggleSidebar,
     InputNorm: InputNorm,
-    LinkNorm: LinkNorm,
-    LinkNormAll: LinkNormAll,
     OpenChat: OpenChat,
     OpenMemo: OpenMemo,
     PostChat: PostChat,

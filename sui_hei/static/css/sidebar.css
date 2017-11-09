@@ -3,6 +3,7 @@
   width: 38.2%;
   top: 0px;
   left: -30.3%;
+  z-index: 500;
 }
 .leftbar_content {
   background: #fdf6e3;
@@ -21,6 +22,9 @@
   position: absolute;
   top: 60px;
   z-index: 98;
+}
+.rightbar {
+    z-index: 501;
 }
 .lobby_table_div {
   position: relative;

@@ -1,8 +1,17 @@
 require("marked");
-require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "../lib/bootbox.min.js"], function(
-  $,
-  sidebar
-) {
+require(["moment"], function(moment) {
+  if (!LANGUAGE_CODE) LANGUAGE_CODE = "en";
+  var lang = LANGUAGE_CODE == "zh-hans" ? "zh-cn" : LANGUAGE_CODE;
+  moment.locale(lang);
+});
+
+require([
+  "jquery",
+  "./sidebar",
+  "./common",
+  "../lib/bootstrap.min.js",
+  "bootbox"
+], function($, sidebar, common) {
   $(document).ready(function() {
     // Prevent multiple form submission
     can_submit = {};
@@ -18,16 +27,10 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "../lib/bootbox.min.j
     });
 
     // Replace chat://
-    $(".chat_message").each(function(index) {
-      $(this).html(
-        $(this)
-          .html()
-          .replace(
-            /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-            "\"javascript:sidebar.OpenChat('$1');\""
-          )
-      );
-    });
+    common.LinkNormAll(".chat_message");
+
+    // Replace /countdown()/
+    common.StartCountdown();
   });
 
   // Sidebar related
@@ -53,7 +56,7 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "../lib/bootbox.min.j
   $(document).ready(function() {
     // message_edit modal
     $("#message_edit_modal_alert").on("click", function(e) {
-        $(this).hide();
+      $(this).hide();
     });
     $("#message_edit_modal_save").on("click", function(e) {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -61,7 +64,7 @@ require(["jquery", "./sidebar", "../lib/bootstrap.min.js", "../lib/bootbox.min.j
       var content = $("#message_edit_modal_content").val();
       var target = $("#message_edit_modal_content").attr("target");
       $.post(
-        "/mondai/edit",
+        common.urls.mondai_edit_api,
         {
           csrfmiddlewaretoken: csrftoken,
           pk: pk,

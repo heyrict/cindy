@@ -21,7 +21,11 @@
     {% endblock %} 
   </style>
   {% block style_include %}{% endblock %}
-  <script src="{% static 'js/dist/main.js' %}"></script>
+  {% get_current_language as LANGUAGE_CODE %}
+    <script type="text/javascript">LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";</script>
+  <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dist/commons.chunk.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dist/main.js' %}"></script>
   <script type="text/javascript">
   {% block script %} {% endblock %}
   </script>
@@ -54,6 +58,9 @@
           <ul class="dropdown-menu">
             <li>
               <a href='/mondai'>{% trans 'All Soups' %}</a>
+            </li>
+            <li>
+              <a href='/mondai_list'>{% trans 'All Soups' %}(beta)</a>
             </li>
             <li>
               <a href='/mondai/add'>{% trans 'NewSoup' %}</a>
@@ -144,18 +151,6 @@
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <button id="message_edit_modal_save" class="btn btn-primary" aria-hidden="true">Save changes</button>
-  </div>
-</div>
-
-<div id="alert_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labbeledby="alert_modal_title" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="alert_modal_title">Warning</h3>
-  </div>
-  <div id="alert_modal_body" class="modal-body">
-  </div>
-  <div id="alert_modal_footer" class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
   </div>
 </div>
 

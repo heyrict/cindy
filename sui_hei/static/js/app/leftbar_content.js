@@ -1,4 +1,8 @@
-define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
+define(["jquery", "./sidebar", "./common", "velocity-animate"], function(
+  $,
+  sidebar,
+  common
+) {
   function init() {
     sidebar.ResizeSidebarContent();
 
@@ -45,7 +49,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
         var target = $(this).attr("target");
         $(this).on("click", function() {
           $.post(
-            "/mondai/edit",
+            common.urls.mondai_edit_api,
             { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
             function(data) {
               $("#message_edit_modal_body").html(
@@ -60,7 +64,7 @@ define(["jquery", "./sidebar", "velocity-animate"], function($, sidebar) {
     });
 
     // handling chat://
-    sidebar.LinkNormAll("td#message");
+    common.LinkNormAll("td.lobby_message");
   }
 
   return { init: init };

@@ -1,13 +1,20 @@
+var webpack = require("webpack");
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+
 module.exports = {
   entry: {
-    common: ["./app/common"],
     index: ["./app/index"],
     main: [
+      "jquery",
+      "./lib/bootstrap.min.js",
       "./app/base",
       "./app/sidebar",
-      "./app/leftbar_content",
-      "./lib/bootstrap.min"
+      "./app/leftbar_content"
     ],
+    profile_mystar: ["./app/profile_mystar"],
+    profile: ["./app/profile"],
+    mondai: ["./app/mondai_list"],
+    mondai_add: ["./app/mondai_add"],
     mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
   },
   output: {
@@ -33,7 +40,7 @@ module.exports = {
       },
       // bootbox
       {
-        test: require.resolve("./lib/bootbox.min.js"),
+        test: require.resolve("bootbox"),
         use: [
           {
             loader: "expose-loader",
@@ -58,6 +65,16 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "marked"
+          }
+        ]
+      },
+      // moment
+      {
+        test: require.resolve("moment"),
+        use: [
+          {
+            loader: "expose-loader",
+            options: "moment"
           }
         ]
       },
@@ -91,5 +108,6 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [new CommonsChunkPlugin("commons.chunk")]
 };

@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-08 10:59+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: sui_hei/static/js/app/mondai.js:38 sui_hei/static/js/dist/0.js:14963
+msgid "Albatross"
+msgstr "ウミガメのスープ"
+
+#: sui_hei/static/js/app/mondai.js:39 sui_hei/static/js/dist/0.js:14964
+msgid "20th-Door"
+msgstr "２０の扉"
+
+#: sui_hei/static/js/app/mondai.js:40 sui_hei/static/js/dist/0.js:14965
+msgid "Little Albat"
+msgstr "亀夫君"
+
+#: sui_hei/static/js/app/mondai.js:41 sui_hei/static/js/dist/0.js:14966
+msgid "Others & Formal"
+msgstr "新＆形式"
+
+#: sui_hei/static/js/app/mondai.js:59 sui_hei/static/js/dist/0.js:14984
+msgid "yami"
+msgstr "闇スープ"
+
+#: sui_hei/static/js/app/profile_mystar.js:8
+#: sui_hei/static/js/dist/profile_mystar.js:21
+msgid "You cannot revert change if you delete the star!"
+msgstr "スターを削除すると撤回は出来ません！"
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid " "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "."
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "*"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "import"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "{}"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid ", "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "this"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "super"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "null"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid ",\n"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid " = "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "\n"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "debugger;"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid ":"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "empty"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "any"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "mixed"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "boolean"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "interface "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid " & "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "number"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "string"
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "typeof "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid " | "
+msgstr ""
+
+#: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2
+msgid "void"
+msgstr ""
+
+#~ msgid "created"
+#~ msgstr "製作時間"

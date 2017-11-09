@@ -3,13 +3,16 @@
 <br>
 <form action="{% url 'sui_hei:set_language' %}" method="post">
     {% csrf_token %}
-    <fieldset>
-    <legend>Language</legend>
-    <select name="lang">
-        <option value="en">English
-        <option value="ja">Japanese
-        <option value="zh">Chinese
-        <option value="fr">French
+    <input name="next" type="hidden" value="{{ redirect_to }}" />
+    <select name="language">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+            </option>
+        {% endfor %}
     </select>
-    <input type="submit" name="langbtn" value="select" style="width:150px; font-size:14px; margin-top:0px;">
+    <input type="submit" value="select" />
 </form>
