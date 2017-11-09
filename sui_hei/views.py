@@ -132,6 +132,56 @@ def profile_api(request):
         return HttpResponseNotFound()
 
 
+def star_api(request):
+    '''
+    API for getting mystar objects given a user's id.
+
+    Parameters
+    ----------
+    items_per_page: int, or None if no paginator is wanted.
+    page: int, defaults to 1. Works only when `items_per_page` is set.
+    filter: dict, or None if no filtering is wanted.
+    order: str, or None if no order_by is wanted.
+    '''
+    # get requested page number
+    items_per_page = request.POST.get("items_per_page")
+    filter = request.POST.get("filter")
+    order = request.POST.get("order")
+
+    # query database
+    star_list = Star.objects.select_related()
+    if filter:
+        filter = json.loads(filter)
+        star_list = star_list.filter(**filter)
+    if order:
+        star_list = star_list.order_by(order)
+
+    # need paginator
+    if items_per_page:
+        items_per_page = int(items_per_page)
+        page = int(request.POST.get("page", 1))
+        paginator = Paginator(star_list, items_per_page)
+
+        # check whether any object exists.
+        if paginator.count <= 0:
+            return JsonResponse({"page": page, "num_pages": 0})
+        else:
+            # normalize page number:
+            #   page = page <= 0 ? page : 1
+            #   page = page > max_pagenum ? max_pagenum : page
+            page = min(max(1, page), paginator.num_pages)
+            returns = {
+                "page": page,
+                "num_pages": paginator.num_pages,
+                "data": [m.stringify_meta() for m in paginator.page(page)]
+            }
+    # don't need paginator
+    else:
+        returns = {"data": [m.stringify_meta() for m in star_list]}
+
+    return JsonResponse(returns)
+
+
 def mondai_show_api(request):
     # TODO: Implement works
     pass

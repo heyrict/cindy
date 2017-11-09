@@ -27,6 +27,35 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     });
   }
 
+  function UpdateMystarList(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test",
+        paginator_class: "paginator"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "-modified"
+      },
+      queryObject || {}
+    );
+    console.log(params);
+    $.post(common.urls.star_api, params, function(data) {
+      var listhtml = _render_mystar_data(data.data);
+      if (data.page) {
+        listhtml += _render_paginator(
+          data.page,
+          data.num_pages,
+          settings.paginator_class
+        );
+      }
+      $(settings.domid).html(listhtml);
+    });
+  }
+
   _status_class_dict = {
     0: "status_unsolved",
     1: "status_solved",
@@ -62,6 +91,18 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return `<span class="status_label ${class_label}"><font color="${color_label}">${name_label}</font></span>`;
   }
 
+  function _render_star(value) {
+    scaleOne = x => Math.floor(x * 10) / 10;
+    star_bubble = `<span class="status_label status_unsolved"><font color="#cb4b16">${scaleOne(
+      value
+    )}</font></span>`;
+    return star_bubble;
+  }
+
+  function _render_remove_star_btn(star) {
+    return "<button class='remove_star_button' style='padding:inherit;background:inherit;color:red;' value='${star.id}'>⛔</button>";
+  }
+
   function _render_quescount(all, unanswered) {
     var label_class = unanswered ? "unanswered" : "answered";
     return `<span class="process_label ${label_class}" style="margin-left:5px;"> ${unanswered}<sub>${all}</sub></span>`;
@@ -75,7 +116,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_score(score, star_count) {
     var scale_one = num => Math.floor(num * 10) / 10;
-    return score > 50
+    return star_count > 0
       ? `<span class="mondai_score">${scale_one(score)}✯${star_count}</span>`
       : "";
   }
@@ -85,6 +126,18 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return `<a href="${common.urls.profile(
       user.id
     )}" class="bul">${user.nickname}</a><b>${award}</b>`;
+  }
+
+  function _render_title(mondai) {
+    return `<span class="title_label"><a href="${common.urls.mondai_show(
+      mondai.id
+    )}">${_render_genre(mondai.genre, mondai.yami) + mondai.title}</a></span>`;
+  }
+
+  function _render_suffix(mondai) {
+    return `<span style="float:right; text-decoration:bold;"> ${_render_giver(
+      mondai.user_id
+    )} <font color=#888>[${gettext("created")}:${moment(mondai.created).calendar()}]</font></span>`;
   }
 
   function _render_data(listobj) {
@@ -97,16 +150,30 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         mondai.quescount_all,
         mondai.quescount_unanswered
       );
-      output += `<span class="title_label"><a href="${common.urls.mondai_show(
-        mondai.id
-      )}">${_render_genre(mondai.genre, mondai.yami) +
-        mondai.title}</a></span>`;
+      output += _render_title(mondai);
       output += _render_score(mondai.score, mondai.star_count);
-      output += `<span style="float:right; text-decoration:bold;"> ${_render_giver(
-        mondai.user_id
-      )} <font color=#888>[${gettext("created")}:${moment(
-        mondai.created
-      ).calendar()}]</font></span>`;
+      output += _render_suffix(mondai);
+
+      output += "</li></ul><div class='clearfix'></div>";
+    });
+    return output;
+  }
+
+  function _render_mystar_data(listobj) {
+    var output = String();
+    listobj.forEach(function(star) {
+      mondai = star.mondai_id;
+      output += "<ul><li>";
+
+      output += _render_star(star.value);
+      output += _render_remove_star_btn(star);
+      output += _render_quescount(
+        mondai.quescount_all,
+        mondai.quescount_unanswered
+      );
+      output += _render_title(mondai);
+      output += _render_score(mondai.score, mondai.star_count);
+      output += _render_suffix(mondai);
 
       output += "</li></ul><div class='clearfix'></div>";
     });
@@ -146,6 +213,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   return {
-    UpdateMondaiList: UpdateMondaiList
+    UpdateMondaiList: UpdateMondaiList,
+    UpdateMystarList: UpdateMystarList
   };
 });

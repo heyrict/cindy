@@ -12,6 +12,7 @@ module.exports = {
       "./app/leftbar_content"
     ],
     profile_mystar: ["./app/profile_mystar"],
+    profile: ["./app/profile"],
     mondai: ["./app/mondai_list"],
     mondai_add: ["./app/mondai_add"],
     mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
@@ -105,10 +106,8 @@ module.exports = {
             options: "mondaiShowUI"
           }
         ]
-      },
+      }
     ]
   },
-  plugins: [
-    new CommonsChunkPlugin("commons.chunk")
-  ]
+  plugins: [new CommonsChunkPlugin("commons.chunk")]
 };

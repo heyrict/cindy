@@ -241,3 +241,14 @@ class Star(models.Model):
 
     def __str__(self):
         return "%s -- %.1f --> %s" % (self.user_id, self.value, self.mondai_id)
+
+    def stringify_meta(self):
+        return self.stringify()
+
+    def stringify(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id.stringify_meta(),
+            "mondai_id": self.mondai_id.stringify_meta(),
+            "value": self.value
+        }

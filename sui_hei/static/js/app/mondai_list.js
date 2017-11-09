@@ -11,7 +11,6 @@ require(["jquery", "./mondai.js"], function($, mondai) {
   var order = "-modified";
   function update_others(page) {
     page = page || 1;
-      console.log(page, order);
     mondai.UpdateMondaiList(
       {
         domid: "#mondai_list_others",

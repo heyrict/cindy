@@ -236,3 +236,6 @@ sub {
   top: 11px;
   left: -6px;
 }
+.tab-pane {
+  padding-top: 5px;
+}

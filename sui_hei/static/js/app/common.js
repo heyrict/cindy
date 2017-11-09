@@ -57,7 +57,8 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
     set_language: "/language",
     mondai_list_api: "/api/mondai_list",
     mondai_edit_api: "/api/mondai_edit",
-    profile_api: "/api/profile"
+    profile_api: "/api/profile",
+    star_api: "/api/star"
   };
 
   function _norm_openchat(string) {

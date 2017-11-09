@@ -36,4 +36,5 @@ urlpatterns = [
     url(r"^api/mondai_list$", views.mondai_list_api, name="mondai_list_api"),
     url(r"^api/mondai_edit$", views.mondai_edit_api, name="mondai_edit_api"),
     url(r"^api/profile$", views.profile_api, name="profile_api"),
+    url(r"^api/star$", views.star_api, name="star_api"),
 ]
