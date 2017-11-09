@@ -1,13 +1,13 @@
+import json
 import re
 from itertools import chain
-import json
 
 from django import forms
-from django.db.models import Count
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.forms import ValidationError
 from django.http import (Http404, HttpResponse, HttpResponseNotFound,
                          HttpResponseRedirect, JsonResponse)
@@ -48,14 +48,13 @@ def index(request):
 
 
 # /mondai
+# TODO: drop this view along with 'sui_hei:mondai' on v4.0.0 update
 class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
     paginate_by = 20
 
     def get_queryset(self):
-        # TODO: Add searching & filtering from request.GET
-        # default behavior
         others = Mondai.objects.filter(
             status__gte=1).order_by('-modified').select_related()
         return others
@@ -100,7 +99,7 @@ def mondai_list_api(request):
         page = int(request.POST.get("page", 1))
         paginator = Paginator(mondai_list, items_per_page)
 
-    # check whether any object exists.
+        # check whether any object exists.
         if paginator.count <= 0:
             return JsonResponse({"page": page, "num_pages": 0})
         else:
@@ -115,9 +114,7 @@ def mondai_list_api(request):
             }
     # don't need paginator
     else:
-        returns = {
-            "data": [m.stringify_meta() for m in mondai_list]
-        }
+        returns = {"data": [m.stringify_meta() for m in mondai_list]}
 
     return JsonResponse(returns)
 
