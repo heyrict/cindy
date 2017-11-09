@@ -1,0 +1,40 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static %}
+
+{% block title %} Cindy - mondai {% endblock %} 
+
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/mondai.js' %}"></script>
+{% endblock %}
+
+{% block content %} 
+
+<h2 id="trans-all-soups" style="border-bottom:1px solid #ccc;">{% trans 'All Soups' %}
+    <a id="mondai_unsolved_update" class="btn">&#128472;</a>
+</h2>
+
+<div id="mondai_list_unsolved"></div>
+
+<div class="hline"></div><br />
+
+<div class="btn-toolbar text-center">
+    <div class="btn-group">
+        <button class="btn disabled">Time</button>
+        <button id="time_asc_btn" class="btn mondai_list_others_sort">↑</button>
+        <button id="time_desc_btn" class="btn mondai_list_others_sort">↓</button>
+    </div>
+    <div class="btn-group">
+        <button class="btn disabled">Score</button>
+        <button id="score_asc_btn" class="btn mondai_list_others_sort">↑</button>
+        <button id="score_desc_btn" class="btn mondai_list_others_sort">↓</button>
+    </div>
+    <div class="btn-group">
+        <button class="btn disabled">Star Count</button>
+        <button id="star_count_asc_btn" class="btn mondai_list_others_sort">↑</button>
+        <button id="star_count_desc_btn" class="btn mondai_list_others_sort">↓</button>
+    </div>
+</div>
+
+<div id="mondai_list_others"></div>
+
+{% endblock %} 

@@ -1,15 +1,24 @@
 {% extends 'frames/base.html' %} 
-{% load i18n markdown %}
+{% load i18n markdown static %}
 
 {% block title %} Cindy - profile {% endblock %} 
 
-{% block child_navi %}
-{% include 'frames/profile_child_navi.html' %}
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/profile.js' %}"></script>
 {% endblock %}
 
 {% block content %} 
-<h2>{% trans 'Latest' %} {% trans 'Comments' %}</h2>
-<div class="latest_comments">
+
+<ul class= "nav nav-tabs" id="profile_tab">
+    <li class="active"><a data-toggle="tab" data-target="#profile_pane_profile" href="javascript:void(0);">{% trans 'profile' %}</a></li>
+    <li><a data-toggle="tab" data-target="#profile_pane_comment" href="javascript:void(0);">{% trans 'latest comments' %}</a></li>
+    <li><a data-toggle="tab" data-target="#profile_pane_mysoup" href="javascript:void(0);">{% trans 'mysoup' %}</a></li>
+    <li><a data-toggle="tab" data-target="#profile_pane_mystar" href="javascript:void(0);">{% trans 'mystar' %}</a></li>
+</ul>
+
+<div class="tab-content">
+
+<div id="profile_pane_comment" class="tab-pane">
     <table style="width:100%;">
         {% for comment, mondai in comments %}
         <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
@@ -22,7 +31,13 @@
     </table>
 </div>
 
-<h2>{% trans 'Profile' %}</h2>
+<div id="profile_pane_mysoup" class="tab-pane">
+</div>
+
+<div id="profile_pane_mystar" class="tab-pane">
+</div>
+
+<div id="profile_pane_profile" class="tab-pane active">
 <table>
     <tr><th>{% trans "Name" %}</th><td>{{ sui_hei_user.nickname }}</td></tr>
     <tr><th>{% trans "Created time" %}</th><td>{{ sui_hei_user.date_joined }}</td></tr>
@@ -63,4 +78,6 @@
         </td></tr>
         {% endif %} 
 </table>
+</div>
+</div>
 {% endblock %} 

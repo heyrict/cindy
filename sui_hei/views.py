@@ -1,23 +1,27 @@
+import json
 import re
 from itertools import chain
-from django.utils import timezone
 
 from django import forms
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
+from django.db.models import Count
 from django.forms import ValidationError
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import (Http404, HttpResponse, HttpResponseNotFound,
+                         HttpResponseRedirect, JsonResponse)
 from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, UpdateView
 
+from scoring import *
+
 from .admin import *
 from .models import *
-from scoring import *
 
 
 # Create your views here.
@@ -26,7 +30,8 @@ from scoring import *
 def index(request):
     hpinfopage = request.GET.get('hpinfopage', 1)
     request.session['channel'] = 'lobby'
-    comments = Lobby.objects.filter(channel__startswith="comments-").order_by("-id")[:15]
+    comments = Lobby.objects.filter(
+        channel__startswith="comments-").order_by("-id")[:15]
     mondais = []
     for i in comments:
         try:
@@ -34,8 +39,7 @@ def index(request):
         except ObjectDoesNotExist:
             continue
 
-    infos = Lobby.objects.filter(
-        channel="homepage-info").order_by('-id')
+    infos = Lobby.objects.filter(channel="homepage-info").order_by('-id')
     hpinfo_list = Paginator(infos, 20)
     return render(request, 'sui_hei/index.html', {
         'comments': zip(comments, mondais),
@@ -44,24 +48,143 @@ def index(request):
 
 
 # /mondai
+# TODO: drop this view along with 'sui_hei:mondai' on v4.0.0 update
 class MondaiView(ListView):
     template_name = 'sui_hei/mondai.html'
     context_object_name = 'mondai_list'
     paginate_by = 20
 
     def get_queryset(self):
-        # TODO: Add searching & filtering from request.GET
-        # default behavior
-        others = Mondai.objects.filter(status__gte=1).order_by('-modified').select_related()
+        others = Mondai.objects.filter(
+            status__gte=1).order_by('-modified').select_related()
         return others
 
     def get_context_data(self, **kwargs):
         self.request.session['channel'] = 'lobby'
 
         context = super(MondaiView, self).get_context_data(**kwargs)
-        unsolved = Mondai.objects.filter(status__exact=0).order_by('-modified').select_related()
+        unsolved = Mondai.objects.filter(
+            status__exact=0).order_by('-modified').select_related()
         context['unsolved_mondai_list'] = unsolved
         return context
+
+
+def mondai_list_api(request):
+    '''
+    API for getting mondai objects.
+
+    Parameters
+    ----------
+    items_per_page: int, or None if no paginator is wanted.
+    page: int, defaults to 1. Works only when `items_per_page` is set.
+    filter: dict, or None if no filtering is wanted.
+    order: str, or None if no order_by is wanted.
+    '''
+    # get requested page number
+    items_per_page = request.POST.get("items_per_page")
+    filter = request.POST.get("filter")
+    order = request.POST.get("order")
+
+    # query database
+    mondai_list = Mondai.objects.select_related().annotate(Count('star'))
+    if filter:
+        filter = json.loads(filter)
+        mondai_list = mondai_list.filter(**filter)
+    if order:
+        mondai_list = mondai_list.order_by(order)
+
+    # need paginator
+    if items_per_page:
+        items_per_page = int(items_per_page)
+        page = int(request.POST.get("page", 1))
+        paginator = Paginator(mondai_list, items_per_page)
+
+        # check whether any object exists.
+        if paginator.count <= 0:
+            return JsonResponse({"page": page, "num_pages": 0})
+        else:
+            # normalize page number:
+            #   page = page <= 0 ? page : 1
+            #   page = page > max_pagenum ? max_pagenum : page
+            page = min(max(1, page), paginator.num_pages)
+            returns = {
+                "page": page,
+                "num_pages": paginator.num_pages,
+                "data": [m.stringify_meta() for m in paginator.page(page)]
+            }
+    # don't need paginator
+    else:
+        returns = {"data": [m.stringify_meta() for m in mondai_list]}
+
+    return JsonResponse(returns)
+
+
+def mondai_list(request):
+    return render(request, "sui_hei/mondai_list.html")
+
+
+def profile_api(request):
+    user_id = request.POST.get("user_id")
+    try:
+        user = get_object_or_404(User, id=user_id)
+        return JsonResponse(user.stringify())
+    except Http404:
+        return HttpResponseNotFound()
+
+
+def star_api(request):
+    '''
+    API for getting mystar objects given a user's id.
+
+    Parameters
+    ----------
+    items_per_page: int, or None if no paginator is wanted.
+    page: int, defaults to 1. Works only when `items_per_page` is set.
+    filter: dict, or None if no filtering is wanted.
+    order: str, or None if no order_by is wanted.
+    '''
+    # get requested page number
+    items_per_page = request.POST.get("items_per_page")
+    filter = request.POST.get("filter")
+    order = request.POST.get("order")
+
+    # query database
+    star_list = Star.objects.select_related()
+    if filter:
+        filter = json.loads(filter)
+        star_list = star_list.filter(**filter)
+    if order:
+        star_list = star_list.order_by(order)
+
+    # need paginator
+    if items_per_page:
+        items_per_page = int(items_per_page)
+        page = int(request.POST.get("page", 1))
+        paginator = Paginator(star_list, items_per_page)
+
+        # check whether any object exists.
+        if paginator.count <= 0:
+            return JsonResponse({"page": page, "num_pages": 0})
+        else:
+            # normalize page number:
+            #   page = page <= 0 ? page : 1
+            #   page = page > max_pagenum ? max_pagenum : page
+            page = min(max(1, page), paginator.num_pages)
+            returns = {
+                "page": page,
+                "num_pages": paginator.num_pages,
+                "data": [m.stringify_meta() for m in paginator.page(page)]
+            }
+    # don't need paginator
+    else:
+        returns = {"data": [m.stringify_meta() for m in star_list]}
+
+    return JsonResponse(returns)
+
+
+def mondai_show_api(request):
+    # TODO: Implement works
+    pass
 
 
 # /mondai/show/[0-9]+
@@ -102,8 +225,10 @@ def mondai_star(request):
             user_id=request.user, mondai_id=mondai)[0]
         star.value = float(request.POST.get('stars', 0))
         star.save()
-        try: update_soup_score(star.mondai_id)
-        except: pass
+        try:
+            update_soup_score(star.mondai_id)
+        except:
+            pass
     return HttpResponse(True)
 
 
@@ -184,7 +309,7 @@ def mondai_show_update_soup(request):
     return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
 
 
-def shitumon_edit(request):
+def mondai_edit_api(request):
     pk = int(request.POST.get("pk"))
     target = request.POST.get("target")
     content = request.POST.get("content")
@@ -194,15 +319,19 @@ def shitumon_edit(request):
     elif target in ["shitumon", "kaitou"]:
         inst = Shitumon.objects.get(id=pk)
     else:
-        return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+        return JsonResponse({
+            'error_message':
+            "Target unrecognized. Please report to administrator."
+        })
 
     if content is not None:
         # validate, save message, return True
         error_message = None
         try:
-            if target in ["lobby", "homepage"] and request.user == inst.user_id:
+            if target in ["lobby", "homepage"
+                          ] and request.user == inst.user_id:
                 if content == "":
-                    inst.delete();
+                    inst.delete()
                 else:
                     inst.content = content
                     inst.save()
@@ -225,7 +354,10 @@ def shitumon_edit(request):
         elif target == "kaitou":
             return JsonResponse({'content': inst.kaitou})
         else:
-            return JsonResponse({'error_message': "Target unrecognized. Please report to administrator."})
+            return JsonResponse({
+                'error_message':
+                "Target unrecognized. Please report to administrator."
+            })
 
 
 def mondai_show_push_ques(request):
@@ -331,7 +463,8 @@ class ProfileView(DetailView):
         context['ques_count'] = put_ques.count()
         context['goodques_count'] = put_ques.filter(good=True).count()
         context['trueques_count'] = put_ques.filter(true=True).count()
-        context['comment_count'] = Lobby.objects.filter(channel__startswith="comments-", user_id=userid).count()
+        context['comment_count'] = Lobby.objects.filter(
+            channel__startswith="comments-", user_id=userid).count()
         return context
 
 
@@ -469,13 +602,6 @@ def mondai_add(request):
                   {'form': MondaiAddForm()})
 
 
-def set_language(request):
-    if request.method == "POST":
-        lang = request.POST.get('lang', 'en')
-        request.session[LANGUAGE_SESSION_KEY] = lang
-    return redirect(request.META['HTTP_REFERER'])
-
-
 def award_change(request):
     if request.method == "POST":
         award_name = request.POST.get('award')
@@ -493,7 +619,8 @@ def remove_star(request):
 
             # Validation
             if star.user_id != request.user:
-                raise ValidationError(_("You are not permitted to delete others star!"))
+                raise ValidationError(
+                    _("You are not permitted to delete others star!"))
 
         except Exception as e:
             return HttpResponse("RemoveStar:", e)
