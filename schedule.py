@@ -31,7 +31,7 @@ def mark_mondai_as_dazed(recent=7):
         status=0, modified__lt=recent_days_ago)
     for dazed_mondai in unsolved:
         print("Mark dazed: ", dazed_mondai.id, "-", dazed_mondai.title)
-        dazed_mondai.status = 1
+        dazed_mondai.status = 2
         dazed_mondai.modified = now
         dazed_mondai.save()
 
