@@ -75,7 +75,7 @@ define(["jquery", "moment", "moment-countdown"], function($, moment) {
   }
 
   function StartCountdown(selector) {
-    setInterval(function() {
+    window.setInterval(function() {
       $(selector || ".countdownobj").each(function() {
         $(this).html(
           moment($(this).attr("until"))
