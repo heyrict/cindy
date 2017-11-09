@@ -64,7 +64,7 @@ define(["jquery", "./sidebar", "./common", "velocity-animate"], function(
     });
 
     // handling chat://
-    sidebar.LinkNormAll("td.lobby_message");
+    common.LinkNormAll("td.lobby_message");
   }
 
   return { init: init };

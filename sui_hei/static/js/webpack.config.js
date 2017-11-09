@@ -13,6 +13,7 @@ module.exports = {
     ],
     profile_mystar: ["./app/profile_mystar"],
     mondai: ["./app/mondai_list"],
+    mondai_add: ["./app/mondai_add"],
     mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
   },
   output: {
@@ -63,6 +64,16 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "marked"
+          }
+        ]
+      },
+      // moment
+      {
+        test: require.resolve("moment"),
+        use: [
+          {
+            loader: "expose-loader",
+            options: "moment"
           }
         ]
       },

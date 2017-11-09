@@ -1,4 +1,4 @@
-define([], function() {
+define(["jquery", "moment", "moment-countdown"], function($, moment) {
   function setCookie(c_name, value, expiredays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + expiredays);
@@ -60,10 +60,53 @@ define([], function() {
     profile_api: "/api/profile"
   };
 
+  function _norm_openchat(string) {
+    return string.replace(
+      /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
+      "\"javascript:sidebar.OpenChat('$1');\""
+    );
+  }
+
+  function _norm_countdown(string) {
+    return string.replace(
+      /\/countdown\(([^)]+)\)\//g,
+      "<span class='btn disabled countdownobj' until='$1'>CountDownObject</span>"
+    );
+  }
+
+  function StartCountdown(selector) {
+    setInterval(function() {
+      $(selector || ".countdownobj").each(function() {
+        $(this).html(
+          moment($(this).attr("until"))
+            .countdown()
+            .toString()
+        );
+      });
+    }, 1000);
+  }
+
+  function LinkNorm(string) {
+    string = _norm_openchat(string);
+    string = _norm_countdown(string);
+    return string;
+  }
+
+  function LinkNormAll(selector) {
+    if ($(selector).length > 0) {
+      $(selector).each(function(index) {
+        $(this).html(LinkNorm($(this).html()));
+      });
+    }
+  }
+
   return {
     hash: hash,
     getCookie: getCookie,
     setCookie: setCookie,
-    urls: urls
+    urls: urls,
+    LinkNorm: LinkNorm,
+    LinkNormAll: LinkNormAll,
+    StartCountdown: StartCountdown
   };
 });

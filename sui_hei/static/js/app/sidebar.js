@@ -237,29 +237,12 @@ define(["jquery", "./common", "velocity-animate"], function($, common) {
     }
   }
 
-  function LinkNorm(string) {
-    return string.replace(
-      /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-      "\"javascript:sidebar.OpenChat('$1');\""
-    );
-  }
-
-  function LinkNormAll(selector) {
-    if ($(selector).length > 0) {
-      $(selector).each(function(index) {
-        $(this).html(LinkNorm($(this).html()));
-      });
-    }
-  }
-
   return {
     CalcGoodRect: CalcGoodRect,
     ResizeSidebar: ResizeSidebar,
     ResizeSidebarContent: ResizeSidebarContent,
     ToggleSidebar: ToggleSidebar,
     InputNorm: InputNorm,
-    LinkNorm: LinkNorm,
-    LinkNormAll: LinkNormAll,
     OpenChat: OpenChat,
     OpenMemo: OpenMemo,
     PostChat: PostChat,

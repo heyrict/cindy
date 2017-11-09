@@ -12,63 +12,6 @@
 <script src="{% static 'js/dist/mondai_show.js' %}"></script>
 {% endblock %}
 
-{% block script %}
-$(document).ready(function(){
-  $("#change_seikai_ckbx").on("click", function(e) {
-    if (this.checked) {
-      bootbox.confirm(
-        "<h3>{% trans 'Warning' %}</h3>" + 
-        "<p>{% trans 'You cannot revert change if you put the true answer!' %}</p><p>{% trans 'Continue?' %}</p>",
-        function(conf) {
-          if (!conf) {
-            $("#change_seikai_ckbx").prop("checked", false);
-          }
-        }
-      );
-    }
-  });
-  $("#comment_submit").on("click", function() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    var commentmsg = $("#comment_input").val();
-    var comment_channel = "comments-" + {{ mondai.id }};
-    if (commentmsg) {
-      $.post(
-        "{% url 'sui_hei:lobby_chat' %}",
-        {
-          csrfmiddlewaretoken: csrftoken,
-          channel: comment_channel,
-          push_chat: commentmsg
-        },
-        function(data) {
-          $("#evaluation_panel").html("");
-          sidebar.OpenChat(comment_channel);
-        }
-      );
-    }
-  });
-  $("#starbutton").on("click", function() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    $.post(
-      "{% url 'sui_hei:mondai_star' %}",
-      {
-        csrfmiddlewaretoken: csrftoken,
-        stars: $("#starbar").val(),
-        mondai: {{ mondai.id }}
-      },
-      function(data) {
-        if (data) {
-          bootbox.alert("<h3>Thanks!</h3><p>{% trans 'Thank you for your voting!' %}</p>");
-        }
-      }
-    );
-  });
-  // handling chat://
-  sidebar.LinkNormAll(".memobar_content");
-
-  mondaiShowUI.initUI();
-});
-{% endblock %}
-
 {% block extra_header %}
 {% if mondai.memo %}
 <div class="memobar rightbar" mode={{ mode|default:"closed" }} >
@@ -102,13 +45,17 @@ $(document).ready(function(){
 {% else %}
 <!-- Content of Question -->
 <div class="mondai_content well" style="background:inherit">
-    <ul style="left: 10px;">
-        <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
-                {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
-        </li>
-        <li>{% trans "Give time" %}: {{ mondai.created }}</li>
-    </ul>
-    {{ mondai.content|text2md|safe }}
+    <div class="mondai_content_header">
+        <ul style="left: 10px;">
+            <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
+                    {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
+            </li>
+            <li>{% trans "Give time" %}: {{ mondai.created }}</li>
+        </ul>
+    </div>
+    <div class="mondai_content_content">
+        {{ mondai.content|text2md|safe }}
+    </div>
 </div>
 <!-- End Content of Question -->
 <br>
@@ -207,7 +154,9 @@ $(document).ready(function(){
 <!-- Answer of Question -->
 {% if mondai.status == 1 or mondai.status == 2 %} <!-- Solved or Dazed -->
 <div class="mondai_kaisetu well" style="background:inherit;">
-    {{ mondai.kaisetu|text2md|safe }}
+    <div class="mondai_kaisetu_content">
+        {{ mondai.kaisetu|text2md|safe }}
+    </div>
     <br>
     <div align="center"><div class="hline"></div></div>
 

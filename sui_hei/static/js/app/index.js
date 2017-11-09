@@ -2,7 +2,7 @@ require(["jquery", "./sidebar", "./common"], function($, sidebar, common) {
   $(document).ready(function() {
     $("#info_textarea").on("input", function() {
       var inputs = marked($("#info_textarea").val());
-      inputs = sidebar.LinkNorm(inputs);
+      inputs = common.LinkNorm(inputs);
       $("#info_preview")[0].innerHTML = inputs;
     });
 
@@ -13,7 +13,7 @@ require(["jquery", "./sidebar", "./common"], function($, sidebar, common) {
       });
     });
 
-    sidebar.LinkNormAll(".homepage_message");
+    common.LinkNormAll(".homepage_message");
     $(".homepage_message_edit").each(function() {
       var csrftoken = $("[name=csrfmiddlewaretoken]").val();
       var pk = $(this).attr("value");

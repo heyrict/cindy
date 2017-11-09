@@ -1,21 +1,10 @@
 {% extends 'frames/base.html' %} 
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %} Cindy - mondai - add {% endblock %} 
 
-{% block script %}
-$(document).ready(function() {
-  $("#content_preview")[0].innerHTML = marked($("#id_content").val());
-  $("#kaisetu_preview")[0].innerHTML = marked($("#id_kaisetu").val());
-
-  $("#id_content").on('input', function(){
-    $("#content_preview")[0].innerHTML = marked($("#id_content").val());
-  });
-
-  $("#id_kaisetu").on('input', function(){
-    $("#kaisetu_preview")[0].innerHTML = marked($("#id_kaisetu").val());
-  });
-});
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/mondai_add.js' %}"></script>
 {% endblock %}
 
 {% block content %} 

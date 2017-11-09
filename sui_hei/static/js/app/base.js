@@ -4,6 +4,7 @@ require(["moment"], function(moment) {
   var lang = LANGUAGE_CODE == "zh-hans" ? "zh-cn" : LANGUAGE_CODE;
   moment.locale(lang);
 });
+
 require([
   "jquery",
   "./sidebar",
@@ -26,16 +27,10 @@ require([
     });
 
     // Replace chat://
-    $(".chat_message").each(function(index) {
-      $(this).html(
-        $(this)
-          .html()
-          .replace(
-            /\"chat:\/\/([0-9a-zA-Z\-]+)\"/g,
-            "\"javascript:sidebar.OpenChat('$1');\""
-          )
-      );
-    });
+    common.LinkNormAll(".chat_message");
+
+    // Replace /countdown()/
+    common.StartCountdown();
   });
 
   // Sidebar related
