@@ -57,12 +57,12 @@ require(["jquery", "./mondai.js"], function($, mondai) {
       else if ($(this).attr("id") == "score_desc_btn") order = "-score";
       else if ($(this).attr("id") == "star_count_asc_btn") order = "star__count";
       else if ($(this).attr("id") == "star_count_desc_btn") order = "-star__count";
-      else if ($(this).attr("id") == "search_btn") order = "modified";
       
       update_others(1);
     });
-    $("#search_btn").on("click", function(){
+    $(".mondai_list_others_search").on("click", function(){
         filter = JSON.stringify({title__contains: $("#search_box")[0].value});
+        
         update_others(1);
     });
   });
