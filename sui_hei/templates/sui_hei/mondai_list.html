@@ -17,6 +17,16 @@
 
 <div class="hline"></div><br />
 
+<div class="search-form">
+    <form action="" method="post">
+    {% csrf_token %}
+        <input type="text" id="search_word">
+        <select id="search_type">
+            <option value="title">{% trans 'Title' %}</option>
+        </select>
+        <input type="button" id="search_btn" value={% trans 'Search' %}>
+    </form> 
+</div>
 <div class="btn-toolbar text-center">
     <div class="btn-group">
         <button class="btn disabled">Time</button>
