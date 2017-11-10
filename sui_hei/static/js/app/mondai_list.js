@@ -9,6 +9,7 @@ require(["jquery", "./mondai.js"], function($, mondai) {
   }
 
   var order = "-modified";
+  var filter = JSON.stringify({status__gt: 0});
   function update_others(page) {
     page = page || 1;
     mondai.UpdateMondaiList(
@@ -17,7 +18,7 @@ require(["jquery", "./mondai.js"], function($, mondai) {
         paginator_class: "mondai_others_paginator"
       },
       {
-        filter: JSON.stringify({ status__gt: 0 }),
+        filter: filter,
         order: order,
         items_per_page: 20,
         page: page
@@ -56,12 +57,13 @@ require(["jquery", "./mondai.js"], function($, mondai) {
       else if ($(this).attr("id") == "score_desc_btn") order = "-score";
       else if ($(this).attr("id") == "star_count_asc_btn") order = "star__count";
       else if ($(this).attr("id") == "star_count_desc_btn") order = "-star__count";
-
+      else if ($(this).attr("id") == "search_btn") order = "modified";
+      
       update_others(1);
     });
     $("#search_btn").on("click", function(){
-        filter = "title_contains=" + $("search_word").value;
+        filter = JSON.stringify({title__contains: $("#search_box")[0].value});
         update_others(1);
-    };)
+    });
   });
 });
