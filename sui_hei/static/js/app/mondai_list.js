@@ -59,8 +59,8 @@ require(["jquery", "./mondai.js"], function($, mondai) {
 
       update_others(1);
     });
-    $("#search_form").on("click", function(){
-        filter = "title_contains=" + $("#search_word").value;
+    $("#search_btn").on("click", function(){
+        filter = "title_contains=" + $("search_word").value;
         update_others(1);
     };)
   });

@@ -18,14 +18,11 @@
 <div class="hline"></div><br />
 
 <div class="search-form">
-    <form action="" method="post">
-    {% csrf_token %}
-        <input type="text" id="search_word">
-        <select id="search_type">
-            <option value="title">{% trans 'Title' %}</option>
-        </select>
-        <input type="button" id="search_btn" value={% trans 'Search' %}>
-    </form> 
+    <input name="search_box"></input>
+    <select name="search_type">
+        <option value="title">{% trans 'Title' %}</option>
+    </select>
+    <button id="search_btn">{% trans 'Search' %}</button>
 </div>
 <div class="btn-toolbar text-center">
     <div class="btn-group">
