@@ -218,8 +218,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       output += `<span class='pull-${isMyChat
         ? "right"
         : "left"}' style='max-width:25%;'>`;
-      output += `<a href="${lobby.user_id.id}" style="color:#333">${lobby
-        .user_id.nickname}</a>`;
+      output += `<a href="${common.urls.profile(
+        lobby.user_id.id
+      )}" style="color:#333">${lobby.user_id.nickname}</a>`;
       output += lobby.user_id.current_award
         ? `[${lobby.user_id.current_award.name}]`
         : "";
