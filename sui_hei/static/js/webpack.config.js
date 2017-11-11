@@ -4,7 +4,17 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
   entry: {
     index: ["./app/index"],
-    main: ["jquery", "./lib/bootstrap.min.js", "./app/base", "./app/sidebar"],
+    main: ["./app/base", "./app/sidebar"],
+    vendor: [
+      "jquery",
+      "velocity-animate",
+      "marked",
+      "./lib/bootstrap.min.js",
+      "bootbox",
+      "bootstrap-slider",
+      "moment",
+      "moment-countdown"
+    ],
     leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
@@ -104,5 +114,11 @@ module.exports = {
       }
     ]
   },
-  plugins: [new CommonsChunkPlugin("commons.chunk")]
+  plugins: [
+    new CommonsChunkPlugin({
+      name: "vendor",
+      filename: "dist/vendor.chunk.js",
+      minChunks: Infinity
+    })
+  ]
 };
