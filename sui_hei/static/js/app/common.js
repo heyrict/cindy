@@ -114,6 +114,14 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     return marked(string).replace(/<\/?p>/g, "");
   }
 
+  function bindEnterToSubmit(inputSelector, submitSelector) {
+    $(inputSelector).on("keypress", function(e) {
+      if (e.which == 13) {
+        $(submitSelector).click();
+      }
+    });
+  }
+
   function LinkNormAll(selector) {
     if ($(selector).length > 0) {
       $(selector).each(function(index) {
@@ -128,6 +136,7 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     setCookie: setCookie,
     urls: urls,
     line2md: line2md,
+    bindEnterToSubmit: bindEnterToSubmit,
     LinkNorm: LinkNorm,
     LinkNormAll: LinkNormAll,
     StartCountdown: StartCountdown

@@ -1,4 +1,4 @@
-require(["jquery", "./mondai.js"], function($, mondai) {
+require(["jquery", "./common", "./mondai"], function($, common, mondai) {
   function update_unsolved() {
     mondai.UpdateMondaiList(
       { domid: "#mondai_list_unsolved" },
@@ -9,6 +9,7 @@ require(["jquery", "./mondai.js"], function($, mondai) {
   }
 
   var order = "-modified";
+  var filter = JSON.stringify({ status__gt: 0 });
   function update_others(page) {
     page = page || 1;
     mondai.UpdateMondaiList(
@@ -17,7 +18,7 @@ require(["jquery", "./mondai.js"], function($, mondai) {
         paginator_class: "mondai_others_paginator"
       },
       {
-        filter: JSON.stringify({ status__gt: 0 }),
+        filter: filter,
         order: order,
         items_per_page: 20,
         page: page
@@ -54,9 +55,24 @@ require(["jquery", "./mondai.js"], function($, mondai) {
       else if ($(this).attr("id") == "time_desc_btn") order = "-modified";
       else if ($(this).attr("id") == "score_asc_btn") order = "score";
       else if ($(this).attr("id") == "score_desc_btn") order = "-score";
-      else if ($(this).attr("id") == "star_count_asc_btn") order = "star__count";
-      else if ($(this).attr("id") == "star_count_desc_btn") order = "-star__count";
+      else if ($(this).attr("id") == "star_count_asc_btn")
+        order = "star__count";
+      else if ($(this).attr("id") == "star_count_desc_btn")
+        order = "-star__count";
 
+      update_others(1);
+    });
+
+    // search
+    common.bindEnterToSubmit("#search_box", "#search_btn");
+
+    $(".mondai_list_others_search").on("click", function() {
+      filter = JSON.stringify({ title__contains: $("#search_box").val() });
+      update_others(1);
+    });
+
+    $(".mondai_list_others_search_reset").on("click", function() {
+      filter = JSON.stringify({ status__gt: 0 });
       update_others(1);
     });
   });

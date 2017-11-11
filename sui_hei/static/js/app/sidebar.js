@@ -89,18 +89,11 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
       });
       $("#lobby_chat_input").val("");
     });
-    $("#lobby_chat_input").on("keypress", function(e) {
-      if (e.which == 13) {
-        $("#lobby_chat_submit").click();
-      }
-    });
+    common.bindEnterToSubmit("#lobby_chat_input", "#lobby_chat_submit");
 
     $("#lobby_nav_input").on("input", sidebar.InputNorm);
-    $("#lobby_nav_input").on("keypress", function(e) {
-      if (e.which == 13) {
-        $("#lobby_nav_submit").click();
-      }
-    });
+    common.bindEnterToSubmit("#lobby_nav_input", "#lobby_nav_submit");
+
     $("#lobby_nav_submit").on("click", function(e) {
       channel = $("#lobby_nav_input").val();
       load_chat(channel);
@@ -108,7 +101,7 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
       e.preventDefault();
     });
 
-    channel = $("#default_channel").attr("value") || "lobby"
+    channel = $("#default_channel").attr("value") || "lobby";
     load_chat(channel);
   }
 

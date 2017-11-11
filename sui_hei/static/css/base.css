@@ -245,3 +245,9 @@ sub {
   margin: 20px;
   max-width: inherit;
 }
+
+#search_box {
+  padding: inherit;
+  margin: inherit;
+  padding: inherit;
+}

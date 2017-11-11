@@ -138,12 +138,7 @@ require([
       );
     });
 
-    $("#comment_input").on("keypress", function(e) {
-      if (e.which == 13) {
-        $("#comment_submit").click();
-      }
-    });
-
+    common.bindEnterToSubmit("#comment_input", "#comment_submit");
 
     function update_comments() {
       $.post(
