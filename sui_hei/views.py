@@ -450,10 +450,8 @@ class ProfileView(DetailView):
         # get latest 10 comments in relation to `sui_hei_user`
         userid = context['sui_hei_user'].id
         mondais = Mondai.objects.filter(user_id=userid)
-        comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id)
-                                                     for i in mondais])[:10]
-        com_mondais = [Mondai.objects.get(id=i.channel[9:]) for i in comments]
-        context['comments'] = zip(comments, com_mondais)
+        comments = Comment.objects.filter(user_id=userid)
+        context['comments'] = comments.order_by("-id")[:10]
         context['pk'] = self.kwargs['pk']
 
         # get all awards
@@ -469,8 +467,7 @@ class ProfileView(DetailView):
         context['ques_count'] = put_ques.count()
         context['goodques_count'] = put_ques.filter(good=True).count()
         context['trueques_count'] = put_ques.filter(true=True).count()
-        context['comment_count'] = Lobby.objects.filter(
-            channel__startswith="comments-", user_id=userid).count()
+        context['comment_count'] = comments.count()
         return context
 
 

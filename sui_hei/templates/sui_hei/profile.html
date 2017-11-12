@@ -20,8 +20,8 @@
 
 <div id="profile_pane_comment" class="tab-pane">
     <table style="width:100%;">
-        {% for comment, mondai in comments %}
-        <tr><th><a href={% url 'sui_hei:mondai_show' mondai.id %}>{{ mondai }}</a></th>
+        {% for comment in comments %}
+        <tr><th><a href={% url 'sui_hei:mondai_show' comment.mondai_id.id %}>{{ comment.mondai_id }}</a></th>
             <td><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
                     {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
                 >> {{ comment.content }}
