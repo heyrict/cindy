@@ -40,5 +40,7 @@ urlpatterns = [
     url(r"^api/profile$", views.profile_api, name="profile_api"),
     url(r"^api/star$", views.APIListProvider(Star).as_api, name="star_api"),
     url(r"^api/comment$", views.APIListProvider(Comment).as_api, name="comment_api"),
+    url(r"^api/shitumon$", views.APIListProvider(Shitumon).as_api, name="shitumon_api"),
     url(r"^api/lobby$", views.APIListProvider(Lobby).as_api, name="lobby_api"),
+    url(r"^api/mondai_show$", views.APIDetailProvider(Mondai).as_api, name="mondai_show_api"),
 ]

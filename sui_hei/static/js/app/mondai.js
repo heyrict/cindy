@@ -1,4 +1,20 @@
 define(["jquery", "./common", "moment"], function($, common, moment) {
+  /* Wrapping functions
+   * Parameters:
+   * settings: {
+   *   domid: String, the domSelector to be updated,
+   *   paginator_class, class name of the paginator (if exists),
+   * }
+   * queryObject: Object, which will be passed to django for fetching data: {
+   *   csrfmiddlewaretoken: String, default value will be provided,
+   *                        and you don't need to pass this explicitly,
+   *   order: String, which will be passed to django's QueryObject.order_by(),
+   *   filter: String(dict), a stringified objech, which will be passed
+   *           to QueryObject.filter() as **kwargs,
+   *   items_per_page: int, pass this value only if you want a paginator,
+   *   page: int, a value in [1, items_per_page]. data will be fetched in page `page`.
+   * }
+   */
   function UpdateMondaiList(settings, queryObject) {
     settings = $.extend(
       {
@@ -55,10 +71,65 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     });
   }
 
+  // sui_hei:mondai_show_api: render mondai's qnas
+  function UpdateMondaiQnA(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "id"
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.shitumon_api, params, function(shitumonList) {
+      returns = "";
+      shitumonList.data.forEach(function(s, index) {
+        if (
+          s.yami &&
+          window.django.user_id != s.user_id.id &&
+          window.django.user_id != s.user_id.id
+        )
+          return;
+        var QBlockStr = _render_mondai_qblock(s, index);
+        var ABlockStr = _render_mondai_ablock(s, index);
+        returns += `<div class="HBar">${QBlockStr}${ABlockStr}<div class="clearfix"></div></div>`;
+      });
+      $(settings.domid).html(returns);
+    });
+  }
+
+  function RenderMondaiComments(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test",
+        paginator_class: "paginator"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "id"
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.comment_api, params, function(data) {
+      $(settings.domid).html(_render_mondai_content_comments(data));
+    });
+  }
+
+  // Simply data formatting function
+  // sui_hei:lobby_api: render lobby data
   function RenderLobbyData(data) {
     return _render_lobby_data(data.data);
   }
 
+  // sui_hei:lobby_api: render lobby paginator
   function RenderLobbyPaginator(data, paginator_class) {
     return _render_paginator({
       current_page: data.page || 1,
@@ -66,6 +137,37 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       classname: paginator_class || "lobby_paginator",
       paginator_classname: "pagination-mini pagination-centered"
     });
+  }
+
+  // sui_hei:Mondai_show_api: Render mondai's header data
+  function RenderMondaiContentHeader(data) {
+    var giverstr = `<li><b>${gettext("giver")}: ${data.user_id.nickname}${data
+      .user_id.current_award
+      ? "[" + data.user_id.current_award.name + "]"
+      : ""}</b></li>`;
+    var createdstr = `<li>${gettext("created")}: ${moment(
+      data.created
+    ).calendar()}</li>`;
+    return "<ul style='left: 10px;'>" + giverstr + createdstr + "</ul>";
+  }
+
+  // sui_hei:Mondai_show_api: Render mondai's content
+  function RenderMondaiContentContent(data) {
+    if (data.status >= 2 && data.user_id.id != window.django.user_id) {
+      mondai_content_content = gettext(
+        "This soup's status is set to %s, which means you cannot view it."
+      ).replace(/%s/, _status_code_dict[data.status]);
+      mondai_content_content =
+        "<font color='#aaa'>" + mondai_content_content + "</font>";
+    } else {
+      mondai_content_content = common.text2md(data.content);
+    }
+    return mondai_content_content;
+  }
+
+  // sui_hei:mondai_show_api: render mondai's kaisetu
+  function RenderMondaiKaisetu(data) {
+    return common.text2md(data.kaisetu);
   }
 
   _status_class_dict = {
@@ -112,7 +214,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_remove_star_btn(star) {
-    return "<button class='remove_star_button' style='padding:inherit;background:inherit;color:red;' value='${star.id}'>⛔</button>";
+    return `<button class='remove_star_button' style='padding:inherit;background:inherit;color:red;' value='${star.id}'>⛔</button>`;
   }
 
   function _render_quescount(all, unanswered) {
@@ -207,7 +309,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
       output += `<span class='pull-${isMyChat
         ? "left"
-        : "right"}' style='max-width:75%;'>`;
+        : "right"}' style='max-width:73%;'>`;
       output += lobby.content;
       if (isMyChat)
         output += `<a class="lobby_message_edit" value="${lobby.id}" 
@@ -217,10 +319,10 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
       output += `<span class='pull-${isMyChat
         ? "right"
-        : "left"}' style='max-width:25%;'>`;
+        : "left"}' style='max-width:23%; color:#666'>`;
       output += `<a href="${common.urls.profile(
         lobby.user_id.id
-      )}" style="color:#333">${lobby.user_id.nickname}</a>`;
+      )}" style="color:#888">${lobby.user_id.nickname}</a>`;
       output += lobby.user_id.current_award
         ? `[${lobby.user_id.current_award.name}]`
         : "";
@@ -276,10 +378,126 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return returns;
   }
 
+  // sui_hei:comments_api: render mondai's comments
+  function _render_mondai_content_comments(data) {
+    var commentstr = String();
+    data.data.forEach(function(comment) {
+      commentstr += "<div class='well' style='background:#e2d6b2;'>";
+      commentstr += `<div>${comment.content}</div>`;
+      commentstr += `<div class="pull-right">——<a style="color:#333"
+            href="${common.urls.profile(comment.user_id.id)}">
+              ${comment.user_id.nickname} </a>
+            </div>`;
+      commentstr += "</div>";
+    });
+    return commentstr;
+  }
+
+  function _render_mondai_qblock(data, index) {
+    return `
+      <div class="QBlock">
+          <div style="width:29%; float:left">
+              <a href="${common.urls.profile(
+                data.user_id.id
+              )}">${data.user_id.nickname}</a>
+          ${data.user_id.current_award
+            ? "[" + data.user_id.current_award.name + "]"
+            : ""}
+
+          </div>
+          <div class="vertical_line"></div>
+          <div style="width:69%; float:right;">
+              <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
+              ${data.shitumon}
+          </div>
+      </div>`;
+  }
+
+  function _render_mondai_ablock(data, index) {
+    var ABlock = "<div class='ABlock'>";
+
+    if (window.django.user_id == data.owner_id.id) {
+      ABlock += _render_mondai_ablock_giver(data, index);
+    } else {
+      ABlock += _render_mondai_ablock_others(data, index);
+    }
+    ABlock += "</div>";
+    return ABlock;
+  }
+
+  function _render_mondai_ablock_others(data, index) {
+    ABlockOthers = String();
+    if (data.kaitou) {
+      ABlockOthers += "<div style='width:69%; float:left'>";
+      if (data.true) {
+        ABlockOthers += "<font size='7' color='#dc322f'>&#9996;</font>";
+      }
+      if (data.good) {
+        ABlockOthers += "<font size='7' color='#b58900'>&#128077;</font>";
+      }
+      ABlockOthers += `${common.line2md(data.kaitou)}</div>`;
+      ABlockOthers += `<div class="vertical_line"></div>`;
+      ABlockOthers += `<div style="width:29%; float:right;">
+                    <a href="${common.urls.profile(data.owner_id.id)}">${data
+        .owner_id.nickname}</a>
+                    ${data.owner_id.current_award
+                      ? "[" + data.owner_id.current_award.name + "]"
+                      : ""}
+                </div>`;
+    } else {
+      ABlockOthers +=
+        "<span style='color:#93a1a1'>" +
+        gettext("waiting to be answered") +
+        "</span>";
+    }
+    return ABlockOthers;
+  }
+
+  function _render_mondai_ablock_giver(data, index) {
+    ABlockGiver = String();
+    if (data.kaitou) {
+      ABlockGiver += "<div style='width:100%; float:left;'>";
+      if (data.true) {
+        ABlockGiver += "<font size='7' color='#dc322f'>&#9996;</font>";
+      }
+      if (data.good) {
+        ABlockGiver += "<font size='7' color='#b58900'>&#128077;</font>";
+      }
+      ABlockGiver += `${common.line2md(data.kaitou)}
+      <a class="qna_edit" target="kaitou" value="${data.id}" href="javascript:void(0);"
+          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+          [${gettext("edit")}]</a>
+      </div>`;
+    } else {
+      ABlockGiver += `<div style="width:100%; float:left;">
+                <input id="answ_input" name="push_answ_${data.id}" type="text">
+            </div>`;
+    }
+    ABlockGiver += `<div class="clear"></div>
+          <div style="border-top: 1px solid #268bd288">
+              <input name="check_goodques_${data.id}" type="checkbox">
+            ${data.good
+              ? gettext("uncheck as good-question")
+              : gettext("check as good-question")}
+              <br>
+              <input name="check_trueansw_${data.id}" type="checkbox">
+            ${data.true
+              ? gettext("uncheck as true-answer")
+              : gettext("check as true-answer")}
+          </div>`;
+
+    return ABlockGiver;
+  }
+
   return {
     UpdateMondaiList: UpdateMondaiList,
     UpdateMystarList: UpdateMystarList,
     RenderLobbyData: RenderLobbyData,
-    RenderLobbyPaginator: RenderLobbyPaginator
+    RenderLobbyPaginator: RenderLobbyPaginator,
+    RenderMondaiContentHeader: RenderMondaiContentHeader,
+    RenderMondaiContentContent: RenderMondaiContentContent,
+    RenderMondaiKaisetu: RenderMondaiKaisetu,
+    RenderMondaiComments: RenderMondaiComments,
+    UpdateMondaiQnA: UpdateMondaiQnA
   };
 });

@@ -65,7 +65,9 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     profile_api: "/api/profile",
     star_api: "/api/star",
     lobby_api: "/api/lobby",
-    comment_api: "/api/comment"
+    comment_api: "/api/comment",
+    shitumon_api: "/api/shitumon",
+    mondai_show_api: "/api/mondai_show"
   };
 
   function _norm_openchat(string) {
@@ -114,6 +116,10 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     return marked(string).replace(/<\/?p>/g, "");
   }
 
+  function text2md(string) {
+    return LinkNorm(tidy_html5(marked(string)));
+  }
+
   function bindEnterToSubmit(inputSelector, submitSelector) {
     $(inputSelector).on("keypress", function(e) {
       if (e.which == 13) {
@@ -136,6 +142,7 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     setCookie: setCookie,
     urls: urls,
     line2md: line2md,
+    text2md: text2md,
     bindEnterToSubmit: bindEnterToSubmit,
     LinkNorm: LinkNorm,
     LinkNormAll: LinkNormAll,

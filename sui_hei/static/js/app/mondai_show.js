@@ -2,11 +2,81 @@ require([
   "marked",
   "jquery",
   "./common",
+  "./mondai",
   "./sidebar",
   "./mondai_show_ui.js",
   "velocity-animate"
-], function(marked, $, common, sidebar, mondaiShowUI) {
+], function(marked, $, common, mondai, sidebar, mondaiShowUI) {
   $(document).ready(function() {
+    // Previews
+    var PageURL = window.location.pathname;
+    var path = PageURL.split("/");
+    var mondai_id = path[path.length - 1];
+    var mondai_status, mondai_giver_id;
+
+    $.post(
+      common.urls.mondai_show_api,
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        id: mondai_id
+      },
+      function(data) {
+        mondai_status = data.data.status;
+        mondai_giver_id = data.data.user_id.id;
+        $(".mondai_content_header").html(
+          mondai.RenderMondaiContentHeader(data.data)
+        );
+        $(".mondai_content_content").html(
+          mondai.RenderMondaiContentContent(data.data)
+        );
+        update_comments();
+        update_mondai_qna(data.data);
+        if (
+          (data.data.status >= 1 && data.data.status <= 2) ||
+          data.data.user_id.id == window.django.user_id
+        ) {
+          $(".mondai_kaisetu_content").html(
+            mondai.RenderMondaiKaisetu(data.data)
+          );
+        }
+      }
+    );
+
+    function update_mondai_qna() {
+      if (mondai_status <= 2 || mondai_giver_id == window.django.user_id) {
+        mondai.UpdateMondaiQnA(
+          {
+            domid: ".mondai_qna"
+          },
+          {
+            filter: JSON.stringify({ mondai_id: mondai_id })
+          }
+        );
+      }
+      $("form").each(function(index) {
+        if (this.id == "mondai_show_push_ques") can_submit[index] = true;
+      });
+    }
+
+    function update_comments() {
+      mondai.RenderMondaiComments(
+        {
+          domid: ".mondai_content_comments"
+        },
+        {
+          filter: JSON.stringify({ mondai_id: mondai_id })
+        }
+      );
+    }
+
+    // bind F5 to update_unsolved()
+    $(document).on("keydown", function(e) {
+      if ((e.which || e.keyCode) == 116) {
+        update_mondai_qna();
+        e.preventDefault();
+      }
+    });
+
     // Previews
     var PageURL = window.location.pathname;
     var path = PageURL.split("/");
@@ -39,29 +109,6 @@ require([
       $("#memo_preview").html(
         common.LinkNorm(marked($("#memo_textarea").val()))
       );
-    });
-
-    // handling chat://
-    common.LinkNormAll(".memobar_content");
-
-    // qna_edit
-    $(".qna_edit").each(function() {
-      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-      var pk = $(this).attr("value");
-      var target = $(this).attr("target");
-      $(this).on("click", function() {
-        $.post(
-          common.urls.mondai_edit_api,
-          { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
-          function(data) {
-            $("#message_edit_modal_body").html(
-              `<textarea id="message_edit_modal_content">${data.content}</textarea>`
-            );
-            $("#message_edit_modal_content").attr("target", target);
-            $("#message_edit_modal_content").attr("value", pk);
-          }
-        );
-      });
     });
 
     // if memo updates, open memo bar
@@ -138,33 +185,55 @@ require([
       );
     });
 
+    $("#mondai_show_push_answ").on("submit", function(e) {
+      var formData = $(this).serializeArray();
+      $.post(common.urls.mondai_show_push_answ, formData, function() {
+        update_mondai_qna();
+      });
+      e.preventDefault();
+    });
+
+    $("#mondai_show_push_ques").on("submit", function(e) {
+      var formData = $(this).serializeArray();
+      $.post(common.urls.mondai_show_push_ques, formData, function() {
+        update_mondai_qna();
+      });
+      e.preventDefault();
+    });
+
+    $(".mondai_qna").on("DOMSubtreeModified", function() {
+      // qna_edit
+      $(".qna_edit").each(function() {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        var pk = $(this).attr("value");
+        var target = $(this).attr("target");
+        $(this).on("click", function() {
+          $.post(
+            common.urls.mondai_edit_api,
+            { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
+            function(data) {
+              $("#message_edit_modal_body").html(
+                `<textarea id="message_edit_modal_content">${data.content}</textarea>`
+              );
+              $("#message_edit_modal_content").attr("target", target);
+              $("#message_edit_modal_content").attr("value", pk);
+            }
+          );
+        });
+      });
+    });
+
     common.bindEnterToSubmit("#comment_input", "#comment_submit");
-
-    function update_comments() {
-      $.post(
-        common.urls.comment_api,
-        {
-          csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-          filter: JSON.stringify({ mondai_id: mondai_id })
-        },
-        function(data) {
-          var commentstr = String();
-          data.data.forEach(function(comment) {
-            commentstr += "<div class='well' style='background:#e2d6b2;'>";
-            commentstr += `<div>${comment.content}</div>`;
-            commentstr += `<div class="pull-right">——<a style="color:#333" 
-            href="${common.urls.profile(comment.user_id.id)}">
-              ${comment.user_id.nickname} </a>
-            </div>`;
-            commentstr += "</div>";
-          });
-          $(".mondai_content_comments").html(commentstr);
-        }
-      );
-    }
-
-    update_comments();
 
     mondaiShowUI.initUI();
   });
+
+  /*
+  $(document).ready(function() {
+
+    // handling chat://
+    common.LinkNormAll(".memobar_content");
+
+  });
+  */
 });

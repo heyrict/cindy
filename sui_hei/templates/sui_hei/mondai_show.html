@@ -34,128 +34,34 @@
     {% endif %}
 </h2>
 
-{% if mondai.user_id != user and mondai.status > 2 %}
-<!-- Hidden Question -->
-<div class="mondai_content well">
-    {% blocktrans with status=mondai.status|mondai_status %}
-    This soup's status is set to {{ status }},
-    which means you cannot view it.
-    {% endblocktrans %}
-</div>
-<br />
-{% else %}
 <!-- Content of Question -->
 <div class="mondai_content well" style="background:inherit">
     <div class="mondai_content_header">
-        <ul style="left: 10px;">
-            <li><b>{% trans "Giver" %}: {{ mondai.user_id.nickname }}
-                    {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}</b>
-            </li>
-            <li>{% trans "Give time" %}: {{ mondai.created }}</li>
-        </ul>
     </div>
     <div class="mondai_content_content">
-        {{ mondai.content|text2md|safe }}
     </div>
-    <br /><div class="mondai_content_comments">
+    <br />
+    <div class="mondai_content_comments">
     </div>
 </div>
 <!-- End Content of Question -->
 <br>
 <!-- Q&A -->
 {% if user == mondai.user_id %}
-<form action="{% url 'sui_hei:mondai_show_push_answ' %}" method="post">
+<form id="mondai_show_push_answ" action="{% url 'sui_hei:mondai_show_push_answ' %}" method="post">
 {% csrf_token %}
 {% endif %}
-<div class="mondai_qna">
-    {% for qna in qnas %}
-    <!-- if yami -->
-    {% if mondai.yami and qna.user_id != user and mondai.user_id != user and mondai.status == 0 %}
-    {% else %}
-    <div class="HBar">
-        <div class="QBlock">
-            <div style="width:29%; float:left">
-                    <a href={% url 'sui_hei:profile' qna.user_id.id %}>{{ qna.user_id.nickname }}</a>
-                    {% if qna.user_id.current_award %}[{{ qna.user_id.current_award }}]{% endif %}
-            </div>
-            <div class="vertical_line"></div>
-            <div style="width:69%; float:right;">
-                <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">{{ forloop.counter }}</span>
-                {{ qna.shitumon|line2md|safe }}
-                {% if qna.user_id == user and not qna.kaitou %}
-                <a class="qna_edit" target="shitumon" value="{{ qna.id }}" href="javascript:void(0);"
-                    role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-                    {% trans '[edit]' %}</a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="ABlock">
-            {% if user == mondai.user_id %}
-            <!-- for giver -->
-                <div>
-                {% if qna.kaitou %}
-                    <div style="width:100%; float:left;">
-                        {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
-                        {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
-                        {{ qna.kaitou|line2md|safe }} 
-                        <a class="qna_edit" target="kaitou" value="{{ qna.id }}" href="javascript:void(0);"
-                            role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-                            {% trans '[edit]' %}</a>
-                    </div>
-                {% else %}
-                    <div style="width:100%; float:left;">
-                        <input id="answ_input" name="push_answ_{{ qna.id }}" type="text">
-                    </div>
-                {% endif %}
-                <div class="clear"></div>
-                <div style="border-top: 1px solid #268bd288">
-                <input type="checkbox" name="check_goodques_{{ qna.id }}">
-                {% if qna.good %}
-                    {% trans 'uncheck as good-question' %}
-                {% else %}
-                    {% trans 'check as good-question' %}
-                {% endif %}<br>
-                <input type="checkbox" name="check_trueansw_{{ qna.id }}">
-                {% if qna.true %}
-                    {% trans 'uncheck as true-answer' %}
-                {% else %}
-                    {% trans 'check as true-answer' %}
-                {% endif %}</div>
-                </div>
-            <!-- end for giver -->
-            {% else %}
-            <!-- for others -->
-                {% if qna.kaitou %} 
-                <div style="width:69%; float:left">
-                    {% if qna.true %}<font size="7" color="#dc322f">&#9996;</font>{% endif %}
-                    {% if qna.good %}<font size="7" color="#b58900">&#128077;</font>{% endif %}
-                    {{ qna.kaitou|line2md|safe }} 
-                </div>
-                <div class="vertical_line"></div>
-                <div style="width:29%; float:right;">
-                    <a href={% url 'sui_hei:profile' mondai.user_id.id %}>{{ mondai.user_id.nickname }}</a>
-                    {% if mondai.user_id.current_award %}[{{ mondai.user_id.current_award }}]{% endif %}
-                </div>
-                {% else %} <span style="color:#93a1a1">{% trans 'waiting to be answered' %}</span>
-                {% endif %}
-            <!-- end for others -->
-            {% endif %}
-        </div>
-        <div class="clear"></div>
-    </div>
-    {% endif %}
-    <!-- end yami -->
-    {% endfor %}
-</div>
+
+<div class="mondai_qna"></div>
+
 {% if user == mondai.user_id %}
 <input value={% trans 'Put Responds' %} type="submit">
 {% endif %}
 </form>
 <!-- End Q&A -->
 <br>
-{% endif %}
 <!-- Answer of Question -->
-{% if mondai.status == 1 or mondai.status == 2 %} <!-- Solved or Dazed -->
+{% if mondai.status == 1 or mondai.status == 2 or mondai.user_id == user %} <!-- Solved or Dazed -->
 <div class="mondai_kaisetu well" style="background:inherit;">
     <div class="mondai_kaisetu_content">
         {{ mondai.kaisetu|text2md|safe }}
@@ -183,7 +89,7 @@
 </div>
 {% endif %}
 
-{% if user == mondai.user_id and mondai.status == 1 or mondai.status == 2 or mondai.status == 3 %} <!-- Display giver panel if solved-->
+{% if user == mondai.user_id and mondai.status >= 1 and mondai.status <= 3 %} <!-- Display giver panel if solved-->
 <!-- giver panel -->
 <form class="well" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
     {% csrf_token %}
@@ -234,7 +140,7 @@
     <!-- end giver panel -->
     {% else %}
     <!-- paticipants panel -->
-    <form action="{% url 'sui_hei:mondai_show_push_ques' %}" method="post">
+    <form id="mondai_show_push_ques" action="{% url 'sui_hei:mondai_show_push_ques' %}" method="post">
         {% csrf_token %}
         <span class="paticipants_panel">
             <input id="ques_input" name="push_ques" type="text">
