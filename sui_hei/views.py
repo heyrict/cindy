@@ -354,12 +354,14 @@ def mondai_edit_api(request):
 
 def mondai_show_push_ques(request):
     if request.method == "POST" and request.user.is_authenticated:
+        content = request.POST['push_ques']
+        if content == '':
+            return JsonResponse({})
+
         mondai_id = get_object_or_404(
             Mondai,
             id=re.findall(r"(?<=/mondai/show/)[0-9]+",
                           request.META['HTTP_REFERER'])[0])
-        content = request.POST['push_ques']
-        if content == '': raise ValueError("Empty Input Data")
 
         ques = Shitumon(
             user_id=request.user,
@@ -371,7 +373,7 @@ def mondai_show_push_ques(request):
         # update user last active event
         request.user.last_login = timezone.now()
         request.user.save()
-    return redirect(request.META['HTTP_REFERER'].split('?', 1)[0])
+    return JsonResponse({})
 
 
 def mondai_comment(request):
@@ -628,4 +630,4 @@ def remove_star(request):
         return JsonResponse({"error_message": e})
 
     star.delete()
-    return JsonResponse({});
+    return JsonResponse({})
