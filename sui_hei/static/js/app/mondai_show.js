@@ -56,10 +56,11 @@ require([
         );
       }
       // Make question input available again on qna's update
+      $("#ques_input").val("");
       $("form").each(function(index) {
         if (this.id == "mondai_show_push_ques") can_submit[index] = true;
       });
-      $("#ques_input").val("");
+      mondai_show_can_push_ques = true;
     }
 
     function update_comments() {
@@ -199,9 +200,12 @@ require([
 
     $("#mondai_show_push_ques").on("submit", function(e) {
       var formData = $(this).serializeArray();
-      $.post(common.urls.mondai_show_push_ques, formData, function() {
-        update_mondai_qna();
-      });
+      if (mondai_show_can_push_ques) {
+        $.post(common.urls.mondai_show_push_ques, formData, function() {
+          update_mondai_qna();
+        });
+      }
+      mondai_show_can_push_ques = false;
       e.preventDefault();
     });
 
