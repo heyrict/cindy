@@ -112,7 +112,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_remove_star_btn(star) {
-    return "<button class='remove_star_button' style='padding:inherit;background:inherit;color:red;' value='${star.id}'>⛔</button>";
+      return `<button class='remove_star_button' style='padding:inherit;background:inherit;color:red;' value='${star.id}'>⛔</button>`;
   }
 
   function _render_quescount(all, unanswered) {
@@ -207,7 +207,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
       output += `<span class='pull-${isMyChat
         ? "left"
-        : "right"}' style='max-width:75%;'>`;
+        : "right"}' style='max-width:73%;'>`;
       output += lobby.content;
       if (isMyChat)
         output += `<a class="lobby_message_edit" value="${lobby.id}" 
@@ -217,10 +217,10 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
       output += `<span class='pull-${isMyChat
         ? "right"
-        : "left"}' style='max-width:25%;'>`;
+        : "left"}' style='max-width:23%; color:#666'>`;
       output += `<a href="${common.urls.profile(
         lobby.user_id.id
-      )}" style="color:#333">${lobby.user_id.nickname}</a>`;
+      )}" style="color:#888">${lobby.user_id.nickname}</a>`;
       output += lobby.user_id.current_award
         ? `[${lobby.user_id.current_award.name}]`
         : "";

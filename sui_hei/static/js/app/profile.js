@@ -9,32 +9,6 @@ require([
   var path = PageURL.split("/");
   var user_id = path[path.length - 1];
 
-  $(".remove_star_button").on("click", function() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    var star_id = this.value;
-    bootbox.confirm(
-      `<p>${gettext(
-        "You cannot revert change if you delete the star!"
-      )}</p><p>${gettext("Continue?")}</p>`,
-      function(conf) {
-        if (conf) {
-          jQuery.post(
-            common.urls.mondai_star_remove,
-            {
-              csrfmiddlewaretoken: csrftoken,
-              star_id: star_id
-            },
-            function(data) {
-              if (data) {
-                location.reload();
-              }
-            }
-          );
-        }
-      }
-    );
-  });
-
   var mystar_order = "-value";
   function update_mystar(page) {
     mondai.UpdateMystarList(
@@ -99,6 +73,36 @@ require([
           update_mysoup($(this).attr("value"));
         });
       });
+    });
+  });
+
+  $("#profile_pane_mystar").on("DOMSubtreeModified", function() {
+    $(".remove_star_button").on("click", function() {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var star_id = this.value;
+      bootbox.confirm(
+        `<p>${gettext(
+          "You cannot revert change if you delete the star!"
+        )}</p><p>${gettext("Continue?")}</p>`,
+        function(conf) {
+          if (conf) {
+            jQuery.post(
+              common.urls.mondai_star_remove,
+              {
+                csrfmiddlewaretoken: csrftoken,
+                star_id: star_id
+              },
+              function(data) {
+                if (data.error_message) {
+                  bootbox.alert(error_message);
+                } else {
+                  location.reload();
+                }
+              }
+            );
+          }
+        }
+      );
     });
   });
 });

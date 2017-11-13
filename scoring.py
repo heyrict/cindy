@@ -28,13 +28,12 @@ def update_user_exp(recent=None):
             last_login__gt=timezone.now() - recent).all()
     else:
         users = User.objects.all()
-    comments = Lobby.objects.filter(channel__startswith="comments-")
     for user in users:
         _put_ques = user.shitumon_set
         put_soups = user.mondai_set.count()
         put_goodques = _put_ques.filter(good=True).count()
         put_trueques = _put_ques.filter(true=True).count()
-        put_comments = comments.filter(user_id=user).count()
+        put_comments = Comment.objects.filter(user_id=user).count()
         user.experience = calc_exp(put_soups, put_goodques, put_trueques,
                                    put_comments)
         print("Update: %s exp->%.2f" % (user.nickname, user.experience))

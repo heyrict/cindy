@@ -134,6 +134,40 @@ class APIListProvider(object):
         return JsonResponse(self.to_dict(objectList, items_per_page, page))
 
 
+class APIDetailProvider(object):
+    def __init__(self, baseClass, queryExtra=None):
+        '''
+        Initialize an APIProvider.
+
+        Parameters
+        ----------
+        baseClass: class. The base class for querying
+        '''
+        self.baseClass = baseClass
+        self.queryExtra = queryExtra
+
+    def to_dict(self, obj):
+        return {"data": obj.stringify()}
+
+    def as_api(self, request):
+        '''
+        API for getting objects.
+
+        Parameters
+        ----------
+        id: int, the id to get for the baseClass.
+        order: str, or None if no order_by is wanted.
+        '''
+        # get requested page number
+        id = request.POST.get("id")
+        objectList = self.baseClass.objects.select_related()
+        if self.queryExtra:
+            objectList = self.queryExtra(objectList)
+        obj = get_object_or_404(objectList, id=id)
+
+        return JsonResponse(self.to_dict(obj))
+
+
 def mondai_list(request):
     return render(request, "sui_hei/mondai_list.html")
 
@@ -145,11 +179,6 @@ def profile_api(request):
         return JsonResponse(user.stringify())
     except Http404:
         return HttpResponseNotFound()
-
-
-def mondai_show_api(request):
-    # TODO: Implement works
-    pass
 
 
 # /mondai/show/[0-9]+
@@ -190,9 +219,9 @@ def mondai_star(request):
         star.save()
         try:
             update_soup_score(star.mondai_id)
-        except:
-            pass
-    return HttpResponse(True)
+        except Exception as e:
+            return JsonResponse({"error_message": e})
+    return JsonResponse({})
 
 
 def mondai_show_push_answ(request):
@@ -357,7 +386,7 @@ def mondai_comment(request):
         comment.content = content
         comment.save()
 
-        return JsonResponse({'error_message': None})
+        return JsonResponse({})
     except Exception as e:
         return JsonResponse({'error_message': e})
 
@@ -421,10 +450,8 @@ class ProfileView(DetailView):
         # get latest 10 comments in relation to `sui_hei_user`
         userid = context['sui_hei_user'].id
         mondais = Mondai.objects.filter(user_id=userid)
-        comments = Lobby.objects.filter(channel__in=[('comments-%s' % i.id)
-                                                     for i in mondais])[:10]
-        com_mondais = [Mondai.objects.get(id=i.channel[9:]) for i in comments]
-        context['comments'] = zip(comments, com_mondais)
+        comments = Comment.objects.filter(user_id=userid)
+        context['comments'] = comments.order_by("-id")[:10]
         context['pk'] = self.kwargs['pk']
 
         # get all awards
@@ -440,8 +467,7 @@ class ProfileView(DetailView):
         context['ques_count'] = put_ques.count()
         context['goodques_count'] = put_ques.filter(good=True).count()
         context['trueques_count'] = put_ques.filter(true=True).count()
-        context['comment_count'] = Lobby.objects.filter(
-            channel__startswith="comments-", user_id=userid).count()
+        context['comment_count'] = comments.count()
         return context
 
 
@@ -589,17 +615,17 @@ def award_change(request):
 
 
 def remove_star(request):
-    if request.method == "POST":
-        star_id = request.POST.get('star_id')
-        try:
-            star = Star.objects.get(id=star_id)
+    star_id = request.POST.get('star_id')
+    try:
+        star = Star.objects.get(id=star_id)
 
-            # Validation
-            if star.user_id != request.user:
-                raise ValidationError(
-                    _("You are not permitted to delete others star!"))
+        # Validation
+        if star.user_id != request.user:
+            raise ValidationError(
+                _("You are not permitted to delete others star!"))
 
-        except Exception as e:
-            return HttpResponse("RemoveStar:", e)
-        star.delete()
-    return HttpResponse(True)
+    except Exception as e:
+        return JsonResponse({"error_message": e})
+
+    star.delete()
+    return JsonResponse({});
