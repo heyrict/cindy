@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-08 10:59+0900\n"
+"POT-Creation-Date: 2017-11-13 20:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,27 +19,98 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: sui_hei/static/js/app/mondai.js:38 sui_hei/static/js/dist/0.js:14963
+#: sui_hei/static/js/app/common.js:96 sui_hei/static/js/dist/0.js:448
+#: sui_hei/static/js/dist/1.js:101 sui_hei/static/js/dist/2.js:101
+#: sui_hei/static/js/dist/3.js:108 sui_hei/static/js/dist/main.js:554
+msgid "Time Out"
+msgstr "時間切れ"
+
+#: sui_hei/static/js/app/mondai.js:144 sui_hei/static/js/dist/0.js:664
+#: sui_hei/static/js/dist/1.js:309 sui_hei/static/js/dist/main.js:770
+msgid "giver"
+msgstr "出題者"
+
+#: sui_hei/static/js/app/mondai.js:148 sui_hei/static/js/dist/0.js:668
+#: sui_hei/static/js/dist/1.js:313 sui_hei/static/js/dist/main.js:774
+msgid "created"
+msgstr "作成時間"
+
+#: sui_hei/static/js/app/mondai.js:158 sui_hei/static/js/dist/0.js:678
+#: sui_hei/static/js/dist/1.js:323 sui_hei/static/js/dist/main.js:784
+#, javascript-format
+msgid "This soup's status is set to %s, which means you cannot view it."
+msgstr ""
+"この問題は「%s」に設定されています。あなたはこの問題を見ることが出来ません。"
+
+#: sui_hei/static/js/app/mondai.js:196 sui_hei/static/js/dist/0.js:716
+#: sui_hei/static/js/dist/1.js:361 sui_hei/static/js/dist/main.js:822
 msgid "Albatross"
 msgstr "ウミガメのスープ"
 
-#: sui_hei/static/js/app/mondai.js:39 sui_hei/static/js/dist/0.js:14964
+#: sui_hei/static/js/app/mondai.js:197 sui_hei/static/js/dist/0.js:717
+#: sui_hei/static/js/dist/1.js:362 sui_hei/static/js/dist/main.js:823
 msgid "20th-Door"
 msgstr "２０の扉"
 
-#: sui_hei/static/js/app/mondai.js:40 sui_hei/static/js/dist/0.js:14965
+#: sui_hei/static/js/app/mondai.js:198 sui_hei/static/js/dist/0.js:718
+#: sui_hei/static/js/dist/1.js:363 sui_hei/static/js/dist/main.js:824
 msgid "Little Albat"
 msgstr "亀夫君"
 
-#: sui_hei/static/js/app/mondai.js:41 sui_hei/static/js/dist/0.js:14966
+#: sui_hei/static/js/app/mondai.js:199 sui_hei/static/js/dist/0.js:719
+#: sui_hei/static/js/dist/1.js:364 sui_hei/static/js/dist/main.js:825
 msgid "Others & Formal"
 msgstr "新＆形式"
 
-#: sui_hei/static/js/app/mondai.js:59 sui_hei/static/js/dist/0.js:14984
-msgid "yami"
-msgstr "闇スープ"
+#: sui_hei/static/js/app/mondai.js:319 sui_hei/static/js/app/mondai.js:472
+#: sui_hei/static/js/dist/0.js:991 sui_hei/static/js/dist/1.js:636
+#: sui_hei/static/js/dist/main.js:1097
+msgid "edit"
+msgstr "編集"
 
+#: sui_hei/static/js/app/mondai.js:453 sui_hei/static/js/dist/0.js:972
+#: sui_hei/static/js/dist/1.js:617 sui_hei/static/js/dist/main.js:1078
+msgid "waiting to be answered"
+msgstr "回答はまだです"
+
+#: sui_hei/static/js/app/mondai.js:483 sui_hei/static/js/dist/0.js:1002
+#: sui_hei/static/js/dist/1.js:647 sui_hei/static/js/dist/main.js:1108
+msgid "uncheck as good-question"
+msgstr "良い質問にしない"
+
+#: sui_hei/static/js/app/mondai.js:484 sui_hei/static/js/dist/0.js:1003
+#: sui_hei/static/js/dist/1.js:648 sui_hei/static/js/dist/main.js:1109
+msgid "check as good-question"
+msgstr "良い質問にする"
+
+#: sui_hei/static/js/app/mondai.js:488 sui_hei/static/js/dist/0.js:1007
+#: sui_hei/static/js/dist/1.js:652 sui_hei/static/js/dist/main.js:1113
+msgid "uncheck as true-answer"
+msgstr "正解にしない"
+
+#: sui_hei/static/js/app/mondai.js:489 sui_hei/static/js/dist/0.js:1008
+#: sui_hei/static/js/dist/1.js:653 sui_hei/static/js/dist/main.js:1114
+msgid "check as true-answer"
+msgstr "正解にする"
+
+#: sui_hei/static/js/app/mondai_show.js:143
+#: sui_hei/static/js/dist/mondai_show.js:165
+msgid "Warning"
+msgstr "警告"
+
+#: sui_hei/static/js/app/mondai_show.js:146
+#: sui_hei/static/js/dist/mondai_show.js:168
+msgid "Continue?"
+msgstr "続けますか？"
+
+#: sui_hei/static/js/app/mondai_show.js:185
+#: sui_hei/static/js/dist/mondai_show.js:207
+msgid "Thank you for your voting!"
+msgstr "投票ありがとうございました！"
+
+#: sui_hei/static/js/app/profile.js:85
 #: sui_hei/static/js/app/profile_mystar.js:8
+#: sui_hei/static/js/dist/profile.js:98
 #: sui_hei/static/js/dist/profile_mystar.js:21
 msgid "You cannot revert change if you delete the star!"
 msgstr "スターを削除すると撤回は出来ません！"
@@ -144,5 +215,5 @@ msgstr ""
 msgid "void"
 msgstr ""
 
-#~ msgid "created"
-#~ msgstr "製作時間"
+msgid "yami"
+msgstr "闇スープ"

@@ -12,7 +12,7 @@ require([
     var PageURL = window.location.pathname;
     var path = PageURL.split("/");
     var mondai_id = path[path.length - 1];
-    var mondai_status, mondai_giver_id;
+    var mondai_status, mondai_giver_id, mondai_yami;
 
     $.post(
       common.urls.mondai_show_api,
@@ -23,6 +23,7 @@ require([
       function(data) {
         mondai_status = data.data.status;
         mondai_giver_id = data.data.user_id.id;
+        mondai_yami = data.data.yami;
         $(".mondai_content_header").html(
           mondai.RenderMondaiContentHeader(data.data)
         );
@@ -46,7 +47,8 @@ require([
       if (mondai_status <= 2 || mondai_giver_id == window.django.user_id) {
         mondai.UpdateMondaiQnA(
           {
-            domid: ".mondai_qna"
+            domid: ".mondai_qna",
+            yami: mondai_status == 0 ? mondai_yami : false
           },
           {
             filter: JSON.stringify({ mondai_id: mondai_id })

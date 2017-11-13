@@ -90,9 +90,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       returns = "";
       shitumonList.data.forEach(function(s, index) {
         if (
-          s.yami &&
+          settings.yami &&
           window.django.user_id != s.user_id.id &&
-          window.django.user_id != s.user_id.id
+          window.django.user_id != s.owner_id.id
         )
           return;
         var QBlockStr = _render_mondai_qblock(s, index);
@@ -153,7 +153,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   // sui_hei:Mondai_show_api: Render mondai's content
   function RenderMondaiContentContent(data) {
-    if (data.status >= 2 && data.user_id.id != window.django.user_id) {
+    if (data.status >= 3 && data.user_id.id != window.django.user_id) {
       mondai_content_content = gettext(
         "This soup's status is set to %s, which means you cannot view it."
       ).replace(/%s/, _status_code_dict[data.status]);
@@ -181,7 +181,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     0: "unsolved",
     1: "solved",
     2: "dazed",
-    3: "hidden"
+    3: "hidden",
+    4: "forced hidden"
   };
 
   _status_color_dict = {
@@ -314,7 +315,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       if (isMyChat)
         output += `<a class="lobby_message_edit" value="${lobby.id}" 
                       target="lobby" href="javascript:void(0);" role="button"
-                      data-toggle="modal" data-target="#message_edit_modal">[edit]</a>`;
+                      data-toggle="modal" data-target="#message_edit_modal">
+                      [${gettext("edit")}]</a>`;
       output += "</span>";
 
       output += `<span class='pull-${isMyChat
