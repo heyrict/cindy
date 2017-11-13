@@ -67,7 +67,10 @@ require(["jquery", "./common", "./mondai"], function($, common, mondai) {
     common.bindEnterToSubmit("#search_box", "#search_btn");
 
     $(".mondai_list_others_search").on("click", function() {
-      filter = JSON.stringify({ title__contains: $("#search_box").val() });
+      if($("search_box").attr("selectedType") == "title") filter = JSON.stringify({ title__contains: $("#search_box").val() });
+      else if($("search_box").attr("selectedType") == "giver") filter = JSON.stringify({ user_id__nickname__contains: $("#search_box").val() });
+      else if($("search_box").attr("selectedType") == "content") filter = JSON.stringify({ content__contains: $("#search_box").val() });
+      else filter = JSON.stringify({ status__gt: 0 });
       update_others(1);
     });
 
