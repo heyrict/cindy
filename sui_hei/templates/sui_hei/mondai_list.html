@@ -47,11 +47,15 @@
                 <ul class="dropdown-menu" id="search_type">
                     <li>
                         <a class="search_type_select" href='javascript:void(0);'
-                           onClick="$('#search_box').attr('placeholder', $(this).html());">{% trans 'Title' %}</a>
+                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'title');">{% trans 'Title' %}</a>
                     </li>
                     <li>
                         <a class="search_type_select" href='javascript:void(0);'
-                           onClick="$('#search_box').attr('placeholder', $(this).html());">{% trans 'Giver' %}(Dummy)</a>
+                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'giver');">{% trans 'Giver' %}</a>
+                    </li>
+                    <li>
+                        <a class="search_type_select" href='javascript:void(0);'
+                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'content');">{% trans 'Content' %}</a>
                     </li>
                     <li class="divider" style="padding:0.5px;"></li>
                     <li>
