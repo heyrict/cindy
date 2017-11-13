@@ -5,7 +5,12 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
 ) {
   // Access lobby_api to fetch chat data.
   function load_chat(channel, page) {
-    channel = channel || "lobby";
+    if (channel == "") {
+      channel =
+        getCurrentChannel() == "lobby"
+          ? $("#default_channel").attr("value") || "lobby"
+          : "lobby";
+    }
     $.post(
       common.urls.lobby_api,
       {
@@ -74,7 +79,7 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
   }
 
   function init() {
-    sidebar.ResizeSidebarContent();
+    ResizeSidebarContent();
 
     // buttons & inputs
     lobby_chat_can_submit = true;
@@ -83,7 +88,7 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
         return false;
       }
       lobby_chat_can_submit = false;
-      channel = sidebar.GetChannel();
+      channel = getCurrentChannel();
       sidebar.PostChat(channel, $("#lobby_chat_input").val(), function() {
         load_chat(channel);
       });

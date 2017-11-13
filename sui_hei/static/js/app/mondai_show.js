@@ -53,9 +53,11 @@ require([
           }
         );
       }
+      // Make question input available again on qna's update
       $("form").each(function(index) {
         if (this.id == "mondai_show_push_ques") can_submit[index] = true;
       });
+      $("#ques_input").val("");
     }
 
     function update_comments() {
