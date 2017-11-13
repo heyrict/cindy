@@ -397,12 +397,11 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_mondai_qblock(data, index) {
     index += 1;
-    return `
+    var returns = `
       <div class="QBlock">
           <div style="width:29%; float:left">
-              <a href="${common.urls.profile(
-                data.user_id.id
-              )}">${data.user_id.nickname}</a>
+              <a href="${common.urls.profile(data.user_id.id)}">${data.user_id
+      .nickname}</a>
           ${data.user_id.current_award
             ? "[" + data.user_id.current_award.name + "]"
             : ""}
@@ -411,9 +410,14 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           <div class="vertical_line"></div>
           <div style="width:69%; float:right;">
               <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
-              ${data.shitumon}
-          </div>
-      </div>`;
+              ${data.shitumon}`;
+    if (!data.kaitou && data.user_id.id == window.django.user_id) {
+      returns += `<a class="qna_edit" target="shitumon" value="${data.id}" href="javascript:void(0);"
+          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+        [${gettext("edit")}]</a>`;
+    }
+    returns += "</div></div>";
+    return returns;
   }
 
   function _render_mondai_ablock(data, index) {
