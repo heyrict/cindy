@@ -56,7 +56,7 @@
                 <select name="award">
                     <option value="">{% trans 'None' %}</option>
                     {% for award in available_awards %}
-                    <option value="{{ award.award_id.name }}" 
+                    <option value="{{ award.award_id.id }}" 
                              {% if award.award_id == sui_hei_user.current_award %}selected="selected"{% endif %}>
                     {{ award.award_id }}</option>
                     {% endfor %}
