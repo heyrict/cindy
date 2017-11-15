@@ -102,16 +102,6 @@ module.exports = {
           }
         ]
       },
-      // mondai_show
-      {
-        test: require.resolve("./app/mondai_show_ui"),
-        use: [
-          {
-            loader: "expose-loader",
-            options: "mondaiShowUI"
-          }
-        ]
-      }
     ]
   },
   plugins: [
