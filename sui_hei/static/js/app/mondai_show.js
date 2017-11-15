@@ -211,9 +211,7 @@ require([
       e.preventDefault();
     });
 
-    $(".mondai_qna").on("DOMSubtreeModified", function() {
-      // qna_edit
-      $(".qna_edit").each(function() {
+function _fetch_data_to_modal() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var pk = $(this).attr("value");
         var target = $(this).attr("target");
@@ -230,7 +228,14 @@ require([
             }
           );
         });
-      });
+      }
+
+    $(".mondai_qna").on("DOMSubtreeModified", function() {
+      $(".qna_edit").each(_fetch_data_to_modal);
+    });
+
+    $(".mondai_content_comments").on("DOMSubtreeModified", function() {
+      $(".comment_edit").each(_fetch_data_to_modal);
     });
 
     common.bindEnterToSubmit("#comment_input", "#comment_submit");

@@ -66,7 +66,7 @@
     <div class="mondai_kaisetu_content">
         {{ mondai.kaisetu|text2md|safe }}
     </div>
-    {% if mondai.user_id != user %}
+    {% if user.is_authenticated and mondai.user_id != user %}
     <br>
     <div align="center"><div class="hline"></div></div>
     <!-- Evaluation Panel -->

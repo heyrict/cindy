@@ -290,6 +290,8 @@ def mondai_edit_api(request):
         inst = Lobby.objects.get(id=pk)
     elif target in ["shitumon", "kaitou"]:
         inst = Shitumon.objects.get(id=pk)
+    elif target == "comment":
+        inst = Comment.objects.get(id=pk)
     else:
         return JsonResponse({
             'error_message':
@@ -300,7 +302,7 @@ def mondai_edit_api(request):
         # validate, save message, return True
         error_message = None
         try:
-            if target in ["lobby", "homepage"
+            if target in ["lobby", "homepage", "comment"
                           ] and request.user == inst.user_id:
                 if content == "":
                     inst.delete()
@@ -319,7 +321,7 @@ def mondai_edit_api(request):
             error_message = str(e)
         return JsonResponse({'error_message': error_message})
     else:
-        if target in ["lobby", "homepage"]:
+        if target in ["lobby", "homepage", "comment"]:
             return JsonResponse({'content': inst.content})
         elif target == "shitumon":
             return JsonResponse({'content': inst.shitumon})

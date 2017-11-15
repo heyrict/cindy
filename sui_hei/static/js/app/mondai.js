@@ -385,7 +385,13 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     var commentstr = String();
     data.data.forEach(function(comment) {
       commentstr += "<div class='well' style='background:#e2d6b2;'>";
-      commentstr += `<div>${comment.content}</div>`;
+      commentstr += "<div>";
+      commentstr += comment.content;
+      if (comment.user_id.id == window.django.user_id)
+        commentstr += `<a class="comment_edit" target="comment" value="${comment.id}" href="javascript:void(0);"
+          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+        [${gettext("edit")}]</a>`;
+      commentstr += "</div>";
       commentstr += `<div class="pull-right">——<a style="color:#333"
             href="${common.urls.profile(comment.user_id.id)}">
               ${comment.user_id.nickname} </a>
