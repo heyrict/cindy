@@ -187,7 +187,7 @@ def mondai_show(request, pk):
             'mystar': mystar
         })
     else:
-        return redirect(reverse("sui_hei:mondai"))
+        return redirect(reverse("sui_hei:mondai_list"))
 
 
 def mondai_star(request):
@@ -550,7 +550,7 @@ def mondai_add(request):
                 created=created,
                 modified=modified, )
             _mondai.save()
-            return redirect(reverse('sui_hei:mondai'))
+            return redirect(reverse('sui_hei:mondai_list'))
         else:
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
     return render(request, 'sui_hei/mondai_add.html',
