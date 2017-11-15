@@ -211,24 +211,24 @@ require([
       e.preventDefault();
     });
 
-function _fetch_data_to_modal() {
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-        var pk = $(this).attr("value");
-        var target = $(this).attr("target");
-        $(this).on("click", function() {
-          $.post(
-            common.urls.mondai_edit_api,
-            { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
-            function(data) {
-              $("#message_edit_modal_body").html(
-                `<textarea id="message_edit_modal_content">${data.content}</textarea>`
-              );
-              $("#message_edit_modal_content").attr("target", target);
-              $("#message_edit_modal_content").attr("value", pk);
-            }
-          );
-        });
-      }
+    function _fetch_data_to_modal() {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var pk = $(this).attr("value");
+      var target = $(this).attr("target");
+      $(this).on("click", function() {
+        $.post(
+          common.urls.mondai_edit_api,
+          { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
+          function(data) {
+            $("#message_edit_modal_body").html(
+              `<textarea id="message_edit_modal_content">${data.content}</textarea>`
+            );
+            $("#message_edit_modal_content").attr("target", target);
+            $("#message_edit_modal_content").attr("value", pk);
+          }
+        );
+      });
+    }
 
     $(".mondai_qna").on("DOMSubtreeModified", function() {
       $(".qna_edit").each(_fetch_data_to_modal);

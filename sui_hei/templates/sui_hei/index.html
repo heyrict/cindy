@@ -38,7 +38,7 @@ Cindy
         <tr><th><a href={% url 'sui_hei:mondai_show' comment.mondai_id.id %}>{{ comment.mondai_id }}</a></th>
             <td class="chat_message"><b><a href={% url 'sui_hei:profile' comment.user_id.id %}>{{ comment.user_id.nickname }}</a>
                     {% if comment.user_id.current_award %}[{{ comment.user_id.current_award }}]{% endif %}</b>
-                >> {{ comment.content }}
+                >> {{ comment.content|line2md|safe }}
             </td>
         </tr>
         {% endfor %}
