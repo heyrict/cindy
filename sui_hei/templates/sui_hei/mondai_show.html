@@ -66,9 +66,9 @@
     <div class="mondai_kaisetu_content">
         {{ mondai.kaisetu|text2md|safe }}
     </div>
+    {% if mondai.user_id != user %}
     <br>
     <div align="center"><div class="hline"></div></div>
-
     <!-- Evaluation Panel -->
     <div id="mondai_star_form">
       <input id="starbar" data-slider-id='starbar_slider' type="text" data-slider-min="0" data-slider-max="100"
@@ -86,6 +86,7 @@
     {% endif %}
     <br>
     <!-- Evaluation Panel -->
+    {% endif %}
 </div>
 {% endif %}
 

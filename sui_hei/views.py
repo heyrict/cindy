@@ -40,26 +40,6 @@ def index(request):
     })
 
 
-# /mondai
-# TODO: drop this view along with 'sui_hei:mondai' on v4.0.0 update
-class MondaiView(ListView):
-    template_name = 'sui_hei/mondai.html'
-    context_object_name = 'mondai_list'
-    paginate_by = 20
-
-    def get_queryset(self):
-        others = Mondai.objects.filter(
-            status__gte=1).order_by('-modified').select_related()
-        return others
-
-    def get_context_data(self, **kwargs):
-        context = super(MondaiView, self).get_context_data(**kwargs)
-        unsolved = Mondai.objects.filter(
-            status__exact=0).order_by('-modified').select_related()
-        context['unsolved_mondai_list'] = unsolved
-        return context
-
-
 class APIListProvider(object):
     def __init__(self, baseClass, queryExtra=None):
         '''
@@ -494,39 +474,6 @@ class ProfileEdit(UpdateView):
                 user_id=self.request.user, award_id=oldUserAward)[0]
             grantOldUserAward.save()
         return super(ProfileEdit, self).form_valid(form)
-
-
-# /profile/mysoup/[0-9]+
-class SelledSoupView(ListView):
-    model = Mondai
-    template_name = 'sui_hei/profile_selledsoup.html'
-    context_object_name = 'mondai_list'
-    paginate_by = 20
-
-    def get_queryset(self):
-        return self.model.objects.filter(
-            user_id=self.kwargs['pk']).order_by('-id')
-
-    def get_context_data(self, **kwargs):
-        context = super(SelledSoupView, self).get_context_data(**kwargs)
-        context['pk'] = self.kwargs['pk']
-        return context
-
-
-class MyStarView(ListView):
-    model = Star
-    template_name = 'sui_hei/profile_mystar.html'
-    context_object_name = 'star_list'
-    paginate_by = 20
-
-    def get_queryset(self):
-        return self.model.objects.filter(
-            user_id=self.kwargs['pk']).order_by('-value')
-
-    def get_context_data(self, **kwargs):
-        context = super(MyStarView, self).get_context_data(**kwargs)
-        context['pk'] = self.kwargs['pk']
-        return context
 
 
 # cindy/sui_hei/users/add
