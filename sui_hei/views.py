@@ -220,7 +220,7 @@ def mondai_star(request):
         try:
             update_soup_score(star.mondai_id)
         except Exception as e:
-            return JsonResponse({"error_message": e})
+            return JsonResponse({"error_message": str(e)})
     return JsonResponse({})
 
 
@@ -336,7 +336,7 @@ def mondai_edit_api(request):
             else:
                 raise ValidationError(_("You are not permitted to do this!"))
         except ValidationError as e:
-            error_message = e
+            error_message = str(e)
         return JsonResponse({'error_message': error_message})
     else:
         if target in ["lobby", "homepage"]:
@@ -390,7 +390,7 @@ def mondai_comment(request):
 
         return JsonResponse({})
     except Exception as e:
-        return JsonResponse({'error_message': e})
+        return JsonResponse({'error_message': str(e)})
 
 
 # /lobby
@@ -628,7 +628,7 @@ def remove_star(request):
                 _("You are not permitted to delete others star!"))
 
     except Exception as e:
-        return JsonResponse({"error_message": e})
+        return JsonResponse({"error_message": str(e)})
 
     star.delete()
     return JsonResponse({})

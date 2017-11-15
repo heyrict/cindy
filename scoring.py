@@ -50,5 +50,6 @@ def update_all_soup_score():
 
 
 def update_soup_score(soup, save=True):
-    soup.score = calc_score(soup.star_set)
+    score = calc_score(soup.star_set)
+    soup.score = 0 if np.isnan(score) else score
     soup.save()

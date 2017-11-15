@@ -4,7 +4,8 @@ require([
   "./common",
   "./mondai",
   "./sidebar",
-  "./mondai_show_ui.js",
+  "../lib/bootstrap.min.js",
+  "bootstrap-slider",
   "velocity-animate"
 ], function(marked, $, common, mondai, sidebar, mondaiShowUI) {
   $(document).ready(function() {
@@ -14,6 +15,7 @@ require([
     var mondai_id = path[path.length - 1];
     var mondai_status, mondai_giver_id, mondai_yami;
 
+    // render the whole page
     $.post(
       common.urls.mondai_show_api,
       {
@@ -233,15 +235,31 @@ require([
 
     common.bindEnterToSubmit("#comment_input", "#comment_submit");
 
-    mondaiShowUI.initUI();
+    // Initialize slider
+    function initUI() {
+      if ($("#starbar").length > 0) {
+        var starbarSlider = $("#starbar").bootstrapSlider({
+          formatter: function(value) {
+            outstr = value;
+            for (i = -5; i < value; i += 20) {
+              outstr += "☆";
+            }
+            return outstr;
+          }
+        });
+        function resizeHandle() {
+          var handle = $(".slider-handle.custom");
+          var prevStar = $("#starbar").val();
+          handle.css("width", 20 + prevStar / 8 + "px");
+          handle.css("height", 20 + prevStar / 8 + "px");
+          handle.css("margin-left", -10 - prevStar / 16 + "px");
+          handle.css("top", -prevStar * 0.08 + "px");
+        }
+        resizeHandle();
+
+        starbarSlider.on("slide", resizeHandle);
+      }
+    }
+    initUI();
   });
-
-  /*
-  $(document).ready(function() {
-
-    // handling chat://
-    common.LinkNormAll(".memobar_content");
-
-  });
-  */
 });

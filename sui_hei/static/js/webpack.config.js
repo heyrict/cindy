@@ -20,7 +20,7 @@ module.exports = {
     profile: ["./app/profile"],
     mondai: ["./app/mondai_list"],
     mondai_add: ["./app/mondai_add"],
-    mondai_show: ["./app/mondai_show", "./app/mondai_show_ui"]
+    mondai_show: "./app/mondai_show"
   },
   output: {
     publicPath: "/static/js/",
