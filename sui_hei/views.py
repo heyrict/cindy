@@ -576,8 +576,11 @@ def remove_star(request):
             raise ValidationError(
                 _("You are not permitted to delete others star!"))
 
+        star.delete()
+
+        # update soup score
+        update_soup_score(star.mondai_id)
+
     except Exception as e:
         return JsonResponse({"error_message": str(e)})
-
-    star.delete()
     return JsonResponse({})
