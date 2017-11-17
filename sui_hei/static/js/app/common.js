@@ -45,7 +45,7 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
     lobby_chat: "/lobby/chat",
     lobby_channel: "/lobby/channel",
     mondai: "/mondai",
-    mondai_list: "/mondai_list",
+    mondai_list: "/mondai",
     mondai_add: "/mondai/add",
     mondai_show: pk => "/mondai/show/" + pk,
     mondai_show_push_ques: "/mondai/show/push_ques",

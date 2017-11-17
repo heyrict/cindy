@@ -148,8 +148,8 @@ class APIDetailProvider(object):
         return JsonResponse(self.to_dict(obj))
 
 
-def mondai_list(request):
-    return render(request, "sui_hei/mondai_list.html")
+def mondai(request):
+    return render(request, "sui_hei/mondai.html")
 
 
 def profile_api(request):
@@ -187,7 +187,7 @@ def mondai_show(request, pk):
             'mystar': mystar
         })
     else:
-        return redirect(reverse("sui_hei:mondai_list"))
+        return redirect(reverse("sui_hei:mondai"))
 
 
 def mondai_star(request):
@@ -550,7 +550,7 @@ def mondai_add(request):
                 created=created,
                 modified=modified, )
             _mondai.save()
-            return redirect(reverse('sui_hei:mondai_list'))
+            return redirect(reverse('sui_hei:mondai'))
         else:
             return render(request, 'sui_hei/mondai_add.html', {'form': form})
     return render(request, 'sui_hei/mondai_add.html',
