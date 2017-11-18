@@ -89,6 +89,7 @@
     </span>
 </form>
 <form id="mondai_giver_panel_unsolved" class="well hidden" action="{% url 'sui_hei:mondai_show_update_soup' %}" method="post">
+{% csrf_token %}
     <span class="giver_panel">
         <div style="float:left; width:44%;">{% trans 'Memo' %}: 
         <textarea class="memo_textarea" name="change_memo"></textarea></div>
