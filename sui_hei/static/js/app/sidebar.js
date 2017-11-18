@@ -67,7 +67,7 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
           { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
           function(data) {
             $("#message_edit_modal_body").html(
-              `<textarea id="message_edit_modal_content">${data.content}</textarea>`
+              "<textarea id='message_edit_modal_content'>" + data.content + "</textarea>"
             );
             $("#message_edit_modal_content").attr("target", target);
             $("#message_edit_modal_content").attr("value", pk);
