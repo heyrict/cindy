@@ -27,19 +27,15 @@ module.exports = {
     filename: "dist/[name].js"
   },
   module: {
-    loaders: [],
-    rules: [
+    loaders: [
       // babel
       {
-          test: /\.jsx?$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-              loader: 'babel-loader',
-              options: {
-                  presets: ['env'],
-              }
-          }
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader",
       },
+    ],
+    rules: [
       // jquery
       {
         test: require.resolve("jquery"),
