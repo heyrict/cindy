@@ -103,7 +103,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     });
   }
 
-  function RenderMondaiComments(settings, queryObject) {
+  function UpdateMondaiComments(settings, queryObject) {
     settings = $.extend(
       {
         domid: "test",
@@ -121,6 +121,20 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     $.post(common.urls.comment_api, params, function(data) {
       $(settings.domid).html(_render_mondai_content_comments(data));
     });
+  }
+
+  function RenderMondaiTitle(data) {
+    returns =
+      "[" +
+      _genre_code_dict[data.genre] +
+      (data.yami ? "×" + gettext("yami") : "") +
+      "]";
+    returns += data.title;
+    if (data.status >= 2) {
+      returns +=
+        "<font color=gray>(" + _status_code_dict[data.status] + ")</font>";
+    }
+    return returns;
   }
 
   // Simply data formatting function
@@ -163,11 +177,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       mondai_content_content = common.text2md(data.content);
     }
     return mondai_content_content;
-  }
-
-  // sui_hei:mondai_show_api: render mondai's kaisetu
-  function RenderMondaiKaisetu(data) {
-    return common.text2md(data.kaisetu);
   }
 
   _status_class_dict = {
@@ -507,10 +516,10 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     UpdateMystarList: UpdateMystarList,
     RenderLobbyData: RenderLobbyData,
     RenderLobbyPaginator: RenderLobbyPaginator,
+    RenderMondaiTitle: RenderMondaiTitle,
     RenderMondaiContentHeader: RenderMondaiContentHeader,
     RenderMondaiContentContent: RenderMondaiContentContent,
-    RenderMondaiKaisetu: RenderMondaiKaisetu,
-    RenderMondaiComments: RenderMondaiComments,
+    UpdateMondaiComments: UpdateMondaiComments,
     UpdateMondaiQnA: UpdateMondaiQnA
   };
 });

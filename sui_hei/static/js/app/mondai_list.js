@@ -41,7 +41,10 @@ require(["jquery", "./common", "./mondai"], function($, common, mondai) {
     update_others(1);
 
     // bind refresh button & F5 to update_unsolved()
-    $("#mondai_unsolved_update").on("click", update_unsolved);
+    $("#mondai_unsolved_update").on("click", function() {
+      update_unsolved();
+      update_others(1);
+    });
     $(document).on("keydown", function(e) {
       if ((e.which || e.keyCode) == 116) {
         $("#mondai_unsolved_update").click();
@@ -68,9 +71,14 @@ require(["jquery", "./common", "./mondai"], function($, common, mondai) {
 
     var $searchBox = $("#search_box");
     $(".mondai_list_others_search").on("click", function() {
-      if($searchBox.attr("selectedType") == "title") filter = JSON.stringify({ title__contains: $searchBox.val() });
-      else if($searchBox.attr("selectedType") == "giver") filter = JSON.stringify({ user_id__nickname__contains: $searchBox.val() });
-      else if($searchBox.attr("selectedType") == "content") filter = JSON.stringify({ content__contains: $searchBox.val() });
+      if ($searchBox.attr("selectedType") == "title")
+        filter = JSON.stringify({ title__contains: $searchBox.val() });
+      else if ($searchBox.attr("selectedType") == "giver")
+        filter = JSON.stringify({
+          user_id__nickname__contains: $searchBox.val()
+        });
+      else if ($searchBox.attr("selectedType") == "content")
+        filter = JSON.stringify({ content__contains: $searchBox.val() });
       else filter = JSON.stringify({ status__gt: 0 });
       update_others(1);
     });

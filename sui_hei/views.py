@@ -163,31 +163,8 @@ def profile_api(request):
 
 # /mondai/show/[0-9]+
 def mondai_show(request, pk):
-    if request.method == "GET":
-        # TODO: Add sorting for yami soup.
-        mondai = Mondai.objects.get(id=pk)
-        qnas = Shitumon.objects.filter(mondai_id=mondai).order_by('id')
-
-        # Check if current user has done some comments
-        try:
-            mycomment = Comment.objects.get(
-                mondai_id=mondai, user_id=request.user)
-        except:
-            mycomment = None
-        try:
-            mystar = Star.objects.get(
-                mondai_id=mondai, user_id=request.user).value
-        except:
-            mystar = 0
-
-        return render(request, 'sui_hei/mondai_show.html', {
-            'mondai': mondai,
-            'qnas': qnas,
-            'mycomment': mycomment,
-            'mystar': mystar
-        })
-    else:
-        return redirect(reverse("sui_hei:mondai"))
+    # TODO: Add sorting for yami soup.
+    return render(request, 'sui_hei/mondai_show.html')
 
 
 def mondai_star(request):

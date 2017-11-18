@@ -26,26 +26,62 @@ require([
         mondai_status = data.data.status;
         mondai_giver_id = data.data.user_id.id;
         mondai_yami = data.data.yami;
-        $(".mondai_content_header").html(
-          mondai.RenderMondaiContentHeader(data.data)
-        );
-        $(".mondai_content_content").html(
-          mondai.RenderMondaiContentContent(data.data)
-        );
+        toggle_form_visibility(data.data);
         update_comments();
-        update_mondai_qna(data.data);
-        if (
-          (data.data.status >= 1 && data.data.status <= 2) ||
-          data.data.user_id.id == window.django.user_id
-        ) {
-          $(".mondai_kaisetu_content").html(
-            mondai.RenderMondaiKaisetu(data.data)
-          );
-        }
+        update_mondai_kaisetu(data.data);
       }
     );
 
-    function update_mondai_qna() {
+    function update_mondai_memo(data) {
+      if (data.memo) {
+        $(".memobar").removeClass("hidden");
+        $(".mondai_memo").html(common.text2md(data.memo));
+        on_memobar_update();
+      } else {
+        $(".memobar").addClass("hidden");
+      }
+    }
+
+    function update_mondai_kaisetu(data) {
+      function _update_kaisetu_with_data(data) {
+        mondai_status = data.status;
+        toggle_form_visibility(data);
+        fill_data_in_giver_panel(data);
+        update_mondai_qna(data);
+        update_mondai_memo(data);
+        $(".mondai_title").html(mondai.RenderMondaiTitle(data));
+        $(".mondai_content_header").html(
+          mondai.RenderMondaiContentHeader(data)
+        );
+        $(".mondai_content_content").html(
+          mondai.RenderMondaiContentContent(data)
+        );
+        $("#page_title").html("Cindy - " + mondai.RenderMondaiTitle(data));
+
+        if (data.status == 1 || data.status == 2) {
+          init_evaluation_panel();
+          $(".mondai_kaisetu").removeClass("hidden");
+          $(".mondai_kaisetu_content").html(common.text2md(data.kaisetu));
+        } else {
+          $(".mondai_kaisetu").addClass("hidden");
+          $(".mondai_kaisetu_content").html("");
+        }
+      }
+      if (data) {
+        _update_kaisetu_with_data(data);
+      } else {
+        $.post(
+          common.urls.mondai_show_api,
+          {
+            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            id: mondai_id
+          },
+          d => _update_kaisetu_with_data(d.data)
+        );
+      }
+    }
+
+    function update_mondai_qna(data) {
       if (mondai_status <= 2 || mondai_giver_id == window.django.user_id) {
         mondai.UpdateMondaiQnA(
           {
@@ -53,7 +89,7 @@ require([
             yami: mondai_status == 0 ? mondai_yami : false
           },
           {
-            filter: JSON.stringify({ mondai_id: mondai_id })
+            filter: JSON.stringify({ mondai_id: data.id })
           }
         );
       }
@@ -66,7 +102,7 @@ require([
     }
 
     function update_comments() {
-      mondai.RenderMondaiComments(
+      mondai.UpdateMondaiComments(
         {
           domid: ".mondai_content_comments"
         },
@@ -76,68 +112,192 @@ require([
       );
     }
 
+    function toggle_form_visibility(data) {
+      // push ques
+      if (
+        data.user_id.id == window.django.user_id ||
+        window.django.user_id == null ||
+        data.status != 0
+      ) {
+        $("#mondai_show_push_ques").addClass("hidden");
+      } else {
+        $("#mondai_show_push_ques").removeClass("hidden");
+      }
+      // for guests
+      if (window.django.user_id === null) $(".for_guests").removeClass("hidden");
+      else $(".for_guests").addClass("hidden");
+      // push answ
+      if (data.user_id.id != window.django.user_id) {
+        $("#mondai_show_push_answ_btn").addClass("hidden");
+      } else {
+        $("#mondai_show_push_answ_btn").removeClass("hidden");
+      }
+      // evaluation panel
+      if (data.user_id.id == window.django.user_id) {
+        $(".evaluation_panel").addClass("hidden");
+      } else {
+        $(".evaluation_panel").removeClass("hidden");
+      }
+      // giver panel
+      if (data.user_id.id == window.django.user_id) {
+        $("#mondai_giver_panel").removeClass("hidden");
+        if (data.status == 0) {
+          $("#mondai_giver_panel_solved").addClass("hidden");
+          $("#mondai_giver_panel_unsolved").removeClass("hidden");
+          $("#kaisetu_preview_div").removeClass("hidden");
+        } else if (data.status == 4) {
+          $("#mondai_giver_panel_solved").addClass("hidden");
+          $("#mondai_giver_panel_unsolved").addClass("hidden");
+          $("#kaisetu_preview_div").addClass("hidden");
+        } else {
+          $("#mondai_giver_panel_solved").removeClass("hidden");
+          $("#mondai_giver_panel_unsolved").addClass("hidden");
+          $("#kaisetu_preview_div").addClass("hidden");
+        }
+      } else {
+        $("#mondai_giver_panel").addClass("hidden");
+      }
+    }
+
+    function init_evaluation_panel() {
+      if (window.django.user_id === null || window.django.user_id == mondai_giver_id) {
+        $(".evaluation_panel").addClass("hidden");
+        $(".paticipants_panel").addClass("hidden");
+      } else {
+        // set starbar initial value
+        $.post(
+          common.urls.star_api,
+          {
+            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            filter: JSON.stringify({
+              user_id__exact: window.django.user_id,
+              mondai_id__exact: mondai_id
+            })
+          },
+          function(queryData) {
+            //if ((queryData.data.length = 1)) {
+            //  $("#starbar").attr("data-slider-value", queryData.data[0].value);
+            //} else {
+            $("#starbar").attr("data-slider-value", 0);
+            //}
+          }
+        );
+        // remove comment panel
+        // TODO: Duplicated. Combine this into UpdateMondaiComments().
+        $.post(
+          common.urls.comment_api,
+          {
+            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            filter: JSON.stringify({
+              user_id__exact: window.django.user_id,
+              mondai_id__exact: mondai_id
+            })
+          },
+          function(queryData) {
+            if (queryData.data.length >= 1) {
+              $(".paticipants_panel").html("");
+              $(".paticipants_panel").addClass("hidden");
+            } else {
+              $(".paticipants_panel").removeClass("hidden");
+            }
+          }
+        );
+      }
+    }
+
+    function set_default_channel() {
+      $("#default_channel").attr("value", "mondai-" + mondai_id);
+    }
+
     // bind F5 to update_unsolved()
     $(document).on("keydown", function(e) {
       if ((e.which || e.keyCode) == 116) {
-        update_mondai_qna();
+        update_mondai_kaisetu();
         e.preventDefault();
       }
     });
+
+    function on_memobar_update() {
+      // if memo updates, open memo bar
+      var $memo = $(".memobar_content");
+      if ($memo.length > 0) {
+        var memoHash = common.hash($memo.html());
+        var memoCookie = common.getCookie("memo");
+        var memoHashObj = memoCookie ? JSON.parse(memoCookie) : {};
+        if (memoHashObj[mondai_id] != memoHash) {
+          sidebar.CalcGoodRect();
+          sidebar.OpenMemo();
+          memoHashObj[mondai_id] = common.hash($memo.html());
+        }
+        // clean the object list
+        memoHashObjKeys = Object.keys(memoHashObj).reverse();
+        while (memoHashObjKeys.length > 20) {
+          key2del = memoHashObjKeys.pop();
+          delete memoHashObj[key2del];
+        }
+        // updates cookie
+        common.setCookie("memo", JSON.stringify(memoHashObj), 2);
+      }
+    }
+
+    function fill_data_in_giver_panel(data) {
+      if ((data.user_id.id = window.django.user_id)) {
+        $(".memo_textarea").each(function() {
+          $(this).val(data.memo);
+        });
+        $(".kaisetu_textarea").each(function() {
+          $(this).val(data.kaisetu);
+        });
+        manually_apply_markdown();
+        $(".toggle_yami_label").each(function() {
+          $(this).html(
+            data.yami ? gettext("uncheck as yami") : gettext("check as yami")
+          );
+        });
+        if (data.status <= 3) {
+          $("input[name='toggle_status_hidden']").removeClass("hidden");
+          $(".toggle_status_hidden").html(
+            data.status == 3
+              ? gettext("uncheck as hidden")
+              : gettext("check as hidden")
+          );
+          $(".toggle_status_hidden").removeClass("hidden");
+        } else {
+          $("input[name='toggle_status_hidden']").addClass("hidden");
+          $(".toggle_status_hidden").addClass("hidden");
+        }
+      }
+    }
 
     // Previews
     var PageURL = window.location.pathname;
     var path = PageURL.split("/");
     var mondai_id = path[path.length - 1];
 
-    if ($(".mondai_content_content").length > 0) {
-      $(".mondai_content_content").html(
-        common.LinkNorm(marked($(".mondai_content_content").html()))
-      );
-    }
-    if ($(".mondai_kaisetu_content").length > 0) {
-      $(".mondai_kaisetu_content").html(
-        common.LinkNorm(marked($(".mondai_kaisetu_content").html()))
-      );
-    }
-
-    if ($("#kaisetu_textarea").length > 0) {
-      $("#kaisetu_preview").html(
-        common.LinkNorm(marked($("#kaisetu_textarea").val()))
-      );
+    function manually_apply_markdown() {
+      if ($(".mondai_content_content").length > 0) {
+        $(".mondai_content_content").html(
+          common.text2md($(".mondai_content_content").html())
+        );
+      }
+      if ($(".mondai_kaisetu_content").length > 0) {
+        $(".mondai_kaisetu_content").html(
+          common.text2md($(".mondai_kaisetu_content").html())
+        );
+      }
     }
 
-    $("#kaisetu_textarea").on("input", function() {
-      $("#kaisetu_preview").html(
-        common.LinkNorm(marked($("#kaisetu_textarea").val()))
-      );
+    if ($(".kaisetu_textarea").length > 0) {
+      $("#kaisetu_preview").html(common.text2md($(".kaisetu_textarea").val()));
+    }
+
+    $(".kaisetu_textarea").on("input", function() {
+      $("#kaisetu_preview").html(common.text2md($(".kaisetu_textarea").val()));
     });
 
-    $("#memo_textarea").on("input", function() {
-      $("#memo_preview").html(
-        common.LinkNorm(marked($("#memo_textarea").val()))
-      );
+    $(".memo_textarea").on("input", function() {
+      $("#memo_preview").html(common.text2md($(".memo_textarea").val()));
     });
-
-    // if memo updates, open memo bar
-    var $memo = $(".memobar_content");
-    if ($memo.length > 0) {
-      var memoHash = common.hash($memo.html());
-      var memoCookie = common.getCookie("memo");
-      var memoHashObj = memoCookie ? JSON.parse(memoCookie) : {};
-      if (memoHashObj[mondai_id] != memoHash) {
-        sidebar.CalcGoodRect();
-        sidebar.OpenMemo();
-        memoHashObj[mondai_id] = common.hash($memo.html());
-      }
-      // clean the object list
-      memoHashObjKeys = Object.keys(memoHashObj).reverse();
-      while (memoHashObjKeys.length > 20) {
-        key2del = memoHashObjKeys.pop();
-        delete memoHashObj[key2del];
-      }
-      // updates cookie
-      common.setCookie("memo", JSON.stringify(memoHashObj), 2);
-    }
 
     // initialize UI
     $("#change_seikai_ckbx").on("click", function(e) {
@@ -195,7 +355,7 @@ require([
     $("#mondai_show_push_answ").on("submit", function(e) {
       var formData = $(this).serializeArray();
       $.post(common.urls.mondai_show_push_answ, formData, function() {
-        update_mondai_qna();
+        update_mondai_kaisetu();
       });
       e.preventDefault();
     });
@@ -204,10 +364,26 @@ require([
       var formData = $(this).serializeArray();
       if (mondai_show_can_push_ques) {
         $.post(common.urls.mondai_show_push_ques, formData, function() {
-          update_mondai_qna();
+          update_mondai_kaisetu();
         });
       }
       mondai_show_can_push_ques = false;
+      e.preventDefault();
+    });
+
+    $("#mondai_giver_panel_unsolved").on("submit", function(e) {
+      var formData = $(this).serializeArray();
+      $.post(common.urls.mondai_show_update_soup, formData, function() {
+        update_mondai_kaisetu();
+      });
+      e.preventDefault();
+    });
+
+    $("#mondai_giver_panel_solved").on("submit", function(e) {
+      var formData = $(this).serializeArray();
+      $.post(common.urls.mondai_show_update_soup, formData, function() {
+        update_mondai_kaisetu();
+      });
       e.preventDefault();
     });
 
