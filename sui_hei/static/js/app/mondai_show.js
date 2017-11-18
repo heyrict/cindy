@@ -14,6 +14,7 @@ require([
     var path = PageURL.split("/");
     var mondai_id = path[path.length - 1];
     var mondai_status, mondai_giver_id, mondai_yami;
+    set_default_channel();
 
     // render the whole page
     $.post(

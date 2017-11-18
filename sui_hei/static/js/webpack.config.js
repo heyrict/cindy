@@ -29,6 +29,17 @@ module.exports = {
   module: {
     loaders: [],
     rules: [
+      // babel
+      {
+          test: /\.jsx?$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+              loader: 'babel-loader',
+              options: {
+                  presets: ['env'],
+              }
+          }
+      },
       // jquery
       {
         test: require.resolve("jquery"),
@@ -101,7 +112,7 @@ module.exports = {
             options: "leftbar"
           }
         ]
-      },
+      }
     ]
   },
   plugins: [
