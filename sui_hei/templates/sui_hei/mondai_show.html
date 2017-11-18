@@ -37,6 +37,7 @@
 <br>
 <!-- Q&A -->
 <form id="mondai_show_push_answ" action="{% url 'sui_hei:mondai_show_push_answ' %}" method="post">
+{% csrf_token %}
 <div class="mondai_qna"></div>
 <input id="mondai_show_push_answ_btn" class="hidden" value={% trans 'Put Responds' %} type="submit">
 </form>
