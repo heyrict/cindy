@@ -27,7 +27,6 @@
       window.django = { user_id: {{ request.user.id|default:"null" }}};
   </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
-  <script type="text/javascript" src="{% static 'js/lib/tidy.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/vendor.chunk.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/dist/main.js' %}"></script>
   <script type="text/javascript">

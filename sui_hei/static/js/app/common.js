@@ -1,4 +1,4 @@
-define(["jquery", "marked", "moment", "moment-countdown"], function(
+define(["jquery", "marked", "moment", "moment-countdown", "../lib/jquery.htmlClean"], function(
   $,
   marked,
   moment
@@ -117,7 +117,9 @@ define(["jquery", "marked", "moment", "moment-countdown"], function(
   }
 
   function text2md(string) {
-    return LinkNorm(tidy_html5(marked(string)));
+    return LinkNorm(
+      $.htmlClean(marked(string))
+    );
   }
 
   function bindEnterToSubmit(inputSelector, submitSelector) {
