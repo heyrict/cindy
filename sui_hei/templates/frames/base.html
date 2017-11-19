@@ -46,13 +46,13 @@
 <!-- site-navigation -->
 <div class="navbar navbar-static-top" style="position:static;">
   <div class="navbar-inner">
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" href="javascript:void(0);">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target="#top_navbar" href="javascript:void(0);">
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </a>
     <a class="brand">{% block title %}Cindy{% endblock %}</a>
-    <div class="nav-collapse collapse nav-responsive-collapse">
+    <div id="top_navbar" class="nav-collapse collapse nav-responsive-collapse">
       <ul class="nav">
         <li><a href='/' class='uri'>{% trans 'homepage' %}</a></li>
         <li class="dropdown">
