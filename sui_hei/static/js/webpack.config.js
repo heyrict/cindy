@@ -124,8 +124,8 @@ module.exports = {
       minChunks: Infinity
     }),
     new ContextReplacementPlugin(
-      /moment[\/\\]locale/,
-      /(en-gb|fr|zh-cn|ja)\.js/
+      /moment[\/\\]locale$/,
+      /fr|zh-cn|ja/
     )
   ]
 };
