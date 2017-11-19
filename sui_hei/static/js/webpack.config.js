@@ -1,5 +1,6 @@
 var webpack = require("webpack");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+var ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin");
 
 module.exports = {
   entry: {
@@ -120,6 +121,10 @@ module.exports = {
       name: "vendor",
       filename: "dist/vendor.chunk.js",
       minChunks: Infinity
-    })
+    }),
+    new ContextReplacementPlugin(
+      /moment[\/\\]locale/,
+      /(en-gb|fr|zh-cn|ja)\.js/
+    )
   ]
 };
