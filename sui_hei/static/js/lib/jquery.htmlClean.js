@@ -68,13 +68,14 @@
               }
             }
           }
-          if (
+          /*if (
             tag.allowedAttributes != null &&
             (tag.allowedAttributes.length == 0 ||
               $.inArray(attrMatch[1], tag.allowedAttributes) > -1)
           ) {
             element.attributes.push(new Attribute(attrMatch[1], attrMatch[2]));
-          }
+          }*/
+          element.attributes.push(new Attribute(attrMatch[1], attrMatch[2]));
         }
         $.each(tag.requiredAttributes, function() {
           var name = this.toString();
@@ -153,7 +154,7 @@
   $.htmlClean.defaults = {
     bodyOnly: true,
     allowedTags: [],
-    removeTags: [
+    /*removeTags: [
       "basefont",
       "center",
       "dir",
@@ -167,7 +168,8 @@
       "s",
       "strike",
       "u"
-    ],
+    ],*/
+    removeTags: [],
     removeTagsAndContent: [],
     allowedAttributes: [],
     removeAttrs: [],
