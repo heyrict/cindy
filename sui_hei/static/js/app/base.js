@@ -26,9 +26,6 @@ require([
       });
     });
 
-    // Replace chat://
-    common.LinkNormAll(".chat_message");
-
     // Replace /countdown()/
     common.StartCountdown();
   });

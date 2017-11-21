@@ -51,8 +51,8 @@ Cindy
         <div class="hline"></div><br>
     </div>
     {% for info in infos %}
-    <div class="wrapper homepage_message" style="border:2px solid #268bd2;">
-        {{ info.content|text2md|safe }}
+    <div class="wrapper" style="border:2px solid #268bd2;">
+        <div class="homepage_message">{{ info.content }}</div>
         {% if perms.sui_hei.can_add_info %}
         <a class="homepage_message_edit" target="homepage" value="{{ info.id }}" href="javascript:void(0);"
             role="button" data-toggle="modal" data-target="#message_edit_modal"> 

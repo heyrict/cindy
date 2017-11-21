@@ -113,7 +113,7 @@ define(["jquery", "marked", "moment", "moment-countdown", "../lib/jquery.htmlCle
       .replace(/^(\d+)\. /g, "$1\\. ")
       .replace(/\n/g, "<br />");
 
-    return marked(string).replace(/<\/?p>/g, "");
+    return LinkNorm(marked(string).replace(/<\/?p>/g, ""));
   }
 
   function text2md(string) {
