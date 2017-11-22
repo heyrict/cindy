@@ -1,5 +1,6 @@
 .HBar {
   padding-bottom: 10px;
+  word-break: break-all;
 }
 .QBlock {
   float: left;
@@ -35,5 +36,5 @@
   background-size: cover;
 }
 .slider-handle.custom::before {
-	content: '';
+  content: '';
 }
