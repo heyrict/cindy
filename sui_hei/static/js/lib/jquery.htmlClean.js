@@ -183,7 +183,7 @@
       [/vertical-align:\s*super/i, "sup"],
       [/vertical-align:\s*sub/i, "sub"]
     ],
-    allowComments: false,
+    allowComments: true,
     allowEmpty: []
   };
   function applyFormat(element, options, output, indent) {
