@@ -352,7 +352,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           returns += pf[f];
           returns += pf.current_award ? " [" + pf.current_award.name + "]" : "";
           returns += "<font color='#888'>";
-          $.ajax({
+          // Dropped for time consuming
+          /*$.ajax({
             type: "post",
             url: common.urls.useraward_list_api,
             data: {
@@ -366,7 +367,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
                   returns += "[" + d.award_id.name + "]";
               });
             }
-          });
+          });*/
           returns += "</font>";
         } else {
           returns += pf[f];
