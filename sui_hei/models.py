@@ -28,7 +28,7 @@ class Award(models.Model):
 
 
 class User(AbstractUser):
-    nickname = models.CharField(_('nick_name'), max_length=255, null=False)
+    nickname = models.CharField(_('nick_name'), max_length=255, null=False, unique=True)
     profile = models.TextField(_('profile'), default="")
     current_award = models.ForeignKey(Award, null=True)
     experience = models.IntegerField(_('experience'), default=0)
@@ -244,6 +244,9 @@ class Comment(models.Model):
     mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
     content = models.TextField(_('content'), null=False)
     spoiler = models.BooleanField(_('spoiler'), default=False)
+
+    class Meta:
+        verbose_name = _("Comment")
 
     def __str__(self):
         return "{%s} commented on {%s}" % (self.user_id, self.mondai_id.title)

@@ -33,14 +33,14 @@ class SuiheiPasswordChangeForm(PasswordChangeForm):
         model = User
 
 
-#class SuiheiPasswordResetForm(PasswordResetForm):
-
-
 class SuiheiUserAdmin(UserAdmin):
     form = SuiheiUserChangeForm
     add_form = SuiheiUserCreationForm
     change_password_form = SuiheiPasswordChangeForm
     change_user_password_template = "registration/users_password_change.html"
+    list_display = ('nickname', 'username', 'is_active', 'is_staff',
+                    'is_superuser')
+    search_fields = ('nickname', 'email')
     fieldsets = UserAdmin.fieldsets + ((None, {
         'fields': (
             'nickname',
@@ -52,11 +52,44 @@ class SuiheiAwardAdmin(TranslationAdmin):
     pass
 
 
+class SuiheiMondaiChangeForm(forms.ModelForm):
+    class Meta(forms.ModelForm):
+        model = Mondai
+        exclude = tuple()
+
+    def __init__(self, *args, **kwargs):
+        super(SuiheiMondaiChangeForm, self).__init__(*args, **kwargs)
+        self.fields['memo'].required = False
+
+
+class SuiheiMondaiAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user_id', 'status', 'created', 'modified',
+                    'score')
+    form = SuiheiMondaiChangeForm
+
+
+class SuiheiLobbyAdmin(admin.ModelAdmin):
+    list_display = ('channel', 'user_id', 'content')
+    search_fields = ('channel', )
+
+
+class SuiheiShitumonAdmin(admin.ModelAdmin):
+    list_display = ('id', 'mondai_id', 'user_id', 'shitumon', 'kaitou')
+
+
+class SuiheiUserAwardAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'award_id')
+
+
+class SuiheiCommentAdmin(admin.ModelAdmin):
+    list_display = ('content', 'user_id', 'mondai_id', 'spoiler')
+
+
 admin.site.register(User, SuiheiUserAdmin)
-admin.site.register(Mondai)
-admin.site.register(Shitumon)
-admin.site.register(Lobby)
+admin.site.register(Mondai, SuiheiMondaiAdmin)
+admin.site.register(Shitumon, SuiheiShitumonAdmin)
+admin.site.register(Lobby, SuiheiLobbyAdmin)
 admin.site.register(Award, SuiheiAwardAdmin)
-admin.site.register(UserAward)
+admin.site.register(UserAward, SuiheiUserAwardAdmin)
 admin.site.register(Star)
-admin.site.register(Comment)
+admin.site.register(Comment, SuiheiCommentAdmin)
