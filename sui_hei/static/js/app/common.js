@@ -83,18 +83,19 @@ define(
     }
 
     function _norm_tabs(string) {
-      var tab_titles = Array();
-      var tab_contents = Array();
+      _createID = (text, nmspc) =>
+        "tab-" + (nmspc ? nmspc + "-" : "") + hash(text);
 
-      _title2id = text => "tab-" + hash(text);
-
-      function _build_tabs_navtabs() {
+      function _build_tabs_navtabs(tab_titles, tab_contents, namespace) {
         var returns = "<ul class='nav nav-tabs'>";
 
         for (i in tab_titles) {
           returns += `
             <li${i == 0 ? " class='active'" : ""}>
-              <a data-toggle="tab" data-target="#${_title2id(tab_titles[i])}"
+              <a data-toggle="tab" data-target="#${_createID(
+                tab_contents[i],
+                namespace
+              )}"
                 href="javascript:void(0);">${tab_titles[i]}</a>
             </li>`;
         }
@@ -103,12 +104,12 @@ define(
         return returns;
       }
 
-      function _build_tabs_contents() {
+      function _build_tabs_contents(tab_titles, tab_contents, namespace) {
         var returns = "<div class='tab-content'>";
 
         for (i in tab_titles) {
           returns += `
-            <div id="${_title2id(tab_titles[i])}" ${i == 0
+            <div id="${_createID(tab_contents[i], namespace)}" ${i == 0
             ? "class='tab-pane active'"
             : "class='tab-pane'"}>
               ${tab_contents[i]}
@@ -120,20 +121,30 @@ define(
       }
 
       function _build_tabs() {
-        var text = arguments[1],
+        var tab_titles = Array(),
+          tab_contents = Array();
+
+        var namespace = arguments[1],
+          text = arguments[2],
           returns = text,
           regex = /<!--tab *([^>]*?)-->(.*?)<!--endtab-->/g;
 
-        while (res = regex.exec(text)) {
+        while ((res = regex.exec(text))) {
           tab_titles.push(res[1] ? res[1] : "tab");
           tab_contents.push(res[2]);
         }
-        console.log(text, tab_titles, tab_contents);
+        console.log(text, tab_titles, tab_contents, namespace);
 
-        return _build_tabs_navtabs() + _build_tabs_contents();
+        return (
+          _build_tabs_navtabs(tab_titles, tab_contents, namespace) +
+          _build_tabs_contents(tab_titles, tab_contents, namespace)
+        );
       }
 
-      tabs = string.replace(/<!--tabs-->(.*?)<!--endtabs-->/g, _build_tabs);
+      tabs = string.replace(
+        /<!--tabs ?([^>]*?)-->(.*?)<!--endtabs-->/g,
+        _build_tabs
+      );
 
       return tabs;
     }
