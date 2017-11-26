@@ -87,7 +87,9 @@ define(
         "tab-" + (nmspc ? nmspc + "-" : "") + hash(text);
 
       function _build_tabs_navtabs(tab_titles, tab_contents, namespace) {
-        var returns = "<ul class='nav nav-tabs'>";
+        var returns = `<ul class="nav nav-tabs"${namespace
+          ? " id='tabs-" + namespace + "'"
+          : ""}>`;
 
         for (i in tab_titles) {
           returns += `
