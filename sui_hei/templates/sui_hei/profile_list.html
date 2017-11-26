@@ -1,0 +1,17 @@
+{% extends 'frames/base.html' %} 
+{% load i18n static %}
+
+{% block title %} Cindy - profile - list {% endblock %} 
+
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/profile_list.js' %}"></script>
+{% endblock %}
+
+{% block content %} 
+
+<h2 id="trans-all-users" style="border-bottom:1px solid #ccc;">{% trans 'All Users' %}
+</h2>
+
+<div id="profile_list" class="row"></div>
+
+{% endblock %} 

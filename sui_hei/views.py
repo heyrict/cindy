@@ -152,6 +152,10 @@ def mondai(request):
     return render(request, "sui_hei/mondai.html")
 
 
+def profile_list(request):
+    return render(request, "sui_hei/profile_list.html")
+
+
 def profile_api(request):
     user_id = request.POST.get("user_id")
     try:

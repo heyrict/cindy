@@ -53,11 +53,14 @@ define(
       mondai_star_remove: "/mondai/show/remove_star",
       mondai_comment: "/mondai/comment",
       profile: pk => "/profile/" + pk,
+      profile_list: "/profile/list",
       profile_edit: "/profile/edit",
       profile_selledsoup: pk => "/profile/selledsoup/" + pk,
       profile_mystar: pk => "/profile/mystar/" + pk,
       award_change: "/profile/award_change",
       set_language: "/language",
+      useraward_list_api: "/api/useraward_list",
+      profile_list_api: "/api/profile_list",
       mondai_list_api: "/api/mondai_list",
       mondai_edit_api: "/api/mondai_edit",
       profile_api: "/api/profile",
@@ -135,7 +138,6 @@ define(
           tab_titles.push(res[1] ? res[1] : "tab");
           tab_contents.push(res[2]);
         }
-        console.log(text, tab_titles, tab_contents, namespace);
 
         return (
           _build_tabs_navtabs(tab_titles, tab_contents, namespace) +

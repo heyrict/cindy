@@ -3,7 +3,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
    * Parameters:
    * settings: {
    *   domid: String, the domSelector to be updated,
-   *   paginator_class, class name of the paginator (if exists),
+   *   paginator_class: class name of the paginator (if exists),
    * }
    * queryObject: Object, which will be passed to django for fetching data: {
    *   csrfmiddlewaretoken: String, default value will be provided,
@@ -32,6 +32,34 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     );
     $.post(common.urls.mondai_list_api, params, function(data) {
       var listhtml = _render_data(data.data);
+      if (data.page) {
+        listhtml += _render_paginator({
+          current_page: data.page,
+          num_pages: data.num_pages,
+          classname: settings.paginator_class
+        });
+      }
+      $(settings.domid).html(listhtml);
+    });
+  }
+
+  function UpdateProfileList(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test",
+        paginator_class: "paginator"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "-modified"
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.profile_list_api, params, function(data) {
+      var listhtml = _render_profile_list_data(data.data);
       if (data.page) {
         listhtml += _render_paginator({
           current_page: data.page,
@@ -284,6 +312,74 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return output;
   }
 
+  function _render_profile_list_data(listobj) {
+    var output = String(),
+      fields = {
+        id: "ID",
+        nickname: gettext("nickname"),
+        date_joined: gettext("date_joined")
+      };
+    listobj = listobj || [];
+
+    output += "<table class='table table-hover table-bordered span12'>";
+    output += _render_profile_list_table_header(fields);
+
+    output += _render_profile_list_table_contents(fields, listobj);
+
+    output += "</table><div class='clearfix'></div>";
+    return output;
+  }
+
+  function _render_profile_list_table_header(fields) {
+    var returns = "<thead><tr class='header'>";
+    for (f in fields) {
+      returns += "<th>" + fields[f] + "</th>";
+    }
+    returns += "</tr></thead>";
+    return returns;
+  }
+
+  function _render_profile_list_table_contents(fields, profile) {
+    var returns = "<tbody>";
+
+    profile.forEach(function(pf) {
+      returns += `<tr onClick="window.location.href='${common.urls.profile(pf.id)}'">`;
+      for (f in fields) {
+        returns += "<td>";
+        if (f == "date_joined") {
+          returns += moment(pf[f]).calendar();
+        } else if (f == "nickname") {
+          returns += pf[f];
+          returns += pf.current_award ? " [" + pf.current_award.name + "]" : "";
+          returns += "<font color='#888'>";
+          $.ajax({
+            type: "post",
+            url: common.urls.useraward_list_api,
+            data: {
+              csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+              filter: JSON.stringify({ user_id: pf.id })
+            },
+            async: false,
+            success: function(data) {
+              data.data.forEach(function(d) {
+                if (d.award_id.id != pf.current_award.id)
+                  returns += "[" + d.award_id.name + "]";
+              });
+            }
+          });
+          returns += "</font>";
+        } else {
+          returns += pf[f];
+        }
+        returns += "</td>";
+      }
+      returns += "</tr>";
+    });
+
+    returns += "</tbody>";
+    return returns;
+  }
+
   function _render_mystar_data(listobj) {
     var output = String();
     listobj = listobj || [];
@@ -514,6 +610,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   return {
     UpdateMondaiList: UpdateMondaiList,
     UpdateMystarList: UpdateMystarList,
+    UpdateProfileList: UpdateProfileList,
     RenderLobbyData: RenderLobbyData,
     RenderLobbyPaginator: RenderLobbyPaginator,
     RenderMondaiTitle: RenderMondaiTitle,

@@ -74,7 +74,8 @@ class User(AbstractUser):
             "nickname": self.nickname,
             "current_award": current_award_str,
             "experience": self.experience,
-            "username": self.username
+            "username": self.username,
+            "date_joined": self.date_joined
         }
 
 
@@ -87,6 +88,12 @@ class UserAward(models.Model):
 
     def __str__(self):
         return "[%s] owns [%s]" % (self.user_id.nickname, self.award_id)
+
+    def stringify_meta(self):
+        return {
+            "user_id": self.user_id.stringify_meta(),
+            "award_id": self.award_id.stringify_meta()
+        }
 
 
 class Mondai(models.Model):

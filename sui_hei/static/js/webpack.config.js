@@ -20,6 +20,7 @@ module.exports = {
     leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
+    profile_list: ["./app/profile_list.js"],
     mondai: ["./app/mondai_list"],
     mondai_add: ["./app/mondai_add"],
     mondai_show: "./app/mondai_show"
