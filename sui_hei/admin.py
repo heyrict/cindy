@@ -44,6 +44,7 @@ class SuiheiUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + ((None, {
         'fields': (
             'nickname',
+            'profile',
             'current_award', )
     }), )
 
