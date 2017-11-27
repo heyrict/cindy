@@ -1,6 +1,7 @@
 define(
-  ["jquery", "marked", "moment", "moment-countdown", "../lib/jquery.htmlClean"],
-  function($, marked, moment) {
+  ["jquery", "markdown-it", "markdown-it-emoji", "moment", "moment-countdown", "../lib/jquery.htmlClean"],
+  function($, MarkdownIt, mdEmoji, moment) {
+    md = MarkdownIt("commonmark").enable(['table', 'strikethrough']).use(mdEmoji);
     function setCookie(c_name, value, expiredays) {
       var exdate = new Date();
       exdate.setDate(exdate.getDate() + expiredays);
@@ -183,11 +184,12 @@ define(
         .replace(/^(\d+)\. /g, "$1\\. ")
         .replace(/\n/g, "<br />");
 
-      return LinkNorm(marked(string).replace(/<\/?p>/g, ""));
+      return LinkNorm(md.render(string).replace(/<\/?p>/g, ""));
     }
 
     function text2md(string) {
-      return LinkNorm($.htmlClean(marked(string)));
+      console.log(md.render(string));
+      return LinkNorm($.htmlClean(md.render(string)));
     }
 
     function bindEnterToSubmit(inputSelector, submitSelector) {

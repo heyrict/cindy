@@ -1,4 +1,4 @@
-require(["jquery", "./common", "marked"], function($, common, marked) {
+require(["jquery", "./common"], function($, common, marked) {
   $(document).ready(function() {
     $("#content_preview")[0].innerHTML = common.text2md($("#id_content").val());
     $("#kaisetu_preview")[0].innerHTML = common.text2md($("#id_kaisetu").val());

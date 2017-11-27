@@ -1,5 +1,4 @@
 require([
-  "marked",
   "jquery",
   "./common",
   "./mondai",
@@ -7,7 +6,7 @@ require([
   "../lib/bootstrap.min.js",
   "bootstrap-slider",
   "velocity-animate"
-], function(marked, $, common, mondai, sidebar, mondaiShowUI) {
+], function($, common, mondai, sidebar, mondaiShowUI) {
   $(document).ready(function() {
     // Previews
     var PageURL = window.location.pathname;

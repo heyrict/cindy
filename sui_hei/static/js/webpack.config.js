@@ -10,7 +10,7 @@ module.exports = {
       "jquery",
       "./lib/jquery.htmlClean",
       "velocity-animate",
-      "marked",
+      "markdown-it",
       "./lib/bootstrap.min.js",
       "bootbox",
       "bootstrap-slider",
@@ -76,16 +76,6 @@ module.exports = {
           {
             loader: "expose-loader",
             options: "Velocity"
-          }
-        ]
-      },
-      // marked
-      {
-        test: require.resolve("marked"),
-        use: [
-          {
-            loader: "expose-loader",
-            options: "marked"
           }
         ]
       },

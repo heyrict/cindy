@@ -1,4 +1,3 @@
-require("marked");
 require(["moment"], function(moment) {
   if (!LANGUAGE_CODE) LANGUAGE_CODE = "en";
   var lang = LANGUAGE_CODE == "zh-hans" ? "zh-cn" : LANGUAGE_CODE;
