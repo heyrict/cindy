@@ -1,7 +1,16 @@
 define(
-  ["jquery", "markdown-it", "markdown-it-emoji", "moment", "moment-countdown", "../lib/jquery.htmlClean"],
-  function($, MarkdownIt, mdEmoji, moment) {
-    md = MarkdownIt("commonmark").enable(['table', 'strikethrough']).use(mdEmoji);
+  [
+    "jquery",
+    "markdown-it",
+    "markdown-it-emoji",
+    "moment",
+    "sanitize-html",
+    "moment-countdown"
+  ],
+  function($, MarkdownIt, mdEmoji, moment, sanitizeHtml) {
+    md = MarkdownIt("commonmark")
+      .enable(["table", "strikethrough"])
+      .use(mdEmoji);
     function setCookie(c_name, value, expiredays) {
       var exdate = new Date();
       exdate.setDate(exdate.getDate() + expiredays);
@@ -188,8 +197,13 @@ define(
     }
 
     function text2md(string) {
-      console.log(md.render(string));
-      return LinkNorm($.htmlClean(md.render(string)));
+      return LinkNorm(
+        sanitizeHtml(md.render(string), {
+          allowedTags: false,
+          allowedAttributes: false,
+          allowedSchemes: ["http", "https", "ftp", "mailto", "chat"]
+        })
+      );
     }
 
     function bindEnterToSubmit(inputSelector, submitSelector) {

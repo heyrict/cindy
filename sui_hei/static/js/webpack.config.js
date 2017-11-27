@@ -8,7 +8,7 @@ module.exports = {
     main: ["./app/base", "./app/sidebar"],
     vendor: [
       "jquery",
-      "./lib/jquery.htmlClean",
+      "sanitize-html",
       "velocity-animate",
       "markdown-it",
       "./lib/bootstrap.min.js",

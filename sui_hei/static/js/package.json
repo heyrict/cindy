@@ -17,6 +17,7 @@
     "markdown-it-emoji": "^1.4.0",
     "moment": "^2.19.1",
     "moment-countdown": "0.0.3",
+    "sanitize-html": "^1.16.1",
     "velocity-animate": "^1.5.0"
   },
   "devDependencies": {
