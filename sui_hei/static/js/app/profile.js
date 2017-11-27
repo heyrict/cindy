@@ -59,12 +59,10 @@ require([
   function update_profile() {
     mondai.UpdateProfileProfile(
       {
-        domid: "#profile_pane_profile",
-        paginator_class: "profile_profile_paginator"
+        domid: "#profile_pane_profile"
       },
       {
-        filter: JSON.stringify({ user_id: user_id }),
-        order: "-id",
+        id: user_id
       }
     );
   }
@@ -95,14 +93,7 @@ require([
       }
     });
 
-    mondai.UpdateProfileProfile(
-      {
-        domid: "#profile_pane_profile"
-      },
-      {
-        id: user_id
-      }
-    );
+    update_profile();
 
     $("#profile_pane_mystar").on("DOMSubtreeModified", function() {
       $(".profile_mystar_paginator").each(function() {
