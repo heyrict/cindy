@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-13 20:18+0900\n"
+"POT-Creation-Date: 2017-11-27 20:28+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: cindy/settings.py:142
+#: cindy/settings.py:143
 msgid "Japanese"
 msgstr "Japonais"
 
-#: cindy/settings.py:143
+#: cindy/settings.py:144
 msgid "English"
 msgstr "Anglais"
 
-#: cindy/settings.py:144
+#: cindy/settings.py:145
 msgid "Chinese"
 msgstr "Chinois"
 
-#: cindy/settings.py:145
+#: cindy/settings.py:146
 msgid "French"
 msgstr ""
 
-#: sui_hei/models.py:14 sui_hei/templates/sui_hei/profile.html:52
+#: modeltranslation/tests/models.py:9 modeltranslation/tests/models.py:32
+#: modeltranslation/tests/models.py:40 modeltranslation/tests/models.py:49
+#: modeltranslation/tests/models.py:58 modeltranslation/tests/models.py:62
+#: modeltranslation/tests/models.py:79 modeltranslation/tests/models.py:268
+#: modeltranslation/tests/models.py:293 modeltranslation/tests/models.py:311
+#: modeltranslation/tests/models.py:327 modeltranslation/tests/models.py:333
+#: modeltranslation/tests/models.py:345 modeltranslation/tests/models.py:353
+#: sui_hei/models.py:111
+msgid "title"
+msgstr "Titre"
+
+#: modeltranslation/tests/models.py:158 modeltranslation/tests/models.py:176
+#, fuzzy
+#| msgid "title"
+msgid "title a"
+msgstr "Titre"
+
+#: modeltranslation/tests/models.py:162 modeltranslation/tests/models.py:187
+#, fuzzy
+#| msgid "title"
+msgid "title b"
+msgstr "Titre"
+
+#: modeltranslation/tests/models.py:166
+#, fuzzy
+#| msgid "title"
+msgid "title c"
+msgstr "Titre"
+
+#: modeltranslation/tests/models.py:170
+#, fuzzy
+#| msgid "title"
+msgid "title d"
+msgstr "Titre"
+
+#: modeltranslation/tests/models.py:269
+msgid "visits"
+msgstr ""
+
+#: modeltranslation/tests/translation.py:44
+msgid "Sorry, translation is not available."
+msgstr ""
+
+#: modeltranslation/widgets.py:25
+msgid "None"
+msgstr "Rien"
+
+#: sui_hei/models.py:14
 msgid "Award"
 msgstr "Titre"
 
@@ -50,153 +97,147 @@ msgstr "Profile"
 msgid "experience"
 msgstr ""
 
-#: sui_hei/models.py:86
+#: sui_hei/models.py:89
 #, fuzzy
 #| msgid "Award"
 msgid "User-Award"
 msgstr "Titre"
 
-#: sui_hei/models.py:102
-msgid "title"
-msgstr "Titre"
-
-#: sui_hei/models.py:103 sui_hei/templates/sui_hei/mondai.html:33
-#: sui_hei/templates/sui_hei/mondai.html:83
-#: sui_hei/templates/sui_hei/mondai_show.html:7
-#: sui_hei/templates/sui_hei/mondai_show.html:31
-#: sui_hei/templates/sui_hei/profile_mystar.html:31
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:30
+#: sui_hei/models.py:112
 msgid "yami"
 msgstr "Yami"
 
-#: sui_hei/models.py:104
+#: sui_hei/models.py:113
 msgid "genre"
 msgstr "Genre"
 
-#: sui_hei/models.py:105 sui_hei/models.py:209 sui_hei/models.py:238
+#: sui_hei/models.py:114 sui_hei/models.py:218 sui_hei/models.py:247
 msgid "content"
 msgstr "Contenu"
 
-#: sui_hei/models.py:106
+#: sui_hei/models.py:115
 msgid "kaisetu"
 msgstr "Solution"
 
-#: sui_hei/models.py:107 sui_hei/templates/sui_hei/mondai.html:48
-#: sui_hei/templates/sui_hei/mondai.html:98
-#: sui_hei/templates/sui_hei/profile_mystar.html:47
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:42
+#: sui_hei/models.py:116
 msgid "created"
 msgstr "Heure créé"
 
-#: sui_hei/models.py:108
+#: sui_hei/models.py:117
 msgid "modified"
 msgstr "Heure modifié"
 
-#: sui_hei/models.py:109
+#: sui_hei/models.py:118
 msgid "status"
 msgstr ""
 
-#: sui_hei/models.py:110
+#: sui_hei/models.py:119
 msgid "memo"
 msgstr ""
 
-#: sui_hei/models.py:111
+#: sui_hei/models.py:120
 msgid "score"
 msgstr "Score"
 
-#: sui_hei/models.py:114
+#: sui_hei/models.py:123
 msgid "Soup"
 msgstr "Soup"
 
-#: sui_hei/models.py:155 sui_hei/views.py:565
+#: sui_hei/models.py:164 sui_hei/views.py:462
 msgid "Albatross"
 msgstr "Enigme de situaton"
 
-#: sui_hei/models.py:156 sui_hei/views.py:566
+#: sui_hei/models.py:165 sui_hei/views.py:463
 msgid "20th-Door"
 msgstr "20 questions"
 
-#: sui_hei/models.py:157 sui_hei/views.py:567
+#: sui_hei/models.py:166 sui_hei/views.py:464
 msgid "Little Albat"
 msgstr "Petit énigme de situation"
 
-#: sui_hei/models.py:158 sui_hei/views.py:568
+#: sui_hei/models.py:167 sui_hei/views.py:465
 msgid "Others & Formal"
 msgstr "Autres formes d'énigmes"
 
-#: sui_hei/models.py:162
+#: sui_hei/models.py:171
 msgid "Unsolved"
 msgstr ""
 
-#: sui_hei/models.py:163
+#: sui_hei/models.py:172
 msgid "Solved"
 msgstr ""
 
-#: sui_hei/models.py:164
+#: sui_hei/models.py:173
 msgid "Dazed"
 msgstr ""
 
-#: sui_hei/models.py:165
+#: sui_hei/models.py:174
 msgid "Hidden"
 msgstr ""
 
-#: sui_hei/models.py:166
+#: sui_hei/models.py:175
 msgid "Forced Hidden"
 msgstr ""
 
-#: sui_hei/models.py:174
+#: sui_hei/models.py:183
 msgid "shitumon"
 msgstr "Question"
 
-#: sui_hei/models.py:175
+#: sui_hei/models.py:184
 msgid "kaitou"
 msgstr "Réponse"
 
-#: sui_hei/models.py:176
+#: sui_hei/models.py:185
 msgid "good_ques"
 msgstr "Bonne question"
 
-#: sui_hei/models.py:177
+#: sui_hei/models.py:186
 msgid "true_ques"
 msgstr "Bonne réponse"
 
-#: sui_hei/models.py:178
+#: sui_hei/models.py:187
 msgid "askedtime"
 msgstr "Heure questionné"
 
-#: sui_hei/models.py:179
+#: sui_hei/models.py:188
 msgid "answeredtime"
 msgstr "Heure répondu"
 
-#: sui_hei/models.py:182
+#: sui_hei/models.py:191
 msgid "Question"
 msgstr "Qustion"
 
-#: sui_hei/models.py:208
+#: sui_hei/models.py:217
 msgid "channel"
 msgstr "Chaîne"
 
-#: sui_hei/models.py:215
+#: sui_hei/models.py:224
 msgid "Can add homepage info"
 msgstr "Peut modifié les informations de la page d'acceuil"
 
-#: sui_hei/models.py:216
+#: sui_hei/models.py:225
 msgid "Can grant awards to users"
 msgstr ""
 
-#: sui_hei/models.py:217
+#: sui_hei/models.py:226
 msgid "Lobby"
 msgstr "Lobby"
 
-#: sui_hei/models.py:239
+#: sui_hei/models.py:248
 msgid "spoiler"
 msgstr ""
 
-#: sui_hei/models.py:259
+#: sui_hei/models.py:251
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment"
+msgstr "Commentaires"
+
+#: sui_hei/models.py:271
 msgid "Value"
 msgstr ""
 
-#: sui_hei/models.py:262 sui_hei/templates/sui_hei/mondai_show.html:76
+#: sui_hei/models.py:274 sui_hei/templates/sui_hei/mondai_show.html:57
 msgid "Star"
 msgstr "Etoile"
 
@@ -208,46 +249,48 @@ msgstr ""
 msgid "Chat With Lateral Thinking!"
 msgstr ""
 
-#: sui_hei/templates/frames/base.html:57
+#: sui_hei/templates/frames/base.html:56
 msgid "homepage"
 msgstr "Acceuil"
 
-#: sui_hei/templates/frames/base.html:60
+#: sui_hei/templates/frames/base.html:59
 msgid "mondai"
 msgstr "Problème"
 
-#: sui_hei/templates/frames/base.html:64 sui_hei/templates/frames/base.html:67
-#: sui_hei/templates/sui_hei/mondai.html:8
-#: sui_hei/templates/sui_hei/mondai_list.html:12
+#: sui_hei/templates/frames/base.html:63
+#: sui_hei/templates/sui_hei/mondai.html:12
 msgid "All Soups"
 msgstr "Tous les soups"
 
-#: sui_hei/templates/frames/base.html:70
+#: sui_hei/templates/frames/base.html:66
 #: sui_hei/templates/sui_hei/mondai_add.html:13
 msgid "NewSoup"
 msgstr "Nouvelle soup"
 
-#: sui_hei/templates/frames/base.html:86
+#: sui_hei/templates/frames/base.html:70
+msgid "User List"
+msgstr ""
+
+#: sui_hei/templates/frames/base.html:81
 #: sui_hei/templates/frames/profile_child_navi.html:4
-#: sui_hei/templates/sui_hei/profile.html:69
 msgid "Profile"
 msgstr "Profile"
 
-#: sui_hei/templates/frames/base.html:89
+#: sui_hei/templates/frames/base.html:84
 msgid "logout"
 msgstr "Déconnecter"
 
-#: sui_hei/templates/frames/base.html:94
+#: sui_hei/templates/frames/base.html:89
 #, fuzzy
 #| msgid "Welcome, "
 msgid "Welcome, guest."
 msgstr "Bonjour,"
 
-#: sui_hei/templates/frames/base.html:98
+#: sui_hei/templates/frames/base.html:93
 msgid "register"
 msgstr "Identifier"
 
-#: sui_hei/templates/frames/base.html:101
+#: sui_hei/templates/frames/base.html:96
 #: sui_hei/templates/registration/login.html:22
 msgid "login"
 msgstr "Connecter"
@@ -271,7 +314,6 @@ msgstr "Changer de chaîne"
 
 #: sui_hei/templates/frames/leftbar_content.html:42
 #: sui_hei/templates/sui_hei/index.html:59
-#: sui_hei/templates/sui_hei/profile.html:71
 msgid "edit"
 msgstr "Editer"
 
@@ -282,18 +324,16 @@ msgstr "Envoyer"
 
 #: sui_hei/templates/frames/leftbar_content.html:50
 #: sui_hei/templates/frames/leftbar_content_new.html:21
-#: sui_hei/templates/sui_hei/mondai_show.html:107
-#: sui_hei/templates/sui_hei/mondai_show.html:133
+#: sui_hei/templates/sui_hei/mondai_show.html:88
+#: sui_hei/templates/sui_hei/mondai_show.html:108
 msgid "Update"
 msgstr "Mettre à jour"
 
 #: sui_hei/templates/frames/profile_child_navi.html:5
-#: sui_hei/templates/sui_hei/profile_selledsoup.html:11
 msgid "Selled Soups"
 msgstr "Soups donnés"
 
 #: sui_hei/templates/frames/profile_child_navi.html:6
-#: sui_hei/templates/sui_hei/profile_mystar.html:15
 msgid "MyStar"
 msgstr "Mes étoiles"
 
@@ -324,25 +364,42 @@ msgstr "Information"
 msgid "Add Info"
 msgstr "Ajouter des informations"
 
-#: sui_hei/templates/sui_hei/mondai_add.html:22
-#: sui_hei/templates/sui_hei/mondai_list.html:58 sui_hei/views.py:571
+#: sui_hei/templates/sui_hei/mondai.html:45
+#: sui_hei/templates/sui_hei/mondai.html:50 sui_hei/views.py:458
+msgid "Title"
+msgstr "Titre"
+
+#: sui_hei/templates/sui_hei/mondai.html:46
+msgid "Search"
+msgstr ""
+
+#: sui_hei/templates/sui_hei/mondai.html:54
+msgid "Giver"
+msgstr "Personne donnée"
+
+#: sui_hei/templates/sui_hei/mondai.html:58
+#: sui_hei/templates/sui_hei/mondai_add.html:22 sui_hei/views.py:468
 msgid "Content"
 msgstr "Contenu"
 
+#: sui_hei/templates/sui_hei/mondai.html:62
+msgid "Reset"
+msgstr ""
+
 #: sui_hei/templates/sui_hei/mondai_add.html:22
 #: sui_hei/templates/sui_hei/mondai_add.html:27
-#: sui_hei/templates/sui_hei/mondai_show.html:137
+#: sui_hei/templates/sui_hei/mondai_show.html:112
 msgid "Preview"
 msgstr "Aperçu"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:27
-#: sui_hei/templates/sui_hei/mondai_show.html:124
-#: sui_hei/templates/sui_hei/mondai_show.html:137 sui_hei/views.py:572
+#: sui_hei/templates/sui_hei/mondai_show.html:97
+#: sui_hei/templates/sui_hei/mondai_show.html:112 sui_hei/views.py:469
 msgid "True Answer"
 msgstr "La vraie réponse"
 
 #: sui_hei/templates/sui_hei/mondai_add.html:30
-#: sui_hei/templates/sui_hei/profile_edit.html:27
+#: sui_hei/templates/sui_hei/profile_edit.html:17
 msgid "Confirm"
 msgstr "Confirmation"
 
@@ -350,74 +407,34 @@ msgstr "Confirmation"
 msgid "Commit Change"
 msgstr "Executer le changement"
 
-#: sui_hei/templates/sui_hei/mondai_list.html:45
-#: sui_hei/templates/sui_hei/mondai_list.html:50 sui_hei/views.py:561
-msgid "Title"
-msgstr "Titre"
-
-#: sui_hei/templates/sui_hei/mondai_list.html:46
-msgid "Search"
-msgstr ""
-
-#: sui_hei/templates/sui_hei/mondai_list.html:54
-#: sui_hei/templates/sui_hei/profile_mystar.html:44
-msgid "Giver"
-msgstr "Personne donnée"
-
-#: sui_hei/templates/sui_hei/mondai_list.html:62
-msgid "Reset"
-msgstr ""
-
-#: sui_hei/templates/sui_hei/mondai_show.html:58
+#: sui_hei/templates/sui_hei/mondai_show.html:42
 msgid "Put Responds"
 msgstr "Répondre à toutes les questions posées"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:83
+#: sui_hei/templates/sui_hei/mondai_show.html:63
 msgid "Comment here to introduce this Question to others!"
 msgstr ""
 
-#: sui_hei/templates/sui_hei/mondai_show.html:84
+#: sui_hei/templates/sui_hei/mondai_show.html:64
 #, fuzzy
 #| msgid "Comments"
 msgid "Add Comments"
 msgstr "Commentaires"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:97
-#: sui_hei/templates/sui_hei/mondai_show.html:121
-msgid "Memo"
-msgstr ""
-
-#: sui_hei/templates/sui_hei/mondai_show.html:101
-#: sui_hei/templates/sui_hei/mondai_show.html:130
-msgid "uncheck as yami"
-msgstr "Ne pas admettre comme yami"
-
-#: sui_hei/templates/sui_hei/mondai_show.html:101
-#: sui_hei/templates/sui_hei/mondai_show.html:130
-msgid "check as yami"
-msgstr "Admettre comme yami"
-
-#: sui_hei/templates/sui_hei/mondai_show.html:105
-#, fuzzy
-#| msgid "uncheck as yami"
-msgid "uncheck as hidden"
-msgstr "Ne pas admettre comme yami"
-
-#: sui_hei/templates/sui_hei/mondai_show.html:105
-#, fuzzy
-#| msgid "check as yami"
-msgid "check as hidden"
-msgstr "Admettre comme yami"
-
-#: sui_hei/templates/sui_hei/mondai_show.html:114
+#: sui_hei/templates/sui_hei/mondai_show.html:71
 msgid "Hello guest! I need to know who you are before you ask a question!"
 msgstr "Bonjour cher client! Vous avez besoin de vous connecter!"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:132
+#: sui_hei/templates/sui_hei/mondai_show.html:78
+#: sui_hei/templates/sui_hei/mondai_show.html:94
+msgid "Memo"
+msgstr ""
+
+#: sui_hei/templates/sui_hei/mondai_show.html:107
 msgid "Put True Answer"
 msgstr "Donner la vraie réponse"
 
-#: sui_hei/templates/sui_hei/mondai_show.html:147
+#: sui_hei/templates/sui_hei/mondai_show.html:121
 msgid "Put Question"
 msgstr "Poser une question"
 
@@ -435,71 +452,68 @@ msgstr ""
 msgid "mystar"
 msgstr ""
 
-#: sui_hei/templates/sui_hei/profile.html:42
-msgid "Name"
-msgstr "Nom"
-
-#: sui_hei/templates/sui_hei/profile.html:43
-msgid "Created time"
-msgstr "Heure crée"
-
-#: sui_hei/templates/sui_hei/profile.html:44
-msgid "Last login"
-msgstr "Dernier connecte"
-
-#: sui_hei/templates/sui_hei/profile.html:45
-msgid "Mondai count"
+#: sui_hei/templates/sui_hei/profile_list.html:12
+msgid "All Users"
 msgstr ""
 
-#: sui_hei/templates/sui_hei/profile.html:46
-#, fuzzy
-#| msgid "Question"
-msgid "Question count"
-msgstr "Qustion"
-
-#: sui_hei/templates/sui_hei/profile.html:47
-msgid "Good Question count"
-msgstr ""
-
-#: sui_hei/templates/sui_hei/profile.html:48
-#, fuzzy
-#| msgid "True Answer"
-msgid "True Answer count"
-msgstr "La vraie réponse"
-
-#: sui_hei/templates/sui_hei/profile.html:49
-#, fuzzy
-#| msgid "Comments"
-msgid "Comment count"
-msgstr "Commentaires"
-
-#: sui_hei/templates/sui_hei/profile.html:57
-msgid "None"
-msgstr "Rien"
-
-#: sui_hei/templates/sui_hei/profile.html:63
-msgid "change"
-msgstr ""
-
-#: sui_hei/templates/sui_hei/profile.html:76
-msgid "Change password"
-msgstr "Changer de mot de passe"
-
-#: sui_hei/views.py:337
+#: sui_hei/views.py:292
 msgid "You are not permitted to do this!"
 msgstr ""
 
-#: sui_hei/views.py:563
+#: sui_hei/views.py:460
 msgid "Genre"
 msgstr "Genre"
 
-#: sui_hei/views.py:570
+#: sui_hei/views.py:467
 msgid "Yami"
 msgstr "Yami"
 
-#: sui_hei/views.py:625
+#: sui_hei/views.py:522
 msgid "You are not permitted to delete others star!"
 msgstr ""
+
+#~ msgid "uncheck as yami"
+#~ msgstr "Ne pas admettre comme yami"
+
+#~ msgid "check as yami"
+#~ msgstr "Admettre comme yami"
+
+#, fuzzy
+#~| msgid "uncheck as yami"
+#~ msgid "uncheck as hidden"
+#~ msgstr "Ne pas admettre comme yami"
+
+#, fuzzy
+#~| msgid "check as yami"
+#~ msgid "check as hidden"
+#~ msgstr "Admettre comme yami"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "Created time"
+#~ msgstr "Heure crée"
+
+#~ msgid "Last login"
+#~ msgstr "Dernier connecte"
+
+#, fuzzy
+#~| msgid "Question"
+#~ msgid "Question count"
+#~ msgstr "Qustion"
+
+#, fuzzy
+#~| msgid "True Answer"
+#~ msgid "True Answer count"
+#~ msgstr "La vraie réponse"
+
+#, fuzzy
+#~| msgid "Comments"
+#~ msgid "Comment count"
+#~ msgstr "Commentaires"
+
+#~ msgid "Change password"
+#~ msgstr "Changer de mot de passe"
 
 #, fuzzy
 #~| msgid "Content"

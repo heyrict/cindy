@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-18 12:51+0900\n"
+"POT-Creation-Date: 2017-11-27 20:40+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,144 +18,225 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sui_hei/static/js/app/common.js:96 sui_hei/static/js/dist/0.js:448
-#: sui_hei/static/js/dist/1.js:101 sui_hei/static/js/dist/2.js:101
-#: sui_hei/static/js/dist/4.js:114 sui_hei/static/js/dist/5.js:114
-#: sui_hei/static/js/dist/main.js:554
+#: sui_hei/static/js/app/common.js:180 sui_hei/static/js/dist/2.js:144
+#: sui_hei/static/js/dist/vendor.chunk.js:618
 msgid "Time Out"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:130 sui_hei/static/js/dist/0.js:649
-#: sui_hei/static/js/dist/1.js:294 sui_hei/static/js/dist/main.js:755
+#: sui_hei/static/js/app/mondai.js:199 sui_hei/static/js/dist/0.js:163
+#: sui_hei/static/js/dist/0.js:260 sui_hei/static/js/dist/1.js:163
+#: sui_hei/static/js/dist/1.js:260 sui_hei/static/js/dist/main.js:252
+#: sui_hei/static/js/dist/main.js:349
 msgid "yami"
 msgstr "迷雾汤"
 
-#: sui_hei/static/js/app/mondai.js:157 sui_hei/static/js/dist/0.js:676
-#: sui_hei/static/js/dist/1.js:321 sui_hei/static/js/dist/4.js:329
-#: sui_hei/static/js/dist/main.js:782
+#: sui_hei/static/js/app/mondai.js:228 sui_hei/static/js/dist/0.js:191
+#: sui_hei/static/js/dist/1.js:191 sui_hei/static/js/dist/main.js:280
 msgid "giver"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:161 sui_hei/static/js/dist/0.js:680
-#: sui_hei/static/js/dist/1.js:325 sui_hei/static/js/dist/4.js:333
-#: sui_hei/static/js/dist/main.js:786
+#: sui_hei/static/js/app/mondai.js:232 sui_hei/static/js/dist/0.js:192
+#: sui_hei/static/js/dist/0.js:281 sui_hei/static/js/dist/1.js:192
+#: sui_hei/static/js/dist/1.js:281 sui_hei/static/js/dist/main.js:281
+#: sui_hei/static/js/dist/main.js:370
 msgid "created"
 msgstr "料理时间"
 
-#: sui_hei/static/js/app/mondai.js:171 sui_hei/static/js/dist/0.js:690
-#: sui_hei/static/js/dist/1.js:335 sui_hei/static/js/dist/4.js:343
-#: sui_hei/static/js/dist/main.js:796
+#: sui_hei/static/js/app/mondai.js:240 sui_hei/static/js/dist/0.js:199
+#: sui_hei/static/js/dist/1.js:199 sui_hei/static/js/dist/main.js:288
 #, javascript-format
 msgid "This soup's status is set to %s, which means you cannot view it."
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:204 sui_hei/static/js/dist/0.js:723
-#: sui_hei/static/js/dist/1.js:368 sui_hei/static/js/dist/4.js:381
-#: sui_hei/static/js/dist/main.js:829
+#: sui_hei/static/js/app/mondai.js:273 sui_hei/static/js/dist/0.js:228
+#: sui_hei/static/js/dist/1.js:228 sui_hei/static/js/dist/main.js:317
 msgid "Albatross"
 msgstr "海龟汤"
 
-#: sui_hei/static/js/app/mondai.js:205 sui_hei/static/js/dist/0.js:724
-#: sui_hei/static/js/dist/1.js:369 sui_hei/static/js/dist/4.js:382
-#: sui_hei/static/js/dist/main.js:830
+#: sui_hei/static/js/app/mondai.js:274 sui_hei/static/js/dist/0.js:229
+#: sui_hei/static/js/dist/1.js:229 sui_hei/static/js/dist/main.js:318
 msgid "20th-Door"
 msgstr "二十回廊"
 
-#: sui_hei/static/js/app/mondai.js:206 sui_hei/static/js/dist/0.js:725
-#: sui_hei/static/js/dist/1.js:370 sui_hei/static/js/dist/4.js:383
-#: sui_hei/static/js/dist/main.js:831
+#: sui_hei/static/js/app/mondai.js:275 sui_hei/static/js/dist/0.js:230
+#: sui_hei/static/js/dist/1.js:230 sui_hei/static/js/dist/main.js:319
 msgid "Little Albat"
 msgstr "小海龟之旅"
 
-#: sui_hei/static/js/app/mondai.js:207 sui_hei/static/js/dist/0.js:726
-#: sui_hei/static/js/dist/1.js:371 sui_hei/static/js/dist/4.js:384
-#: sui_hei/static/js/dist/main.js:832
+#: sui_hei/static/js/app/mondai.js:276 sui_hei/static/js/dist/0.js:231
+#: sui_hei/static/js/dist/1.js:231 sui_hei/static/js/dist/main.js:320
 msgid "Others & Formal"
 msgstr "其他 & 活动"
 
-#: sui_hei/static/js/app/mondai.js:327 sui_hei/static/js/app/mondai.js:401
-#: sui_hei/static/js/app/mondai.js:431 sui_hei/static/js/app/mondai.js:490
-#: sui_hei/static/js/dist/0.js:846 sui_hei/static/js/dist/0.js:920
-#: sui_hei/static/js/dist/0.js:950 sui_hei/static/js/dist/0.js:1009
-#: sui_hei/static/js/dist/1.js:491 sui_hei/static/js/dist/1.js:565
-#: sui_hei/static/js/dist/1.js:595 sui_hei/static/js/dist/1.js:654
-#: sui_hei/static/js/dist/4.js:504 sui_hei/static/js/dist/4.js:578
-#: sui_hei/static/js/dist/4.js:608 sui_hei/static/js/dist/4.js:667
-#: sui_hei/static/js/dist/main.js:952 sui_hei/static/js/dist/main.js:1026
-#: sui_hei/static/js/dist/main.js:1056 sui_hei/static/js/dist/main.js:1115
+#: sui_hei/static/js/app/mondai.js:362 sui_hei/static/js/dist/0.js:303
+#: sui_hei/static/js/dist/1.js:303 sui_hei/static/js/dist/main.js:392
+msgid "nickname"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:363 sui_hei/static/js/dist/0.js:304
+#: sui_hei/static/js/dist/0.js:549 sui_hei/static/js/dist/1.js:304
+#: sui_hei/static/js/dist/1.js:549 sui_hei/static/js/dist/main.js:393
+#: sui_hei/static/js/dist/main.js:638
+msgid "date_joined"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:471 sui_hei/static/js/app/mondai.js:579
+#: sui_hei/static/js/app/mondai.js:616 sui_hei/static/js/app/mondai.js:679
+#: sui_hei/static/js/dist/0.js:398 sui_hei/static/js/dist/0.js:456
+#: sui_hei/static/js/dist/0.js:469 sui_hei/static/js/dist/0.js:527
+#: sui_hei/static/js/dist/0.js:572 sui_hei/static/js/dist/1.js:398
+#: sui_hei/static/js/dist/1.js:456 sui_hei/static/js/dist/1.js:469
+#: sui_hei/static/js/dist/1.js:527 sui_hei/static/js/dist/1.js:572
+#: sui_hei/static/js/dist/main.js:487 sui_hei/static/js/dist/main.js:545
+#: sui_hei/static/js/dist/main.js:558 sui_hei/static/js/dist/main.js:616
+#: sui_hei/static/js/dist/main.js:661
 msgid "edit"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:471 sui_hei/static/js/dist/0.js:990
-#: sui_hei/static/js/dist/1.js:635 sui_hei/static/js/dist/4.js:648
-#: sui_hei/static/js/dist/main.js:1096
+#: sui_hei/static/js/app/mondai.js:510 sui_hei/static/js/dist/0.js:418
+#: sui_hei/static/js/dist/1.js:418 sui_hei/static/js/dist/main.js:507
+msgid "prev"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:541 sui_hei/static/js/dist/0.js:430
+#: sui_hei/static/js/dist/1.js:430 sui_hei/static/js/dist/main.js:519
+msgid "next"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:659 sui_hei/static/js/dist/0.js:507
+#: sui_hei/static/js/dist/1.js:507 sui_hei/static/js/dist/main.js:596
 msgid "waiting to be answered"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:501 sui_hei/static/js/dist/0.js:1020
-#: sui_hei/static/js/dist/1.js:665 sui_hei/static/js/dist/4.js:678
-#: sui_hei/static/js/dist/main.js:1126
+#: sui_hei/static/js/app/mondai.js:693 sui_hei/static/js/dist/0.js:532
+#: sui_hei/static/js/dist/1.js:532 sui_hei/static/js/dist/main.js:621
 msgid "uncheck as good-question"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:502 sui_hei/static/js/dist/0.js:1021
-#: sui_hei/static/js/dist/1.js:666 sui_hei/static/js/dist/4.js:679
-#: sui_hei/static/js/dist/main.js:1127
+#: sui_hei/static/js/app/mondai.js:694 sui_hei/static/js/dist/0.js:532
+#: sui_hei/static/js/dist/1.js:532 sui_hei/static/js/dist/main.js:621
 msgid "check as good-question"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:506 sui_hei/static/js/dist/0.js:1025
-#: sui_hei/static/js/dist/1.js:670 sui_hei/static/js/dist/4.js:683
-#: sui_hei/static/js/dist/main.js:1131
+#: sui_hei/static/js/app/mondai.js:698 sui_hei/static/js/dist/0.js:532
+#: sui_hei/static/js/dist/1.js:532 sui_hei/static/js/dist/main.js:621
 msgid "uncheck as true-answer"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai.js:507 sui_hei/static/js/dist/0.js:1026
-#: sui_hei/static/js/dist/1.js:671 sui_hei/static/js/dist/4.js:684
-#: sui_hei/static/js/dist/main.js:1132
+#: sui_hei/static/js/app/mondai.js:699 sui_hei/static/js/dist/0.js:532
+#: sui_hei/static/js/dist/1.js:532 sui_hei/static/js/dist/main.js:621
 msgid "check as true-answer"
 msgstr ""
 
+#: sui_hei/static/js/app/mondai.js:751
+msgid "Change Password"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:757 sui_hei/static/js/dist/0.js:578
+#: sui_hei/static/js/dist/1.js:578 sui_hei/static/js/dist/main.js:667
+msgid "Click Here"
+msgstr ""
+
+#: sui_hei/static/js/app/mondai.js:790 sui_hei/static/js/dist/0.js:554
+#: sui_hei/static/js/dist/0.js:598 sui_hei/static/js/dist/1.js:554
+#: sui_hei/static/js/dist/1.js:598 sui_hei/static/js/dist/main.js:643
+#: sui_hei/static/js/dist/main.js:687
+msgid "None"
+msgstr ""
+
 #: sui_hei/static/js/app/mondai_show.js:254
-#: sui_hei/static/js/dist/mondai_show.js:259
+#: sui_hei/static/js/dist/mondai_show.js:235
 msgid "uncheck as yami"
 msgstr ""
 
 #: sui_hei/static/js/app/mondai_show.js:254
-#: sui_hei/static/js/dist/mondai_show.js:259
+#: sui_hei/static/js/dist/mondai_show.js:235
 msgid "check as yami"
 msgstr ""
 
 #: sui_hei/static/js/app/mondai_show.js:261
-#: sui_hei/static/js/dist/mondai_show.js:266
+#: sui_hei/static/js/dist/mondai_show.js:240
 msgid "uncheck as hidden"
 msgstr ""
 
 #: sui_hei/static/js/app/mondai_show.js:262
-#: sui_hei/static/js/dist/mondai_show.js:267
+#: sui_hei/static/js/dist/mondai_show.js:240
 msgid "check as hidden"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai_show.js:306 sui_hei/static/js/dist/3.js:151
-#: sui_hei/static/js/dist/mondai_show.js:311
+#: sui_hei/static/js/app/mondai_show.js:306
+#: sui_hei/static/js/dist/mondai_show.js:277
 msgid "Warning"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai_show.js:309 sui_hei/static/js/dist/3.js:154
-#: sui_hei/static/js/dist/mondai_show.js:314
+#: sui_hei/static/js/app/mondai_show.js:309
+#: sui_hei/static/js/dist/mondai_show.js:277
+#: sui_hei/static/js/dist/profile.js:107
+#: sui_hei/static/js/dist/profile_mystar.js:19
 msgid "Continue?"
 msgstr ""
 
-#: sui_hei/static/js/app/mondai_show.js:348 sui_hei/static/js/dist/3.js:193
-#: sui_hei/static/js/dist/mondai_show.js:353
+#: sui_hei/static/js/app/mondai_show.js:348
+#: sui_hei/static/js/dist/mondai_show.js:307
 msgid "Thank you for your voting!"
 msgstr ""
 
-#: sui_hei/static/js/app/profile.js:74
+#: sui_hei/static/js/app/profile.js:109
 #: sui_hei/static/js/app/profile_mystar.js:8
-#: sui_hei/static/js/dist/profile.js:87
-#: sui_hei/static/js/dist/profile_mystar.js:21
+#: sui_hei/static/js/dist/profile.js:107
+#: sui_hei/static/js/dist/profile_mystar.js:19
 msgid "You cannot revert change if you delete the star!"
+msgstr "删除好评后将无法还原！"
+
+#: sui_hei/static/js/dist/0.js:545 sui_hei/static/js/dist/1.js:545
+#: sui_hei/static/js/dist/main.js:634
+msgid "Awards"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:553 sui_hei/static/js/dist/1.js:553
+#: sui_hei/static/js/dist/main.js:642
+msgid "last_login"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:557 sui_hei/static/js/dist/1.js:557
+#: sui_hei/static/js/dist/main.js:646
+msgid "Soup Count"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:560 sui_hei/static/js/dist/1.js:560
+#: sui_hei/static/js/dist/main.js:649
+msgid "Question Count"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:563 sui_hei/static/js/dist/1.js:563
+#: sui_hei/static/js/dist/main.js:652
+msgid "Good Question Count"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:566 sui_hei/static/js/dist/1.js:566
+#: sui_hei/static/js/dist/main.js:655
+msgid "True Answer Count"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:569 sui_hei/static/js/dist/1.js:569
+#: sui_hei/static/js/dist/main.js:658
+msgid "Comment Count"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:572 sui_hei/static/js/dist/1.js:572
+#: sui_hei/static/js/dist/main.js:661
+msgid "Profile"
+msgstr ""
+
+#: sui_hei/static/js/dist/0.js:604 sui_hei/static/js/dist/1.js:604
+#: sui_hei/static/js/dist/main.js:693
+msgid "change"
+msgstr ""
+
+#: sui_hei/static/js/dist/mondai_show.js:277
+#, fuzzy
+#| msgid "You cannot revert change if you delete the star!"
+msgid "You cannot revert change if you put the true answer!"
 msgstr "删除好评后将无法还原！"
 
 #: sui_hei/static/js/node_modules/ajv/dist/regenerator.min.js:2

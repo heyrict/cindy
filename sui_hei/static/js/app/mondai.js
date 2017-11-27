@@ -708,7 +708,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       rows = [
         {
           name: "nickname",
-          grid_name: "Nickname",
+          grid_name: gettext("Nickname"),
           grid_data:
             data.nickname +
             (data.current_award ? "[" + data.current_award.name + "]" : "")
@@ -748,7 +748,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         },
         {
           name: "change_password",
-          grid_name: "Change Password",
+          grid_name: gettext("Change Password"),
           secret: true,
           grid_data:
             "<a href='" +
