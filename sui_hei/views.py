@@ -115,7 +115,7 @@ class APIListProvider(object):
 
 
 class APIDetailProvider(object):
-    def __init__(self, baseClass, queryExtra=None):
+    def __init__(self, baseClass, dataExtra=None):
         '''
         Initialize an APIProvider.
 
@@ -124,10 +124,13 @@ class APIDetailProvider(object):
         baseClass: class. The base class for querying
         '''
         self.baseClass = baseClass
-        self.queryExtra = queryExtra
+        self.dataExtra = dataExtra
 
     def to_dict(self, obj):
-        return {"data": obj.stringify()}
+        data = obj.stringify()
+        if self.dataExtra:
+            data.update(self.dataExtra(obj))
+        return {"data": data}
 
     def as_api(self, request):
         '''
@@ -141,8 +144,6 @@ class APIDetailProvider(object):
         # get requested page number
         id = request.POST.get("id")
         objectList = self.baseClass.objects.select_related()
-        if self.queryExtra:
-            objectList = self.queryExtra(objectList)
         obj = get_object_or_404(objectList, id=id)
 
         return JsonResponse(self.to_dict(obj))
@@ -154,15 +155,6 @@ def mondai(request):
 
 def profile_list(request):
     return render(request, "sui_hei/profile_list.html")
-
-
-def profile_api(request):
-    user_id = request.POST.get("user_id")
-    try:
-        user = get_object_or_404(User, id=user_id)
-        return JsonResponse(user.stringify())
-    except Http404:
-        return HttpResponseNotFound()
 
 
 # /mondai/show/[0-9]+
@@ -404,36 +396,8 @@ def lobby_channel(request):
 
 
 # /profile/[0-9]+
-class ProfileView(DetailView):
-    model = User
-    template_name = 'sui_hei/profile.html'
-    context_object_name = 'sui_hei_user'
-
-    def get_context_data(self, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
-
-        # get latest 10 comments in relation to `sui_hei_user`
-        userid = context['sui_hei_user'].id
-        mondais = Mondai.objects.filter(user_id=userid)
-        comments = Comment.objects.filter(user_id=userid)
-        context['comments'] = comments.order_by("-id")[:10]
-        context['pk'] = self.kwargs['pk']
-
-        # get all awards
-        if self.request.user.id == userid:
-            available_awards = UserAward.objects.filter(user_id=userid)
-        else:
-            available_awards = []
-        context['available_awards'] = available_awards
-
-        # get statistics
-        context['mondai_count'] = mondais.count()
-        put_ques = Shitumon.objects.filter(user_id=userid)
-        context['ques_count'] = put_ques.count()
-        context['goodques_count'] = put_ques.filter(good=True).count()
-        context['trueques_count'] = put_ques.filter(true=True).count()
-        context['comment_count'] = comments.count()
-        return context
+def profile(request, pk):
+    return render(request, "sui_hei/profile.html", {"pk": pk})
 
 
 # /profile/edit

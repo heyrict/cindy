@@ -61,7 +61,9 @@ class User(AbstractUser):
             "current_award": current_award_str,
             "available_awards": available_awards,
             "experience": self.experience,
-            "username": self.username
+            "username": self.username,
+            "date_joined": self.date_joined,
+            "last_login": self.last_login
         }
 
     def stringify_meta(self):

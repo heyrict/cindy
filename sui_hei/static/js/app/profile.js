@@ -41,10 +41,39 @@ require([
     );
   }
 
+  function update_comment(page) {
+    mondai.UpdateProfileComments(
+      {
+        domid: "#profile_pane_comment",
+        paginator_class: "profile_comments_paginator"
+      },
+      {
+        filter: JSON.stringify({ user_id: user_id }),
+        order: "-id",
+        items_per_page: 20,
+        page: page
+      }
+    );
+  }
+
+  function update_profile() {
+    mondai.UpdateProfileProfile(
+      {
+        domid: "#profile_pane_profile",
+        paginator_class: "profile_profile_paginator"
+      },
+      {
+        filter: JSON.stringify({ user_id: user_id }),
+        order: "-id",
+      }
+    );
+  }
+
   $(document).ready(function() {
     loaded = {
       mystar: false,
       mysoup: false,
+      comments: false,
       profile: false
     };
     $("a[data-target='#profile_pane_mystar']").on("show", function() {
@@ -59,6 +88,21 @@ require([
         loaded["mysoup"] = true;
       }
     });
+    $("a[data-target='#profile_pane_comment']").on("show", function() {
+      if (!loaded["comment"]) {
+        update_comment(1);
+        loaded["comment"] = true;
+      }
+    });
+
+    mondai.UpdateProfileProfile(
+      {
+        domid: "#profile_pane_profile"
+      },
+      {
+        id: user_id
+      }
+    );
 
     $("#profile_pane_mystar").on("DOMSubtreeModified", function() {
       $(".profile_mystar_paginator").each(function() {
@@ -99,6 +143,29 @@ require([
         $(this).on("click", function() {
           update_mysoup($(this).attr("value"));
         });
+      });
+    });
+    $("#profile_pane_comment").on("DOMSubtreeModified", function() {
+      $(".profile_comment_paginator").each(function() {
+        $(this).on("click", function() {
+          update_comment($(this).attr("value"));
+        });
+      });
+    });
+    $("#profile_pane_profile").on("DOMSubtreeModified", function() {
+      $("#profile_awards_form").on("submit", function(e) {
+        var formData = $(this).serializeArray();
+        formData = [
+          {
+            name: "csrfmiddlewaretoken",
+            value: $("[name=csrfmiddlewaretoken]").val()
+          }
+        ].concat(formData);
+        $.post(common.urls.award_change, formData, function(data) {
+          if (data.error_message) bootbox.alert(data.error_message);
+          else update_profile();
+        });
+        e.preventDefault();
       });
     });
   });

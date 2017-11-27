@@ -1,7 +1,10 @@
-import os; os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
+'''isort:skip_file'''
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
 from datetime import timedelta
 
-import django; django.setup()
+import django
+django.setup()
 from django.utils import timezone
 
 from scoring import update_user_exp
@@ -44,7 +47,7 @@ def grant_awards_to_users(recent=None):
         users = User.objects.all()
 
     for key, judger in judgers.items():
-        print("-"*20, key, "-"*20, sep="\n")
+        print("-" * 20, key, "-" * 20, sep="\n")
         judger.execAll(users)
 
 

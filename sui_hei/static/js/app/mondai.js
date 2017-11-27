@@ -71,6 +71,27 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     });
   }
 
+  function UpdateProfileProfile(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test",
+        paginator_class: "paginator"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        id: 1
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.profile_api, params, function(data) {
+      tablehtml = _render_profile_profile_table(data.data);
+      $(settings.domid).html(tablehtml);
+    });
+  }
+
   function UpdateMystarList(settings, queryObject) {
     settings = $.extend(
       {
@@ -148,6 +169,26 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     );
     $.post(common.urls.comment_api, params, function(data) {
       $(settings.domid).html(_render_mondai_content_comments(data));
+    });
+  }
+
+  function UpdateProfileComments(settings, queryObject) {
+    settings = $.extend(
+      {
+        domid: "test",
+        paginator_class: "paginator"
+      },
+      settings || {}
+    );
+    var params = $.extend(
+      {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "id"
+      },
+      queryObject || {}
+    );
+    $.post(common.urls.comment_api, params, function(data) {
+      $(settings.domid).html(_render_profile_comments(data));
     });
   }
 
@@ -343,7 +384,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     var returns = "<tbody>";
 
     profile.forEach(function(pf) {
-      returns += `<tr onClick="window.location.href='${common.urls.profile(pf.id)}'">`;
+      returns += `<tr onClick="window.location.href='${common.urls.profile(
+        pf.id
+      )}'">`;
       for (f in fields) {
         returns += "<td>";
         if (f == "date_joined") {
@@ -486,6 +529,23 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return returns;
   }
 
+  // sui_hei:comments_api: render profile comments
+  function _render_profile_comments(data) {
+    var commentstr = String();
+    data.data.forEach(function(comment) {
+      commentstr += "<table class='table table-bordered span12'>";
+      commentstr += "<tr>";
+      commentstr += `<th><a href=${common.urls.mondai_show(
+        comment.mondai_id.id
+      )}>
+                          ${comment.mondai_id.title}</a></th>`;
+      commentstr += `<td>${common.line2md(comment.content)}</td>`;
+      commentstr += "</tr>";
+      commentstr += "</table>";
+    });
+    return commentstr;
+  }
+
   // sui_hei:comments_api: render mondai's comments
   function _render_mondai_content_comments(data) {
     var commentstr = String();
@@ -608,6 +668,118 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return ABlockGiver;
   }
 
+  function _render_profile_profile_table(data) {
+    var returns = "",
+      isMe = data.id == window.django.user_id,
+      rows = [
+        {
+          name: "nickname",
+          grid_name: "Nickname",
+          grid_data:
+            data.nickname +
+            (data.current_award ? "[" + data.current_award.name + "]" : "")
+        },
+        {
+          name: "availdable_awards",
+          grid_name: gettext("Awards"),
+          grid_data: isMe
+            ? _render_profile_awards_form(data)
+            : _render_profile_awards_list(data)
+        },
+        {
+          name: "date_joined",
+          grid_name: gettext("date_joined"),
+          grid_data: moment(data.date_joined).calendar()
+        },
+        {
+          name: "last_login",
+          grid_name: gettext("last_login"),
+          grid_data: data.last_login
+            ? moment(data.last_login).calendar()
+            : gettext("None")
+        },
+        { name: "mondai_count", grid_name: gettext("Soup Count") },
+        { name: "ques_count", grid_name: gettext("Question Count") },
+        { name: "goodques_count", grid_name: gettext("Good Question Count") },
+        { name: "trueques_count", grid_name: gettext("True Answer Count") },
+        { name: "comment_count", grid_name: gettext("Comment Count") },
+        {
+          name: "profile",
+          grid_name:
+            gettext("Profile") +
+            (isMe
+              ? `<a href="${common.urls.profile_edit}">[${gettext("edit")}]</a>`
+              : ""),
+          grid_data: common.text2md(data.profile)
+        },
+        {
+          name: "change_password",
+          grid_name: "Change Password",
+          secret: true,
+          grid_data:
+            "<a href='" +
+            common.urls.password_change +
+            "'>" +
+            gettext("Click Here") +
+            "</a>"
+        }
+      ];
+    returns += "<table class='table table-bordered span12'>";
+    rows.forEach(function(grid) {
+      grid = $.extend(
+        {
+          secret: false
+        },
+        grid
+      );
+      if (isMe || !grid.secret) {
+        returns += "<tr>";
+        returns +=
+          "<th>" +
+          (grid.grid_name != null ? grid.grid_name : grid.name) +
+          "</th>";
+        returns +=
+          "<td>" +
+          (grid.grid_data != null ? grid.grid_data : data[grid.name]) +
+          "</td>";
+        returns += "</tr>";
+      }
+    });
+    returns += "</table>";
+    return returns;
+  }
+
+  function _render_profile_awards_form(data) {
+    var returns = `
+            <form id="profile_awards_form" method="post">
+                <select name="award">
+                    <option value="">${gettext("None")}</option>`;
+    data.available_awards.forEach(function(award) {
+      returns +=
+        "<option value='" +
+        award.id +
+        "'" +
+        (data.current_award && award.id == data.current_award.id
+          ? "selected='selected'"
+          : "") +
+        ">";
+      returns += award.name;
+      returns += "</option>";
+    });
+    returns += ` <input type="submit" name="award_change" 
+        value="${gettext("change")}"
+        style="width:10%; font-size:14px; margin-top:0px;"></select></form>`;
+    return returns;
+  }
+
+  function _render_profile_awards_list(data) {
+    var returns = [];
+    data.available_awards.forEach(function(award) {
+      returns.push("[" + award.name + "]");
+    });
+    return returns.join(", ");
+  }
+
   return {
     UpdateMondaiList: UpdateMondaiList,
     UpdateMystarList: UpdateMystarList,
@@ -618,6 +790,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     RenderMondaiContentHeader: RenderMondaiContentHeader,
     RenderMondaiContentContent: RenderMondaiContentContent,
     UpdateMondaiComments: UpdateMondaiComments,
+    UpdateProfileComments: UpdateProfileComments,
+    UpdateProfileProfile: UpdateProfileProfile,
     UpdateMondaiQnA: UpdateMondaiQnA
   };
 });

@@ -1,13 +1,30 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
-from django.conf.urls import include
-from django.db.models import Count
+from django.db.models import Count, Sum
 
 from . import views
 from .admin import *
 
 app_name = "sui_hei"
 
+
+def profile_dataExtra(prof):
+    returns = dict()
+
+    mondais = Mondai.objects.filter(user_id=prof.id)
+    comments = Comment.objects.filter(user_id=prof.id)
+
+    returns['mondai_count'] = mondais.count()
+    put_ques = Shitumon.objects.filter(user_id=prof.id)
+    returns['ques_count'] = put_ques.count()
+    returns['goodques_count'] = put_ques.filter(good=True).count()
+    returns['trueques_count'] = put_ques.filter(true=True).count()
+    returns['comment_count'] = comments.count()
+
+    return returns
+
+
+# yapf: disable
 urlpatterns = [
     url(r'^users/', include('django.contrib.auth.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
@@ -27,7 +44,7 @@ urlpatterns = [
     url(r"^mondai/show/remove_star", views.remove_star, name="mondai_star_remove"),
     url(r"^mondai/comment", views.mondai_comment, name="mondai_comment"),
     url(r"^profile/list", views.profile_list, name="profile_list"),
-    url(r"^profile/(?P<pk>[0-9]+)$", views.ProfileView.as_view(), name="profile"),
+    url(r"^profile/(?P<pk>[0-9]+)$", views.profile, name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^profile/award_change", views.award_change, name="award_change"),
     # TODO: Add pages to apply for & grant awards
@@ -35,10 +52,11 @@ urlpatterns = [
     url(r"^api/profile_list$", views.APIListProvider(User).as_api, name="profile_list_api"),
     url(r"^api/mondai_list$", views.APIListProvider(Mondai, lambda x: x.annotate(Count('star'))).as_api, name="mondai_list_api"),
     url(r"^api/mondai_edit$", views.mondai_edit_api, name="mondai_edit_api"),
-    url(r"^api/profile$", views.profile_api, name="profile_api"),
     url(r"^api/star$", views.APIListProvider(Star).as_api, name="star_api"),
     url(r"^api/comment$", views.APIListProvider(Comment).as_api, name="comment_api"),
     url(r"^api/shitumon$", views.APIListProvider(Shitumon).as_api, name="shitumon_api"),
     url(r"^api/lobby$", views.APIListProvider(Lobby).as_api, name="lobby_api"),
     url(r"^api/mondai_show$", views.APIDetailProvider(Mondai).as_api, name="mondai_show_api"),
+    url(r"^api/profile$", views.APIDetailProvider(User, profile_dataExtra).as_api, name="profile_api"),
 ]
+# yapf: enable
