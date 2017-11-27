@@ -67,20 +67,24 @@ class SuiheiAwardJudger(object):
                user as param, iterable with each object an instance of Award as output.
         '''
         if judge: self.judge = judge
+        self.message = ""
 
     def _grant(self, user, award):
         '''grant award to user'''
         print("Grant", award, "to", user)
+        self.message += "Grant" + str(award) + "to" + str(user) + "\n"
         UserAward.objects.get_or_create(user_id=user, award_id=award)
 
     def execute(self, user):
         award = self.judge(user)
         for a in award:
             self._grant(user, a)
+        return self.message
 
     def execAll(self, users):
         for user in users:
             self.execute(user)
+        return self.message
 
 
 def _award_or_none(count, awards):

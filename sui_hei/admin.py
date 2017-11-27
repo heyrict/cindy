@@ -27,6 +27,12 @@ class SuiheiUserChangeForm(UserChangeForm):
             'profile',
             'current_award', )
 
+    def __init__(self, *args, **kwargs):
+        super(SuiheiUserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['profile'].required = False
+        self.fields['current_award'].required = False
+
+
 
 class SuiheiPasswordChangeForm(PasswordChangeForm):
     class Meta(PasswordChangeForm):

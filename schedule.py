@@ -11,6 +11,22 @@ from scoring import update_user_exp
 from awards import judgers
 from sui_hei.models import Award, Lobby, Mondai, User
 
+daily_message = ""
+
+
+def feedBot(message):
+    try:
+        message = message.strip()
+        user = User.objects.get(username="System")
+        if message:
+            message = "My Work Today\n" + '=' * 20 + '\n'
+            Lobby(channel="lobby", user_id=user, content=message).save()
+        else:
+            Lobby(channel="lobby", user_id=user, content="Today is my holiday :)").save()
+
+    except Exception as e:
+        print(e)
+
 
 def clean_recent_lobby(recent=None):
     if not isinstance(recent, int):
@@ -29,17 +45,24 @@ def clean_recent_lobby(recent=None):
 
 
 def mark_mondai_as_dazed(recent=7):
+    message = ""
+
     now = timezone.now()
     recent_days_ago = now - timedelta(days=recent)
     unsolved = Mondai.objects.filter(status=0, modified__lt=recent_days_ago)
     for dazed_mondai in unsolved:
         print("Mark dazed: ", dazed_mondai.id, "-", dazed_mondai.title)
+        message += "%s - %s\n" % (dazed_mondai.id, dazed_mondai.title)
         dazed_mondai.status = 2
         dazed_mondai.modified = now
         dazed_mondai.save()
 
+    return message
+
 
 def grant_awards_to_users(recent=None):
+    message = ""
+
     if recent:
         users = User.objects.filter(
             last_login__gt=timezone.now() - recent).all()
@@ -47,8 +70,13 @@ def grant_awards_to_users(recent=None):
         users = User.objects.all()
 
     for key, judger in judgers.items():
-        print("-" * 20, key, "-" * 20, sep="\n")
-        judger.execAll(users)
+        returned = judger.execAll(users).strip()
+        if returned:
+            print(key, ':', returned)
+            message += "### Award Group: " + key + "\n"
+            message += returned
+
+    return message
 
 
 # Update user experience
@@ -58,7 +86,13 @@ update_user_exp(recent=timedelta(days=3))
 clean_recent_lobby(200)
 
 # mark outdated mondais as dazed
-mark_mondai_as_dazed(7)
+returned = mark_mondai_as_dazed(7)
+if returned:
+    daily_message += "Dazed Soup :coffee:\n" + '-' * 20 + '\n' + returned
 
 # grant awards to users
-grant_awards_to_users(recent=timedelta(days=3))
+returned = grant_awards_to_users(recent=timedelta(days=3))
+if returned:
+    daily_message += "Awards :crown:\n" + '-' * 20 + '\n' + returned
+
+feedBot(daily_message)
