@@ -1,7 +1,6 @@
 from sui_hei.models import *
 
 snipe = (
-    (1, Award.objects.get_or_create(name_ja="TestSnipe")[0]),
     (5, Award.objects.get_or_create(name_ja="千里眼")[0]),
     (20, Award.objects.get_or_create(name_ja="★イーグルアイ")[0]),
     (70, Award.objects.get_or_create(name_ja="★★サードアイ")[0]), )
