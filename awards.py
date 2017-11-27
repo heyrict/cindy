@@ -1,6 +1,7 @@
 from sui_hei.models import *
 
 snipe = (
+    (1, Award.objects.get_or_create(name_ja="TestSnipe")[0]),
     (5, Award.objects.get_or_create(name_ja="千里眼")[0]),
     (20, Award.objects.get_or_create(name_ja="★イーグルアイ")[0]),
     (70, Award.objects.get_or_create(name_ja="★★サードアイ")[0]), )
@@ -71,9 +72,10 @@ class SuiheiAwardJudger(object):
 
     def _grant(self, user, award):
         '''grant award to user'''
-        print("Grant", award, "to", user)
-        self.message += "Grant" + str(award) + "to" + str(user) + "\n"
-        UserAward.objects.get_or_create(user_id=user, award_id=award)
+        ua, status = UserAward.objects.get_or_create(user_id=user, award_id=award)
+        if status:
+            print("Grant", award, "to", user)
+            self.message += "Grant " + str(award) + " to " + str(user) + "\n"
 
     def execute(self, user):
         award = self.judge(user)

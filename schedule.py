@@ -19,10 +19,13 @@ def feedBot(message):
         message = message.strip()
         user = User.objects.get(username="System")
         if message:
-            message = "My Work Today\n" + '=' * 20 + '\n'
+            message = "My Work Today\n" + '=' * 20 + '\n' + message + '\n' + '=' * 20
             Lobby(channel="lobby", user_id=user, content=message).save()
         else:
-            Lobby(channel="lobby", user_id=user, content="Today is my holiday :)").save()
+            Lobby(
+                channel="lobby",
+                user_id=user,
+                content="Today is my holiday :)").save()
 
     except Exception as e:
         print(e)
@@ -72,9 +75,8 @@ def grant_awards_to_users(recent=None):
     for key, judger in judgers.items():
         returned = judger.execAll(users).strip()
         if returned:
-            print(key, ':', returned)
-            message += "### Award Group: " + key + "\n"
-            message += returned
+            message += "### Award Group: **" + key + "**\n"
+            message += '- ' + '- '.join(returned.split('\n'))
 
     return message
 
@@ -88,11 +90,12 @@ clean_recent_lobby(200)
 # mark outdated mondais as dazed
 returned = mark_mondai_as_dazed(7)
 if returned:
-    daily_message += "Dazed Soup :coffee:\n" + '-' * 20 + '\n' + returned
+    daily_message += "## Dazed Soup :coffee:\n" + '- ' + '- '.join(
+        returned.split('\n')) + '\n'
 
 # grant awards to users
 returned = grant_awards_to_users(recent=timedelta(days=3))
 if returned:
-    daily_message += "Awards :crown:\n" + '-' * 20 + '\n' + returned
+    daily_message += "## Awards :crown:\n" + returned + '\n'
 
 feedBot(daily_message)
