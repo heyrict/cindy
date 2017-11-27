@@ -100,19 +100,17 @@ define(
         "tab-" + (nmspc ? nmspc + "-" : "") + hash(text);
 
       function _build_tabs_navtabs(tab_titles, tab_contents, namespace) {
-        var returns = `<ul class="nav nav-tabs"${namespace
-          ? " id='tabs-" + namespace + "'"
-          : ""}>`;
+        var returns = `
+<ul class="nav nav-tabs"${namespace ? " id='tabs-" + namespace + "'" : ""}>
+          `;
 
         for (i in tab_titles) {
           returns += `
-            <li${i == 0 ? " class='active'" : ""}>
-              <a data-toggle="tab" data-target="#${_createID(
-                tab_contents[i],
-                namespace
-              )}"
-                href="javascript:void(0);">${tab_titles[i]}</a>
-            </li>`;
+<li${i == 0 ? " class='active'" : ""}>
+<a data-toggle="tab" data-target="#${_createID(tab_contents[i], namespace)}"
+href="javascript:void(0);">${tab_titles[i]}</a>
+</li>
+            `;
         }
 
         returns += "</ul>";
@@ -124,11 +122,12 @@ define(
 
         for (i in tab_titles) {
           returns += `
-            <div id="${_createID(tab_contents[i], namespace)}" ${i == 0
+<div id="${_createID(tab_contents[i], namespace)}" ${i == 0
             ? "class='tab-pane active'"
             : "class='tab-pane'"}>
-              ${tab_contents[i]}
-            </div>`;
+${tab_contents[i]}
+</div>
+            `;
         }
 
         returns += "</div>";
@@ -142,7 +141,7 @@ define(
         var namespace = arguments[1],
           text = arguments[2],
           returns = text,
-          regex = /<!--tab *([^>]*?)-->(.*?)<!--endtab-->/g;
+          regex = /<!--tab *([^>]*?)-->([\s\S]*?)<!--endtab-->/g;
 
         while ((res = regex.exec(text))) {
           tab_titles.push(res[1] ? res[1] : "tab");
@@ -156,7 +155,7 @@ define(
       }
 
       tabs = string.replace(
-        /<!--tabs ?([^>]*?)-->(.*?)<!--endtabs-->/g,
+        /<!--tabs ?([^>]*?)-->([\s\S]*?)<!--endtabs-->/g,
         _build_tabs
       );
 
@@ -181,12 +180,16 @@ define(
     function LinkNorm(string) {
       string = _norm_openchat(string);
       string = _norm_countdown(string);
+      return string;
+    }
+
+    function PreNorm(string) {
       string = _norm_tabs(string);
       return string;
     }
 
     function line2md(string) {
-      string = string
+      string = PreNorm(string)
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/^([*+-]) /g, "\\$1 ")
@@ -198,7 +201,7 @@ define(
 
     function text2md(string) {
       return LinkNorm(
-        sanitizeHtml(md.render(string), {
+        sanitizeHtml(md.render(PreNorm(string)), {
           allowedTags: false,
           allowedAttributes: false,
           allowedSchemes: ["http", "https", "ftp", "mailto", "chat"]

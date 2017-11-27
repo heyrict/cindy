@@ -224,13 +224,12 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   // sui_hei:Mondai_show_api: Render mondai's header data
   function RenderMondaiContentHeader(data) {
-    var giverstr = `<li><b>${gettext("giver")}: ${data.user_id.nickname}${data
-      .user_id.current_award
+    var giverstr = `
+<li><b>${gettext("giver")}: ${data.user_id.nickname}${data.user_id.current_award
       ? "[" + data.user_id.current_award.name + "]"
       : ""}</b></li>`;
-    var createdstr = `<li>${gettext("created")}: ${moment(
-      data.created
-    ).calendar()}</li>`;
+    var createdstr = `
+<li>${gettext("created")}: ${moment(data.created).calendar()}</li>`;
     return "<ul style='left: 10px;'>" + giverstr + createdstr + "</ul>";
   }
 
@@ -286,7 +285,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_star(value) {
     scaleOne = x => Math.floor(x * 10) / 10;
-    star_bubble = `<span class="status_label status_unsolved"><font color="#cb4b16">${scaleOne(
+    star_bubble = `
+<span class="status_label status_unsolved"><font color="#cb4b16">${scaleOne(
       value
     )}</font></span>`;
     return star_bubble;
@@ -302,9 +302,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_genre(genre_code, yami) {
-    return `[${_genre_code_dict[
-      genre_code
-    ]}${yami ? " &times; " + gettext("yami") : ""}]`;
+    return `
+[${_genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
   }
 
   function _render_score(score, star_count) {
@@ -316,19 +315,22 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_giver(user) {
     var award = user.current_award ? `[${user.current_award.name}]` : "";
-    return `<a href="${common.urls.profile(
+    return `
+<a href="${common.urls.profile(
       user.id
     )}" class="bul">${user.nickname}</a><b>${award}</b>`;
   }
 
   function _render_title(mondai) {
-    return `<span class="title_label"><a href="${common.urls.mondai_show(
+    return `
+<span class="title_label"><a href="${common.urls.mondai_show(
       mondai.id
     )}">${_render_genre(mondai.genre, mondai.yami) + mondai.title}</a></span>`;
   }
 
   function _render_suffix(mondai) {
-    return `<span style="float:right; text-decoration:bold;"> ${_render_giver(
+    return `
+<span style="float:right; text-decoration:bold;"> ${_render_giver(
       mondai.user_id
     )} <font color=#888>[${gettext("created")}:${moment(mondai.created).calendar()}]</font></span>`;
   }
@@ -462,18 +464,22 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         : "right"}' style='max-width:73%;'>`;
       output += lobby.content;
       if (isMyChat)
-        output += `<a class="lobby_message_edit" value="${lobby.id}" 
-                      target="lobby" href="javascript:void(0);" role="button"
-                      data-toggle="modal" data-target="#message_edit_modal">
-                      [${gettext("edit")}]</a>`;
+        output += `
+<a class="lobby_message_edit" value="${lobby.id}" 
+  target="lobby" href="javascript:void(0);" role="button"
+  data-toggle="modal" data-target="#message_edit_modal">
+  [${gettext("edit")}]
+</a>`;
       output += "</span>";
 
-      output += `<span class='pull-${isMyChat
+      output += `
+<span class='pull-${isMyChat
         ? "right"
         : "left"}' style='max-width:23%; color:#666'>`;
-      output += `<a href="${common.urls.profile(
-        lobby.user_id.id
-      )}" style="color:#888">${lobby.user_id.nickname}</a>`;
+      output += `
+<a href="${common.urls.profile(lobby.user_id.id)}" style="color:#888">${lobby
+        .user_id.nickname}</a>
+      `;
       output += lobby.user_id.current_award
         ? `[${lobby.user_id.current_award.name}]`
         : "";
@@ -497,10 +503,13 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     );
     var returns = `<div class='pagination ${params.paginator_classname}'><ul>`;
 
-    returns += `<li class="previous ${params.current_page > 1
-      ? ""
-      : "disabled"}"><a href="javascript:void(0);" value="${params.current_page -
-      1}" class="${params.classname}">${gettext("prev")}</a></li>`;
+    returns += `
+<li class="previous ${params.current_page > 1 ? "" : "disabled"}">
+  <a href="javascript:void(0);" value="${params.current_page -
+    1}" class="${params.classname}">
+    ${gettext("prev")}
+  </a>
+</li>`;
 
     for (
       i = Math.max(params.current_page - 5, 1);
@@ -510,7 +519,12 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
-    returns += `<li class="active"><a href="javascript:void(0);" value="${params.current_page}" class="${params.classname}">${params.current_page}</a></li>`;
+    returns += `
+<li class="active">
+  <a href="javascript:void(0);" value="${params.current_page}" class="${params.classname}">
+    ${params.current_page}
+  </a>
+</li>`;
 
     for (
       i = params.current_page + 1;
@@ -520,10 +534,13 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
-    returns += `<li class="next ${params.current_page < params.num_pages
-      ? ""
-      : "disabled"}"><a href="javascript:void(0);" value="${params.current_page +
-      1}" class="${params.classname}">${gettext("next")}</a></li>`;
+    returns += `
+<li class="next ${params.current_page < params.num_pages ? "" : "disabled"}">
+  <a href="javascript:void(0);" value="${params.current_page +
+    1}" class="${params.classname}">
+    ${gettext("next")}
+  </a>
+</li>`;
 
     returns += "</ul></div>";
     return returns;
@@ -535,10 +552,12 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     data.data.forEach(function(comment) {
       commentstr += "<table class='table table-bordered span12'>";
       commentstr += "<tr>";
-      commentstr += `<th><a href=${common.urls.mondai_show(
-        comment.mondai_id.id
-      )}>
-                          ${comment.mondai_id.title}</a></th>`;
+      commentstr += `
+<th>
+  <a href=${common.urls.mondai_show(comment.mondai_id.id)}>
+    ${comment.mondai_id.title}
+  </a>
+</th>`;
       commentstr += `<td>${common.line2md(comment.content)}</td>`;
       commentstr += "</tr>";
       commentstr += "</table>";
@@ -554,14 +573,19 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       commentstr += "<div>";
       commentstr += common.line2md(comment.content);
       if (comment.user_id.id == window.django.user_id)
-        commentstr += `<a class="comment_edit" target="comment" value="${comment.id}" href="javascript:void(0);"
-          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-        [${gettext("edit")}]</a>`;
+        commentstr += `
+<a class="comment_edit" target="comment" value="${comment.id}" href="javascript:void(0);"
+  role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+  [${gettext("edit")}]
+</a>`;
       commentstr += "</div>";
-      commentstr += `<div class="pull-right">——<a style="color:#333"
-            href="${common.urls.profile(comment.user_id.id)}">
-              ${comment.user_id.nickname} </a>
-            </div>`;
+      commentstr += `
+<div class="pull-right">
+  ——
+  <a style="color:#333" href="${common.urls.profile(comment.user_id.id)}">
+    ${comment.user_id.nickname} 
+  </a>
+</div>`;
       commentstr += "</div>";
     });
     return commentstr;
@@ -570,23 +594,27 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_mondai_qblock(data, index) {
     index += 1;
     var returns = `
-      <div class="QBlock">
-          <div style="width:29%; float:left">
-              <a href="${common.urls.profile(data.user_id.id)}">${data.user_id
-      .nickname}</a>
-          ${data.user_id.current_award
-            ? "[" + data.user_id.current_award.name + "]"
-            : ""}
-
-          </div>
-          <div class="vertical_line"></div>
-          <div style="width:69%; float:right;">
-              <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
-              ${common.line2md(data.shitumon)}`;
+<div class="QBlock">
+  <div style="width:29%; float:left">
+  <a href="${common.urls.profile(data.user_id.id)}">
+    ${data.user_id.nickname}
+  </a>
+  ${data.user_id.current_award
+    ? "[" + data.user_id.current_award.name + "]"
+    : ""}
+</div>
+<div class="vertical_line"></div>
+<div style="width:69%; float:right;">
+  <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">
+    ${index}
+  </span>
+  ${common.line2md(data.shitumon)}`;
     if (!data.kaitou && data.user_id.id == window.django.user_id) {
-      returns += `<a class="qna_edit" target="shitumon" value="${data.id}" href="javascript:void(0);"
-          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-        [${gettext("edit")}]</a>`;
+      returns += `
+<a class="qna_edit" target="shitumon" value="${data.id}" href="javascript:void(0);"
+  role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+  [${gettext("edit")}]
+</a>`;
     }
     returns += "</div></div>";
     return returns;
@@ -616,13 +644,15 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       }
       ABlockOthers += `${common.line2md(data.kaitou)}</div>`;
       ABlockOthers += `<div class="vertical_line"></div>`;
-      ABlockOthers += `<div style="width:29%; float:right;">
-                    <a href="${common.urls.profile(data.owner_id.id)}">${data
-        .owner_id.nickname}</a>
-                    ${data.owner_id.current_award
-                      ? "[" + data.owner_id.current_award.name + "]"
-                      : ""}
-                </div>`;
+      ABlockOthers += `
+<div style="width:29%; float:right;">
+  <a href="${common.urls.profile(data.owner_id.id)}">
+    ${data.owner_id.nickname}
+  </a>
+  ${data.owner_id.current_award
+    ? "[" + data.owner_id.current_award.name + "]"
+    : ""}
+</div>`;
     } else {
       ABlockOthers +=
         "<span style='color:#93a1a1'>" +
@@ -642,28 +672,32 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       if (data.good) {
         ABlockGiver += "<font size='7' color='#b58900'>&#128077;</font>";
       }
-      ABlockGiver += `${common.line2md(data.kaitou)}
-      <a class="qna_edit" target="kaitou" value="${data.id}" href="javascript:void(0);"
-          role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-          [${gettext("edit")}]</a>
-      </div>`;
+      ABlockGiver += `
+  ${common.line2md(data.kaitou)}
+  <a class="qna_edit" target="kaitou" value="${data.id}" href="javascript:void(0);"
+    role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
+    [${gettext("edit")}]
+  </a>
+</div>`;
     } else {
-      ABlockGiver += `<div style="width:100%; float:left;">
-                <input id="answ_input" name="push_answ_${data.id}" type="text">
-            </div>`;
+      ABlockGiver += `
+<div style="width:100%; float:left;">
+  <input id="answ_input" name="push_answ_${data.id}" type="text">
+</div>`;
     }
-    ABlockGiver += `<div class="clear"></div>
-          <div style="border-top: 1px solid #268bd288">
-              <input name="check_goodques_${data.id}" type="checkbox">
-            ${data.good
-              ? gettext("uncheck as good-question")
-              : gettext("check as good-question")}
-              <br>
-              <input name="check_trueansw_${data.id}" type="checkbox">
-            ${data.true
-              ? gettext("uncheck as true-answer")
-              : gettext("check as true-answer")}
-          </div>`;
+    ABlockGiver += `
+<div class="clear"></div>
+<div style="border-top: 1px solid #268bd288">
+  <input name="check_goodques_${data.id}" type="checkbox">
+  ${data.good
+    ? gettext("uncheck as good-question")
+    : gettext("check as good-question")}
+  <br>
+  <input name="check_trueansw_${data.id}" type="checkbox">
+  ${data.true
+    ? gettext("uncheck as true-answer")
+    : gettext("check as true-answer")}
+</div>`;
 
     return ABlockGiver;
   }
@@ -751,9 +785,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_profile_awards_form(data) {
     var returns = `
-            <form id="profile_awards_form" method="post">
-                <select name="award">
-                    <option value="">${gettext("None")}</option>`;
+<form id="profile_awards_form" method="post">
+  <select name="award">
+    <option value="">${gettext("None")}</option>`;
     data.available_awards.forEach(function(award) {
       returns +=
         "<option value='" +
@@ -766,9 +800,11 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       returns += award.name;
       returns += "</option>";
     });
-    returns += ` <input type="submit" name="award_change" 
-        value="${gettext("change")}"
-        style="width:10%; font-size:14px; margin-top:0px;"></select></form>`;
+    returns += `
+    <input type="submit" name="award_change" value="${gettext("change")}"
+      style="width:10%; font-size:14px; margin-top:0px;">
+  </select>
+</form>`;
     return returns;
   }
 
