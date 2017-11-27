@@ -8,7 +8,12 @@ define(
     "moment-countdown"
   ],
   function($, MarkdownIt, mdEmoji, moment, sanitizeHtml) {
-    md = MarkdownIt("commonmark")
+    md = MarkdownIt({
+      html: true,
+      breaks: true,
+      linkify: true,
+      typographer: true
+    })
       .enable(["table", "strikethrough"])
       .use(mdEmoji);
     function setCookie(c_name, value, expiredays) {
@@ -107,8 +112,10 @@ define(
         for (i in tab_titles) {
           returns += `
 <li${i == 0 ? " class='active'" : ""}>
-<a data-toggle="tab" data-target="#${_createID(tab_contents[i], namespace)}"
-href="javascript:void(0);">${tab_titles[i]}</a>
+  <a data-toggle="tab" data-target="#${_createID(tab_contents[i], namespace)}"
+  href="javascript:void(0);">
+    ${tab_titles[i]}
+  </a>
 </li>
             `;
         }
@@ -122,10 +129,9 @@ href="javascript:void(0);">${tab_titles[i]}</a>
 
         for (i in tab_titles) {
           returns += `
-<div id="${_createID(tab_contents[i], namespace)}" ${i == 0
-            ? "class='tab-pane active'"
-            : "class='tab-pane'"}>
-${tab_contents[i]}
+<div id="${_createID(tab_contents[i], namespace)}"
+  ${i == 0 ? "class='tab-pane active'" : "class='tab-pane'"}>
+  ${tab_contents[i]}
 </div>
             `;
         }
