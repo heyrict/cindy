@@ -15,12 +15,14 @@ module.exports = {
       "bootbox",
       "bootstrap-slider",
       "moment",
-      "moment-countdown"
+      "moment-countdown",
+      "./app/common"
     ],
     leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
-    profile_list: ["./app/profile_list.js"],
+    profile_edit: ["./app/profile_edit"],
+    profile_list: ["./app/profile_list"],
     mondai: ["./app/mondai_list"],
     mondai_add: ["./app/mondai_add"],
     mondai_show: "./app/mondai_show"

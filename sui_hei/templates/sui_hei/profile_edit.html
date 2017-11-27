@@ -1,30 +1,20 @@
 {% extends 'frames/base.html' %} 
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %} Cindy - profile - edit {% endblock %} 
 
-{% block script %}
-$(document).ready(function() {
-  var inputs = marked($("#id_profile").val());
-  inputs = sidebar.LinkNorm(inputs);
-  $("#profile_preview")[0].innerHTML = inputs;
-
-  $("#id_profile").on('input', function(){
-    var inputs = marked($("#id_profile").val());
-    inputs = sidebar.LinkNorm(inputs);
-    $("#profile_preview")[0].innerHTML = inputs;
-  });
-});
+{% block script_include %}
+<script type="text/javascript" src="{% static 'js/dist/profile_edit.js' %}"></script>
 {% endblock %}
 
 {% block content %} 
 
-<form action="" method="post">
-<div> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
+<form action="" method="post" class="row">
+<div class="span12"> {% if error_message %} <strong>{{ error_message }}</strong> {% endif %} </div>
 {% csrf_token %}
-<div style="width:50%;">{{ form.as_p }}</div>
-<div id="profile_preview"></div>
-<div><input type="submit" value={% trans 'Confirm' %}></div>
+<div class="span12">{{ form.as_p }}</div>
+<div id="profile_preview" class="span12"></div>
+<div class="span12"><input type="submit" value={% trans 'Confirm' %}></div>
 
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
