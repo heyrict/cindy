@@ -67,7 +67,9 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
           { csrfmiddlewaretoken: csrftoken, pk: pk, target: target },
           function(data) {
             $("#message_edit_modal_body").html(
-              "<textarea id='message_edit_modal_content'>" + data.content + "</textarea>"
+              "<textarea id='message_edit_modal_content'>" +
+                data.content +
+                "</textarea>"
             );
             $("#message_edit_modal_content").attr("target", target);
             $("#message_edit_modal_content").attr("value", pk);
@@ -324,6 +326,26 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     }
   }
 
+  function CloseMemo() {
+    var $this = $(".rightbar");
+
+    if ($this.attr("mode") == "open") {
+      $(".rightbar").velocity({
+        left: windoww + "px",
+        duration: 1000
+      });
+      $this.attr("mode", "closed");
+
+      if (small_screen) {
+        $(".leftbar").velocity({
+          left: -goodw * 0.792 + "px",
+          duration: 1000
+        });
+        $(".leftbar").attr("mode", "closed");
+      }
+    }
+  }
+
   return {
     CalcGoodRect: CalcGoodRect,
     ResizeSidebar: ResizeSidebar,
@@ -332,8 +354,10 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     InputNorm: InputNorm,
     OpenChat: OpenChat,
     OpenMemo: OpenMemo,
+    CloseMemo: CloseMemo,
     PostChat: PostChat,
     GetChannel: getCurrentChannel,
-    __init__: init
+    __init__: init,
+    IsSmallScreen: () => small_screen
   };
 });

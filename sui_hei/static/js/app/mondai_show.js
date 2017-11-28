@@ -9,10 +9,13 @@ require([
 ], function($, common, mondai, sidebar, mondaiShowUI) {
   $(document).ready(function() {
     // Previews
-    var PageURL = window.location.pathname;
-    var path = PageURL.split("/");
-    var mondai_id = path[path.length - 1];
-    var mondai_status, mondai_giver_id, mondai_yami;
+    var PageURL = window.location.pathname,
+      path = PageURL.split("/"),
+      mondai_id = path[path.length - 1],
+      mondai_status,
+      mondai_giver_id,
+      mondai_yami,
+      memo_hash;
     set_default_channel();
 
     // render the whole page
@@ -223,6 +226,13 @@ require([
     });
 
     function on_memobar_update() {
+      $("#memo_preview_hint").addClass("hidden");
+
+      if (mondai_giver_id == window.django.user_id) {
+        sidebar.CloseMemo();
+        return;
+      }
+
       // if memo updates, open memo bar
       var $memo = $(".memobar_content");
       if ($memo.length > 0) {
@@ -236,7 +246,7 @@ require([
         }
         // clean the object list
         memoHashObjKeys = Object.keys(memoHashObj).reverse();
-        while (memoHashObjKeys.length > 20) {
+        while (memoHashObjKeys.length > 50) {
           key2del = memoHashObjKeys.pop();
           delete memoHashObj[key2del];
         }
@@ -247,6 +257,8 @@ require([
 
     function fill_data_in_giver_panel(data) {
       if ((data.user_id.id = window.django.user_id)) {
+        memo_hash = common.hash(data.memo);
+
         $(".memo_textarea").each(function() {
           $(this).val(data.memo);
         });
@@ -281,18 +293,26 @@ require([
           common.text2md($(".kaisetu_textarea").val())
         );
       }
-
-      if ($(".memo_textarea").length > 0) {
-        $("#memo_preview").html(common.text2md($(".memo_textarea").val()));
-      }
     }
 
     $(".kaisetu_textarea").on("input", function() {
       $("#kaisetu_preview").html(common.text2md($(".kaisetu_textarea").val()));
     });
 
-    $(".memo_textarea").on("input", function() {
-      $("#memo_preview").html(common.text2md($(".memo_textarea").val()));
+    $(".memo_textarea").each(function() {
+      $(this).on("input", function() {
+        var text = $(this).val();
+
+        if (common.hash(text) == memo_hash) {
+          if (!sidebar.IsSmallScreen()) sidebar.CloseMemo();
+          $("#memo_preview_hint").addClass("hidden");
+        } else {
+          if (!sidebar.IsSmallScreen()) sidebar.OpenMemo();
+          $("#memo_preview_hint").removeClass("hidden");
+        }
+
+        $(".mondai_memo").html(common.text2md(text));
+      });
     });
 
     // initialize UI

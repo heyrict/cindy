@@ -12,6 +12,11 @@
 <div class="memobar rightbar hidden" mode={{ mode|default:"closed" }} >
     <img class="memobar_button rightbar_button" src={% static 'pictures/memobar.png' %}>
     <div class="memobar_content rightbar_content">
+        <div id="memo_preview_hint" class="hidden">
+            <font color=#52676f" size="5px" face="monospace">
+                {% trans 'True Answer' %} {% trans 'Preview' %}
+            </font>
+        </div>
         <div class="mondai_memo" style="margin-right:15px;">
         </div>
     </div>
