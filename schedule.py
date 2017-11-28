@@ -8,7 +8,7 @@ django.setup()
 from django.utils import timezone
 
 from scoring import update_user_exp
-from awards import judgers
+from awards import judgers, granters
 from sui_hei.models import Award, Lobby, Mondai, User
 
 daily_message = ""
@@ -74,6 +74,12 @@ def grant_awards_to_users(recent=None):
 
     for key, judger in judgers.items():
         returned = judger.execAll(users).strip()
+        if returned:
+            message += "### Award Group: **" + key + "**\n"
+            message += '- ' + '\n- '.join(returned.split('\n')) + '\n'
+
+    for key, granter in granters.items():
+        returned = granter().strip()
         if returned:
             message += "### Award Group: **" + key + "**\n"
             message += '- ' + '\n- '.join(returned.split('\n')) + '\n'

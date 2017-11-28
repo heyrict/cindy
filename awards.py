@@ -1,4 +1,15 @@
+'''isort:skip_file'''
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
+
+import django
+django.setup()
+from django.utils import timezone
+from django.db.models import Count
+
 from sui_hei.models import *
+
+BEST_OF_MONTH_GRANT_DAY = 15
 
 snipe = (
     (5, Award.objects.get_or_create(name_ja="千里眼")[0]),
@@ -59,6 +70,59 @@ good_ques = (
     (22222, Award.objects.get_or_create(name_ja="地球儀")[0]),
     (33333, Award.objects.get_or_create(name_ja="ポラリス")[0]), )
 
+star = (
+    (5, Award.objects.get_or_create(
+        name_ja="スターター",
+        description_ja="他を知り己を知る。"
+        "自らを高めるためには、他の問題を知る事も重要だ。"
+        "君の好きな問題・面白いと思った問題・感動した問題、そんな問題にはスターを入れてみよう。"
+        "そこが君のスタートラインだ。")),
+    (100, Award.objects.get_or_create(
+        name_ja="ポスター",
+        description_ja="彼のスター欄には様々な問題が展示されている。"
+        "そのスター欄を眺めるだけでも一見の価値はあるだろう。")),
+    (300, Award.objects.get_or_create(
+        name_ja="キャスター",
+        description_ja="彼のスター欄は水平思考とは何かを物語っている。"
+        "彼に「どういう問題が良問だと思う? 」と聞いてみよう。"
+        "きっと嬉々として語ってくれるはずだ。")),
+    (500, Award.objects.get_or_create(
+        name_ja="レジスター",
+        description_ja="彼のスター欄には様々な問題が登録されている。"
+        "「良い問題ってどうやって探せばいいんだろう…」。"
+        "そんな時は彼のスター欄を覗きに行くと良い。"
+        "選りすぐりの良問たちが君を出迎えてくれる。")),
+    (1000, Award.objects.get_or_create(
+        name_ja="マイスター",
+        description_ja="君はもはやスター名人である。"
+        "しかし、水平思考に終わりはない。"
+        "日夜良問とは何かについての考察や鍛錬を怠らず、良問を見つけてはスターを付ける。"
+        "君の業績は尊敬に値するものである。")),
+    (2000, Award.objects.get_or_create(
+        name_ja="クラスター",
+        description_ja="君がスターをつけるのではない。"
+        "良問が君の方に集まってくるのだ。"
+        "Cindyで作られた良問たちが君を構成しているのだ。")),
+    (5000, Award.objects.get_or_create(
+        name_ja="★",
+        description_ja="君は気づいた。"
+        "「そうだ。自分が星になれば良いんだ」。"
+        "君の姿はいつまでもCindyで輝き続けるだろう。")), )
+
+best_of_month = (
+    (1, Award.objects.get_or_create(name_ja="★鶴")[0]),
+    (2, Award.objects.get_or_create(name_ja="★鶯")[0]),
+    (3, Award.objects.get_or_create(name_ja="★燕")[0]),
+    (4, Award.objects.get_or_create(name_ja="★蝶")[0]),
+    (5, Award.objects.get_or_create(name_ja="★鰹")[0]),
+    (6, Award.objects.get_or_create(name_ja="★蝸牛")[0]),
+    (7, Award.objects.get_or_create(name_ja="★蝉")[0]),
+    (8, Award.objects.get_or_create(name_ja="★鈴虫")[0]),
+    (9, Award.objects.get_or_create(name_ja="★蜻蛉")[0]),
+    (10, Award.objects.get_or_create(name_ja="★啄木鳥")[0]),
+    (11, Award.objects.get_or_create(name_ja="★鷹")[0]),
+    (12, Award.objects.get_or_create(name_ja="★狼")[0]), )
+
 
 class SuiheiAwardJudger(object):
     def __init__(self, judge=None):
@@ -71,13 +135,18 @@ class SuiheiAwardJudger(object):
 
     def _grant(self, user, award):
         '''grant award to user'''
-        ua, status = UserAward.objects.get_or_create(user_id=user, award_id=award)
+        ua, status = UserAward.objects.get_or_create(
+            user_id=user, award_id=award)
         if status:
             print("Grant", award, "to", user)
             self.message += "Grant " + str(award) + " to " + str(user) + "\n"
 
     def execute(self, user):
-        award = self.judge(user)
+        if self.judge:
+            award = self.judge(user)
+        else:
+            award = []
+
         for a in award:
             self._grant(user, a)
         return self.message
@@ -86,6 +155,38 @@ class SuiheiAwardJudger(object):
         for user in users:
             self.execute(user)
         return self.message
+
+
+class SuiheiAwardTimedJudger(SuiheiAwardJudger):
+    def __init__(self, day=None, weekday=None, month=None, *args, **kwargs):
+        self.day = day
+        self.weekday = weekday
+        self.month = month
+        super(SuiheiAwardTimedJudger, self).__init__(*args, **kwargs)
+
+    def _time_is_ok(self):
+        today = timezone.now()
+
+        if self.day and self.day != today.day:
+            return False
+        if self.weekday and self.weekday != today.weekday:
+            return False
+        if self.month and self.month != today.month:
+            return False
+
+        return True
+
+    def execute(self, *args, **kwargs):
+        if self._time_is_ok():
+            return super(SuiheiAwardTimedJudger, self).execute(*args, **kwargs)
+        else:
+            return ""
+
+    def execAll(self, *args, **kwargs):
+        if self._time_is_ok():
+            return super(SuiheiAwardTimedJudger, self).execAll(*args, **kwargs)
+        else:
+            return ""
 
 
 def _award_or_none(count, awards):
@@ -134,6 +235,11 @@ def _sniped_judge(user):
     return _award_or_none(count, sniped)
 
 
+def _star_judge(user):
+    star_count = Star.objects.filter(user_id=user).count()
+    return _award_or_none(star_count, star)
+
+
 judgers = {
     "soup": SuiheiAwardJudger(judge=_soup_judge),
     "shitumon": SuiheiAwardJudger(judge=_shitumon_judge),
@@ -141,4 +247,48 @@ judgers = {
     "good_ques": SuiheiAwardJudger(judge=_good_ques_judge),
     "snipe": SuiheiAwardJudger(judge=_snipe_judge),
     "sniped": SuiheiAwardJudger(judge=_sniped_judge),
+    "star": SuiheiAwardJudger(judge=_star_judge),
+}
+
+
+def best_of_month_granter():
+    # get current time
+    today = timezone.now()
+
+    # skip if is not the grant day
+    if today.day != BEST_OF_MONTH_GRANT_DAY:
+        return ""
+
+    # get year & month of the previous month
+    prevMonth = today.month - 1
+    prevYear = today.year
+    if prevMonth == 0:
+        prevMonth = 12
+        prevYear -= 1
+
+    # get the best soup of the last month
+    soupInPrevMonth = Mondai.objects.filter(
+        created__month=prevMonth,
+        created__year=prevYear).annotate(Count("star"))
+    best_soup_of_last_month = soupInPrevMonth.order_by("-star__count").first()
+    award_of_last_month = dict(best_of_month)[prevMonth]
+
+    # if no soup found, return
+    if not best_soup_of_last_month:
+        return ""
+
+    # grant award
+    ua, status = UserAward.objects.get_or_create(
+        user_id=best_soup_of_last_month.user_id, award_id=award_of_last_month)
+    message = "Grant [" + str(award_of_last_month) + ']'\
+              " to " + str(best_soup_of_last_month.user_id.nickname) + \
+              " for soup <" + str(best_soup_of_last_month.title) + '>'\
+              " got the most star count " + str(best_soup_of_last_month.star__count) + \
+              " in " + best_soup_of_last_month.created.date().strftime("%Y/%m/%d") + '\n'
+    print(message)
+    return message
+
+
+granters = {
+    "best_of_month": best_of_month_granter,
 }
