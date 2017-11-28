@@ -5,7 +5,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
 import django
 django.setup()
 from django.utils import timezone
-from django.db.models import Count
+from django.db.models import Count, Max
 
 from sui_hei.models import *
 
@@ -270,21 +270,26 @@ def best_of_month_granter():
     soupInPrevMonth = Mondai.objects.filter(
         created__month=prevMonth,
         created__year=prevYear).annotate(Count("star"))
-    best_soup_of_last_month = soupInPrevMonth.order_by("-star__count").first()
+    star_count_max = soupInPrevMonth.aggregate(
+        Max("star__count"))["star__count__max"]
+    best_soups_of_last_month = soupInPrevMonth.filter(
+        star__count=star_count_max).all()
     award_of_last_month = dict(best_of_month)[prevMonth]
 
     # if no soup found, return
-    if not best_soup_of_last_month:
+    if not best_soups_of_last_month:
         return ""
 
     # grant award
-    ua, status = UserAward.objects.get_or_create(
-        user_id=best_soup_of_last_month.user_id, award_id=award_of_last_month)
-    message = "Grant [" + str(award_of_last_month) + ']'\
-              " to " + str(best_soup_of_last_month.user_id.nickname) + \
-              " for soup <" + str(best_soup_of_last_month.title) + '>'\
-              " got the most star count " + str(best_soup_of_last_month.star__count) + \
-              " in " + best_soup_of_last_month.created.date().strftime("%Y/%m/%d") + '\n'
+    message = ""
+    for s in best_soups_of_last_month:
+        ua, status = UserAward.objects.get_or_create(
+            user_id=s.user_id, award_id=award_of_last_month)
+        message += "Grant [" + str(award_of_last_month) + ']'\
+                  " to " + str(s.user_id.nickname) + \
+                  " for soup <" + str(s.title) + '>'\
+                  " got the most star count " + str(s.star__count) + \
+                  " in " + s.created.date().strftime("%Y/%m/%d") + '\n'
     print(message)
     return message
 
