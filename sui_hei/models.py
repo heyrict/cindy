@@ -24,7 +24,7 @@ class Award(models.Model):
         }
 
     def stringify_meta(self):
-        return {"id": self.id, "name": self.name}
+        return self.stringify()
 
 
 class User(AbstractUser):

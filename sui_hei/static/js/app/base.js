@@ -12,6 +12,14 @@ require([
   "bootbox"
 ], function($, sidebar, common) {
   $(document).ready(function() {
+    // enable popover
+    $("body").popover({
+      selector: "[data-toggle='popover']",
+      placement: "top",
+      trigger: "focus",
+      html: true
+    });
+
     // Prevent multiple form submission
     can_submit = {};
     $("form").each(function(index) {

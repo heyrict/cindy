@@ -226,7 +226,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function RenderMondaiContentHeader(data) {
     var giverstr = `
 <li><b>${gettext("giver")}: ${data.user_id.nickname}${data.user_id.current_award
-      ? "[" + data.user_id.current_award.name + "]"
+      ? _render_award(data.user_id.current_award)
       : ""}</b></li>`;
     var createdstr = `
 <li>${gettext("created")}: ${moment(data.created).calendar()}</li>`;
@@ -314,7 +314,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_giver(user) {
-    var award = user.current_award ? `[${user.current_award.name}]` : "";
+    var award = user.current_award ? _render_award(user.current_award) : "";
     return `
 <a href="${common.urls.profile(
       user.id
@@ -397,22 +397,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           returns += pf[f];
           returns += pf.current_award ? " [" + pf.current_award.name + "]" : "";
           returns += "<font color='#888'>";
-          // Dropped for time consuming
-          /*$.ajax({
-            type: "post",
-            url: common.urls.useraward_list_api,
-            data: {
-              csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-              filter: JSON.stringify({ user_id: pf.id })
-            },
-            async: false,
-            success: function(data) {
-              data.data.forEach(function(d) {
-                if (d.award_id.id != pf.current_award.id)
-                  returns += "[" + d.award_id.name + "]";
-              });
-            }
-          });*/
           returns += "</font>";
         } else {
           returns += pf[f];
@@ -481,7 +465,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         .user_id.nickname}</a>
       `;
       output += lobby.user_id.current_award
-        ? `[${lobby.user_id.current_award.name}]`
+        ? "[" + lobby.user_id.current_award.name + "]"
         : "";
       output += "</span>";
 
@@ -599,9 +583,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   <a href="${common.urls.profile(data.user_id.id)}">
     ${data.user_id.nickname}
   </a>
-  ${data.user_id.current_award
-    ? "[" + data.user_id.current_award.name + "]"
-    : ""}
+  ${data.user_id.current_award ? _render_award(data.user_id.current_award) : ""}
 </div>
 <div class="vertical_line"></div>
 <div style="width:69%; float:right;">
@@ -650,7 +632,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     ${data.owner_id.nickname}
   </a>
   ${data.owner_id.current_award
-    ? "[" + data.owner_id.current_award.name + "]"
+    ? _render_award(data.owner_id.current_award)
     : ""}
 </div>`;
     } else {
@@ -711,7 +693,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           grid_name: gettext("Nickname"),
           grid_data:
             data.nickname +
-            (data.current_award ? "[" + data.current_award.name + "]" : "")
+            (data.current_award ? _render_award(data.current_award) : "")
         },
         {
           name: "availdable_awards",
@@ -811,9 +793,20 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_profile_awards_list(data) {
     var returns = [];
     data.available_awards.forEach(function(award) {
-      returns.push("[" + award.name + "]");
+      returns.push(_render_award(award));
     });
     return returns.join(", ");
+  }
+
+  function _render_award(data, additionalClass) {
+    additionalClass = additionalClass || "";
+    return `
+<a tabindex="0" href="javascript:void(0);" role="button"
+  class="${additionalClass}" style="color:black;" data-toggle="popover"
+  title="${data.name}" data-content="${data.description}">
+  [${data.name}]
+</a>
+    `;
   }
 
   return {
