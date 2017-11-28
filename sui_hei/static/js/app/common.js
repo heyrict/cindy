@@ -113,7 +113,7 @@ define(
           returns += `
 <li${i == 0 ? " class='active'" : ""}>
   <a data-toggle="tab" data-target="#${_createID(tab_contents[i], namespace)}"
-  href="javascript:void(0);">
+    href="javascript:void(0);">
     ${tab_titles[i]}
   </a>
 </li>
@@ -210,7 +210,7 @@ define(
         sanitizeHtml(md.render(PreNorm(string)), {
           allowedTags: false,
           allowedAttributes: false,
-          allowedSchemes: ["http", "https", "ftp", "mailto", "chat"]
+          allowedSchemes: ["http", "https", "ftp", "mailto", "chat", "javascript"]
         })
       );
     }

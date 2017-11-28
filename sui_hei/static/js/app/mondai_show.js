@@ -124,7 +124,8 @@ require([
         $("#mondai_show_push_ques").removeClass("hidden");
       }
       // for guests
-      if (window.django.user_id === null) $(".for_guests").removeClass("hidden");
+      if (window.django.user_id === null)
+        $(".for_guests").removeClass("hidden");
       else $(".for_guests").addClass("hidden");
       // push answ
       if (data.user_id.id != window.django.user_id) {
@@ -141,6 +142,7 @@ require([
       // giver panel
       if (data.user_id.id == window.django.user_id) {
         $("#mondai_giver_panel").removeClass("hidden");
+        $("#memo_preview_div").removeClass("hidden");
         if (data.status == 0) {
           $("#mondai_giver_panel_solved").addClass("hidden");
           $("#mondai_giver_panel_unsolved").removeClass("hidden");
@@ -160,7 +162,10 @@ require([
     }
 
     function init_evaluation_panel() {
-      if (window.django.user_id === null || window.django.user_id == mondai_giver_id) {
+      if (
+        window.django.user_id === null ||
+        window.django.user_id == mondai_giver_id
+      ) {
         $(".evaluation_panel").addClass("hidden");
         $(".paticipants_panel").addClass("hidden");
       } else {
@@ -175,7 +180,7 @@ require([
             })
           },
           function(queryData) {
-            if (queryData.data.length = 1 && queryData.data[0].value) {
+            if ((queryData.data.length = 1 && queryData.data[0].value)) {
               $("#starbar").attr("data-slider-value", queryData.data[0].value);
             } else {
               $("#starbar").attr("data-slider-value", 0);
@@ -270,25 +275,16 @@ require([
     }
 
     // Previews
-    var PageURL = window.location.pathname;
-    var path = PageURL.split("/");
-    var mondai_id = path[path.length - 1];
-
     function manually_apply_markdown() {
-      if ($(".mondai_content_content").length > 0) {
-        $(".mondai_content_content").html(
-          common.text2md($(".mondai_content_content").html())
+      if ($(".kaisetu_textarea").length > 0) {
+        $("#kaisetu_preview").html(
+          common.text2md($(".kaisetu_textarea").val())
         );
       }
-      if ($(".mondai_kaisetu_content").length > 0) {
-        $(".mondai_kaisetu_content").html(
-          common.text2md($(".mondai_kaisetu_content").html())
-        );
-      }
-    }
 
-    if ($(".kaisetu_textarea").length > 0) {
-      $("#kaisetu_preview").html(common.text2md($(".kaisetu_textarea").val()));
+      if ($(".memo_textarea").length > 0) {
+        $("#memo_preview").html(common.text2md($(".memo_textarea").val()));
+      }
     }
 
     $(".kaisetu_textarea").on("input", function() {
