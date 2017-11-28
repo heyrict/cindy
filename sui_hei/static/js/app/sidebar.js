@@ -346,6 +346,10 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     }
   }
 
+  function IsSmallScreen() {
+    return small_screen;
+  }
+
   return {
     CalcGoodRect: CalcGoodRect,
     ResizeSidebar: ResizeSidebar,
@@ -358,6 +362,6 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     PostChat: PostChat,
     GetChannel: getCurrentChannel,
     __init__: init,
-    IsSmallScreen: () => small_screen
+    IsSmallScreen: IsSmallScreen
   };
 });
