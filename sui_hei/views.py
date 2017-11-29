@@ -420,7 +420,9 @@ class ProfileEdit(UpdateView):
                       str(form['profile'])):
             oldUserAward = Award.objects.get_or_create(name_ja="☆ラテシンの使者")[0]
             grantOldUserAward = UserAward.objects.get_or_create(
-                user_id=self.request.user, award_id=oldUserAward)[0]
+                user_id=self.request.user,
+                award_id=oldUserAward,
+                created=timezone.now())[0]
             grantOldUserAward.save()
         return super(ProfileEdit, self).form_valid(form)
 
@@ -507,7 +509,8 @@ def mondai_add(request):
 def award_change(request):
     if request.method == "POST":
         useraward_id = request.POST.get('useraward')
-        useraward = UserAward.objects.get(id=useraward_id) if useraward_id else None
+        useraward = UserAward.objects.get(
+            id=useraward_id) if useraward_id else None
         request.user.current_award = useraward
         request.user.save()
     return redirect(request.META['HTTP_REFERER'])

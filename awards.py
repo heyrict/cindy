@@ -136,7 +136,7 @@ class SuiheiAwardJudger(object):
     def _grant(self, user, award):
         '''grant award to user'''
         ua, status = UserAward.objects.get_or_create(
-            user_id=user, award_id=award)
+            user_id=user, award_id=award, created=timezone.now())
         if status:
             print("Grant", award, "to", user)
             self.message += "Grant " + str(award) + " to " + str(user) + "\n"
@@ -284,7 +284,9 @@ def best_of_month_granter():
     message = ""
     for s in best_soups_of_last_month:
         ua, status = UserAward.objects.get_or_create(
-            user_id=s.user_id, award_id=award_of_last_month)
+            user_id=s.user_id,
+            award_id=award_of_last_month,
+            created=timezone.now())
         message += "Grant [" + str(award_of_last_month) + ']'\
                   " to " + str(s.user_id.nickname) + \
                   " for soup <" + str(s.title) + '>'\
