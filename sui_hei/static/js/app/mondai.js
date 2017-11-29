@@ -226,7 +226,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function RenderMondaiContentHeader(data) {
     var giverstr = `
 <li><b>${gettext("giver")}: ${data.user_id.nickname}${data.user_id.current_award
-      ? _render_award(data.user_id.current_award)
+      ? _render_useraward(data.user_id.current_award)
       : ""}</b></li>`;
     var createdstr = `
 <li>${gettext("created")}: ${moment(data.created).calendar()}</li>`;
@@ -314,7 +314,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_giver(user) {
-    var award = user.current_award ? _render_award(user.current_award) : "";
+    var award = user.current_award ? _render_useraward(user.current_award) : "";
     return `
 <a href="${common.urls.profile(
       user.id
@@ -395,7 +395,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           returns += moment(pf[f]).calendar();
         } else if (f == "nickname") {
           returns += pf[f];
-          returns += pf.current_award ? " [" + pf.current_award.name + "]" : "";
+          returns += pf.current_award ? " [" + pf.current_award.award_id[0].name + "]" : "";
           returns += "<font color='#888'>";
           returns += "</font>";
         } else {
@@ -465,7 +465,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         .user_id.nickname}</a>
       `;
       output += lobby.user_id.current_award
-        ? "[" + lobby.user_id.current_award.name + "]"
+        ? "[" + lobby.user_id.current_award.award_id[0].name + "]"
         : "";
       output += "</span>";
 
@@ -569,6 +569,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   <a style="color:#333" href="${common.urls.profile(comment.user_id.id)}">
     ${comment.user_id.nickname} 
   </a>
+  ${_render_useraward(comment.user_id.current_award)}
 </div>`;
       commentstr += "</div>";
     });
@@ -583,7 +584,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   <a href="${common.urls.profile(data.user_id.id)}">
     ${data.user_id.nickname}
   </a>
-  ${data.user_id.current_award ? _render_award(data.user_id.current_award) : ""}
+  ${data.user_id.current_award ? _render_useraward(data.user_id.current_award) : ""}
 </div>
 <div class="vertical_line"></div>
 <div style="width:69%; float:right;">
@@ -632,7 +633,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     ${data.owner_id.nickname}
   </a>
   ${data.owner_id.current_award
-    ? _render_award(data.owner_id.current_award)
+    ? _render_useraward(data.owner_id.current_award)
     : ""}
 </div>`;
     } else {
@@ -693,7 +694,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           grid_name: gettext("Nickname"),
           grid_data:
             data.nickname +
-            (data.current_award ? _render_award(data.current_award) : "")
+            (data.current_award ? _render_useraward(data.current_award) : "")
         },
         {
           name: "availdable_awards",
@@ -768,18 +769,18 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_profile_awards_form(data) {
     var returns = `
 <form id="profile_awards_form" method="post">
-  <select name="award">
+  <select name="useraward">
     <option value="">${gettext("None")}</option>`;
-    data.available_awards.forEach(function(award) {
+    data.available_awards.forEach(function(useraward) {
       returns +=
         "<option value='" +
-        award.id +
+        useraward.id +
         "'" +
-        (data.current_award && award.id == data.current_award.id
+        (data.current_award && useraward.id == data.current_award.id
           ? "selected='selected'"
           : "") +
         ">";
-      returns += award.name;
+      returns += useraward.award_id[0].name;
       returns += "</option>";
     });
     returns += `
@@ -792,19 +793,22 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_profile_awards_list(data) {
     var returns = [];
-    data.available_awards.forEach(function(award) {
-      returns.push(_render_award(award));
+    data.available_awards.forEach(function(useraward) {
+      returns.push(_render_useraward(useraward));
     });
-    return returns.join(", ");
+    return returns.join(" ");
   }
 
-  function _render_award(data, additionalClass) {
+  function _render_useraward(data, additionalClass) {
     additionalClass = additionalClass || "";
+    console.log(data);
     return `
 <a tabindex="0" href="javascript:void(0);" role="button"
   class="${additionalClass}" style="color:black;" data-toggle="popover"
-  title="${data.name}" data-content="${data.description}">
-  [${data.name}]
+  title="${data.award_id[0].name}" 
+  data-content="${data.award_id[0].description}<br />
+    <span class='pull-right' style='color:#ff582b; font-weight:bold;'>🏆${data.created}</span>">
+  [${data.award_id[0].name}]
 </a>
     `;
   }

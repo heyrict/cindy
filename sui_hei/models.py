@@ -28,9 +28,10 @@ class Award(models.Model):
 
 
 class User(AbstractUser):
-    nickname = models.CharField(_('nick_name'), max_length=255, null=False, unique=True)
+    nickname = models.CharField(
+        _('nick_name'), max_length=255, null=False, unique=True)
     profile = models.TextField(_('profile'), default="")
-    current_award = models.ForeignKey(Award, null=True)
+    current_award = models.ForeignKey("UserAward", null=True)
     experience = models.IntegerField(_('experience'), default=0)
 
     REQUIRED_FIELDS = ['nickname']
@@ -46,12 +47,12 @@ class User(AbstractUser):
 
     def stringify(self):
         if self.current_award:
-            current_award_str = self.current_award.stringify_meta()
+            current_award_str = self.current_award.stringify_meta(user=False)
         else:
             current_award_str = None
 
         available_awards = [
-            ua.award_id.stringify_meta()
+            ua.stringify_meta(user=False)
             for ua in UserAward.objects.filter(user_id=self)
         ]
         return {
@@ -68,7 +69,7 @@ class User(AbstractUser):
 
     def stringify_meta(self):
         if self.current_award:
-            current_award_str = self.current_award.stringify_meta()
+            current_award_str = self.current_award.stringify_meta(user=False)
         else:
             current_award_str = None
         return {
@@ -84,6 +85,7 @@ class User(AbstractUser):
 class UserAward(models.Model):
     user_id = models.ForeignKey(User)
     award_id = models.ForeignKey(Award)
+    created = models.DateField(_("created"), null=False)
 
     class Meta:
         verbose_name = _("User-Award")
@@ -91,11 +93,16 @@ class UserAward(models.Model):
     def __str__(self):
         return "[%s] owns [%s]" % (self.user_id.nickname, self.award_id)
 
-    def stringify_meta(self):
-        return {
-            "user_id": self.user_id.stringify_meta(),
-            "award_id": self.award_id.stringify_meta()
-        }
+    def stringify(self, user=True, award=True):
+        returns = {"created": self.created, "id": self.id}
+        if user:
+            returns["user_id"] = self.user_id.stringify_meta()
+        if award:
+            returns["award_id"] = self.award_id.stringify_meta(),
+        return returns
+
+    def stringify_meta(self, *args, **kwargs):
+        return self.stringify(*args, **kwargs)
 
 
 class Mondai(models.Model):

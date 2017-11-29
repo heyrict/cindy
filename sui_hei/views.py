@@ -115,19 +115,21 @@ class APIListProvider(object):
 
 
 class APIDetailProvider(object):
-    def __init__(self, baseClass, dataExtra=None):
+    def __init__(self, baseClass, dataExtra=None, **kwargs):
         '''
         Initialize an APIProvider.
 
         Parameters
         ----------
         baseClass: class. The base class for querying
+        kwargs: keyword arguments will be passed on to stringify
         '''
         self.baseClass = baseClass
         self.dataExtra = dataExtra
+        self.stringify_options = kwargs
 
     def to_dict(self, obj):
-        data = obj.stringify()
+        data = obj.stringify(**self.stringify_options)
         if self.dataExtra:
             data.update(self.dataExtra(obj))
         return {"data": data}
@@ -504,9 +506,9 @@ def mondai_add(request):
 
 def award_change(request):
     if request.method == "POST":
-        award_id = request.POST.get('award')
-        award = Award.objects.get(id=award_id) if award_id else None
-        request.user.current_award = award
+        useraward_id = request.POST.get('useraward')
+        useraward = UserAward.objects.get(id=useraward_id) if useraward_id else None
+        request.user.current_award = useraward
         request.user.save()
     return redirect(request.META['HTTP_REFERER'])
 
