@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
                                         BaseUserManager)
 from django.db import connections, models
@@ -59,7 +61,7 @@ class User(AbstractUser):
         ]
         return {
             "id": self.id,
-            "nickname": self.nickname,
+            "nickname": re.sub("<", "&lt;", re.sub(">", "&gt;", self.nickname)),
             "profile": self.profile,
             "current_award": current_award_str,
             "available_awards": available_awards,
@@ -78,7 +80,7 @@ class User(AbstractUser):
             current_award_str = None
         return {
             "id": self.id,
-            "nickname": self.nickname,
+            "nickname": re.sub("<", "&lt;", re.sub(">", "&gt;", self.nickname)),
             "current_award": current_award_str,
             "experience": self.experience,
             "username": self.username,
@@ -140,7 +142,7 @@ class Mondai(models.Model):
         return {
             "id": self.id,
             "user_id": self.user_id.stringify_meta(),
-            "title": self.title,
+            "title": re.sub("<", "&lt;", re.sub(">", "&gt;", self.title)),
             "yami": self.yami,
             "genre": self.genre,
             "content": self.content,
@@ -158,7 +160,7 @@ class Mondai(models.Model):
         return {
             "id": self.id,
             "user_id": self.user_id.stringify_meta(),
-            "title": self.title,
+            "title": re.sub("<", "&lt;", re.sub(">", "&gt;", self.title)),
             "yami": self.yami,
             "genre": self.genre,
             "created": self.created,

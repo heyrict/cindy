@@ -59,7 +59,12 @@ require([
         $(".mondai_content_content").html(
           mondai.RenderMondaiContentContent(data)
         );
-        $("#page_title").html("Cindy - " + mondai.RenderMondaiTitle(data));
+        $("#page_title").html(
+          "Cindy - " +
+            sanitizeHtml(mondai.RenderMondaiTitle(data), {
+              allowedTags: []
+            })
+        );
 
         if (data.status == 1 || data.status == 2) {
           init_evaluation_panel();
