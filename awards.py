@@ -139,6 +139,7 @@ class SuiheiAwardJudger(object):
             user_id=user, award_id=award)
         if status:
             ua.created = timezone.now()
+            ua.save()
             print("Grant", award, "to", user)
             self.message += "Grant " + str(award) + " to " + str(user) + "\n"
 
@@ -289,6 +290,7 @@ def best_of_month_granter():
             award_id=award_of_last_month)
         if status:
             ua.created = timezone.now()
+            ua.save()
             message += "Grant [" + str(award_of_last_month) + ']'\
                   " to " + str(s.user_id.nickname) + \
                   " for soup <" + str(s.title) + '>'\
