@@ -720,6 +720,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         { name: "goodques_count", grid_name: gettext("Good Question Count") },
         { name: "trueques_count", grid_name: gettext("True Answer Count") },
         { name: "comment_count", grid_name: gettext("Comment Count") },
+        { name: "snipe", grid_name: gettext("Snipe Count") },
+        { name: "sniped", grid_name: gettext("Sniped Count") },
         {
           name: "profile",
           grid_name:
@@ -801,7 +803,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_useraward(data, additionalClass) {
     additionalClass = additionalClass || "";
-    console.log(data);
     return `
 <a tabindex="0" href="javascript:void(0);" role="button"
   class="${additionalClass}" style="color:black;" data-toggle="popover"

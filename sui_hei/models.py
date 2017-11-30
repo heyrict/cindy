@@ -33,6 +33,8 @@ class User(AbstractUser):
     profile = models.TextField(_('profile'), default="")
     current_award = models.ForeignKey("UserAward", null=True)
     experience = models.IntegerField(_('experience'), default=0)
+    snipe = models.IntegerField(_('snipe'), default=0)
+    sniped = models.IntegerField(_('sniped'), default=0)
 
     REQUIRED_FIELDS = ['nickname']
 
@@ -64,7 +66,9 @@ class User(AbstractUser):
             "experience": self.experience,
             "username": self.username,
             "date_joined": self.date_joined,
-            "last_login": self.last_login
+            "last_login": self.last_login,
+            "snipe": self.snipe,
+            "sniped": self.sniped,
         }
 
     def stringify_meta(self):

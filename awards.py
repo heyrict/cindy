@@ -5,7 +5,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
 import django
 django.setup()
 from django.utils import timezone
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q
 
 from sui_hei.models import *
 
@@ -216,22 +216,42 @@ def _good_ques_judge(user):
 
 
 def _snipe_judge(user):
-    true_ques = Shitumon.objects.filter(user_id=user, true=True)
+    true_ques = Shitumon.objects.filter(user_id=user).order_by("id")
+    tested_soups = []
     count = 0
     for q in true_ques:
-        if (q.mondai_id.shitumon_set.order_by("id").first()
-                and q.mondai_id.shitumon_set.order_by("id").first() == q):
+        if q.mondai_id_id in tested_soups:
+            continue
+        else:
+            tested_soups.append(q.mondai_id_id)
+
+        soup = q.mondai_id
+
+        if not (soup.genre == 0 or soup.yami):
+            continue
+
+        if q.true and (
+                not soup.shitumon_set.filter(good=True).order_by("id").first() or
+                soup.shitumon_set.filter(good=True).order_by("id").first().id < q.id):
             count += 1
+
+    user.snipe = count
+    user.save()
+    print("Update:", user, "snipe ->", count)
     return _award_or_none(count, snipe)
 
 
 def _sniped_judge(user):
-    soups = Mondai.objects.filter(user_id=user)
+    soups = Mondai.objects.filter(Q(genre=0) | Q(yami=True), user_id=user, status=1)
     count = 0
     for s in soups:
-        if (s.shitumon_set.order_by("id").first()
-                and s.shitumon_set.order_by("id").first().true):
+        if (s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first() and
+                s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first().true):
             count += 1
+
+    user.sniped = count
+    user.save()
+    print("Update:", user, "sniped ->", count)
     return _award_or_none(count, sniped)
 
 

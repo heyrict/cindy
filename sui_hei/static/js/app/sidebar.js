@@ -285,6 +285,7 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
   }
 
   function OpenChat(channel, chatpage) {
+    var $this = $(".leftbar");
     // set default values
     channel = channel || "lobby";
     chatpage = chatpage || 1;
