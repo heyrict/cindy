@@ -136,8 +136,10 @@ class SuiheiAwardJudger(object):
     def _grant(self, user, award):
         '''grant award to user'''
         ua, status = UserAward.objects.get_or_create(
-            user_id=user, award_id=award, created=timezone.now())
+            user_id=user, award_id=award)
         if status:
+            ua.created = timezone.now()
+            ua.save()
             print("Grant", award, "to", user)
             self.message += "Grant " + str(award) + " to " + str(user) + "\n"
 
