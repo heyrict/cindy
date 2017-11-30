@@ -92,7 +92,7 @@ class User(AbstractUser):
 class UserAward(models.Model):
     user_id = models.ForeignKey(User)
     award_id = models.ForeignKey(Award)
-    created = models.DateField(_("created"), null=False, default=timezone.now())
+    created = models.DateField(_("created"), null=False, default=timezone.now)
 
     class Meta:
         verbose_name = _("User-Award")
