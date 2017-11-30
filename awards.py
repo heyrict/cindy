@@ -307,9 +307,11 @@ def best_of_month_granter():
     for s in best_soups_of_last_month:
         ua, status = UserAward.objects.get_or_create(
             user_id=s.user_id,
-            award_id=award_of_last_month,
-            created=timezone.now())
-        message += "Grant [" + str(award_of_last_month) + ']'\
+            award_id=award_of_last_month)
+        if status:
+            ua.created = timezone.now()
+            ua.save()
+            message += "Grant [" + str(award_of_last_month) + ']'\
                   " to " + str(s.user_id.nickname) + \
                   " for soup <" + str(s.title) + '>'\
                   " got the most star count " + str(s.star__count) + \

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
                                         BaseUserManager)
 from django.db import connections, models
-from django.db.models import Q
+from django.db.models import Q, DO_NOTHING, SET_NULL
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -31,7 +31,7 @@ class User(AbstractUser):
     nickname = models.CharField(
         _('nick_name'), max_length=255, null=False, unique=True)
     profile = models.TextField(_('profile'), default="")
-    current_award = models.ForeignKey("UserAward", null=True)
+    current_award = models.ForeignKey("UserAward", null=True, on_delete=SET_NULL)
     experience = models.IntegerField(_('experience'), default=0)
     snipe = models.IntegerField(_('snipe'), default=0)
     sniped = models.IntegerField(_('sniped'), default=0)
