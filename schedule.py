@@ -88,7 +88,7 @@ def grant_awards_to_users(recent=None):
 
 
 # Update user experience
-update_user_exp(recent=timedelta(days=3))
+update_user_exp(recent=timedelta(days=1))
 
 # delete old lobby chat messages
 clean_recent_lobby(200)
@@ -100,7 +100,7 @@ if returned:
         returned.split('\n')) + '\n'
 
 # grant awards to users
-returned = grant_awards_to_users(recent=timedelta(days=3))
+returned = grant_awards_to_users(recent=timedelta(days=1))
 if returned:
     daily_message += "## Awards :crown:\n" + returned + '\n'
 
