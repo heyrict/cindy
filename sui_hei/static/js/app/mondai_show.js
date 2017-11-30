@@ -3,10 +3,11 @@ require([
   "./common",
   "./mondai",
   "./sidebar",
+  "sanitize-html",
   "../lib/bootstrap.min.js",
   "bootstrap-slider",
   "velocity-animate"
-], function($, common, mondai, sidebar, mondaiShowUI) {
+], function($, common, mondai, sidebar, sanitizeHtml) {
   $(document).ready(function() {
     // Previews
     var PageURL = window.location.pathname,
