@@ -201,6 +201,7 @@ def mondai_show_push_answ(request):
                     to_update[pk].true = not to_update[pk].true
 
             for _, obj in to_update.items():
+                obj.answeredtime = timezone.now()
                 obj.save()
 
             # Update Mondai's modified time
