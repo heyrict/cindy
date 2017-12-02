@@ -40,6 +40,10 @@ def index(request):
     })
 
 
+def simple(request):
+    return render(request, 'simple/main.html')
+
+
 class APIListProvider(object):
     def __init__(self, baseClass, queryExtra=None):
         '''
@@ -88,7 +92,6 @@ class APIListProvider(object):
         # don't need paginator
         else:
             returns = {"data": [m.stringify_meta() for m in queryDict]}
-
         return returns
 
     def as_api(self, request):

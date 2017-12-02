@@ -195,13 +195,13 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function RenderMondaiTitle(data) {
     returns =
       "[" +
-      _genre_code_dict[data.genre] +
+      common.genre_code_dict[data.genre] +
       (data.yami ? "×" + gettext("yami") : "") +
       "]";
     returns += data.title;
     if (data.status >= 2) {
       returns +=
-        "<font color=gray>(" + _status_code_dict[data.status] + ")</font>";
+        "<font color=gray>(" + common.status_code_dict[data.status] + ")</font>";
     }
     return returns;
   }
@@ -218,7 +218,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       current_page: data.page || 1,
       num_pages: data.num_pages || 1,
       classname: paginator_class || "lobby_paginator",
-      paginator_classname: "pagination-mini pagination-centered"
+      paginator_classname: "pagination-sm pagination-centered"
     });
   }
 
@@ -238,7 +238,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     if (data.status >= 3 && data.user_id.id != window.django.user_id) {
       mondai_content_content = gettext(
         "This soup's status is set to %s, which means you cannot view it."
-      ).replace(/%s/, _status_code_dict[data.status]);
+      ).replace(/%s/, common.status_code_dict[data.status]);
       mondai_content_content =
         "<font color='#aaa'>" + mondai_content_content + "</font>";
     } else {
@@ -247,39 +247,10 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return mondai_content_content;
   }
 
-  _status_class_dict = {
-    0: "status_unsolved",
-    1: "status_solved",
-    2: "status_dazed",
-    3: "status_hidden"
-  };
-
-  _status_code_dict = {
-    0: "unsolved",
-    1: "solved",
-    2: "dazed",
-    3: "hidden",
-    4: "forced hidden"
-  };
-
-  _status_color_dict = {
-    0: "#cb4b16",
-    1: "#859900",
-    2: "#259185",
-    3: "gray"
-  };
-
-  _genre_code_dict = {
-    0: gettext("Albatross"),
-    1: gettext("20th-Door"),
-    2: gettext("Little Albat"),
-    3: gettext("Others & Formal")
-  };
-
   function _render_label(status_code) {
-    var class_label = _status_class_dict[status_code];
-    var color_label = _status_color_dict[status_code];
-    var name_label = _status_code_dict[status_code];
+    var class_label = common.status_class_dict[status_code];
+    var color_label = common.status_color_dict[status_code];
+    var name_label = common.status_code_dict[status_code];
     return `<span class="status_label ${class_label}"><font color="${color_label}">${name_label}</font></span>`;
   }
 
@@ -303,7 +274,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_genre(genre_code, yami) {
     return `
-[${_genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
+[${common.genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
   }
 
   function _render_score(score, star_count) {
@@ -485,7 +456,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       },
       params
     );
-    var returns = `<div class='pagination ${params.paginator_classname}'><ul>`;
+    var returns = `<div class="text-center"><ul class='pagination ${params.paginator_classname}'>`;
 
     returns += `
 <li class="previous ${params.current_page > 1 ? "" : "disabled"}">
@@ -534,7 +505,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_profile_comments(data) {
     var commentstr = String();
     data.data.forEach(function(comment) {
-      commentstr += "<table class='table table-bordered span12'>";
+      commentstr += "<table class='table table-bordered col-xs-12'>";
       commentstr += "<tr>";
       commentstr += `
 <th>
@@ -743,7 +714,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
             "</a>"
         }
       ];
-    returns += "<table class='table table-bordered span12'>";
+    returns += "<table class='table table-bordered col-xs-12'>";
     rows.forEach(function(grid) {
       grid = $.extend(
         {

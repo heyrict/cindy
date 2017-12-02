@@ -41,7 +41,7 @@
   width: 43%;
   font-size: 14px;
   margin-top: 2px;
-  padding: 6px;
+  padding: 3px;
 }
 #lobby_chat_input {
   width: 94%;
@@ -53,7 +53,7 @@
   width: 95%;
   font-size: 16px;
   margin-top: 2px;
-  padding: 5px;
+  padding: 3px;
 }
 .lobby_chat_div {
   text-align: center;

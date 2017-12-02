@@ -47,6 +47,7 @@ urlpatterns = [
     url(r"^profile/(?P<pk>[0-9]+)$", views.profile, name="profile"),
     url(r"^profile/edit$", views.ProfileEdit.as_view(), name="profile_edit"),
     url(r"^profile/award_change", views.award_change, name="award_change"),
+    url(r"^simple", views.simple, name="simple"),
     # TODO: Add pages to apply for & grant awards
     url(r"^api/useraward_list$", views.APIListProvider(UserAward).as_api, name="useraward_list_api"),
     url(r"^api/profile_list$", views.APIListProvider(User).as_api, name="profile_list_api"),

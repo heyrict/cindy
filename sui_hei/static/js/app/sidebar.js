@@ -123,8 +123,8 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     // Set Height
     var nav_height = 60;
     var chat_height = 60;
-    var table_height = goodh - nav_height - chat_height - 5;
-    $(".lobby_navigation_div").velocity({ height: nav_height + "px" });
+    var table_height = goodh - nav_height - chat_height - 14;
+    $(".lobby_navigation_div").velocity({ height: nav_height + 2 + "px" });
     $(".lobby_chat_div").velocity({ height: nav_height + "px" });
     $(".lobby_table_div").css("height", table_height + "px");
   }

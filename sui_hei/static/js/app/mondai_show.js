@@ -262,7 +262,7 @@ require([
     }
 
     function fill_data_in_giver_panel(data) {
-      if ((data.user_id.id = window.django.user_id)) {
+      if ((data.user_id.id == window.django.user_id)) {
         memo_hash = common.hash(data.memo);
 
         $(".memo_textarea").each(function() {

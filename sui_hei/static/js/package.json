@@ -17,12 +17,16 @@
     "markdown-it-emoji": "^1.4.0",
     "moment": "^2.19.1",
     "moment-countdown": "0.0.3",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^16.2.0",
     "sanitize-html": "^1.16.1",
     "velocity-animate": "^1.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.32",
     "@babel/preset-env": "^7.0.0-beta.32",
+    "@babel/preset-react": "^7.0.0-beta.32",
     "babel-loader": "^8.0.0-beta.0",
     "expose-loader": "^0.7.3",
     "webpack": "^3.8.1"

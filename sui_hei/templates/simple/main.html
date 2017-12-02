@@ -1,0 +1,68 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title id="page_title">
+      Cindy - {% block pageTitle %} {% trans 'A website for playing situation puzzles' %}: {% trans 'Chat With Lateral Thinking!' %} {% endblock %}
+  </title>
+  {% csrf_token %}
+  <link rel="stylesheet" href="{% static 'js/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'js/node_modules/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/simple.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-slider.min.css' %}">
+  <style type="text/css">
+    {% block style %} 
+    {% endblock %} 
+  </style>
+  {% block style_include %}{% endblock %}
+  {% get_current_language as LANGUAGE_CODE %}
+  <script type="text/javascript">
+      LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";
+      window.django = { user_id: {{ request.user.id|default:"null" }}};
+  </script>
+  <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dist/react_vendor.chunk.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dist/vendor.chunk.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dist/simple.js' %}"></script>
+  <script type="text/javascript">
+  {% block script %} {% endblock %}
+  </script>
+  {% block script_include %}{% endblock %}
+</head>
+
+<header><div class="container">
+
+{% block child_navi %} 
+{% endblock %} 
+
+{% block extra_header %}
+{% endblock %}
+</div></header>
+
+<body>
+  <noscript>This appication requires javascript to function</noscript>
+  <div id="MainNavBar"></div>
+  <div id="root"></div>
+</body>
+
+<div id="message_edit_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="message_edit_modal_title" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="message_edit_modal_title">Edit</h3>
+  </div>
+  <div id="message_edit_modal_alert" class="alert alert-error" style="display:none;">
+    <button type="button" class="close">&times;</button>
+    <div id="message_edit_modal_alert_content"></div>
+  </div>
+  <div id="message_edit_modal_body" class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button id="message_edit_modal_save" class="btn btn-primary" aria-hidden="true">Save changes</button>
+  </div>
+</div>
+
+</html>

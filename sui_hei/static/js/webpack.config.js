@@ -11,13 +11,18 @@ module.exports = {
       "sanitize-html",
       "velocity-animate",
       "markdown-it",
-      "./lib/bootstrap.min.js",
+      "bootstrap",
       "bootbox",
       "bootstrap-slider",
       "moment",
       "moment-countdown",
-      "./app/common"
+      "./app/common",
     ],
+    react_vendor: [
+      "react",
+      "react-dom"
+    ],
+    simple: "./app/react/main.jsx",
     leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
@@ -41,7 +46,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"]
+            presets: ["@babel/preset-env", "@babel/react"]
           }
         }
       },
@@ -112,8 +117,8 @@ module.exports = {
   },
   plugins: [
     new CommonsChunkPlugin({
-      name: "vendor",
-      filename: "dist/vendor.chunk.js",
+      names: ["vendor", "react_vendor"],
+      filename: "dist/[name].chunk.js",
       minChunks: Infinity
     }),
     new ContextReplacementPlugin(

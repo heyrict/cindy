@@ -74,19 +74,19 @@ require([
       comments: false,
       profile: false
     };
-    $("a[data-target='#profile_pane_mystar']").on("show", function() {
+    $("a[data-target='#profile_pane_mystar']").on("show.bs.tab", function() {
       if (!loaded["mystar"]) {
         update_mystar(1);
         loaded["mystar"] = true;
       }
     });
-    $("a[data-target='#profile_pane_mysoup']").on("show", function() {
+    $("a[data-target='#profile_pane_mysoup']").on("show.bs.tab", function() {
       if (!loaded["mysoup"]) {
         update_mysoup(1);
         loaded["mysoup"] = true;
       }
     });
-    $("a[data-target='#profile_pane_comment']").on("show", function() {
+    $("a[data-target='#profile_pane_comment']").on("show.bs.tab", function() {
       if (!loaded["comment"]) {
         update_comment(1);
         loaded["comment"] = true;
