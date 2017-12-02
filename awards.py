@@ -240,7 +240,7 @@ def _snipe_judge(user):
         elif soup.genre == 0:
             first_good = soup.shitumon_set.filter(good=True).order_by("id").first()
             user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
-            if first_good and first_good.id < q.id and user_first.true:
+            if (not first_good or first_good.id < q.id) and user_first.true:
                 count += 1
 
     user.snipe = count
