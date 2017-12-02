@@ -240,7 +240,7 @@ def _snipe_judge(user):
     user.snipe = count
     user.save()
     print("Update:", user, "snipe ->", count)
-    return _award_or_none(count, snipe)
+    return []
 
 
 def _sniped_judge(user):
@@ -254,7 +254,7 @@ def _sniped_judge(user):
     user.sniped = count
     user.save()
     print("Update:", user, "sniped ->", count)
-    return _award_or_none(count, sniped)
+    return []
 
 
 def _star_judge(user):
