@@ -218,7 +218,7 @@ def _good_ques_judge(user):
 
 
 def _snipe_judge(user):
-    true_ques = Shitumon.objects.filter(user_id=user).order_by("id")
+    true_ques = Shitumon.objects.filter(user_id=user, true=True)
     tested_soups = []
     count = 0
     for q in true_ques:
@@ -232,10 +232,16 @@ def _snipe_judge(user):
         if not (soup.genre == 0 or soup.yami):
             continue
 
-        if q.true and (
-                not soup.shitumon_set.filter(good=True).order_by("id").first() or
-                soup.shitumon_set.filter(good=True).order_by("id").first().id < q.id):
-            count += 1
+        if soup.yami:
+            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
+            if user_first.true:
+                count += 1
+
+        elif soup.genre == 0:
+            first_good = soup.shitumon_set.filter(good=True).order_by("id").first()
+            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
+            if first_good and first_good.id < q.id and user_first.true:
+                count += 1
 
     user.snipe = count
     user.save()
