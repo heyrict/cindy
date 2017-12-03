@@ -235,12 +235,14 @@ def _snipe_judge(user):
         if soup.yami:
             user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
             if user_first.true:
+                print("---", user, ':', soup)
                 count += 1
 
         elif soup.genre == 0:
             first_good = soup.shitumon_set.filter(good=True).order_by("id").first()
             user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
             if (not first_good or first_good.id < q.id) and user_first.true:
+                print("---", user, ':', soup)
                 count += 1
 
     user.snipe = count
