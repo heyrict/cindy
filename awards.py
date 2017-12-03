@@ -2,6 +2,8 @@
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
 
+import numpy as np
+
 import django
 django.setup()
 from django.utils import timezone
@@ -317,17 +319,20 @@ def best_of_month_granter():
 
     # grant award
     message = ""
-    for s in best_soups_of_last_month:
-        ua, status = UserAward.objects.get_or_create(
-            user_id=s.user_id, award_id=award_of_last_month)
-        if status:
-            ua.created = timezone.now()
-            ua.save()
-            message += "Grant [" + str(award_of_last_month) + ']'\
-                  " to " + str(s.user_id.nickname) + \
-                  " for soup <" + str(s.title) + '>'\
-                  " got the most star count " + str(s.star__count) + \
-                  " in " + s.created.date().strftime("%Y/%m/%d") + '\n'
+    best_soup_index = int(np.argmax([s.score for s in best_soups_of_last_month]))
+    best_soup_of_last_month = best_soups_of_last_month[best_soup_index]
+
+    ua, status = UserAward.objects.get_or_create(
+        user_id=best_soup_of_last_month.user_id, award_id=award_of_last_month)
+    if status:
+        ua.created = timezone.now()
+        ua.save()
+        message += "Grant [" + str(award_of_last_month) + ']'\
+              " to " + str(best_soup_of_last_month.user_id.nickname) + \
+              " for soup <" + str(best_soup_of_last_month.title) + '>'\
+              " got the most star count " + str(best_soup_of_last_month.star__count) + \
+              " in " + best_soup_of_last_month.created.date().strftime("%Y/%m/%d") + '\n'
+
     print(message)
     return message
 
