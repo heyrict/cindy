@@ -233,15 +233,18 @@ def _snipe_judge(user):
             continue
 
         if soup.yami:
-            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
+            user_first = soup.shitumon_set.filter(
+                user_id=user).order_by("id").first()
             if user_first.true:
                 print("---", user, ':', soup)
                 count += 1
 
         elif soup.genre == 0:
-            first_good = soup.shitumon_set.filter(good=True).order_by("id").first()
-            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
-            if (not first_good or first_good.id < q.id) and user_first.true:
+            first_good = soup.shitumon_set.filter(
+                good=True).order_by("id").first()
+            user_first = soup.shitumon_set.filter(
+                user_id=user).order_by("id").first()
+            if (not first_good or first_good.id > q.id) and user_first.true:
                 print("---", user, ':', soup)
                 count += 1
 
@@ -252,11 +255,13 @@ def _snipe_judge(user):
 
 
 def _sniped_judge(user):
-    soups = Mondai.objects.filter(Q(genre=0) | Q(yami=True), user_id=user, status=1)
+    soups = Mondai.objects.filter(
+        Q(genre=0) | Q(yami=True), user_id=user, status=1)
     count = 0
     for s in soups:
-        if (s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first() and
-                s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first().true):
+        first_good_or_true = s.shitumon_set.filter(
+            Q(good=True) | Q(true=True)).order_by("id").first()
+        if (first_good_or_true and first_good_or_true.true):
             count += 1
 
     user.sniped = count
@@ -314,8 +319,7 @@ def best_of_month_granter():
     message = ""
     for s in best_soups_of_last_month:
         ua, status = UserAward.objects.get_or_create(
-            user_id=s.user_id,
-            award_id=award_of_last_month)
+            user_id=s.user_id, award_id=award_of_last_month)
         if status:
             ua.created = timezone.now()
             ua.save()
