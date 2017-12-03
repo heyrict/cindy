@@ -278,8 +278,8 @@ def mondai_edit_api(request):
         # validate, save message, return True
         error_message = None
         try:
-            if target in ["lobby", "homepage", "comment"
-                          ] and request.user == inst.user_id:
+            if (target == "homepage" and request.user.has_perm("sui_hei.can_add_info")) or \
+                (target in ["lobby", "comment" ] and request.user == inst.user_id):
                 if content == "":
                     inst.delete()
                 else:
