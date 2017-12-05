@@ -2,6 +2,8 @@
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cindy.settings")
 
+import numpy as np
+
 import django
 django.setup()
 from django.utils import timezone
@@ -71,43 +73,13 @@ good_ques = (
     (33333, Award.objects.get_or_create(name_ja="ポラリス")[0]), )
 
 star = (
-    (5, Award.objects.get_or_create(
-        name_ja="スターター",
-        description_ja="他を知り己を知る。"
-        "自らを高めるためには、他の問題を知る事も重要だ。"
-        "君の好きな問題・面白いと思った問題・感動した問題、そんな問題にはスターを入れてみよう。"
-        "そこが君のスタートラインだ。")[0]),
-    (100, Award.objects.get_or_create(
-        name_ja="ポスター",
-        description_ja="彼のスター欄には様々な問題が展示されている。"
-        "そのスター欄を眺めるだけでも一見の価値はあるだろう。")[0]),
-    (300, Award.objects.get_or_create(
-        name_ja="キャスター",
-        description_ja="彼のスター欄は水平思考とは何かを物語っている。"
-        "彼に「どういう問題が良問だと思う? 」と聞いてみよう。"
-        "きっと嬉々として語ってくれるはずだ。")[0]),
-    (500, Award.objects.get_or_create(
-        name_ja="レジスター",
-        description_ja="彼のスター欄には様々な問題が登録されている。"
-        "「良い問題ってどうやって探せばいいんだろう…」。"
-        "そんな時は彼のスター欄を覗きに行くと良い。"
-        "選りすぐりの良問たちが君を出迎えてくれる。")[0]),
-    (1000, Award.objects.get_or_create(
-        name_ja="マイスター",
-        description_ja="君はもはやスター名人である。"
-        "しかし、水平思考に終わりはない。"
-        "日夜良問とは何かについての考察や鍛錬を怠らず、良問を見つけてはスターを付ける。"
-        "君の業績は尊敬に値するものである。")[0]),
-    (2000, Award.objects.get_or_create(
-        name_ja="クラスター",
-        description_ja="君がスターをつけるのではない。"
-        "良問が君の方に集まってくるのだ。"
-        "Cindyで作られた良問たちが君を構成しているのだ。")[0]),
-    (5000, Award.objects.get_or_create(
-        name_ja="★",
-        description_ja="君は気づいた。"
-        "「そうだ。自分が星になれば良いんだ」。"
-        "君の姿はいつまでもCindyで輝き続けるだろう。")[0]), )
+    (5, Award.objects.get_or_create(name_ja="スターター", )[0]),
+    (100, Award.objects.get_or_create(name_ja="ポスター", )[0]),
+    (300, Award.objects.get_or_create(name_ja="キャスター", )[0]),
+    (500, Award.objects.get_or_create(name_ja="レジスター", )[0]),
+    (1000, Award.objects.get_or_create(name_ja="マイスター", )[0]),
+    (2000, Award.objects.get_or_create(name_ja="クラスター", )[0]),
+    (5000, Award.objects.get_or_create(name_ja="★", )[0]), )
 
 best_of_month = (
     (1, Award.objects.get_or_create(name_ja="★鶴")[0]),
@@ -233,14 +205,19 @@ def _snipe_judge(user):
             continue
 
         if soup.yami:
-            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
+            user_first = soup.shitumon_set.filter(
+                user_id=user).order_by("id").first()
             if user_first.true:
+                print("---", user, ':', soup)
                 count += 1
 
         elif soup.genre == 0:
-            first_good = soup.shitumon_set.filter(good=True).order_by("id").first()
-            user_first = soup.shitumon_set.filter(user_id=user).order_by("id").first()
-            if (not first_good or first_good.id < q.id) and user_first.true:
+            first_good = soup.shitumon_set.filter(
+                good=True).order_by("id").first()
+            user_first = soup.shitumon_set.filter(
+                user_id=user).order_by("id").first()
+            if (not first_good or first_good.id > q.id) and user_first.true:
+                print("---", user, ':', soup)
                 count += 1
 
     user.snipe = count
@@ -250,11 +227,13 @@ def _snipe_judge(user):
 
 
 def _sniped_judge(user):
-    soups = Mondai.objects.filter(Q(genre=0) | Q(yami=True), user_id=user, status=1)
+    soups = Mondai.objects.filter(
+        Q(genre=0) | Q(yami=True), user_id=user, status=1)
     count = 0
     for s in soups:
-        if (s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first() and
-                s.shitumon_set.filter(Q(good=True) | Q(true=True)).order_by("id").first().true):
+        first_good_or_true = s.shitumon_set.filter(
+            Q(good=True) | Q(true=True)).order_by("id").first()
+        if (first_good_or_true and first_good_or_true.true):
             count += 1
 
     user.sniped = count
@@ -310,18 +289,21 @@ def best_of_month_granter():
 
     # grant award
     message = ""
-    for s in best_soups_of_last_month:
-        ua, status = UserAward.objects.get_or_create(
-            user_id=s.user_id,
-            award_id=award_of_last_month)
-        if status:
-            ua.created = timezone.now()
-            ua.save()
-            message += "Grant [" + str(award_of_last_month) + ']'\
-                  " to " + str(s.user_id.nickname) + \
-                  " for soup <" + str(s.title) + '>'\
-                  " got the most star count " + str(s.star__count) + \
-                  " in " + s.created.date().strftime("%Y/%m/%d") + '\n'
+    best_soup_index = int(
+        np.argmax([s.score for s in best_soups_of_last_month]))
+    best_soup_of_last_month = best_soups_of_last_month[best_soup_index]
+
+    ua, status = UserAward.objects.get_or_create(
+        user_id=best_soup_of_last_month.user_id, award_id=award_of_last_month)
+    if status:
+        ua.created = timezone.now()
+        ua.save()
+        message += "Grant [" + str(award_of_last_month) + ']'\
+              " to " + str(best_soup_of_last_month.user_id.nickname) + \
+              " for soup <" + str(best_soup_of_last_month.title) + '>'\
+              " got the most star count " + str(best_soup_of_last_month.star__count) + \
+              " in " + best_soup_of_last_month.created.date().strftime("%Y/%m/%d") + '\n'
+
     print(message)
     return message
 

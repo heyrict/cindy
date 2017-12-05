@@ -87,21 +87,22 @@ def grant_awards_to_users(recent=None):
     return message
 
 
-# Update user experience
-update_user_exp(recent=timedelta(days=1))
+if __name__ == "__main__":
+    # Update user experience
+    update_user_exp(recent=timedelta(days=1))
 
-# delete old lobby chat messages
-clean_recent_lobby(200)
+    # delete old lobby chat messages
+    clean_recent_lobby(200)
 
-# mark outdated mondais as dazed
-returned = mark_mondai_as_dazed(7)
-if returned:
-    daily_message += "## Dazed Soup :coffee:\n" + '- ' + '\n- '.join(
-        returned.split('\n')) + '\n'
+    # mark outdated mondais as dazed
+    returned = mark_mondai_as_dazed(7)
+    if returned:
+        daily_message += "## Dazed Soup :coffee:\n" + '- ' + '\n- '.join(
+            returned.split('\n')) + '\n'
 
-# grant awards to users
-returned = grant_awards_to_users(recent=timedelta(days=1))
-if returned:
-    daily_message += "## Awards :crown:\n" + returned + '\n'
+    # grant awards to users
+    returned = grant_awards_to_users(recent=timedelta(days=1))
+    if returned:
+        daily_message += "## Awards :crown:\n" + returned + '\n'
 
-feedBot(daily_message)
+    feedBot(daily_message)
