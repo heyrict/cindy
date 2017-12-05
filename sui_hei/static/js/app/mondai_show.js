@@ -4,7 +4,7 @@ require([
   "./mondai",
   "./sidebar",
   "sanitize-html",
-  "../lib/bootstrap.min.js",
+  "bootstrap",
   "bootstrap-slider",
   "velocity-animate"
 ], function($, common, mondai, sidebar, sanitizeHtml) {

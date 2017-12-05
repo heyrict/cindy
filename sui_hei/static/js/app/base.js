@@ -8,7 +8,7 @@ require([
   "jquery",
   "./sidebar",
   "./common",
-  "../lib/bootstrap.min.js",
+  "bootstrap",
   "bootbox"
 ], function($, sidebar, common) {
   $(document).ready(function() {

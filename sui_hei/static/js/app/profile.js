@@ -2,7 +2,7 @@ require([
   "jquery",
   "./common",
   "./mondai",
-  "../lib/bootstrap.min.js",
+  "bootstrap",
   "bootbox"
 ], function($, common, mondai) {
   var PageURL = window.location.pathname;
