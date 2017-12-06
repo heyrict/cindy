@@ -16,12 +16,9 @@ module.exports = {
       "bootstrap-slider",
       "moment",
       "moment-countdown",
-      "./app/common",
+      "./app/common"
     ],
-    react_vendor: [
-      "react",
-      "react-dom"
-    ],
+    react_vendor: ["react", "react-dom"],
     simple: "./app/react/main.jsx",
     leftbar: "./app/leftbar_content",
     profile_mystar: ["./app/profile_mystar"],
@@ -121,9 +118,9 @@ module.exports = {
       filename: "dist/[name].chunk.js",
       minChunks: Infinity
     }),
-    new ContextReplacementPlugin(
-      /moment[\/\\]locale$/,
-      /fr|zh-cn|ja/
-    )
+    new CommonsChunkPlugin({
+      name: "manifest"
+    }),
+    new ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|zh-cn|ja/)
   ]
 };
