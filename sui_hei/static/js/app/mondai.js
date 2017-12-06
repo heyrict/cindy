@@ -201,7 +201,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     returns += data.title;
     if (data.status >= 2) {
       returns +=
-        "<font color=gray>(" + common.status_code_dict[data.status] + ")</font>";
+        "<font color=gray>(" +
+        common.status_code_dict[data.status] +
+        ")</font>";
     }
     return returns;
   }
@@ -274,7 +276,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_genre(genre_code, yami) {
     return `
-[${common.genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
+[${common
+      .genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
   }
 
   function _render_score(score, star_count) {
@@ -366,7 +369,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           returns += moment(pf[f]).calendar();
         } else if (f == "nickname") {
           returns += pf[f];
-          returns += pf.current_award ? " [" + pf.current_award.award_id[0].name + "]" : "";
+          returns += pf.current_award
+            ? " [" + pf.current_award.award_id[0].name + "]"
+            : "";
           returns += "<font color='#888'>";
           returns += "</font>";
         } else {
@@ -451,6 +456,8 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       {
         current_page: 1,
         num_pages: 1,
+        max_tagnum:
+          Math.max(window.outerWidth, window.innerWidth) < 900 ? 4 : 8,
         classname: "paginator",
         paginator_classname: "pagination-centered"
       },
@@ -466,11 +473,45 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   </a>
 </li>`;
 
-    for (
-      i = Math.max(params.current_page - 5, 1);
-      i < params.current_page;
-      ++i
-    ) {
+    // Judging tags on which pages to show
+    var _left_diff = Math.max(params.current_page - 1, 0),
+      _right_diff = Math.max(params.num_pages - params.current_page, 0),
+      _left_tagnum,
+      _right_tagnum,
+      max_tagnum = params.max_tagnum;
+
+    if (_left_diff >= max_tagnum / 2 && _right_diff >= max_tagnum / 2) {
+      _left_tagnum = params.current_page - max_tagnum / 2;
+      _right_tagnum = params.current_page + max_tagnum / 2;
+    } else if (_left_diff < max_tagnum / 2 && _right_diff < max_tagnum / 2) {
+      _left_tagnum = params.current_page - _left_diff;
+      _right_tagnum = params.current_page + _right_diff;
+    } else if (_left_diff < max_tagnum / 2) {
+      _left_tagnum = Math.max(params.current_page - _left_diff, 1);
+      _right_tagnum = Math.min(
+        params.current_page + max_tagnum - _left_diff,
+        params.num_pages
+      );
+    } else {
+      _right_tagnum = Math.min(
+        params.current_page + _right_diff,
+        params.num_pages
+      );
+      _left_tagnum = Math.max(
+        params.current_page - max_tagnum + _right_diff,
+        1
+      );
+    }
+
+    console.log({
+      left_diff: _left_diff,
+      right_diff: _right_diff,
+      left_tagnum: _left_tagnum,
+      right_tagnum: _right_tagnum,
+      max_tagnum: max_tagnum
+    });
+
+    for (i = _left_tagnum; i < params.current_page; ++i) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
@@ -481,11 +522,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   </a>
 </li>`;
 
-    for (
-      i = params.current_page + 1;
-      i <= Math.min(params.current_page + 5, params.num_pages);
-      ++i
-    ) {
+    for (i = params.current_page + 1; i <= _right_tagnum; ++i) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
@@ -555,7 +592,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   <a href="${common.urls.profile(data.user_id.id)}">
     ${data.user_id.nickname}
   </a>
-  ${data.user_id.current_award ? _render_useraward(data.user_id.current_award) : ""}
+  ${data.user_id.current_award
+    ? _render_useraward(data.user_id.current_award)
+    : ""}
 </div>
 <div class="vertical_line"></div>
 <div style="width:69%; float:right;">
