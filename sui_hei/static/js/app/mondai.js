@@ -814,7 +814,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_useraward(data, additionalClass) {
     additionalClass = additionalClass || "";
     if (!data) return "";
-    else
+    else 
       return `
 <a tabindex="0" href="javascript:void(0);" role="button"
   class="${additionalClass}" style="color:black;" data-toggle="popover"
