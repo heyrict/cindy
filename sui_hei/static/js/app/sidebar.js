@@ -158,12 +158,12 @@ define(["jquery", "./common", "./mondai", "velocity-animate"], function(
     $(".leftbar_content").css("height", goodh + "px");
     $(".memobar_content").css("height", goodh + "px");
 
-    resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.45);
+    resize_rate = $leftbarbtn.height() / (window.innerHeight * 0.35);
     $leftbarbtn
       .css("height", $leftbarbtn.height() / resize_rate + "px")
       .css("width", $leftbarbtn.width() / resize_rate + "px");
 
-    resize_rate = $memobarbtn.height() / (window.innerHeight * 0.45);
+    resize_rate = $memobarbtn.height() / (window.innerHeight * 0.35);
     $memobarbtn
       .css("height", $memobarbtn.height() / resize_rate + "px")
       .css("width", $memobarbtn.width() / resize_rate + "px");
