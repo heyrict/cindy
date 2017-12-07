@@ -116,9 +116,9 @@ module.exports = {
       filename: "dist/vendor.chunk.js",
       minChunks: Infinity
     }),
-    new ContextReplacementPlugin(
-      /moment[\/\\]locale$/,
-      /fr|zh-cn|ja/
-    )
+    new CommonsChunkPlugin({
+      name: "manifest"
+    }),
+    new ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|zh-cn|ja/)
   ]
 };

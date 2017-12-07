@@ -189,7 +189,7 @@ require([
             })
           },
           function(queryData) {
-            if ((queryData.data.length = 1 && queryData.data[0].value)) {
+            if ((queryData.data.length == 1 && queryData.data[0].value)) {
               $("#starbar").attr("data-slider-value", queryData.data[0].value);
             } else {
               $("#starbar").attr("data-slider-value", 0);
