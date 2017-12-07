@@ -56,31 +56,42 @@ export class MondaiListUL extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
-      data: []
+      data: [],
+      post: {
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+        order: "-modified",
+        items_per_page: 20,
+        page: 1
+      }
     };
   }
 
+  update_post(newPost) {
+    this.setState((prevState, props) => {
+      post: $.extend(prevState.post, newPost);
+    }, this.reload);
+  }
+
+  reload() {
+    this.setState({
+      isLoaded: false
+    });
+
+    $.post(common.urls.mondai_list_api, this.state.post, result => {
+      this.setState({
+        isLoaded: true,
+        data: result.data
+      });
+    });
+  }
+
   componentDidMount() {
-    $.post(
-      common.urls.mondai_list_api,
-      {
-        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-        order: "-modified"
-      },
-      result => {
-        this.setState({
-          isLoaded: true,
-          data: result.data
-        });
-      }
-    );
+    this.update_post(this.props.post || {});
   }
 
   render() {
-    const { error, isLoaded, data } = this.state;
-    if (error) {
-      return <div>Error: {error}</div>;
-    } else if (!isLoaded) {
+    const { isLoaded, data } = this.state;
+    if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (

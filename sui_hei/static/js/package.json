@@ -2,9 +2,9 @@
   "name": "cindy-suihei",
   "version": "2.0.0",
   "description": "packaging site for lateral thinking",
-  "main": "main.js",
   "scripts": {
-    "postinstall": "rm -rf ./dist; ./node_modules/.bin/webpack"
+    "prod-main": "./node_modules/.bin/webpack -p",
+    "debug-main": "./node_modules/.bin/webpack"
   },
   "author": "heyrict<github.com/heyrict>",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "moment-countdown": "0.0.3",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",
+    "react-burger-menu": "^2.1.11",
     "react-dom": "^16.2.0",
     "sanitize-html": "^1.16.1",
     "velocity-animate": "^1.5.0"

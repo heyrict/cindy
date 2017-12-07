@@ -11,7 +11,8 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown
+  NavDropdown,
+  PageHeader
 } from "react-bootstrap";
 import { MondaiListUL } from "./elements/mondai_list.jsx";
 import "jquery";
@@ -91,19 +92,25 @@ function IndexBody() {
 function MondaiListBody() {
   return (
     <div className="container">
-      <MondaiListUL />
+      <PageHeader>{gettext("All Soups")}</PageHeader>
+      <MondaiListUL post={{ filter: '{"status__exact":0}' }} />
+      <hr />
+      <MondaiListUL post={{ filter: '{"status__gt":0}' }} />
     </div>
   );
 }
 
 // {{{1 Entry Point
 function getCurrentPage(url, params) {
-  var additPath = url.replace(/\/$/, "").split("/").slice(2);
+  var additPath = url
+    .replace(/\/$/, "")
+    .split("/")
+    .slice(2);
 
   if (additPath.length == 0) {
     return <IndexBody />;
   } else if (additPath[0] == "mondai") {
-    return <div>{JSON.stringify(additPath)}</div>;
+    return <MondaiListBody />;
   } else {
     return <IndexBody />;
   }
