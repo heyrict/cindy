@@ -10,61 +10,63 @@
 {% block content %} 
 
 <h2 id="trans-all-soups" style="border-bottom:1px solid #ccc;">{% trans 'All Soups' %}
-    <a id="mondai_unsolved_update" class="btn">&#128472;</a>
+    <a id="mondai_unsolved_update" class="btn btn-default btn btn-default-default">refresh</a>
 </h2>
 
 <div id="mondai_list_unsolved"></div>
 
 <div class="hline"></div><br />
 
-<div class="navbar">
-    <div class="navbar-inner text-center">
-        <a class="brand"><small>Search&amp;Sort</small></a>
-        <a class="btn btn-navbar" data-toggle="collapse" data-target="#mondai_list_searchbar" href="javascript:void(0);">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <div id="mondai_list_searchbar" class="nav-collapse collapse nav-responsive-collapse">
-            <li class="btn-group">
-                <button class="btn disabled">Time</button>
-                <button id="time_asc_btn" class="btn mondai_list_others_sort">↑</button>
-                <button id="time_desc_btn" class="btn mondai_list_others_sort">↓</button>
+<div class="navbar navbar-default">
+  <div class="container-fluid text-center">
+    <a class="navbar-brand"><small>Search&amp;Sort</small></a>
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mondai_list_searchbar" aria-expanded="false">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <div id="mondai_list_searchbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav text-center">
+        <li class="btn btn-default-group" style="margin-top:8px;">
+          <button class="btn btn-default disabled">Time</button>
+          <button id="time_asc_btn" class="btn btn-default mondai_list_others_sort">↑</button>
+          <button id="time_desc_btn" class="btn btn-default mondai_list_others_sort">↓</button>
+        </li>
+        <li class="btn btn-default-group" style="margin-top:8px;">
+          <button class="btn btn-default disabled">Score</button>
+          <button id="score_asc_btn" class="btn btn-default mondai_list_others_sort">↑</button>
+          <button id="score_desc_btn" class="btn btn-default mondai_list_others_sort">↓</button>
+        </li>
+        <li class="btn btn-default-group" style="margin-top:8px;">
+          <button class="btn btn-default disabled">Star Count</button>
+          <button id="star_count_asc_btn" class="btn btn-default mondai_list_others_sort">↑</button>
+          <button id="star_count_desc_btn" class="btn btn-default mondai_list_others_sort">↓</button>
+        </li>
+        <li class="navbar-form input-append dropdown navbar-right">
+          <input type="text" id="search_box" class="form-control" placeholder="{% trans 'Title' %}" selectedType = "title"></input>
+          <button id="search_btn" class="btn btn-default mondai_list_others_search">{% trans 'Search' %}</button>
+          <ul class="dropdown-menu" id="search_type">
+            <li>
+              <a class="search_type_select" href='javascript:void(0);'
+                 onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'title');">{% trans 'Title' %}</a>
             </li>
-            <li class="btn-group">
-                <button class="btn disabled">Score</button>
-                <button id="score_asc_btn" class="btn mondai_list_others_sort">↑</button>
-                <button id="score_desc_btn" class="btn mondai_list_others_sort">↓</button>
+            <li>
+              <a class="search_type_select" href='javascript:void(0);'
+                 onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'giver');">{% trans 'Giver' %}</a>
             </li>
-            <li class="btn-group">
-                <button class="btn disabled">Star Count</button>
-                <button id="star_count_asc_btn" class="btn mondai_list_others_sort">↑</button>
-                <button id="star_count_desc_btn" class="btn mondai_list_others_sort">↓</button>
+            <li>
+              <a class="search_type_select" href='javascript:void(0);'
+                 onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'content');">{% trans 'Content' %}</a>
             </li>
-            <li class="navbar-form input-append dropdown" style="max-width:80%;">
-                <input type="text" id="search_box" class="span2" placeholder="{% trans 'Title' %}" selectedType = "title"></input>
-                <button id="search_btn" class="btn mondai_list_others_search">{% trans 'Search' %}</button>
-                <ul class="dropdown-menu" id="search_type">
-                    <li>
-                        <a class="search_type_select" href='javascript:void(0);'
-                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'title');">{% trans 'Title' %}</a>
-                    </li>
-                    <li>
-                        <a class="search_type_select" href='javascript:void(0);'
-                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'giver');">{% trans 'Giver' %}</a>
-                    </li>
-                    <li>
-                        <a class="search_type_select" href='javascript:void(0);'
-                           onClick="$('#search_box').attr('placeholder', $(this).html());$('#search_box').attr('selectedType', 'content');">{% trans 'Content' %}</a>
-                    </li>
-                    <li class="divider" style="padding:0.5px;"></li>
-                    <li>
-                        <a class="mondai_list_others_search_reset" href='javascript:void(0);'>{% trans 'Reset' %}</a>
-                    </li>
-                </ul>
+            <li class="divider" style="padding:0.5px;"></li>
+            <li>
+              <a class="mondai_list_others_search_reset" href='javascript:void(0);'>{% trans 'Reset' %}</a>
             </li>
-        </div>
+          </ul>
+        </li>
+      </ul>
     </div>
+  </div>
 </div>
 
 <div id="mondai_list_others"></div>

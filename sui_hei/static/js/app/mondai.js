@@ -579,19 +579,18 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_mondai_qblock(data, index) {
     index += 1;
     var returns = `
-<div class="QBlock">
-  <div style="width:29%; float:left">
-  <a href="${common.urls.profile(data.user_id.id)}">
-    ${data.user_id.nickname}
-  </a>
-  ${data.user_id.current_award ? _render_useraward(data.user_id.current_award) : ""}
-</div>
-<div class="vertical_line"></div>
-<div style="width:69%; float:right;">
-  <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">
-    ${index}
-  </span>
-  ${common.line2md(data.shitumon)}`;
+<div class="col-xs-6">
+  <div class="QBlock">
+    <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
+    <span>
+      <a href="${common.urls.profile(data.user_id.id)}">
+        ${data.user_id.nickname}
+      </a>
+      ${data.user_id.current_award ? _render_useraward(data.user_id.current_award) : ""}
+    </span>
+    <div style="margin-top:5px; border-bottom:1px solid #268bd2"></div>
+    <div>
+      ${common.line2md(data.shitumon)}`;
     if (!data.kaitou && data.user_id.id == window.django.user_id) {
       returns += `
 <a class="qna_edit" target="shitumon" value="${data.id}" href="javascript:void(0);"
@@ -599,26 +598,36 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   [${gettext("edit")}]
 </a>`;
     }
-    returns += "</div></div>";
+    returns += "</div></div></div>";
     return returns;
   }
 
   function _render_mondai_ablock(data, index) {
-    var ABlock = "<div class='ABlock'>";
+    var ABlock = "<div class='col-xs-6'><div class='ABlock'>";
 
     if (window.django.user_id == data.owner_id.id) {
       ABlock += _render_mondai_ablock_giver(data, index);
     } else {
       ABlock += _render_mondai_ablock_others(data, index);
     }
-    ABlock += "</div>";
+    ABlock += "</div></div>";
     return ABlock;
   }
 
   function _render_mondai_ablock_others(data, index) {
     ABlockOthers = String();
     if (data.kaitou) {
-      ABlockOthers += "<div style='width:69%; float:left'>";
+      ABlockOthers += `
+<span>
+  <a href="${common.urls.profile(data.owner_id.id)}">
+    ${data.owner_id.nickname}
+  </a>
+  ${data.owner_id.current_award
+    ? _render_useraward(data.owner_id.current_award)
+    : ""}
+</span>
+<div style="margin-top:5px; border-bottom:1px solid #268bd2"></div>`;
+      ABlockOthers += "<div>";
       if (data.true) {
         ABlockOthers += "<font size='7' color='#dc322f'>&#9996;</font>";
       }
@@ -626,16 +635,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
         ABlockOthers += "<font size='7' color='#b58900'>&#128077;</font>";
       }
       ABlockOthers += `${common.line2md(data.kaitou)}</div>`;
-      ABlockOthers += `<div class="vertical_line"></div>`;
-      ABlockOthers += `
-<div style="width:29%; float:right;">
-  <a href="${common.urls.profile(data.owner_id.id)}">
-    ${data.owner_id.nickname}
-  </a>
-  ${data.owner_id.current_award
-    ? _render_useraward(data.owner_id.current_award)
-    : ""}
-</div>`;
     } else {
       ABlockOthers +=
         "<span style='color:#93a1a1'>" +
