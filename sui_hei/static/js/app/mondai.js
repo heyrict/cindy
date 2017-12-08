@@ -146,7 +146,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           return;
         var QBlockStr = _render_mondai_qblock(s, index);
         var ABlockStr = _render_mondai_ablock(s, index);
-        returns += `<div class="HBar">${QBlockStr}${ABlockStr}<div class="clearfix"></div></div>`;
+        returns += `<div class="HBar row">${QBlockStr}${ABlockStr}<div class="clearfix"></div></div>`;
       });
       $(settings.domid).html(returns);
     });
@@ -588,7 +588,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     index += 1;
     var returns = `
 <div class="col-xs-6">
-  <div class="QBlock">
+  <div class="QBlock" style='width:100%;'>
     <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
     <span>
       <a href="${common.urls.profile(data.user_id.id)}">
@@ -611,7 +611,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_mondai_ablock(data, index) {
-    var ABlock = "<div class='col-xs-6'><div class='ABlock'>";
+    var ABlock = "<div class='col-xs-6'><div class='ABlock' style='width:100%;'>";
 
     if (window.django.user_id == data.owner_id.id) {
       ABlock += _render_mondai_ablock_giver(data, index);
