@@ -4,7 +4,7 @@
 }
 .QBlock {
   float: left;
-  width: 45%;
+  width: 100%;
   border: 1px solid #268bd2;
   border-radius: 5px;
   padding: 3px;
@@ -13,7 +13,7 @@
 }
 .ABlock {
   float: right;
-  width: 45%;
+  width: 100%;
   border: 1px solid #268bd2;
   border-radius: 5px;
   padding: 3px;
