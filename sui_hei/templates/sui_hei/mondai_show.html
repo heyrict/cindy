@@ -1,11 +1,11 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static markdown decodes %}
+{% load i18n static webpack_loader %}
 
 {% block title %} Cindy - mondai - show {% endblock %} 
 
 {% block script_include %}
 <link rel="stylesheet" href="{% static 'css/mondai_show.css' %}">
-<script src="{% static 'js/dist/mondai_show.js' %}"></script>
+{% render_bundle 'mondai_show' %}
 {% endblock %}
 
 {% block extra_header %}

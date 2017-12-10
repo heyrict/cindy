@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static webpack_loader %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,10 +24,10 @@
       window.django = { user_id: {{ request.user.id|default:"null" }}};
   </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
-  <script type="text/javascript" src="{% static 'js/dist/manifest.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/dist/react_vendor.chunk.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/dist/vendor.chunk.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/dist/simple.js' %}"></script>
+  {% render_bundle 'manifest' %}
+  {% render_bundle 'react_vendor' %}
+  {% render_bundle 'vendor' %}
+  {% render_bundle 'simple' %}
   <script type="text/javascript">
   {% block script %} {% endblock %}
   </script>

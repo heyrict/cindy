@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static webpack_loader %}
 <div class="lobby_navigation_div">
   <!-- paginator -->
   <div class="lobby_pagination_div">
@@ -20,4 +20,4 @@
     <input id="lobby_chat_input" name="push_chat" type="text">
     <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
 </div>
-<script type="text/javascript" src="{% static 'js/dist/leftbar.js' %}"></script>
+{% render_bundle 'leftbar' %}

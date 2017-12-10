@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sui_hei',
+    "webpack_loader"
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,11 @@ AUTH_USER_MODEL = 'sui_hei.User'
 LOGIN_REDIRECT_URL = '/mondai'
 LOGOUT_REDIRECT_URL = '/mondai'
 LOGIN_URL = '/users/login'
+
+# Webpack Loader
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "BUNDLE_DIR_NAME": "dist/",
+        "STATS_FILE": "./sui_hei/static/js/dist/webpack-stats.json"
+    }
+}

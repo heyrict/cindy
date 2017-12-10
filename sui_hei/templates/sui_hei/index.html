@@ -1,5 +1,5 @@
 {% extends 'frames/base.html' %} 
-{% load i18n markdown static %}
+{% load i18n markdown static webpack_loader %}
 
 {% block style %}
 .mainbar {
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block script_include %}
-<script src="{% static 'js/dist/index.js' %}"></script>
+{% render_bundle 'index' %}
 {% endblock %}
 
 {% block title %} 
