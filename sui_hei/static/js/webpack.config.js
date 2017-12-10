@@ -11,7 +11,7 @@ module.exports = {
       "sanitize-html",
       "velocity-animate",
       "markdown-it",
-      "./lib/bootstrap.min.js",
+      "bootstrap",
       "bootbox",
       "bootstrap-slider",
       "moment",
@@ -41,7 +41,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"]
+            presets: ["@babel/preset-env", "@babel/react"]
           }
         }
       },
@@ -113,7 +113,7 @@ module.exports = {
   plugins: [
     new CommonsChunkPlugin({
       name: "vendor",
-      filename: "dist/vendor.chunk.js",
+      filename: "dist/[name].chunk.js",
       minChunks: Infinity
     }),
     new CommonsChunkPlugin({
