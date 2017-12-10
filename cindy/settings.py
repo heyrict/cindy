@@ -157,6 +157,6 @@ LOGIN_URL = '/users/login'
 WEBPACK_LOADER = {
     "DEFAULT": {
         "BUNDLE_DIR_NAME": "dist/",
-        "STATS_FILE": "./sui_hei/static/js/dist/webpack-stats.json"
+        "STATS_FILE": os.path.join(BASE_DIR, "sui_hei/static/js/dist/webpack-stats.json")
     }
 }
