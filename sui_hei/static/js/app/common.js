@@ -80,6 +80,7 @@ define(
       password_change: "/users/password_change",
       index: "/",
       mondai: "/mondai",
+      lobby_chat: "/lobby/chat",
       mondai_list: "/mondai",
       mondai_add: "/mondai/add",
       mondai_show: pk => "/mondai/show/" + pk,
