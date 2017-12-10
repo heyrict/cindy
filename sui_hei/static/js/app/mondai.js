@@ -503,14 +503,6 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       );
     }
 
-    console.log({
-      left_diff: _left_diff,
-      right_diff: _right_diff,
-      left_tagnum: _left_tagnum,
-      right_tagnum: _right_tagnum,
-      max_tagnum: max_tagnum
-    });
-
     for (i = _left_tagnum; i < params.current_page; ++i) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }

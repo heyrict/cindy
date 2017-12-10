@@ -18,7 +18,7 @@ module.exports = {
       "moment-countdown",
       "./app/common"
     ],
-    react_vendor: ["react", "react-dom"],
+    react_vendor: ["react", "react-dom", "react-bootstrap", "react-burger-menu"],
     simple: "./app/react/main.jsx",
     leftbar: "./app/leftbar_content",
     profile: ["./app/profile"],
