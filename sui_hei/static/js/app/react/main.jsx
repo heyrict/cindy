@@ -14,6 +14,7 @@ import {
   NavDropdown,
   PageHeader
 } from "react-bootstrap";
+import { slide as SideBar } from "react-burger-menu";
 import { MondaiListUL } from "./elements/mondai_list.jsx";
 import "jquery";
 import * as common from "../common";
@@ -84,6 +85,63 @@ function HomepageHero() {
   );
 }
 
+// SideBar Related {{{1
+// {{{2 var leftBarStyles
+var leftBarStyles = {
+  bmBurgerButton: {
+    position: "fixed",
+    width: "36px",
+    height: "30px",
+    left: "36px",
+    top: "66px"
+  },
+  bmBurgerBars: {
+    background: "#fcf4dc"
+  },
+  bmCrossButton: {
+    height: "24px",
+    width: "24px"
+  },
+  bmCross: {
+    background: "#bdc3c7"
+  },
+  bmMenu: {
+    background: "#fcf4dc",
+    border: "4px solid #00d6b6",
+    padding: "2.5em 1.5em 0",
+    fontSize: "1.15em"
+  },
+  bmMorphShape: {
+    fill: "#373a47"
+  },
+  bmItemList: {
+    color: "#b8b7ad",
+    padding: "0.8em"
+  },
+  bmOverlay: {
+    background: "rgba(0, 0, 0, 0.3)"
+  }
+};
+// {{{2 class LeftBar
+class LeftBar extends React.Component {
+  showSettings(event) {
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <SideBar
+        styles={leftBarStyles}
+        customBurgerIcon={<img src="/static/pictures/chat.png" />}
+      >
+        <div>
+          Sidebar is still Under Construction ...
+        </div>
+      </SideBar>
+    );
+  }
+}
+
 // {{{2 function IndexBody()
 function IndexBody() {
   return (
@@ -134,6 +192,7 @@ $(document).ready(function() {
   var params = common.getURLParameter(),
     url = window.location.pathname;
 
+  ReactDOM.render(<LeftBar />, document.getElementById("leftbar"));
   ReactDOM.render(getCurrentPage(url, params), document.getElementById("root"));
   ReactDOM.render(mainNavBar, document.getElementById("MainNavBar"));
 });

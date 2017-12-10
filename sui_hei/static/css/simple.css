@@ -71,3 +71,9 @@ h6 {
   color: #bcc045;
   padding: 4px;
 }
+
+#leftbar {
+  position: absolute;
+  left: 0;
+  top: 50px;
+}
