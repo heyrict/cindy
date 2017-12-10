@@ -20,10 +20,10 @@ Requisitories
 
     ```bash
     # Windows
-    pip3 install django pymysql markdown django-embed-template
+    pip3 install -r requirements.txt
 
     # Mac or Linux
-    sudo -H pip3 install django pymysql markdown
+    sudo -H pip3 install -r requirements.txt
     ```
 - nodejs manager (npm or bower)
 
@@ -34,20 +34,27 @@ Requisitories
     npm install
 
     # generate ./dist dir. run this command each time you edit the js files.
-    npm run postinstall
+    # **Make Sure You are in `cindy/sui_hei/static/js` directory.**
+    ./node_modules/.bin/webpack  # Linux
+    node_modules\.bin\webpack.cmd  # Windows
     ```
-- (Under Windows) mysqlclient
+- mysqlclient
+
+    ```bash
+    # Linux
+    sudo apt-get install libmysqlclient20
+    ```
 
 How To Run This Site On Your Machine
 ------------------------------------
 1. Clone this repo to your machine if you have `git`,
     otherwize download the zip archive by clicking the
     button up-right.
-2. [Install requirements](#requirements).
+2. [Install requisitories](#requisitories).
     Make sure `python3` exists in your PATH.
 
 3. Configure your MySQL database
-    - customize `cindy/mysql.cnf` file.
+    - customize `cindy/mysql.cnf` file. A template is [here](./mysql.cnf.template).
     - open mysql, create a user and a database, grant all previlidges to it.
 
         ```sql
@@ -90,7 +97,7 @@ e `open a terminal` in the right-click menu.
 TODO
 -----
 1. **A MORE BUILTIFUL LAYOUT**
-1. Move some part of POSTs to javascript (JSONize or django REST frame)
+1. Migrate this website to use react.
 1. Add Pages (esp. wiki or something) for editing website on client side.
 1. separate the forum to different languages.
 
@@ -159,70 +166,65 @@ This chapter is specially for explaning the whole project to programmers.
 ├── reset_database.sql                      # **warning**: you need to run this file
 │                                           #  ONLY when you want to reset database.
 ├── locale/                                 # folder storing language files
-└── sui_hei                                 # folder storing the main site project.
+└── sui_hei/                                # folder storing the main site project.
     ├── admin.py                            # modules visible in /admin
     ├── apps.py                             # apps config file.
     ├── context_processor.py                # generating global context
-    ├── migrations/
     ├── models.py                           # models storing data structure.
     ├── static                              # folder storing static files, e.g. css, js, png, etc.
-    │   ├── pictures/
-    │   ├── css/
-    │   │   ├── base.css
-    │   │   ├── github-pandoc.css
-    │   │   ├── jquery-ui.css
-    │   │   ├── mondai_show.css
-    │   │   └── sidebar.css
-    │   └── js
-    │       ├── app
-    │       │   ├── base.js
-    │       │   ├── leftbar_content.js
-    │       │   ├── mondai_show.js
-    │       │   ├── mondai_show_ui.js
-    │       │   └── sidebar.js
-    │       ├── lib
-    │       │   ├── jquery.js
-    │       │   ├── jquery-ui.js
-    │       │   ├── marked.js
-    │       │   ├── require.js
-    │       │   └── velocity.js
-    │       ├── node_modules*                   # not exist in this repo, download with npm/bower.
-    │       ├── public/                         # stores the bundled files
-    │       └── webpack.config.js               # config file for webpack
-    ├── templates                           # html templates.
-    │   │── frames                          #  folder storing the template of templates.
-    │   │   ├── base.html                   #   base template
-    │   │   ├── header.html                 #   = header.html
-    │   │   ├── footer.html                 #   + sidebar.html
-    │   │   ├── sidebar.html                #    (which includes leftbar_content.html)
-    │   │   ├── leftbar_content.html        #   + footer.html
-    │   │   ├── mondai_child_navi.html      #
-    │   │   ├── profile_child_navi.html     #
-    │   │   └── pagination.html             #
-    │   ├── registration                    #  folder storing the template for authentiation
+    │   ├── css
+    │   │   ├── base.css
+    │   │   ├── mondai_show.css
+    │   │   └── sidebar.css
+    │   ├── js
+    │   │   ├── app
+    │   │   │   ├── base.js
+    │   │   │   ├── common.js
+    │   │   │   ├── index.js
+    │   │   │   ├── leftbar_content.js
+    │   │   │   ├── mondai_add.js
+    │   │   │   ├── mondai.js
+    │   │   │   ├── mondai_list.js
+    │   │   │   ├── mondai_show.js
+    │   │   │   ├── profile_edit.js
+    │   │   │   ├── profile.js
+    │   │   │   ├── profile_list.js
+    │   │   │   └── sidebar.js
+    │   │   ├── package.json
+    │   │   └── webpack.config.js
+    │   └── pictures
+    │       ├── cindylogo.png
+    │       ├── memobar.png
+    │       ├── sidebar.png
+    │       └── star.png
+    ├── templates                           #  folder storing the template for authentiation
+    │   ├── frames
+    │   │   ├── base.html
+    │   │   ├── footer.html
+    │   │   ├── leftbar_content.html
+    │   │   ├── pagination.html
+    │   │   └── profile_child_navi.html
+    │   ├── registration
     │   │   ├── add.html                    #   /users/add
     │   │   ├── login.html                  #   /users/login
     │   │   └── users_password_change.html  #   /users/change_password
-    │   └── sui_hei                         #  html pages:
-    │       ├── index.html                  #   /sui_hei
-    │       ├── mondai.html                 #   /mondai
+    │   └── sui_hei                         #   /sui_hei
+    │       ├── index.html                  #   /
     │       ├── mondai_add.html             #   /mondai/add
-    │       ├── mondai_change.html          #   /mondai/change/...
+    │       ├── mondai.html                 #   /mondai
     │       ├── mondai_show.html            #   /mondai/show/[0-9]+
-    │       ├── profile.html                #   /profile/[0-9]+
     │       ├── profile_edit.html           #   /profile/edit
-    │       ├── profile_selledsoup.html     #   /profile/selledsoup
-    │       ├── profile_mystar.html         #   /profile/mystar
-    │       ├── users_add.html              #   /users/add
-    │       └── users_login.html            #   /users/login
+    │       ├── profile.html                #   /profile/[0-9]+
+    │       └── profile_list.html           #   /profile/list
     ├── templatetags                        # folder containing filters for template
-    │   ├── __init__.py                     #  works like {{ var|filter }} in templates
-    │   ├── decodes.py                      #
+    │   ├── decodes.py                      #  works like {{ var|filter }} in templates
+    │   ├── __init__.py                     #
     │   ├── iterutil.py                     #
     │   └── markdown.py                     #
     ├── tests.py                            # file for testing the project
     ├── urls.py                             # url patterns of the website
-    └── views.py                            # create pages from templates. Pass variables here.
+    ├── views.py                            # create pages from templates. Pass variables here.
+    └── translation.py
 ```
 
 ### Trouble Shooting

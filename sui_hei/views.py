@@ -351,53 +351,6 @@ def mondai_comment(request):
         return JsonResponse({'error_message': str(e)})
 
 
-# /lobby
-def lobby_chat(request):
-    # get current channel
-    channel = request.POST.get('channel', 'lobby')
-
-    # update
-    if request.method == "POST" and request.user.is_authenticated:
-        content = request.POST.get('push_chat', '')
-        if content != '':
-            chat = Lobby(
-                user_id=request.user, content=content, channel=channel)
-            chat.save()
-
-        # render response
-        chatlist = Paginator(
-            Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
-        return render(request, 'frames/leftbar_content.html', {
-            'mode': 'open',
-            'channel': channel,
-            'chatlist': chatlist
-        })
-
-    referer_without_query = request.META['HTTP_REFERER'].split('?', 1)[0]
-    return redirect(referer_without_query)
-
-
-def lobby_channel(request):
-    # change channel by submit button
-    if request.method == "GET":
-        chatpage = request.GET.get('chatpage', 1)
-        channel = request.GET.get('channel', 'lobby')
-        if not channel.strip(): channel = 'lobby'
-        if channel == "homepage-info": channel = 'lobby'
-        chatlist = Paginator(
-            Lobby.objects.filter(channel=channel).order_by('-id'),
-            10).page(chatpage)
-
-        return render(request, 'frames/leftbar_content.html', {
-            'mode': 'open',
-            'channel': channel,
-            'chatlist': chatlist
-        })
-    # change page by redirect
-    else:
-        return redirect(reverse("sui_hei:index"))
-
-
 # /profile/[0-9]+
 def profile(request, pk):
     return render(request, "sui_hei/profile.html", {"pk": pk})

@@ -146,7 +146,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           return;
         var QBlockStr = _render_mondai_qblock(s, index);
         var ABlockStr = _render_mondai_ablock(s, index);
-        returns += `<div class="HBar">${QBlockStr}${ABlockStr}<div class="clearfix"></div></div>`;
+        returns += `<div class="HBar row">${QBlockStr}${ABlockStr}<div class="clearfix"></div></div>`;
       });
       $(settings.domid).html(returns);
     });
@@ -195,13 +195,15 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function RenderMondaiTitle(data) {
     returns =
       "[" +
-      _genre_code_dict[data.genre] +
+      common.genre_code_dict[data.genre] +
       (data.yami ? "×" + gettext("yami") : "") +
       "]";
     returns += data.title;
     if (data.status >= 2) {
       returns +=
-        "<font color=gray>(" + _status_code_dict[data.status] + ")</font>";
+        "<font color=gray>(" +
+        common.status_code_dict[data.status] +
+        ")</font>";
     }
     return returns;
   }
@@ -218,7 +220,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       current_page: data.page || 1,
       num_pages: data.num_pages || 1,
       classname: paginator_class || "lobby_paginator",
-      paginator_classname: "pagination-mini pagination-centered"
+      paginator_classname: "pagination-sm pagination-centered"
     });
   }
 
@@ -238,7 +240,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     if (data.status >= 3 && data.user_id.id != window.django.user_id) {
       mondai_content_content = gettext(
         "This soup's status is set to %s, which means you cannot view it."
-      ).replace(/%s/, _status_code_dict[data.status]);
+      ).replace(/%s/, common.status_code_dict[data.status]);
       mondai_content_content =
         "<font color='#aaa'>" + mondai_content_content + "</font>";
     } else {
@@ -247,39 +249,10 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     return mondai_content_content;
   }
 
-  _status_class_dict = {
-    0: "status_unsolved",
-    1: "status_solved",
-    2: "status_dazed",
-    3: "status_hidden"
-  };
-
-  _status_code_dict = {
-    0: "unsolved",
-    1: "solved",
-    2: "dazed",
-    3: "hidden",
-    4: "forced hidden"
-  };
-
-  _status_color_dict = {
-    0: "#cb4b16",
-    1: "#859900",
-    2: "#259185",
-    3: "gray"
-  };
-
-  _genre_code_dict = {
-    0: gettext("Albatross"),
-    1: gettext("20th-Door"),
-    2: gettext("Little Albat"),
-    3: gettext("Others & Formal")
-  };
-
   function _render_label(status_code) {
-    var class_label = _status_class_dict[status_code];
-    var color_label = _status_color_dict[status_code];
-    var name_label = _status_code_dict[status_code];
+    var class_label = common.status_class_dict[status_code];
+    var color_label = common.status_color_dict[status_code];
+    var name_label = common.status_code_dict[status_code];
     return `<span class="status_label ${class_label}"><font color="${color_label}">${name_label}</font></span>`;
   }
 
@@ -298,12 +271,13 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_quescount(all, unanswered) {
     var label_class = unanswered ? "unanswered" : "answered";
-    return `<span class="process_label ${label_class}" style="margin-left:5px;"> ${unanswered}<sub>${all}</sub></span>`;
+    return `<span class="process_label ${label_class}" style="margin-left:5px;">${unanswered}<sub>${all}</sub></span>`;
   }
 
   function _render_genre(genre_code, yami) {
     return `
-[${_genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
+[${common
+      .genre_code_dict[genre_code]}${yami ? " &times; " + gettext("yami") : ""}]`;
   }
 
   function _render_score(score, star_count) {
@@ -395,7 +369,9 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
           returns += moment(pf[f]).calendar();
         } else if (f == "nickname") {
           returns += pf[f];
-          returns += pf.current_award ? " [" + pf.current_award.award_id[0].name + "]" : "";
+          returns += pf.current_award
+            ? " [" + pf.current_award.award_id[0].name + "]"
+            : "";
           returns += "<font color='#888'>";
           returns += "</font>";
         } else {
@@ -480,12 +456,14 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
       {
         current_page: 1,
         num_pages: 1,
+        max_tagnum:
+          Math.max(window.outerWidth, window.innerWidth) < 900 ? 4 : 8,
         classname: "paginator",
         paginator_classname: "pagination-centered"
       },
       params
     );
-    var returns = `<div class='pagination ${params.paginator_classname}'><ul>`;
+    var returns = `<div class="text-center"><ul class='pagination ${params.paginator_classname}'>`;
 
     returns += `
 <li class="previous ${params.current_page > 1 ? "" : "disabled"}">
@@ -495,11 +473,45 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   </a>
 </li>`;
 
-    for (
-      i = Math.max(params.current_page - 5, 1);
-      i < params.current_page;
-      ++i
-    ) {
+    // Judging tags on which pages to show
+    var _left_diff = Math.max(params.current_page - 1, 0),
+      _right_diff = Math.max(params.num_pages - params.current_page, 0),
+      _left_tagnum,
+      _right_tagnum,
+      max_tagnum = params.max_tagnum;
+
+    if (_left_diff >= max_tagnum / 2 && _right_diff >= max_tagnum / 2) {
+      _left_tagnum = params.current_page - max_tagnum / 2;
+      _right_tagnum = params.current_page + max_tagnum / 2;
+    } else if (_left_diff < max_tagnum / 2 && _right_diff < max_tagnum / 2) {
+      _left_tagnum = params.current_page - _left_diff;
+      _right_tagnum = params.current_page + _right_diff;
+    } else if (_left_diff < max_tagnum / 2) {
+      _left_tagnum = Math.max(params.current_page - _left_diff, 1);
+      _right_tagnum = Math.min(
+        params.current_page + max_tagnum - _left_diff,
+        params.num_pages
+      );
+    } else {
+      _right_tagnum = Math.min(
+        params.current_page + _right_diff,
+        params.num_pages
+      );
+      _left_tagnum = Math.max(
+        params.current_page - max_tagnum + _right_diff,
+        1
+      );
+    }
+
+    console.log({
+      left_diff: _left_diff,
+      right_diff: _right_diff,
+      left_tagnum: _left_tagnum,
+      right_tagnum: _right_tagnum,
+      max_tagnum: max_tagnum
+    });
+
+    for (i = _left_tagnum; i < params.current_page; ++i) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
@@ -510,11 +522,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   </a>
 </li>`;
 
-    for (
-      i = params.current_page + 1;
-      i <= Math.min(params.current_page + 5, params.num_pages);
-      ++i
-    ) {
+    for (i = params.current_page + 1; i <= _right_tagnum; ++i) {
       returns += `<li><a href="javascript:void(0);" value="${i}" class="${params.classname}">${i}</a></li>`;
     }
 
@@ -534,7 +542,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   function _render_profile_comments(data) {
     var commentstr = String();
     data.data.forEach(function(comment) {
-      commentstr += "<table class='table table-bordered span12'>";
+      commentstr += "<table class='table table-bordered col-xs-12'>";
       commentstr += "<tr>";
       commentstr += `
 <th>
@@ -580,7 +588,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
     index += 1;
     var returns = `
 <div class="col-xs-6">
-  <div class="QBlock">
+  <div class="QBlock" style='width:100%;'>
     <span style="background:#268bd2; border-radius:20px; padding:2px; color:#ffffff; font:bold">${index}</span>
     <span>
       <a href="${common.urls.profile(data.user_id.id)}">
@@ -603,7 +611,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
   }
 
   function _render_mondai_ablock(data, index) {
-    var ABlock = "<div class='col-xs-6'><div class='ABlock'>";
+    var ABlock = "<div class='col-xs-6'><div class='ABlock' style='width:100%;'>";
 
     if (window.django.user_id == data.owner_id.id) {
       ABlock += _render_mondai_ablock_giver(data, index);
@@ -742,7 +750,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
             "</a>"
         }
       ];
-    returns += "<table class='table table-bordered span12'>";
+    returns += "<table class='table table-bordered col-xs-12'>";
     rows.forEach(function(grid) {
       grid = $.extend(
         {

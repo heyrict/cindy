@@ -4,7 +4,7 @@ require([
   "./mondai",
   "./sidebar",
   "sanitize-html",
-  "../lib/bootstrap.min.js",
+  "bootstrap",
   "bootstrap-slider",
   "velocity-animate"
 ], function($, common, mondai, sidebar, sanitizeHtml) {
@@ -208,6 +208,7 @@ require([
             })
           },
           function(queryData) {
+            console.log(queryData);
             if (queryData.data.length >= 1) {
               $(".paticipants_panel").html("");
               $(".paticipants_panel").addClass("hidden");
@@ -262,7 +263,7 @@ require([
     }
 
     function fill_data_in_giver_panel(data) {
-      if ((data.user_id.id = window.django.user_id)) {
+      if ((data.user_id.id == window.django.user_id)) {
         memo_hash = common.hash(data.memo);
 
         $(".memo_textarea").each(function() {

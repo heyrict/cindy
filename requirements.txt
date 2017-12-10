@@ -1,0 +1,4 @@
+modeltranslation==0.12.1
+django>=1.11,<2.0
+markdown>=2.6.9
+pymysql>=0.7.11

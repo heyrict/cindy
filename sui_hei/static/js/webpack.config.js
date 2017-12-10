@@ -19,7 +19,6 @@ module.exports = {
       "./app/common"
     ],
     leftbar: "./app/leftbar_content",
-    profile_mystar: ["./app/profile_mystar"],
     profile: ["./app/profile"],
     profile_edit: ["./app/profile_edit"],
     profile_list: ["./app/profile_list"],

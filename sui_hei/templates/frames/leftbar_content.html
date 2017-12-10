@@ -1,55 +1,23 @@
-{% load i18n static markdown iterutil %} 
+{% load i18n static %}
 <div class="lobby_navigation_div">
   <!-- paginator -->
-  <div class="pagination">
-    <span class="step-links">
-      {% if chatlist.has_previous %} 
-        <button id="lobby_nav_prev" value="{{ chatlist.previous_page_number }}"> {% trans 'prev' %}</button>
-      {% endif %} 
-  
-      <span class="current">
-        Page {{ chatlist.number }} of {{ chatlist.paginator.num_pages }} 
-      </span>
-  
-      {% if chatlist.has_next %} 
-        <button id="lobby_nav_next" value="{{ chatlist.next_page_number }}">{% trans 'next' %}</button>
-      {% endif %} 
-    </span>
+  <div class="lobby_pagination_div">
   </div>
   <!-- end paginator -->
   <!-- channel changer -->
   <div class="input-append" style="width:99%;">
-    <input id="lobby_nav_input" type="text" placeholder="current_channel: {{ channel }}"
-    data-provide="typeahead" data-items=4 data-source='["mondai-","comments-","lobby","tutorial"]'
-    auto-complete="off">
+    <input id="lobby_nav_input" type="text" data-provide="typeahead" 
+        data-items=4 data-source='["mondai-","lobby","tutorial"]' auto-complete="off">
     <button id="lobby_nav_submit">{% trans 'Change channel' %}</button>
   </div>
   <!-- end channel changer -->
 </div>
 
-<div class="lobby_table_div">
-  <table class="lobby_table" style="width:100%; height:93%; margin-top:2px; margin-bottom:2px;">
-    {% for chat in chatlist|inv %} 
-    <tr>
-      <th id="user" style="width: 33%;"> 
-        <a href="{% url 'sui_hei:profile' chat.user_id.id %}">{{ chat.user_id.nickname }}</a>
-        {% if chat.user_id.current_award %}[{{ chat.user_id.current_award }}]{% endif %}
-      </th>
-      <td id="message-{{ chat.id }}" class="lobby_message">{{ chat.content|line2md|safe }}
-        {% if chat.user_id == user %}
-        <a class="lobby_message_edit" target="lobby" value="{{ chat.id }}" href="javascript:void(0);"
-            role="button" class="btn" data-toggle="modal" data-target="#message_edit_modal">
-        [{% trans 'edit' %}]</a>{% endif %}</td>
-    </tr>
-    {% endfor %} 
-  </table>
+<div class="lobby_table_div" id="lobby_table_div">
 </div>
 
 <div class="lobby_chat_div">
     <input id="lobby_chat_input" name="push_chat" type="text">
     <input id="lobby_chat_submit" value={% trans 'Send' %}/{% trans 'Update' %} type="button">
 </div>
-
-<script type="text/javascript">
-leftbar.init();
-</script>
+<script type="text/javascript" src="{% static 'js/dist/leftbar.js' %}"></script>

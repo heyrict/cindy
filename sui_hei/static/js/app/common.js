@@ -26,6 +26,30 @@ define(
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
     }
 
+    function getURLParameter(sParam) {
+      var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split("&"),
+        sParameterName,
+        i;
+
+      if (sParam === undefined) {
+        var returns = Object();
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split("=");
+          returns[sParameterName[0]] =
+            sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+        return returns;
+      } else {
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split("=");
+          if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+          }
+        }
+      }
+    }
+
     function getCookie(c_name) {
       if (document.cookie.length > 0) {
         c_start = document.cookie.indexOf(c_name + "=");
@@ -55,8 +79,6 @@ define(
       register: "/users/add",
       password_change: "/users/password_change",
       index: "/",
-      lobby_chat: "/lobby/chat",
-      lobby_channel: "/lobby/channel",
       mondai: "/mondai",
       mondai_list: "/mondai",
       mondai_add: "/mondai/add",
@@ -84,6 +106,35 @@ define(
       comment_api: "/api/comment",
       shitumon_api: "/api/shitumon",
       mondai_show_api: "/api/mondai_show"
+    };
+
+    status_class_dict = {
+      0: "status_unsolved",
+      1: "status_solved",
+      2: "status_dazed",
+      3: "status_hidden"
+    };
+
+    status_code_dict = {
+      0: "unsolved",
+      1: "solved",
+      2: "dazed",
+      3: "hidden",
+      4: "forced hidden"
+    };
+
+    status_color_dict = {
+      0: "#cb4b16",
+      1: "#859900",
+      2: "#259185",
+      3: "gray"
+    };
+
+    genre_code_dict = {
+      0: gettext("Albatross"),
+      1: gettext("20th-Door"),
+      2: gettext("Little Albat"),
+      3: gettext("Others & Formal")
     };
 
     function _norm_openchat(string) {
@@ -210,7 +261,14 @@ define(
         sanitizeHtml(md.render(PreNorm(string)), {
           allowedTags: false,
           allowedAttributes: false,
-          allowedSchemes: ["http", "https", "ftp", "mailto", "chat", "javascript"]
+          allowedSchemes: [
+            "http",
+            "https",
+            "ftp",
+            "mailto",
+            "chat",
+            "javascript"
+          ]
         })
       );
     }
@@ -233,6 +291,7 @@ define(
 
     return {
       hash: hash,
+      getURLParameter: getURLParameter,
       getCookie: getCookie,
       setCookie: setCookie,
       urls: urls,
@@ -241,7 +300,11 @@ define(
       bindEnterToSubmit: bindEnterToSubmit,
       LinkNorm: LinkNorm,
       LinkNormAll: LinkNormAll,
-      StartCountdown: StartCountdown
+      StartCountdown: StartCountdown,
+      genre_code_dict: genre_code_dict,
+      status_code_dict: status_code_dict,
+      status_color_dict: status_color_dict,
+      status_class_dict: status_class_dict
     };
   }
 );

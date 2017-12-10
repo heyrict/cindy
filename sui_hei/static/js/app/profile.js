@@ -2,7 +2,7 @@ require([
   "jquery",
   "./common",
   "./mondai",
-  "../lib/bootstrap.min.js",
+  "bootstrap",
   "bootbox"
 ], function($, common, mondai) {
   var PageURL = window.location.pathname;
@@ -74,19 +74,19 @@ require([
       comments: false,
       profile: false
     };
-    $("a[data-target='#profile_pane_mystar']").on("show", function() {
+    $("a[data-target='#profile_pane_mystar']").on("show.bs.tab", function() {
       if (!loaded["mystar"]) {
         update_mystar(1);
         loaded["mystar"] = true;
       }
     });
-    $("a[data-target='#profile_pane_mysoup']").on("show", function() {
+    $("a[data-target='#profile_pane_mysoup']").on("show.bs.tab", function() {
       if (!loaded["mysoup"]) {
         update_mysoup(1);
         loaded["mysoup"] = true;
       }
     });
-    $("a[data-target='#profile_pane_comment']").on("show", function() {
+    $("a[data-target='#profile_pane_comment']").on("show.bs.tab", function() {
       if (!loaded["comment"]) {
         update_comment(1);
         loaded["comment"] = true;
@@ -97,10 +97,12 @@ require([
 
     $("#profile_pane_mystar").on("DOMSubtreeModified", function() {
       $(".profile_mystar_paginator").each(function() {
+        $(this).off("click");
         $(this).on("click", function() {
           update_mystar($(this).attr("value"));
         });
       });
+      $(".remove_star_button").off("click");
       $(".remove_star_button").on("click", function() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var star_id = this.value;
@@ -131,6 +133,7 @@ require([
     });
     $("#profile_pane_mysoup").on("DOMSubtreeModified", function() {
       $(".profile_mysoup_paginator").each(function() {
+        $(this).off("click");
         $(this).on("click", function() {
           update_mysoup($(this).attr("value"));
         });
