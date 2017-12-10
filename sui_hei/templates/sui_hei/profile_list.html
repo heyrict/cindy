@@ -1,10 +1,10 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static %}
+{% load i18n static webpack_loader %}
 
 {% block title %} Cindy - profile - list {% endblock %} 
 
 {% block script_include %}
-<script type="text/javascript" src="{% static 'js/dist/profile_list.js' %}"></script>
+{% render_bundle 'profile_list' %}
 {% endblock %}
 
 {% block content %} 

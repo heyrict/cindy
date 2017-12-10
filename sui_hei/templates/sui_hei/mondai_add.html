@@ -1,10 +1,10 @@
 {% extends 'frames/base.html' %} 
-{% load i18n static %}
+{% load i18n static webpack_loader %}
 
 {% block title %} Cindy - mondai - add {% endblock %} 
 
 {% block script_include %}
-<script type="text/javascript" src="{% static 'js/dist/mondai_add.js' %}"></script>
+{% render_bundle 'mondai_add' %}
 {% endblock %}
 
 {% block content %} 

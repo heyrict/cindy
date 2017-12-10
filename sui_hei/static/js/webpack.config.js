@@ -1,6 +1,7 @@
 var webpack = require("webpack");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 var ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin");
+var BundleTracker = require("webpack-bundle-tracker");
 
 module.exports = {
   entry: {
@@ -28,7 +29,7 @@ module.exports = {
   },
   output: {
     publicPath: "/static/js/",
-    filename: "dist/[name].js"
+    filename: "dist/[name]-[hash].js"
   },
   module: {
     loaders: [],
@@ -112,12 +113,13 @@ module.exports = {
   plugins: [
     new CommonsChunkPlugin({
       name: "vendor",
-      filename: "dist/[name].chunk.js",
+      filename: "dist/[name]-[hash].chunk.js",
       minChunks: Infinity
     }),
     new CommonsChunkPlugin({
       name: "manifest"
     }),
-    new ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|zh-cn|ja/)
+    new ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|zh-cn|ja/),
+    new BundleTracker({filename: "dist/webpack-stats.json"})
   ]
 };
