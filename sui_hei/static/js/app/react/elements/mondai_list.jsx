@@ -11,14 +11,16 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown
+  NavDropdown,
+  ProgressBar
 } from "react-bootstrap";
 import {
-  MondaiStatusLable,
+  MondaiCreatedLabel,
+  MondaiGiverLabel,
   MondaiProcessLabel,
-  MondaiTitleLabel,
   MondaiScoreLabel,
-  MondaiGiverLabel
+  MondaiStatusLable,
+  MondaiTitleLabel
 } from "../common.jsx";
 import "jquery";
 import * as common from "../../common";
@@ -26,13 +28,22 @@ import * as common from "../../common";
 // {{{1 function MondaiListItem
 export function MondaiListItem(props) {
   return (
-    <ul>
-      <li>
+    <div className="row show-grid">
+      <div className="col-xs-4 col-sm-2 col-md-2 col-lg-1 text-center">
         <MondaiStatusLable status={props.item.status} />
+      </div>
+      <div className="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-center">
         <MondaiProcessLabel
           qCount={props.item.quescount_all}
           uaCount={props.item.quescount_unanswered}
         />
+      </div>
+      <div className="visible-xs-block col-xs-6 text-right">
+        <MondaiGiverLabel user={props.item.user_id} />
+        <MondaiCreatedLabel time={props.item.created} />
+      </div>
+      <span className="visible-xs-block clearfix" />
+      <div className="col-xs-12 col-sm-9 col-md-9 col-lg-10">
         <MondaiTitleLabel
           mondaiId={props.item.id}
           genre={props.item.genre}
@@ -42,11 +53,13 @@ export function MondaiListItem(props) {
           star_count={props.item.star_count}
           score={props.item.score}
         />
-        <span className="pull-right">
-          <MondaiGiverLabel user={props.item.user_id} />
-        </span>
-      </li>
-    </ul>
+      </div>
+      <div className="hidden-xs col-sm-12 text-right">
+        <MondaiGiverLabel user={props.item.user_id} />
+        <MondaiCreatedLabel time={props.item.created} />
+      </div>
+      <span className="clearfix" />
+    </div>
   );
 }
 
@@ -57,6 +70,7 @@ export class MondaiListUL extends React.Component {
     this.state = {
       isLoaded: false,
       data: [],
+      num_pages: null,
       post: {
         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
         order: "-modified",
@@ -80,7 +94,8 @@ export class MondaiListUL extends React.Component {
     $.post(common.urls.mondai_list_api, this.state.post, result => {
       this.setState({
         isLoaded: true,
-        data: result.data
+        data: result.data,
+        num_pages: result.num_pages
       });
     });
   }
@@ -92,7 +107,7 @@ export class MondaiListUL extends React.Component {
   render() {
     const { isLoaded, data } = this.state;
     if (!isLoaded) {
-      return <div>Loading...</div>;
+      return <ProgressBar now={100} label={"Loading..."} striped active />;
     } else {
       return (
         <div>

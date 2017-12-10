@@ -11,28 +11,16 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown
+  NavDropdown,
+  Pagniation
 } from "react-bootstrap";
 import "jquery";
 import * as common from "../common";
 
-// {{{1 class Bubble
-export class Bubble extends React.Component {
-  render() {
-    return (
-      <span className={this.props.baseClass}>
-        <font color={this.props.color}>{this.props.content}</font>
-      </span>
-    );
-  }
-}
-
 // {{{1 function StatusLabel(props)
 export function StatusLabel(props) {
   var baseClass = "status_label " + props.extClass;
-  return (
-    <Bubble baseClass={baseClass} color={props.color} content={props.content} />
-  );
+  return <div className={baseClass}>{props.content}</div>;
 }
 
 // {{{1 class MondaiStatusLable
@@ -55,9 +43,7 @@ export class MondaiStatusLable extends React.Component {
 // {{{1 function ProcessLabel(props)
 export function ProcessLabel(props) {
   var baseClass = "process_label " + props.extClass;
-  return (
-    <Bubble baseClass={baseClass} color={props.color} content={props.content} />
-  );
+  return <div className={baseClass}>{props.content}</div>;
 }
 
 // {{{1 class MondaiProcessLabel
@@ -65,12 +51,7 @@ export class MondaiProcessLabel extends React.Component {
   render() {
     const qCount = this.props.qCount;
     const uaCount = this.props.uaCount;
-    const content = (
-      <span>
-        {uaCount}
-        <sub>{qCount}</sub>
-      </span>
-    );
+    const content = uaCount + "/" + qCount;
     if (uaCount == 0) {
       return <ProcessLabel extClass="answered" content={content} />;
     } else {
@@ -84,14 +65,12 @@ export class MondaiTitleLabel extends React.Component {
   render() {
     const translatedGenre = common.genre_code_dict[this.props.genre];
     return (
-      <Bubble
-        baseClass="title_label"
-        content={
-          <a href={common.urls.mondai_show(this.props.mondaiId)}>
-            {`[${translatedGenre}] ${this.props.title}`}
-          </a>
-        }
-      />
+      <span className="title_label">
+        <span className="glyphicon glyphicon-chevron-right visible-xs-inline" />
+        <a href={common.urls.mondai_show(this.props.mondaiId)}>
+          {`[${translatedGenre}] ${this.props.title}`}
+        </a>
+      </span>
     );
   }
 }
@@ -126,29 +105,41 @@ export class MondaiGiverLabel extends React.Component {
   }
 }
 
+// {{{1 class MondaiCreatedLabel
+export class MondaiCreatedLabel extends React.Component {
+  render() {
+    const time = this.props.time;
+    return (
+      <font color="#888">
+        [{gettext("created")}:{moment(time).calendar()}]
+      </font>
+    );
+  }
+}
+
 // {{{1 class UserAwardPopup
 export class UserAwardPopup extends React.Component {
   render() {
-    const ua = this.props.award
+    const ua = this.props.userAward;
     if (!ua) {
       return "";
     } else {
       const award_content = `
-${data.award_id[0].description}<br />
+${ua.award_id[0].description}<br />
 <span class='pull-right' style='color:#ff582b; font-weight:bold;'>
-  🏆${data.created}
+  🏆${ua.created}
 </span>`;
       return (
         <a
-          tabindex="0"
+          tabIndex="0"
           href="javascript:void(0);"
           role="button"
-          style="color:black;"
+          style={{ color: "black" }}
           data-toggle="popover"
-          title={data.award_id[0].name}
+          title={ua.award_id[0].name}
           data-content={award_content}
         >
-          [{data.award_id[0].name}]
+          [{ua.award_id[0].name}]
         </a>
       );
     }

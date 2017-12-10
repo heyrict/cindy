@@ -21,17 +21,23 @@ import * as common from "../common";
 var $ = jQuery;
 
 // NavBar Related Components {{{1
+// {{{2 class UserDropDown
+class UserDropDown extends React.Component {
+  render() {
+    return null;
+  }
+}
 // {{{2 const mainNavBar
 var renderIndexBody = () =>
   ReactDOM.render(<IndexBody />, document.getElementById("root"));
 var renderMondaiListBody = () =>
   ReactDOM.render(<MondaiListBody />, document.getElementById("root"));
 const mainNavBar = (
-  <Navbar fixedTop>
+  <Navbar fixedTop collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>Cindy</Navbar.Brand>
+      <Navbar.Toggle />
     </Navbar.Header>
-    <Navbar.Toggle />
     <Navbar.Collapse>
       <Nav>
         <NavItem eventKey={1} href="#" onClick={renderIndexBody}>
@@ -117,6 +123,14 @@ function getCurrentPage(url, params) {
 }
 
 $(document).ready(function() {
+  // Popover initialization on top of react-bootstrap
+  $("body").popover({
+    selector: "[data-toggle='popover']",
+    placement: "top",
+    trigger: "focus",
+    html: true
+  });
+
   var params = common.getURLParameter(),
     url = window.location.pathname;
 
