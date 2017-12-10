@@ -354,6 +354,26 @@ def mondai_comment(request):
         return JsonResponse({'error_message': str(e)})
 
 
+# /lobby/chat
+def lobby_chat(request):
+    # get current channel
+    channel = request.POST.get('channel', 'lobby')
+
+    # update
+    if request.method == "POST" and request.user.is_authenticated:
+        content = request.POST.get('push_chat', '')
+        if content != '':
+            chat = Lobby(
+                user_id=request.user, content=content, channel=channel)
+            chat.save()
+
+        # render response
+        chatlist = Paginator(
+            Lobby.objects.filter(channel=channel).order_by('-id'), 10).page(1)
+        return JsonResponse({});
+    return JsonResponse({})
+
+
 # /profile/[0-9]+
 def profile(request, pk):
     return render(request, "sui_hei/profile.html", {"pk": pk})
