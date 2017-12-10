@@ -79,8 +79,6 @@ define(
       register: "/users/add",
       password_change: "/users/password_change",
       index: "/",
-      lobby_chat: "/lobby/chat",
-      lobby_channel: "/lobby/channel",
       mondai: "/mondai",
       mondai_list: "/mondai",
       mondai_add: "/mondai/add",

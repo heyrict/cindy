@@ -97,10 +97,12 @@ require([
 
     $("#profile_pane_mystar").on("DOMSubtreeModified", function() {
       $(".profile_mystar_paginator").each(function() {
+        $(this).off("click");
         $(this).on("click", function() {
           update_mystar($(this).attr("value"));
         });
       });
+      $(".remove_star_button").off("click");
       $(".remove_star_button").on("click", function() {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var star_id = this.value;
@@ -131,6 +133,7 @@ require([
     });
     $("#profile_pane_mysoup").on("DOMSubtreeModified", function() {
       $(".profile_mysoup_paginator").each(function() {
+        $(this).off("click");
         $(this).on("click", function() {
           update_mysoup($(this).attr("value"));
         });

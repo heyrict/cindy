@@ -4,27 +4,29 @@
 {% block title %} Cindy - register {% endblock %} 
 
 {% block content %} 
-<p><strong>{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</strong></p>
-<p>{% trans 'You can register to cindy free and enjoy its contents in one more step!' %}</p>
+<div class="panel panel-default">
+  <div class="panel-heading">{% trans 'Welcome to Cindy, a real-time website for lateral thinking games!' %}</div>
+  <div class="panel-body">{% trans 'You can register to cindy free and enjoy its contents in one more step!' %}</div>
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
+  {% if next %}
+  {% if user.is_authenticated %}
+  <p>Your account doesn't have access to this page. To proceed,
+  please login with an account that has access.</p>
+  {% else %}
+  <p>Please login to see this page.</p>
+  {% endif %}
+  {% endif %}
 
-<form action="{% url 'sui_hei:register' %}" method="post">
-{% csrf_token %}
-<p>
-{% if error_message %} <strong>{{ error_message }}</strong> {% endif %}
-</p>
-<table>{{ form.as_table }}</table> <input type="submit" value="Confirm" />
-
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+  <form action="{% url 'sui_hei:register' %}" method="post" class="row">
+    <div class="col-xs-12">
+      {% csrf_token %}
+      <p>{% if error_message %}<strong>{{ error_message }}</strong>{% endif %}</p>
+      <table class="table">{{ form.as_table }}</table>
+      <input type="submit" value="Confirm" />
+      <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+  </form>
+</div>
 
 {# Assumes you setup the password_reset view in your URLconf #}
 {#<p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}

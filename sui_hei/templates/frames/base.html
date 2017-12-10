@@ -10,12 +10,11 @@
   <title id="page_title">
       Cindy - {% block pageTitle %} {% trans 'A website for playing situation puzzles' %}: {% trans 'Chat With Lateral Thinking!' %} {% endblock %}
   </title>
-  <!--<link rel="stylesheet" href="{% static 'css/github-pandoc.css' %}">-->
   <link rel="stylesheet" href="{% static 'js/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'js/node_modules/bootstrap/dist/css/bootstrap-theme.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-slider.min.css' %}">
+  <link rel="stylesheet" href="{% static 'js/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css' %}">
   <style type="text/css">
     {% block style %} 
     {% endblock %} 
@@ -114,7 +113,7 @@
 <div class="leftbar" mode="{{ mode|default:"closed" }}" >
     <img class="leftbar_button" src={% static 'pictures/sidebar.png' %}>
     <div class="leftbar_content">
-        {% include 'frames/leftbar_content_new.html' %}
+        {% include 'frames/leftbar_content.html' %}
     </div>
 </div>
 <!-- end lobby chat -->

@@ -271,7 +271,7 @@ define(["jquery", "./common", "moment"], function($, common, moment) {
 
   function _render_quescount(all, unanswered) {
     var label_class = unanswered ? "unanswered" : "answered";
-    return `<span class="process_label ${label_class}" style="margin-left:5px;"> ${unanswered}<sub>${all}</sub></span>`;
+    return `<span class="process_label ${label_class}" style="margin-left:5px;">${unanswered}<sub>${all}</sub></span>`;
   }
 
   function _render_genre(genre_code, yami) {
