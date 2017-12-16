@@ -208,8 +208,9 @@ def mondai_show_push_answ(request):
             mondai = re.findall("(?<=/mondai/show/)[0-9]+",
                                 request.META['HTTP_REFERER'])[0]
             mondai_id = Mondai.objects.get(id=mondai)
-            mondai_id.modified = timezone.now()
-            mondai_id.save()
+            if mondai_id.status == 0:
+                mondai_id.modified = timezone.now()
+                mondai_id.save()
 
             # update user last active event
             request.user.last_login = timezone.now()
