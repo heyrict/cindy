@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sui_hei.middleware.OnlineNowMiddleware',
 ]
 
 ROOT_URLCONF = 'cindy.urls'

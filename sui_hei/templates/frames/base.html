@@ -23,7 +23,10 @@
   {% get_current_language as LANGUAGE_CODE %}
   <script type="text/javascript">
       LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";
-      window.django = { user_id: {{ request.user.id|default:"null" }}};
+      window.django = { 
+        user_id: "{{ request.user.id|default:'null' }}",
+        online_now: "{{ request.online_now.count }}"
+      };
   </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
   {% render_bundle 'manifest' %}
@@ -86,6 +89,14 @@
             <li>
               <a href="{% url 'sui_hei:logout' %}">{% trans 'logout' %}</a>
             </li>
+            <li class="divider" role="separater"></li>
+            <li>
+              <a href="#">
+                {% blocktrans with usernos=request.online_now.count %}
+                Online users: {{ usernos }}
+                {% endblocktrans %}
+              </a>
+            </li>
           </ul>
         {% else %}
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -97,6 +108,14 @@
             </li>
             <li>
               <a href="/users/login">{% trans 'login' %}</a>
+            </li>
+            <li class="divider" role="separater"></li>
+            <li>
+              <a href="#">
+                {% blocktrans with usernos=request.online_now.count %}
+                Online users: {{ usernos }}
+                {% endblocktrans %}
+              </a>
             </li>
           </ul>
         {% endif %}
