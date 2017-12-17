@@ -28,7 +28,7 @@ h6 {
 select {
   margin-top: 8px;
 }
-li {
+li:not(.divider) {
   padding: 2px;
 }
 textarea {
