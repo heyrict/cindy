@@ -79,12 +79,12 @@ export class MondaiTitleLabel extends React.Component {
 export class MondaiScoreLabel extends React.Component {
   render() {
     var scale_one = num => Math.floor(num * 10) / 10;
-    const score = this.props.score;
-    const star_count = this.props.star_count;
-    if (star_count > 0) {
+    const starCount = this.props.starCount,
+      starSum = this.props.starSum;
+    if (starCount > 0) {
       return (
         <span className="mondai_score">
-          {scale_one(score) + "✯" + star_count}
+          {"✯" + starSum + "(" + starCount + ")"}
         </span>
       );
     } else {
@@ -99,7 +99,7 @@ export class MondaiGiverLabel extends React.Component {
     return (
       <span>
         <a href={common.urls.profile(user.id)}>{user.nickname}</a>
-        <UserAwardPopup userAward={user.current_award} />
+        <UserAwardPopup userAward={user.currentAward} />
       </span>
     );
   }
@@ -125,7 +125,7 @@ export class UserAwardPopup extends React.Component {
       return "";
     } else {
       const award_content = `
-${ua.award_id[0].description}<br />
+${ua.award.description}<br />
 <span class='pull-right' style='color:#ff582b; font-weight:bold;'>
   🏆${ua.created}
 </span>`;
@@ -136,10 +136,10 @@ ${ua.award_id[0].description}<br />
           role="button"
           style={{ color: "black" }}
           data-toggle="popover"
-          title={ua.award_id[0].name}
+          title={ua.award.name}
           data-content={award_content}
         >
-          [{ua.award_id[0].name}]
+          [{ua.award.name}]
         </a>
       );
     }

@@ -40,7 +40,7 @@ def index(request):
     })
 
 
-def simple(request):
+def simple(request, *args, **kwargs):
     return render(request, 'simple/main.html')
 
 

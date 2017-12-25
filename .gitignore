@@ -109,3 +109,7 @@ ENV/
 # nodejs
 node_modules
 dist
+package-lock.json
+
+# relay stuff
+__generated__/

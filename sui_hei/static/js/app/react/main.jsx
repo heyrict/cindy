@@ -14,8 +14,10 @@ import {
   NavDropdown,
   PageHeader
 } from "react-bootstrap";
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import { slide as SideBar } from "react-burger-menu";
-import { MondaiListUL } from "./elements/mondai_list.jsx";
+import { MondaiListUL } from "./elements/MondaiList.jsx";
 import "jquery";
 import * as common from "../common";
 
@@ -41,17 +43,21 @@ const mainNavBar = (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <NavItem eventKey={1} href="#" onClick={renderIndexBody}>
-          {gettext("Homepage")}
-        </NavItem>
+        <LinkContainer to="/">
+          <NavItem eventKey={1}>
+            {gettext("Homepage")}
+          </NavItem>
+        </LinkContainer>
         <NavDropdown
           title={gettext("Soup")}
           eventKey={3}
           id="mainnavbar-soup-dropdown"
         >
-          <MenuItem eventKey="3.1" onClick={renderMondaiListBody}>
-            {gettext("All Soups")}
-          </MenuItem>
+          <LinkContainer to="/mondai">
+            <MenuItem eventKey="3.1">
+              {gettext("All Soups")}
+            </MenuItem>
+          </LinkContainer>
           <MenuItem eventKey="3.2">{gettext("New Soup")}</MenuItem>
         </NavDropdown>
         <NavItem name={gettext("User List")} />
@@ -131,12 +137,11 @@ class LeftBar extends React.Component {
   render() {
     return (
       <SideBar
+        width={window.innerWidth < 768 ? "100%" : "33%"}
         styles={leftBarStyles}
         customBurgerIcon={<img src="/static/pictures/chat.png" />}
       >
-        <div>
-          Sidebar is still Under Construction ...
-        </div>
+        <div>Sidebar is still Under Construction ...</div>
       </SideBar>
     );
   }
@@ -165,20 +170,18 @@ function MondaiListBody() {
 }
 
 // {{{1 Entry Point
-function getCurrentPage(url, params) {
-  var additPath = url
-    .replace(/\/$/, "")
-    .split("/")
-    .slice(2);
-
-  if (additPath.length == 0) {
-    return <IndexBody />;
-  } else if (additPath[0] == "mondai") {
-    return <MondaiListBody />;
-  } else {
-    return <IndexBody />;
-  }
-}
+const App = () => (
+  <BrowserRouter>
+    <div>
+      <LeftBar />
+      <noscript>This appication requires javascript to function</noscript>
+      {mainNavBar}
+      <Route exact path="/" component={IndexBody} />
+      <Route path="/mondai" component={MondaiListBody} />
+      <Route path="/test" render={()=>(<h1>TEST</h1>)} />
+    </div>
+  </BrowserRouter>
+);
 
 $(document).ready(function() {
   // Popover initialization on top of react-bootstrap
@@ -189,10 +192,5 @@ $(document).ready(function() {
     html: true
   });
 
-  var params = common.getURLParameter(),
-    url = window.location.pathname;
-
-  ReactDOM.render(<LeftBar />, document.getElementById("leftbar"));
-  ReactDOM.render(getCurrentPage(url, params), document.getElementById("root"));
-  ReactDOM.render(mainNavBar, document.getElementById("MainNavBar"));
+  ReactDOM.render(<App />, document.getElementById("root"));
 });

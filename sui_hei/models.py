@@ -19,22 +19,12 @@ class Award(models.Model):
     def __str__(self):
         return self.name
 
-    def stringify(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description
-        }
-
-    def stringify_meta(self):
-        return self.stringify()
-
 
 class User(AbstractUser):
     nickname = models.CharField(
         _('nick_name'), max_length=255, null=False, unique=True)
     profile = models.TextField(_('profile'), default="")
-    current_award = models.ForeignKey("UserAward", null=True, on_delete=SET_NULL)
+    current_award = models.ForeignKey("UserAward", null=True, on_delete=SET_NULL, related_name="current_award")
     experience = models.IntegerField(_('experience'), default=0)
     snipe = models.IntegerField(_('snipe'), default=0)
     sniped = models.IntegerField(_('sniped'), default=0)
@@ -50,66 +40,17 @@ class User(AbstractUser):
     def __str__(self):
         return self.nickname
 
-    def stringify(self):
-        if self.current_award:
-            current_award_str = self.current_award.stringify_meta(user=False)
-        else:
-            current_award_str = None
-
-        available_awards = [
-            ua.stringify_meta(user=False)
-            for ua in UserAward.objects.filter(user_id=self)
-        ]
-        return {
-            "id": self.id,
-            "nickname": re.sub("<", "&lt;", re.sub(">", "&gt;", self.nickname)),
-            "profile": self.profile,
-            "current_award": current_award_str,
-            "available_awards": available_awards,
-            "experience": self.experience,
-            "username": self.username,
-            "date_joined": self.date_joined,
-            "last_login": self.last_login,
-            "snipe": self.snipe,
-            "sniped": self.sniped,
-        }
-
-    def stringify_meta(self):
-        if self.current_award:
-            current_award_str = self.current_award.stringify_meta(user=False)
-        else:
-            current_award_str = None
-        return {
-            "id": self.id,
-            "nickname": re.sub("<", "&lt;", re.sub(">", "&gt;", self.nickname)),
-            "current_award": current_award_str,
-            "experience": self.experience,
-            "username": self.username,
-            "date_joined": self.date_joined
-        }
-
 
 class UserAward(models.Model):
-    user_id = models.ForeignKey(User)
-    award_id = models.ForeignKey(Award)
+    user = models.ForeignKey(User)
+    award = models.ForeignKey(Award)
     created = models.DateField(_("created"), null=False, default=timezone.now)
 
     class Meta:
         verbose_name = _("User-Award")
 
     def __str__(self):
-        return "[%s] owns [%s]" % (self.user_id.nickname, self.award_id)
-
-    def stringify(self, user=True, award=True):
-        returns = {"created": self.created, "id": self.id}
-        if user:
-            returns["user_id"] = self.user_id.stringify_meta()
-        if award:
-            returns["award_id"] = self.award_id.stringify_meta(),
-        return returns
-
-    def stringify_meta(self, *args, **kwargs):
-        return self.stringify(*args, **kwargs)
+        return "[%s] owns [%s]" % (self.user.nickname, self.award)
 
 
 class Mondai(models.Model):
@@ -121,7 +62,7 @@ class Mondai(models.Model):
       3: shin-keshiki
     '''
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
+    user = models.ForeignKey(User)
     title = models.CharField(_('title'), max_length=255, null=False)
     yami = models.BooleanField(_('yami'), default=False, null=False)
     genre = models.IntegerField(_('genre'), default=0, null=False)
@@ -138,40 +79,6 @@ class Mondai(models.Model):
 
     def __str__(self):
         return self.title
-
-    def stringify(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "title": re.sub("<", "&lt;", re.sub(">", "&gt;", self.title)),
-            "yami": self.yami,
-            "genre": self.genre,
-            "content": self.content,
-            "kaisetu": self.kaisetu,
-            "created": self.created,
-            "modified": self.modified,
-            "status": self.status,
-            "memo": self.memo,
-            "score": self.score
-        }
-
-    def stringify_meta(self):
-        ques = Shitumon.objects.filter(mondai_id=self)
-        unanswered = ques.filter(Q(kaitou__isnull=True) | Q(kaitou__exact=""))
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "title": re.sub("<", "&lt;", re.sub(">", "&gt;", self.title)),
-            "yami": self.yami,
-            "genre": self.genre,
-            "created": self.created,
-            "modified": self.modified,
-            "status": self.status,
-            "score": self.score,
-            "star_count": self.star_set.count(),
-            "quescount_all": ques.count(),
-            "quescount_unanswered": unanswered.count()
-        }
 
 
 mondai_genre_enum = {
@@ -192,8 +99,8 @@ mondai_status_enum = {
 
 class Shitumon(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
+    user = models.ForeignKey(User)
+    mondai = models.ForeignKey(Mondai)
     shitumon = models.TextField(_('shitumon'), null=False)
     kaitou = models.TextField(_('kaitou'), null=True)
     good = models.BooleanField(_('good_ques'), default=False, null=False)
@@ -205,29 +112,13 @@ class Shitumon(models.Model):
         verbose_name = _("Question")
 
     def __str__(self):
-        return "[%s]%s: {%s} puts {%50s}" % (self.mondai_id.id, self.mondai_id,
-                                             self.user_id, self.shitumon)
-
-    def stringify_meta(self):
-        return self.stringify()
-
-    def stringify(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "owner_id": self.mondai_id.user_id.stringify_meta(),
-            "shitumon": self.shitumon,
-            "kaitou": self.kaitou,
-            "good": self.good,
-            "true": self.true,
-            "askedtime": self.askedtime,
-            "answeredtime": self.answeredtime
-        }
+        return "[%s]%s: {%s} puts {%50s}" % (self.mondai.id, self.mondai,
+                                             self.user, self.shitumon)
 
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user_id = models.ForeignKey(User, db_column='user_id')
+    user = models.ForeignKey(User)
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
 
@@ -240,24 +131,13 @@ class Lobby(models.Model):
         verbose_name = _("Lobby")
 
     def __str__(self):
-        return "[%s]: {%s} puts {%50s}" % (self.channel, self.user_id,
+        return "[%s]: {%s} puts {%50s}" % (self.channel, self.user,
                                            self.content)
-
-    def stringify_meta(self):
-        return self.stringify()
-
-    def stringify(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "channel": self.channel,
-            "content": self.content
-        }
 
 
 class Comment(models.Model):
-    user_id = models.ForeignKey(User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
+    user = models.ForeignKey(User)
+    mondai = models.ForeignKey(Mondai)
     content = models.TextField(_('content'), null=False)
     spoiler = models.BooleanField(_('spoiler'), default=False)
 
@@ -265,38 +145,16 @@ class Comment(models.Model):
         verbose_name = _("Comment")
 
     def __str__(self):
-        return "{%s} commented on {%s}" % (self.user_id, self.mondai_id.title)
-
-    def stringify_meta(self):
-        return self.stringify()
-
-    def stringify(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "mondai_id": self.mondai_id.stringify_meta(),
-            "content": self.content
-        }
+        return "{%s} commented on {%s}" % (self.user, self.mondai.title)
 
 
 class Star(models.Model):
-    user_id = models.ForeignKey(User, db_column='user_id')
-    mondai_id = models.ForeignKey(Mondai, db_column='mondai_id')
+    user = models.ForeignKey(User)
+    mondai = models.ForeignKey(Mondai)
     value = models.FloatField(_('Value'), null=False, default=0)
 
     class Meta:
         verbose_name = _("Star")
 
     def __str__(self):
-        return "%s -- %.1f --> %s" % (self.user_id, self.value, self.mondai_id)
-
-    def stringify_meta(self):
-        return self.stringify()
-
-    def stringify(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id.stringify_meta(),
-            "mondai_id": self.mondai_id.stringify_meta(),
-            "value": self.value
-        }
+        return "%s -- %.1f --> %s" % (self.user, self.value, self.mondai)

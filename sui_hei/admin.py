@@ -70,26 +70,26 @@ class SuiheiMondaiChangeForm(forms.ModelForm):
 
 
 class SuiheiMondaiAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user_id', 'status', 'created', 'modified',
+    list_display = ('title', 'user', 'status', 'created', 'modified',
                     'score')
     form = SuiheiMondaiChangeForm
 
 
 class SuiheiLobbyAdmin(admin.ModelAdmin):
-    list_display = ('channel', 'user_id', 'content')
+    list_display = ('channel', 'user', 'content')
     search_fields = ('channel', )
 
 
 class SuiheiShitumonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'mondai_id', 'user_id', 'shitumon', 'kaitou')
+    list_display = ('id', 'mondai', 'user', 'shitumon', 'kaitou')
 
 
 class SuiheiUserAwardAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'award_id')
+    list_display = ('id', 'user', 'award')
 
 
 class SuiheiCommentAdmin(admin.ModelAdmin):
-    list_display = ('content', 'user_id', 'mondai_id', 'spoiler')
+    list_display = ('content', 'user', 'mondai', 'spoiler')
 
 
 admin.site.register(User, SuiheiUserAdmin)

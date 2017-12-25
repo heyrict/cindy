@@ -35,15 +35,10 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'sui_hei',
-    "webpack_loader"
+    'modeltranslation', 'django.contrib.admin', 'django.contrib.auth',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles', 'graphene_django',
+    'sui_hei', "webpack_loader"
 ]
 
 MIDDLEWARE = [
@@ -157,7 +152,12 @@ LOGIN_URL = '/users/login'
 # Webpack Loader
 WEBPACK_LOADER = {
     "DEFAULT": {
-        "BUNDLE_DIR_NAME": "dist/",
-        "STATS_FILE": os.path.join(BASE_DIR, "sui_hei/static/js/dist/webpack-stats.json")
+        "BUNDLE_DIR_NAME":
+        "dist/",
+        "STATS_FILE":
+        os.path.join(BASE_DIR, "sui_hei/static/js/dist/webpack-stats.json")
     }
 }
+
+# Graphene Settings
+GRAPHENE = {'SCHEMA': 'schema.schema'}
