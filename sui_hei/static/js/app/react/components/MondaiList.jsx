@@ -1,7 +1,7 @@
 // {{{1 Imports
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ProgressBar, PageHeader } from "react-bootstrap";
+import { ProgressBar, PageHeader, Button } from "react-bootstrap";
 import "jquery";
 
 import {
@@ -12,7 +12,12 @@ import {
   MondaiStatusLable,
   MondaiTitleLabel
 } from "./components.jsx";
-import { QueryRenderer, graphql, createFragmentContainer } from "react-relay";
+import {
+  QueryRenderer,
+  graphql,
+  createFragmentContainer,
+  createPaginationContainer
+} from "react-relay";
 import { environment } from "../Environment";
 import * as common from "../../common";
 
@@ -62,25 +67,35 @@ export function MondaiListItem(props) {
   );
 }
 
-// {{{2 class MondaiListEdge
-class MondaiListEdge extends React.Component {
-  render() {
-    const edge = this.props.edge;
-    return <MondaiListFragmentItem node={edge.node} key={edge.cursor} />;
-  }
-}
-
 // {{{2 class MondaiListList
 class MondaiListList extends React.Component {
+  constructor(props) {
+    super(props);
+    this._loadMore = this._loadMore.bind(this);
+  }
   render() {
-    const list = this.props.list;
     return (
       <div>
-        {list.edges.map(edge => (
-          <MondaiListFragmentEdge edge={edge} key={edge.__id} />
+        {this.props.list.allMondais.edges.map(edge => (
+          <MondaiListFragmentItem node={edge.node} key={edge.node.__id} />
         ))}
+        {this.props.relay.hasMore() ? (
+          <Button onClick={this._loadMore} block={true} bsStyle="info">Load More ...</Button>
+        ) : (
+          ""
+        )}
       </div>
     );
+  }
+
+  _loadMore() {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return;
+    }
+
+    this.props.relay.loadMore(10, error => {
+      console.log(error);
+    });
   }
 }
 
@@ -119,45 +134,94 @@ export const MondaiListFragmentItem = createFragmentContainer(MondaiListItem, {
     }
   `
 });
-// {{{2 fragment MondaiList_edge
-export const MondaiListFragmentEdge = createFragmentContainer(
-  MondaiListEdge,
-  graphql`
-    fragment MondaiList_edge on MondaiNodeEdge {
-      cursor
-      node {
-        ...MondaiList_node
-      }
-    }
-  `
-);
-
 // {{{2 fragment MondaiList_list
-export const MondaiListFragmentList = createFragmentContainer(
+export const MondaiListFragmentList = createPaginationContainer(
   MondaiListList,
-  graphql`
-    fragment MondaiList_list on MondaiNodeConnection {
-      edges {
-        ...MondaiList_edge
+  {
+    list: graphql`
+      fragment MondaiList_list on Query
+        @argumentDefinitions(
+          count: { type: Int, defaultValue: 3 }
+          cursor: { type: String }
+          orderBy: { type: "[String]", defaultValue: "-id" }
+          status: { type: Float, defaultValue: null }
+          status__gt: { type: Float, defaultValue: null }
+        ) {
+        allMondais(
+          first: $count
+          after: $cursor
+          orderBy: $orderBy
+          status: $status
+          status_Gt: $status__gt
+        ) @connection(key: "MondaiNode_allMondais") {
+          edges {
+            node {
+              id
+              ...MondaiList_node
+            }
+          }
+        }
       }
-      pageInfo {
-        hasNextPage
-        endCursor
+    `
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.list && props.list.allMondais;
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount
+      };
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        count,
+        cursor,
+        orderBy: fragmentVariables.orderBy,
+        status: fragmentVariables.status,
+        status__gt: fragmentVariables.status__gt
+      };
+    },
+    query: graphql`
+      query MondaiListInitQuery(
+        $count: Int
+        $cursor: String
+        $orderBy: [String]
+        $status: Float
+        $status__gt: Float
+      ) {
+        ...MondaiList_list
+          @arguments(
+            count: $count
+            cursor: $cursor
+            orderBy: $orderBy
+            status__gt: $status__gt
+            status: $status
+          )
       }
-    }
-  `
+    `
+  }
 );
 
 // {{{2 query MondaiListQuery
 const mondaiListBodyQuery = graphql`
-  query MondaiListQuery(
+  query MondaiListInitQuery(
+    $count: Int
+    $cursor: String
     $orderBy: [String]
     $status: Float
     $status__gt: Float
   ) {
-    allMondais(orderBy: $orderBy, status: $status, status_Gt: $status__gt) {
-      ...MondaiList_list
-    }
+    ...MondaiList_list
+      @arguments(
+        count: $count
+        cursor: $cursor
+        orderBy: $orderBy
+        status: $status
+        status__gt: $status__gt
+      )
   }
 `;
 
@@ -174,7 +238,7 @@ function MondaiListQueryRenderer(props) {
         if (error) {
           return <div>{error.message}</div>;
         } else if (props) {
-          return <MondaiListFragmentList list={props.allMondais} />;
+          return <MondaiListFragmentList list={props} />;
         }
         return <ProgressBar now={100} label={"Loading..."} striped active />;
       }}
@@ -199,6 +263,7 @@ export class MondaiListBody extends React.Component {
         <MondaiListQueryRenderer
           variables={{
             orderBy: ["-modified", "-id"],
+            count: 3,
             status: null,
             status__gt: 0
           }}
