@@ -397,11 +397,12 @@ class ProfileEdit(UpdateView):
         if re.findall(r'[^\]]*sui-hei.net/mondai/profile/[0-9]+',
                       str(form['profile'])):
             oldUserAward = Award.objects.get_or_create(name_ja="☆ラテシンの使者")[0]
-            grantOldUserAward = UserAward.objects.get_or_create(
+            grantOldUserAward, status = UserAward.objects.get_or_create(
                 user_id=self.request.user,
-                award_id=oldUserAward,
-                created=timezone.now())[0]
-            grantOldUserAward.save()
+                award_id=oldUserAward)
+            if status:
+                grantOldUserAward.created = timezone.now()
+                grantOldUserAward.save()
         return super(ProfileEdit, self).form_valid(form)
 
 
