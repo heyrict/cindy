@@ -5,7 +5,7 @@
   "scripts": {
     "prod-main": "./node_modules/.bin/webpack -p",
     "debug-main": "./node_modules/.bin/webpack",
-    "relay": "relay-compiler --src ./app/react --schema ./schema.json --extensions jsx"
+    "relay": "relay-compiler --src ./app/react --schema ./schema.json --extensions js jsx"
   },
   "author": "heyrict<github.com/heyrict>",
   "license": "MIT",
@@ -22,6 +22,7 @@
     "react-bootstrap": "^0.31.5",
     "react-burger-menu": "^2.1.11",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
     "react-relay": "^1.4.1",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",

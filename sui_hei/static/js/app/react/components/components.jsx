@@ -14,8 +14,9 @@ import {
   NavDropdown,
   Pagniation
 } from "react-bootstrap";
+import { Link } from "react-router-dom"
 import "jquery";
-import * as common from "../common";
+import * as common from "../../common";
 
 // {{{1 function StatusLabel(props)
 export function StatusLabel(props) {
@@ -67,9 +68,9 @@ export class MondaiTitleLabel extends React.Component {
     return (
       <span className="title_label">
         <span className="glyphicon glyphicon-chevron-right visible-xs-inline" />
-        <a href={common.urls.mondai_show(this.props.mondaiId)}>
+        <Link to={common.urls.mondai_show(this.props.mondaiId)}>
           {`[${translatedGenre}] ${this.props.title}`}
-        </a>
+        </Link>
       </span>
     );
   }
@@ -98,7 +99,7 @@ export class MondaiGiverLabel extends React.Component {
     const user = this.props.user;
     return (
       <span>
-        <a href={common.urls.profile(user.id)}>{user.nickname}</a>
+        <Link to={common.urls.profile(user.rowid)}>{user.nickname}</Link>
         <UserAwardPopup userAward={user.currentAward} />
       </span>
     );

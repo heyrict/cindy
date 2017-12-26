@@ -2,7 +2,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
-  Button,
   Clearfix,
   Col,
   Image,
@@ -11,14 +10,16 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown,
-  PageHeader
+  NavDropdown
 } from "react-bootstrap";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { slide as SideBar } from "react-burger-menu";
-import { MondaiListUL } from "./elements/MondaiList.jsx";
+import { QueryRenderer } from "react-relay";
 import "jquery";
+
+import { MondaiListBody } from "./components/MondaiList.jsx";
+import { environment } from "./Environment";
 import * as common from "../common";
 
 var $ = jQuery;
@@ -44,9 +45,7 @@ const mainNavBar = (
     <Navbar.Collapse>
       <Nav>
         <LinkContainer to="/">
-          <NavItem eventKey={1}>
-            {gettext("Homepage")}
-          </NavItem>
+          <NavItem eventKey={1}>{gettext("Homepage")}</NavItem>
         </LinkContainer>
         <NavDropdown
           title={gettext("Soup")}
@@ -54,9 +53,7 @@ const mainNavBar = (
           id="mainnavbar-soup-dropdown"
         >
           <LinkContainer to="/mondai">
-            <MenuItem eventKey="3.1">
-              {gettext("All Soups")}
-            </MenuItem>
+            <MenuItem eventKey="3.1">{gettext("All Soups")}</MenuItem>
           </LinkContainer>
           <MenuItem eventKey="3.2">{gettext("New Soup")}</MenuItem>
         </NavDropdown>
@@ -157,18 +154,6 @@ function IndexBody() {
 }
 
 // MondaiList Related {{{1
-// {{{2 function MondaiListBody()
-function MondaiListBody() {
-  return (
-    <div className="container">
-      <PageHeader>{gettext("All Soups")}</PageHeader>
-      <MondaiListUL post={{ filter: '{"status__exact":0}' }} />
-      <hr />
-      <MondaiListUL post={{ filter: '{"status__gt":0}' }} />
-    </div>
-  );
-}
-
 // {{{1 Entry Point
 const App = () => (
   <BrowserRouter>
@@ -176,9 +161,12 @@ const App = () => (
       <LeftBar />
       <noscript>This appication requires javascript to function</noscript>
       {mainNavBar}
-      <Route exact path="/" component={IndexBody} />
-      <Route path="/mondai" component={MondaiListBody} />
-      <Route path="/test" render={()=>(<h1>TEST</h1>)} />
+      <Switch>
+        <Route exact path="/" component={IndexBody} />
+        <Route exact path="/mondai" component={MondaiListBody} />
+        <Route exact path="/test" render={() => <h1>TEST</h1>} />
+        <Route render={() => <h1>NOT FOUND!</h1>} />
+      </Switch>
     </div>
   </BrowserRouter>
 );

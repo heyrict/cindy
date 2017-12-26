@@ -7,6 +7,8 @@ from graphene_django.types import DjangoObjectType
 from .models import *
 
 
+# {{{1 Nodes
+# {{{2 UserNode
 class UserNode(DjangoObjectType):
     class Meta:
         model = User
@@ -19,6 +21,7 @@ class UserNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 AwardNode
 class AwardNode(DjangoObjectType):
     class Meta:
         model = Award
@@ -31,6 +34,7 @@ class AwardNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 UserAwardNode
 class UserAwardNode(DjangoObjectType):
     class Meta:
         model = UserAward
@@ -43,10 +47,13 @@ class UserAwardNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 MondaiNode
 class MondaiNode(DjangoObjectType):
     class Meta:
         model = Mondai
-        filter_fields = []
+        filter_fields = {
+            "status": ["exact", "gt"],
+        }
         interfaces = (relay.Node, )
 
     rowid = graphene.Int()
@@ -62,9 +69,10 @@ class MondaiNode(DjangoObjectType):
     def resolve_uaquesCount(self, info):
         return Shitumon.objects.filter(
             Q(mondai=self) & (Q(kaitou__isnull=True)
-            | Q(kaitou__exact=""))).count()
+                              | Q(kaitou__exact=""))).count()
 
 
+# {{{2 ShitumonNode
 class ShitumonNode(DjangoObjectType):
     class Meta:
         model = Shitumon
@@ -77,6 +85,7 @@ class ShitumonNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 LobbyNode
 class LobbyNode(DjangoObjectType):
     class Meta:
         model = Lobby
@@ -89,6 +98,7 @@ class LobbyNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 CommentNode
 class CommentNode(DjangoObjectType):
     class Meta:
         model = Comment
@@ -101,6 +111,7 @@ class CommentNode(DjangoObjectType):
         return self.id
 
 
+# {{{2 StarNode
 class StarNode(DjangoObjectType):
     class Meta:
         model = Star
@@ -113,15 +124,25 @@ class StarNode(DjangoObjectType):
         return self.id
 
 
+# {{{1 Query
 class Query(object):
-    all_users = DjangoFilterConnectionField(UserNode)
-    all_awards = DjangoFilterConnectionField(AwardNode)
-    all_userawards = DjangoFilterConnectionField(UserAwardNode)
-    all_mondais = DjangoFilterConnectionField(MondaiNode)
-    all_shitumons = DjangoFilterConnectionField(ShitumonNode)
-    all_lobbys = DjangoFilterConnectionField(LobbyNode)
-    all_comments = DjangoFilterConnectionField(CommentNode)
-    all_stars = DjangoFilterConnectionField(StarNode)
+    # {{{2 definitions
+    all_users = DjangoFilterConnectionField(
+        UserNode, orderBy=graphene.List(of_type=graphene.String))
+    all_awards = DjangoFilterConnectionField(
+        AwardNode, orderBy=graphene.List(of_type=graphene.String))
+    all_userawards = DjangoFilterConnectionField(
+        UserAwardNode, orderBy=graphene.List(of_type=graphene.String))
+    all_mondais = DjangoFilterConnectionField(
+        MondaiNode, orderBy=graphene.List(of_type=graphene.String))
+    all_shitumons = DjangoFilterConnectionField(
+        ShitumonNode, orderBy=graphene.List(of_type=graphene.String))
+    all_lobbys = DjangoFilterConnectionField(
+        LobbyNode, orderBy=graphene.List(of_type=graphene.String))
+    all_comments = DjangoFilterConnectionField(
+        CommentNode, orderBy=graphene.List(of_type=graphene.String))
+    all_stars = DjangoFilterConnectionField(
+        StarNode, orderBy=graphene.List(of_type=graphene.String))
 
     user = relay.Node.Field(UserNode, id=graphene.Int())
     award = relay.Node.Field(AwardNode, id=graphene.Int())
@@ -132,30 +153,73 @@ class Query(object):
     comment = relay.Node.Field(CommentNode, id=graphene.Int())
     star = relay.Node.Field(StarNode, id=graphene.Int())
 
+    # {{{2 resolves
+    # {{{3 resolve all
     def resolve_all_users(self, info, **kwargs):
-        return User.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return User.objects.order_by(*orderBy)
+        else:
+            return User.objects.all()
 
     def resolve_all_awards(self, info, **kwargs):
-        return Award.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return Award.objects.order_by(*orderBy)
+        else:
+            return Award.objects.all()
 
     def resolve_all_userawards(self, info, **kwargs):
-        return UserAward.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return UserAward.objects.order_by(*orderBy)
+        else:
+            return UserAward.objects.all()
 
     def resolve_all_mondais(self, info, **kwargs):
-        return Mondai.objects.select_related("shitumon").all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return Mondai.objects.order_by(*orderBy)
+        else:
+            return Mondai.objects.all()
 
     def resolve_all_shitumons(self, info, **kwargs):
-        return Lobby.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return Lobby.objects.order_by(*orderBy)
+        else:
+            return Lobby.objects.all()
 
     def resolve_all_lobbys(self, info, **kwargs):
-        return Lobby.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return Lobby.objects.order_by(*orderBy)
+        else:
+            return Lobby.objects.all()
 
     def resolve_all_comments(self, info, **kwargs):
-        return Comment.objects.all()
+        orderBy = kwargs.get("orderBy", None)
+
+        if orderBy:
+            return Comment.objects.order_by(*orderBy)
+        else:
+            return Comment.objects.all()
 
     def resolve_all_stars(self, info, **kwargs):
-        return Star.objects.all()
+        orderBy = kwargs.get("orderBy", None)
 
+        if orderBy:
+            return Star.objects.order_by(*orderBy)
+        else:
+            return Star.objects.all()
+
+    # {{{3 resolve single
     def resolve_user(self, info, **kwargs):
         user_id = kwargs.get("id")
         if user_id is not None:
@@ -203,8 +267,3 @@ class Query(object):
         if star_id is not None:
             return Star.objects.get(pk=star_id)
         return None
-
-
-class UserConnection(graphene.Connection):
-    class Meta:
-        node = UserNode

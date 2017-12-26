@@ -21,9 +21,7 @@ const network = Network.create((operation, variables) => {
   });
 });
 
-const environment = new Environment({
+export const environment = new Environment({
   network,
   store
 });
-
-export default environment;

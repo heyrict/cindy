@@ -62,7 +62,7 @@ urlpatterns = [
     # GraphQL
     url(r"^graphql", GraphQLView.as_view(graphiql=True)),
     # rest
-    url(r"^(mondai|users)", views.simple, name="simple"),
+    url(r"^(mondai|users|test)", views.simple, name="simple"),
     url(r"^$", views.simple, name="simple"),
 ]
 # yapf: enable

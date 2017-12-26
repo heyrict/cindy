@@ -160,4 +160,7 @@ WEBPACK_LOADER = {
 }
 
 # Graphene Settings
-GRAPHENE = {'SCHEMA': 'schema.schema'}
+GRAPHENE = {
+    'SCHEMA': 'schema.schema',
+    'SCHEMA_OUTPUT': 'sui_hei/static/js/schema.json'
+}
