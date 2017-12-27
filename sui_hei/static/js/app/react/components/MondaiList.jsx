@@ -1,6 +1,5 @@
 // {{{1 Imports
 import React from "react";
-import ReactDOM from "react-dom";
 import { Grid, ProgressBar, PageHeader, Button } from "react-bootstrap";
 import "jquery";
 

@@ -3,6 +3,7 @@ from django.db.models import Count, Q
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import login, logout, authenticate
 from graphene import relay, resolve_only_args
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
@@ -166,6 +167,35 @@ class CreateMondai(relay.ClientIDMutation):
 
         return CreateMondai(mondai=mondai)
 
+# {{{2 Login
+class UserLogin(relay.ClientIDMutation):
+    class Input:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    user = graphene.Field(UserNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        request = info.context
+        username = input["username"]
+        password = input["password"]
+
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            raise ValidationError(_("Login incorrect!"))
+
+        login(request, user)
+        return UserLogin(user=user)
+
+# {{{2 Logout
+class UserLogout(relay.ClientIDMutation):
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        request = info.context
+        logout(request)
+        return UserLogout()
+
 # {{{1 Query
 class Query(object):
     # {{{2 definitions
@@ -312,6 +342,5 @@ class Query(object):
 # {{{1 Mutation
 class Mutation(graphene.ObjectType):
     create_mondai = CreateMondai.Field()
-
-    def resolve_create_mondai(self, info, **kwargs):
-        print(info.context)
+    login = UserLogin.Field()
+    logout = UserLogout.Field()
