@@ -2,12 +2,15 @@
 import * as React from "react";
 import {
   Button,
+  ButtonToolbar,
   Col,
   ControlLabel,
   FormGroup,
   FormControl,
   Modal,
-  Panel
+  Panel,
+  Popover,
+  OverlayTrigger
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import jQuery from "jquery";
@@ -95,7 +98,7 @@ export class MondaiGiverLabel extends React.Component {
     return (
       <span>
         <Link to={common.urls.profile(user.rowid)}>{user.nickname}</Link>
-        <UserAwardPopup userAward={user.currentAward} />
+        <UserAwardPopover userAward={user.currentAward} />
       </span>
     );
   }
@@ -113,32 +116,40 @@ export class MondaiCreatedLabel extends React.Component {
   }
 }
 
-// {{{1 class UserAwardPopup
-export class UserAwardPopup extends React.Component {
+// {{{1 class UserAwardPopover
+export class UserAwardPopover extends React.Component {
   render() {
     const ua = this.props.userAward;
     if (!ua) {
-      return "";
+      return null;
     } else {
-      const award_content = `
-${ua.award.description}<br />
-<span class='pull-right' style='color:#ff582b; font-weight:bold;'>
-  🏆${ua.created}
-</span>`;
+      const popoverAward = (
+        <Popover id={ua.id} title={ua.award.name}>
+          {ua.award.description}
+          <br />
+          <span className="pull-right" style={{ color:"#ff582b", fontWeight:"bold"}}>
+            🏆{ua.created}
+          </span>
+        </Popover>
+      );
       return (
-        <a
-          tabIndex="0"
-          href="javascript:void(0);"
-          role="button"
-          style={{ color: "black" }}
-          data-toggle="popover"
-          title={ua.award.name}
-          data-content={award_content}
-        >
-          [{ua.award.name}]
-        </a>
+        <OverlayTrigger placement="top" trigger="focus" overlay={popoverAward}>
+          <a
+            href="#"
+            role="button"
+            style={{ color: "black" }}
+          >
+            [{ua.award.name}]
+          </a>
+        </OverlayTrigger>
       );
     }
+  }
+
+  togglePopover() {
+    this.setState((prevState, props) => ({
+      show: !prevState.show
+    }));
   }
 }
 
@@ -161,7 +172,7 @@ export class MarkdownPreviewer extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.togglePreview} block >
+        <Button onClick={this.togglePreview} block>
           {this.state.open ? gettext("Hide Preview") : gettext("Show Preview")}
         </Button>
         <Panel collapsible expanded={this.state.open}>

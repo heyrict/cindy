@@ -207,13 +207,5 @@ const App = () => (
 );
 
 $(document).ready(function() {
-  // Popover initialization on top of react-bootstrap
-  $("body").popover({
-    selector: "[data-toggle='popover']",
-    placement: "top",
-    trigger: "focus",
-    html: true
-  });
-
   ReactDOM.render(<App />, document.getElementById("root"));
 });

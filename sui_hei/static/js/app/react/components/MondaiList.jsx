@@ -123,6 +123,7 @@ export const MondaiListFragmentItem = createFragmentContainer(MondaiListItem, {
         rowid
         nickname
         currentAward {
+          id
           award {
             name
             description
