@@ -20,6 +20,8 @@ import "jquery";
 
 import { MondaiListBody } from "./components/MondaiList.jsx";
 import { MondaiAddBody } from "./components/MondaiAdd.jsx";
+import { MondaiShowBody } from "./components/MondaiShow.jsx";
+
 import { environment } from "./Environment";
 import common from "../common";
 
@@ -198,6 +200,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={IndexBody} />
         <Route exact path="/mondai" component={MondaiListBody} />
+        <Route exact path="/mondai/show/:mondaiId" component={MondaiShowBody} />
         <Route exact path="/mondai/add" component={MondaiAddBody} />
         <Route exact path="/test" render={() => <h1>TEST</h1>} />
         <Route render={() => <h1>NOT FOUND!</h1>} />
