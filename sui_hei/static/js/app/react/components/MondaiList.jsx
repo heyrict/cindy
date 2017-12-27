@@ -1,7 +1,7 @@
 // {{{1 Imports
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { ProgressBar, PageHeader, Button } from "react-bootstrap";
+import React from "react";
+import ReactDOM from "react-dom";
+import { Grid, ProgressBar, PageHeader, Button } from "react-bootstrap";
 import "jquery";
 
 import {
@@ -19,7 +19,7 @@ import {
   createPaginationContainer
 } from "react-relay";
 import { environment } from "../Environment";
-import * as common from "../../common";
+import common from "../../common";
 
 // {{{1 Containers
 // {{{2 function MondaiListItem
@@ -250,7 +250,7 @@ function MondaiListQueryRenderer(props) {
 export class MondaiListBody extends React.Component {
   render() {
     return (
-      <div className="container">
+      <Grid>
         <PageHeader>{gettext("All Soups")}</PageHeader>
         <MondaiListQueryRenderer
           variables={{
@@ -268,7 +268,7 @@ export class MondaiListBody extends React.Component {
             status__gt: 0
           }}
         />
-      </div>
+      </Grid>
     );
   }
 }

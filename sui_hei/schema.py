@@ -1,5 +1,8 @@
 import graphene
 from django.db.models import Count, Q
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 from graphene import relay, resolve_only_args
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
@@ -123,6 +126,45 @@ class StarNode(DjangoObjectType):
     def resolve_rowid(self, info):
         return self.id
 
+
+# {{{1 Mutations
+# {{{2 CreateMondai
+class CreateMondai(relay.ClientIDMutation):
+    class Input:
+        mondaiTitle = graphene.String(required=True)
+        mondaiGenre = graphene.Int(required=True)
+        mondaiYami = graphene.Boolean(required=True)
+        mondaiContent = graphene.String(required=True)
+        mondaiKaisetu = graphene.String(required=True)
+
+    mondai = graphene.Field(MondaiNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        user = info.context.user
+        if (not user.is_authenticated):
+            raise ValidationError(_("Please login!"))
+
+        title = input["mondaiTitle"]
+        genre = input["mondaiGenre"]
+        yami = input["mondaiYami"]
+        content = input["mondaiContent"]
+        kaisetu = input["mondaiKaisetu"]
+
+        created = timezone.now()
+
+        mondai = Mondai.objects.create(
+            user=user,
+            title=title,
+            genre=genre,
+            yami=yami,
+            content=content,
+            kaisetu=kaisetu,
+            created=created,
+            modified=created)
+        mondai.save()
+
+        return CreateMondai(mondai=mondai)
 
 # {{{1 Query
 class Query(object):
@@ -267,3 +309,9 @@ class Query(object):
         if star_id is not None:
             return Star.objects.get(pk=star_id)
         return None
+# {{{1 Mutation
+class Mutation(graphene.ObjectType):
+    create_mondai = CreateMondai.Field()
+
+    def resolve_create_mondai(self, info, **kwargs):
+        print(info.context)

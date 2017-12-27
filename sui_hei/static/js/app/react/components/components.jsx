@@ -3,20 +3,16 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
   Button,
-  Clearfix,
   Col,
-  Image,
-  Jumbotron,
-  MenuItem,
-  Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  Pagniation
+  ControlLabel,
+  Form,
+  FormGroup,
+  FormControl,
+  Panel
 } from "react-bootstrap";
-import { Link } from "react-router-dom"
-import "jquery";
-import * as common from "../../common";
+import { Link } from "react-router-dom";
+import jQuery from "jquery";
+import common from "../../common";
 
 // {{{1 function StatusLabel(props)
 export function StatusLabel(props) {
@@ -145,4 +141,75 @@ ${ua.award.description}<br />
       );
     }
   }
+}
+
+// {{{1 function MarkdownEditorContainer
+export function MarkdownEditorContainer(props) {
+  return <FormControl {...props} componentClass="textarea" />;
+}
+
+// {{{1 function MarkdownPreviewerContainer
+export class MarkdownPreviewer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true
+    };
+
+    this.togglePreview = this.togglePreview.bind(this);
+  }
+
+  render() {
+    return (
+      <div>
+        <Button onClick={this.togglePreview} block >
+          {this.state.open ? gettext("Hide Preview") : gettext("Show Preview")}
+        </Button>
+        <Panel collapsible expanded={this.state.open}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: common.text2md(this.props.content)
+            }}
+          />
+        </Panel>
+      </div>
+    );
+  }
+
+  togglePreview(e) {
+    this.setState((prevState, props) => ({
+      open: !prevState.open
+    }));
+  }
+}
+
+// {{{1 function PreviewEditor
+export class PreviewEditor extends React.Component {
+  render() {
+    return (
+      <div>
+        <MarkdownEditorContainer
+          value={this.props.content}
+          onChange={this.props.onChange}
+          style={{ minHeight: "200px" }}
+        />
+        <MarkdownPreviewer content={this.props.content} />
+      </div>
+    );
+  }
+}
+
+// {{{1 function FieldGroup
+export function FieldGroup({ id, label, help, Ctl, ...props }) {
+  return (
+    <FormGroup controlId={id}>
+      {help && <HelpBlock>{help}</HelpBlock>}
+      <Col componentClass={ControlLabel} xs={2}>
+        {label}
+      </Col>
+      <Col xs={10}>
+        <Ctl {...props} />
+      </Col>
+    </FormGroup>
+  );
 }

@@ -9,4 +9,9 @@ class Query(sui_hei.schema.Query, graphene.ObjectType):
     node = relay.Node.Field()
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(sui_hei.schema.Mutation, graphene.ObjectType):
+    # This class extends all abstract apps level Queries and graphene.ObjectType
+    node = relay.Node.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
