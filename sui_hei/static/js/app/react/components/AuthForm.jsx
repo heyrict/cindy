@@ -1,11 +1,6 @@
 // {{{1 Imports
 import React from "react";
-import {
-  Form,
-  FormControl,
-  MenuItem,
-  Panel
-} from "react-bootstrap";
+import { Form, FormControl, MenuItem, Panel } from "react-bootstrap";
 import { commitMutation } from "react-relay";
 import bootbox from "bootbox";
 
@@ -36,7 +31,7 @@ export class LoginForm extends React.Component {
       <Form horizontal>
         {this.state.errorMsg
           ? this.state.errorMsg.map(e => (
-              <Panel header={e.message} bsStyle="danger" />
+              <Panel header={e.message} bsStyle="danger" key={e.message} />
             ))
           : null}
         <FieldGroup
@@ -90,9 +85,7 @@ export class LoginForm extends React.Component {
       onCompleted: (response, errors) => {
         if (errors) {
           this.setState({
-            errorMsg: errors.map(e => (
-              <Panel header={e.message} bsStyle="danger" />
-            ))
+            errorMsg: errors
           });
         } else if (response) {
           const user = response.login.user;
@@ -115,8 +108,8 @@ export class LoginMenuItem extends React.Component {
 
   render() {
     return (
-      <MenuItem eventKey={this.props.eventKey} onClick={this.showChildModal}>
-        {this.props.children}
+      <MenuItem eventKey={this.props.eventKey}>
+        <div onClick={this.showChildModal}>{this.props.children}</div>
         <ModalContainer
           header="Login"
           body={LoginForm}
