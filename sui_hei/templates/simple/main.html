@@ -21,7 +21,12 @@
   {% get_current_language as LANGUAGE_CODE %}
   <script type="text/javascript">
       LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";
-      window.django = { user_id: {{ request.user.id|default:"null" }}};
+      window.django = {
+        {% if request.user.is_authenticated %}
+        user_id: {{ request.user.id }},
+        user_nickname: "{{ request.user.nickname }}",
+        {% endif %}
+      };
   </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
   {% render_bundle 'manifest' %}

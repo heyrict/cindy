@@ -2,7 +2,10 @@
 import React from "react";
 import { Form, FormControl, MenuItem, Panel } from "react-bootstrap";
 import { commitMutation } from "react-relay";
+import { connect } from "react-redux";
 import bootbox from "bootbox";
+
+import { actionSetCurrentUser } from "../actions";
 
 import { FieldGroup, ModalContainer } from "./components.jsx";
 import common from "../../common";
@@ -10,7 +13,7 @@ import { environment } from "../Environment";
 
 // {{{1 Containers
 // {{{2 class LoginForm
-export class LoginForm extends React.Component {
+export class LoginFormAtom extends React.Component {
   // {{{ constructor
   constructor(props) {
     super(props);
@@ -90,14 +93,24 @@ export class LoginForm extends React.Component {
         } else if (response) {
           const user = response.login.user;
           // TODO: Update Global User Interface here
-          //window.django.user_id = user.rowid;
-          window.location.reload();
+          this.props.updateCurrentUser({
+            userId: user.rowid,
+            nickname: user.nickname
+          });
         }
       }
     });
   }
   // }}}
 }
+// {{{2 const LoginForm
+const mapLoginDispatchToProps = (dispatch, ownProps) => ({
+  updateCurrentUser: user => {
+    dispatch(actionSetCurrentUser(user));
+  }
+});
+
+const LoginForm = connect(null, mapLoginDispatchToProps)(LoginFormAtom);
 // {{{2 class LoginMenuItem
 export class LoginMenuItem extends React.Component {
   constructor(props) {
@@ -126,8 +139,8 @@ export class LoginMenuItem extends React.Component {
     this.childModal.showModal();
   }
 }
-// {{{2 class LogoutMenuItem
-export class LogoutMenuItem extends React.Component {
+// {{{2 class LogoutMenuItemAtom
+export class LogoutMenuItemAtom extends React.Component {
   constructor(props) {
     super(props);
 
@@ -155,13 +168,22 @@ export class LogoutMenuItem extends React.Component {
           );
         } else if (response) {
           // TODO: Update Global User Interface here
-          //window.django.user_id = null;
-          window.location.reload();
+          this.props.updateCurrentUser();
         }
       }
     });
   }
 }
+// {{{2 const LogoutMenuItem
+const mapLogoutDispatchToProps = (dispatch, ownProps) => ({
+  updateCurrentUser: () => {
+    dispatch(actionSetCurrentUser({ userId: null, nickname: null }));
+  }
+});
+
+export const LogoutMenuItem = connect(null, mapLogoutDispatchToProps)(
+  LogoutMenuItemAtom
+);
 // {{{1 Fragments
 // {{{2 mutation AuthFormLoginMutation
 const AuthFormLoginMutation = graphql`

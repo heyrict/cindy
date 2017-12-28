@@ -19,7 +19,16 @@ module.exports = {
       "moment-countdown",
       "./app/common"
     ],
-    react_vendor: ["react", "react-dom", "react-bootstrap", "react-burger-menu"],
+    react_vendor: [
+      "react",
+      "react-dom",
+      "react-bootstrap",
+      "react-burger-menu",
+      "react-relay",
+      "react-redux",
+      "react-router-dom",
+      "react-router-bootstrap"
+    ],
     simple: "./app/react/main.jsx",
     leftbar: "./app/leftbar_content",
     profile: ["./app/profile"],
@@ -123,6 +132,6 @@ module.exports = {
       name: "manifest"
     }),
     new ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|zh-cn|ja/),
-    new BundleTracker({filename: "dist/webpack-stats.json"})
+    new BundleTracker({ filename: "dist/webpack-stats.json" })
   ]
 };
