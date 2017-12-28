@@ -8,15 +8,37 @@ The name of `Cindy` stands for **Cindy Is Not Dead Yet**,
 which comes from the popular original character of
 [Cindy](http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3).
 
-**THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
-
 <div style="clear:both;" />
+
+About Breaking Changes
+----------------------
+In version `v6.0`, the original UI is going to be replaced by `React`, and the original API is rewritten by `graphQL` and `Realy`,
+which means several projects depend on `Cindy`'s original API will not function anymore.
+You can still access `Cindy`'s API by querying to `/graphql` in this version.
+
+In version `v7.0`, a realtime cindy is going to be implemented with `WebSocket`,
+which means you cannot deploy it on some PaaS which have no multi-thread (asgi) support (e.g. pythonanywhere)
+
+**Version `v5.X` is still under maintainance for legacy issues at present.**
+**After `v6.X`, support for `v5.X` is scheduled to be dropped, but after `v7.X`, support for `v6.X` will be continued for legacy issues**
+
+### From v5.X to v6.X
+**WARNING**: The database has some major changes in v6.0, which means you *CANNOT* upgrade from v5.X to v6.X
+simply running `python3 manage.py makemigrations; python3 manage.py migrate`,
+which can modify your database but will *DROP SOME EXISTING DATA*.
+
+To upgrade from `v5.X` to `v6.X`:
+- Make sure you are at a node *BEFORE* an existing `v5.X` tag.
+- Upgrade the project to a version after `v6.X`
+- Run `upgrade.py` under `./upgrade-from-cindy/` folder
+- Run `python3 manage.py migrate`
+- Then upgrade the database as you did before `python3 manage.py makemigrations; python3 manage.py migrate`
 
 Requisitories
 -----------
 - [Python3.5](http://www.python.org)
 - MySQL Server
-- django, pymysql, markdown (python3 packages)
+- python3 packages from `requirements.txt`
 
     ```bash
     # Windows
@@ -37,6 +59,9 @@ Requisitories
     # **Make Sure You are in `cindy/sui_hei/static/js` directory.**
     ./node_modules/.bin/webpack  # Linux
     node_modules\.bin\webpack.cmd  # Windows
+
+    # or simply,
+    npm run debug-main # NOTE: this may not function properly under Windows
     ```
 - mysqlclient
 
