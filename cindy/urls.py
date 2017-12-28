@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
+from django.urls import path
 from django.utils import timezone
 from django.views.decorators.http import last_modified
 from django.views.i18n import JavaScriptCatalog
@@ -23,10 +24,10 @@ from django.views.i18n import JavaScriptCatalog
 last_modified_date = timezone.now()
 
 urlpatterns = [
-    url(r'^', include('sui_hei.urls')),
-    url(r'^admin/', admin.site.urls),
+    path('', include('sui_hei.urls')),
+    path('admin/', admin.site.urls),
 ] + i18n_patterns(
-    url(r'^jsi18n/$',
+    path('jsi18n',
         last_modified(lambda req, **kw: last_modified_date)
         (JavaScriptCatalog.as_view()),
         name='jsi18n'))

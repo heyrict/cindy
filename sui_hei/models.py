@@ -3,7 +3,7 @@ import re
 from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
                                         BaseUserManager)
 from django.db import connections, models
-from django.db.models import Q, DO_NOTHING, SET_NULL
+from django.db.models import Q, DO_NOTHING, SET_NULL, CASCADE
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -42,8 +42,8 @@ class User(AbstractUser):
 
 
 class UserAward(models.Model):
-    user = models.ForeignKey(User)
-    award = models.ForeignKey(Award)
+    user = models.ForeignKey(User, on_delete=CASCADE)
+    award = models.ForeignKey(Award, on_delete=CASCADE)
     created = models.DateField(_("created"), null=False, default=timezone.now)
 
     class Meta:
@@ -62,7 +62,7 @@ class Mondai(models.Model):
       3: shin-keshiki
     '''
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=CASCADE)
     title = models.CharField(_('title'), max_length=255, null=False)
     yami = models.BooleanField(_('yami'), default=False, null=False)
     genre = models.IntegerField(_('genre'), default=0, null=False)
@@ -99,8 +99,8 @@ mondai_status_enum = {
 
 class Shitumon(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user = models.ForeignKey(User)
-    mondai = models.ForeignKey(Mondai)
+    user = models.ForeignKey(User, on_delete=CASCADE)
+    mondai = models.ForeignKey(Mondai, on_delete=CASCADE)
     shitumon = models.TextField(_('shitumon'), null=False)
     kaitou = models.TextField(_('kaitou'), null=True)
     good = models.BooleanField(_('good_ques'), default=False, null=False)
@@ -118,7 +118,7 @@ class Shitumon(models.Model):
 
 class Lobby(models.Model):
     id = models.AutoField(max_length=11, null=False, primary_key=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=CASCADE)
     channel = models.TextField(_('channel'), default="lobby", null=False)
     content = models.TextField(_('content'), null=False)
 
@@ -136,8 +136,8 @@ class Lobby(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User)
-    mondai = models.ForeignKey(Mondai)
+    user = models.ForeignKey(User, on_delete=CASCADE)
+    mondai = models.ForeignKey(Mondai, on_delete=CASCADE)
     content = models.TextField(_('content'), null=False)
     spoiler = models.BooleanField(_('spoiler'), default=False)
 
@@ -149,8 +149,8 @@ class Comment(models.Model):
 
 
 class Star(models.Model):
-    user = models.ForeignKey(User)
-    mondai = models.ForeignKey(Mondai)
+    user = models.ForeignKey(User, on_delete=CASCADE)
+    mondai = models.ForeignKey(Mondai, on_delete=CASCADE)
     value = models.FloatField(_('Value'), null=False, default=0)
 
     class Meta:
