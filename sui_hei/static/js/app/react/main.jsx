@@ -21,6 +21,7 @@ import "jquery";
 import { MondaiListBody } from "./components/MondaiList.jsx";
 import { MondaiAddBody } from "./components/MondaiAdd.jsx";
 import { MondaiShowBody } from "./components/MondaiShow.jsx";
+import { LoginMenuItem, LogoutMenuItem } from "./components/AuthForm.jsx";
 
 import { environment } from "./Environment";
 import common from "../common";
@@ -39,9 +40,7 @@ class UserDropDown extends React.Component {
             title={gettext("Hello, guest!")}
             id="mainnavbar-user-dropdown"
           >
-            <LinkContainer to="/login">
-              <MenuItem eventKey={0.1}>{gettext("Login")}</MenuItem>
-            </LinkContainer>
+            <LoginMenuItem eventKey={0.1}>{gettext("Login")}</LoginMenuItem>
             <LinkContainer to="/register">
               <MenuItem eventKey={0.2}>{gettext("Register")}</MenuItem>
             </LinkContainer>
@@ -52,11 +51,11 @@ class UserDropDown extends React.Component {
             title={gettext("About Me")}
             id="mainnavbar-user-dropdown"
           >
-            <LinkContainer to={"/profile/"+window.django.user_id}>
+            <LinkContainer to={"/profile/" + window.django.user_id}>
               <MenuItem eventKey={0.3}>{gettext("My Profile")}</MenuItem>
             </LinkContainer>
             <LinkContainer to="/logout">
-              <MenuItem eventKey={0.4}>{gettext("Logout")}</MenuItem>
+              <LogoutMenuItem eventKey={0.4}>{gettext("Logout")}</LogoutMenuItem>
             </LinkContainer>
           </NavDropdown>
         )}
@@ -77,7 +76,7 @@ const mainNavBar = (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <LinkContainer to="/">
+        <LinkContainer exact to="/">
           <NavItem eventKey={1}>{gettext("Homepage")}</NavItem>
         </LinkContainer>
         <NavDropdown
@@ -85,14 +84,16 @@ const mainNavBar = (
           eventKey={3}
           id="mainnavbar-soup-dropdown"
         >
-          <LinkContainer to="/mondai">
+          <LinkContainer exact to="/mondai">
             <MenuItem eventKey="3.1">{gettext("All Soups")}</MenuItem>
           </LinkContainer>
-          <LinkContainer to="/mondai/add">
+          <LinkContainer exact to="/mondai/add">
             <MenuItem eventKey="3.2">{gettext("New Soup")}</MenuItem>
           </LinkContainer>
         </NavDropdown>
-        <NavItem name={gettext("User List")} />
+        <LinkContainer exact to="/profile">
+          <NavItem>{gettext("User List")}</NavItem>
+        </LinkContainer>
       </Nav>
       <UserDropDown />
     </Navbar.Collapse>
@@ -202,7 +203,6 @@ const App = () => (
         <Route exact path="/mondai" component={MondaiListBody} />
         <Route exact path="/mondai/show/:mondaiId" component={MondaiShowBody} />
         <Route exact path="/mondai/add" component={MondaiAddBody} />
-        <Route exact path="/test" render={() => <h1>TEST</h1>} />
         <Route render={() => <h1>NOT FOUND!</h1>} />
       </Switch>
     </div>
@@ -210,13 +210,5 @@ const App = () => (
 );
 
 $(document).ready(function() {
-  // Popover initialization on top of react-bootstrap
-  $("body").popover({
-    selector: "[data-toggle='popover']",
-    placement: "top",
-    trigger: "focus",
-    html: true
-  });
-
   ReactDOM.render(<App />, document.getElementById("root"));
 });

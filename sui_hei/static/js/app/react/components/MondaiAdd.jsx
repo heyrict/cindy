@@ -1,22 +1,17 @@
 // {{{1 Imports
 import React from "react";
-import ReactDOM from "react-dom";
 import {
   Button,
-  Checkbox,
-  Col,
-  ControlLabel,
   Form,
-  FormGroup,
   FormControl,
   Grid,
-  HelpBlock,
   PageHeader,
-  Row
+  Panel
 } from "react-bootstrap";
 import { commitMutation } from "react-relay";
+import bootbox from "bootbox";
 
-import { FieldGroup, PreviewEditor } from "../components/components.jsx";
+import { FieldGroup, PreviewEditor } from "./components.jsx";
 import common from "../../common";
 import { environment } from "../Environment";
 
@@ -38,7 +33,6 @@ export class MondaiAddForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   // }}}
-
   // {{{ render
   render() {
     return (
@@ -103,7 +97,6 @@ export class MondaiAddForm extends React.Component {
     );
   }
   // }}}
-
   // {{{ handleChange
   handleChange(e) {
     var target = e.target;
@@ -120,7 +113,6 @@ export class MondaiAddForm extends React.Component {
     }
   }
   // }}}
-
   // {{{ handleSubmit
   handleSubmit(e) {
     e.preventDefault();
@@ -129,7 +121,11 @@ export class MondaiAddForm extends React.Component {
       variables: { input: { ...this.state } },
       onCompleted: (response, errors) => {
         if (errors) {
-          bootbox.alert(JSON.stringify(errors));
+          bootbox.alert(
+            errors.map(e => (
+              <Panel header={e.message} key={e.message} bsStyle="danger" />
+            ))
+          );
         } else if (response) {
           const mondaiId = response.createMondai.mondai.rowid;
           this.props.history.push(`/mondai/show/${mondaiId}`);

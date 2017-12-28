@@ -1,14 +1,16 @@
 // {{{1 Imports
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {
   Button,
+  ButtonToolbar,
   Col,
   ControlLabel,
-  Form,
   FormGroup,
   FormControl,
-  Panel
+  Modal,
+  Panel,
+  Popover,
+  OverlayTrigger
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import jQuery from "jquery";
@@ -96,7 +98,7 @@ export class MondaiGiverLabel extends React.Component {
     return (
       <span>
         <Link to={common.urls.profile(user.rowid)}>{user.nickname}</Link>
-        <UserAwardPopup userAward={user.currentAward} />
+        <UserAwardPopover userAward={user.currentAward} />
       </span>
     );
   }
@@ -114,32 +116,40 @@ export class MondaiCreatedLabel extends React.Component {
   }
 }
 
-// {{{1 class UserAwardPopup
-export class UserAwardPopup extends React.Component {
+// {{{1 class UserAwardPopover
+export class UserAwardPopover extends React.Component {
   render() {
     const ua = this.props.userAward;
     if (!ua) {
-      return "";
+      return null;
     } else {
-      const award_content = `
-${ua.award.description}<br />
-<span class='pull-right' style='color:#ff582b; font-weight:bold;'>
-  🏆${ua.created}
-</span>`;
+      const popoverAward = (
+        <Popover id={ua.id} title={ua.award.name}>
+          {ua.award.description}
+          <br />
+          <span className="pull-right" style={{ color:"#ff582b", fontWeight:"bold"}}>
+            🏆{ua.created}
+          </span>
+        </Popover>
+      );
       return (
-        <a
-          tabIndex="0"
-          href="javascript:void(0);"
-          role="button"
-          style={{ color: "black" }}
-          data-toggle="popover"
-          title={ua.award.name}
-          data-content={award_content}
-        >
-          [{ua.award.name}]
-        </a>
+        <OverlayTrigger placement="top" trigger="focus" overlay={popoverAward}>
+          <a
+            href="#"
+            role="button"
+            style={{ color: "black" }}
+          >
+            [{ua.award.name}]
+          </a>
+        </OverlayTrigger>
       );
     }
+  }
+
+  togglePopover() {
+    this.setState((prevState, props) => ({
+      show: !prevState.show
+    }));
   }
 }
 
@@ -162,7 +172,7 @@ export class MarkdownPreviewer extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.togglePreview} block >
+        <Button onClick={this.togglePreview} block>
           {this.state.open ? gettext("Hide Preview") : gettext("Show Preview")}
         </Button>
         <Panel collapsible expanded={this.state.open}>
@@ -212,4 +222,70 @@ export function FieldGroup({ id, label, help, Ctl, ...props }) {
       </Col>
     </FormGroup>
   );
+}
+// {{{1 class ModalContainer
+export class ModalContainer extends React.Component {
+  /* Change a component to modal.
+   * props:
+   * - header: String
+   * - body: Component!
+   * - footer: { close: bool, confirm: bool }
+   *   body component should have a `confirm` function if confirm == true
+   */
+  // {{{ constructor
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false
+    };
+
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
+  }
+  // }}}
+  // {{{ render
+  render() {
+    var Body = this.props.body;
+    return (
+      <Modal show={this.state.show} onHide={this.hideModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{this.props.header}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {
+            <Body
+              ref={instance => {
+                this.childBody = instance;
+              }}
+            />
+          }
+        </Modal.Body>
+        <Modal.Footer>
+          {this.props.footer.confirm ? (
+            <Button onClick={this.handleConfirm}>{gettext("Confirm")}</Button>
+          ) : null}
+          {this.props.footer.close ? (
+            <Button onClick={this.hideModal}>{gettext("Close")}</Button>
+          ) : null}
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+  // }}}
+  // {{{ showModal
+  showModal(e) {
+    this.setState({ show: true });
+  }
+  // }}}
+  // {{{ hideModal
+  hideModal(e) {
+    this.setState({ show: false });
+  }
+  // }}}
+  // {{{ handleConfirm
+  handleConfirm() {
+    this.childBody.confirm();
+  }
+  // }}}
 }
