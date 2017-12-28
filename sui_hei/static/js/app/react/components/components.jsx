@@ -12,6 +12,7 @@ import {
   Popover,
   OverlayTrigger
 } from "react-bootstrap";
+import { createFragmentContainer } from "react-relay";
 import { Link } from "react-router-dom";
 import jQuery from "jquery";
 import common from "../../common";
@@ -289,3 +290,21 @@ export class ModalContainer extends React.Component {
   }
   // }}}
 }
+// {{{1 const ComponentsFragmentUserLabel
+export const ComponentsFragmentUserLabel = createFragmentContainer(MondaiGiverLabel, {
+  user: graphql`
+    fragment components_user on UserNode {
+      rowid
+      nickname
+      currentAward {
+        id
+        created
+        award {
+          id
+          name
+          description
+        }
+      }
+    }
+  `
+});

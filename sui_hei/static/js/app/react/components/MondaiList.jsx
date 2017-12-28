@@ -5,11 +5,11 @@ import "jquery";
 
 import {
   MondaiCreatedLabel,
-  MondaiGiverLabel,
   MondaiProcessLabel,
   MondaiScoreLabel,
   MondaiStatusLable,
-  MondaiTitleLabel
+  MondaiTitleLabel,
+  ComponentsFragmentUserLabel
 } from "./components.jsx";
 import {
   QueryRenderer,
@@ -20,7 +20,7 @@ import {
 import { environment } from "../Environment";
 import common from "../../common";
 
-// {{{1 Containers
+// {{{1 Elements
 // {{{2 function MondaiListItem
 export function MondaiListItem(props) {
   const node = props.node;
@@ -45,7 +45,7 @@ export function MondaiListItem(props) {
         />
       </div>
       <div className="visible-xs-block col-xs-6 text-right">
-        <MondaiGiverLabel user={node.user} />
+        <ComponentsFragmentUserLabel user={node.user} />
         <MondaiCreatedLabel time={node.created} />
       </div>
       <span className="visible-xs-block clearfix" />
@@ -58,7 +58,7 @@ export function MondaiListItem(props) {
         <MondaiScoreLabel starCount={starCount} starSum={starSum} />
       </div>
       <div className="hidden-xs col-sm-12 text-right">
-        <MondaiGiverLabel user={node.user} />
+        <ComponentsFragmentUserLabel user={node.user} />
         <MondaiCreatedLabel time={node.created} />
       </div>
       <span className="clearfix" />
@@ -98,8 +98,8 @@ class MondaiListList extends React.Component {
   }
 }
 
-// {{{1 Fragments
-// {{{2 fragment MondaiListQuery
+// {{{1 Containers
+// {{{2 const MondaiListFragmentItem
 export const MondaiListFragmentItem = createFragmentContainer(MondaiListItem, {
   node: graphql`
     fragment MondaiList_node on MondaiNode {
@@ -119,22 +119,12 @@ export const MondaiListFragmentItem = createFragmentContainer(MondaiListItem, {
         }
       }
       user {
-        id
-        rowid
-        nickname
-        currentAward {
-          id
-          award {
-            name
-            description
-          }
-          created
-        }
+        ...components_user
       }
     }
   `
 });
-// {{{2 fragment MondaiList_list
+// {{{2 const MondaiListFragmentList
 export const MondaiListFragmentList = createPaginationContainer(
   MondaiListList,
   {

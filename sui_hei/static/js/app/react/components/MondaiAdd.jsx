@@ -15,7 +15,7 @@ import { FieldGroup, PreviewEditor } from "./components.jsx";
 import common from "../../common";
 import { environment } from "../Environment";
 
-// {{{1 Containers
+// {{{1 Elements
 // {{{2 class MondaiAddForm
 export class MondaiAddForm extends React.Component {
   // {{{ constructor
@@ -138,6 +138,7 @@ export class MondaiAddForm extends React.Component {
 }
 
 // {{{1 Fragments
+// {{{2 mutation MondaiAddMutation
 export const MondaiAddMutation = graphql`
   mutation MondaiAddMutation($input: CreateMondaiInput!) {
     createMondai(input: $input) {

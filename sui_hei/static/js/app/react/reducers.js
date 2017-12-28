@@ -9,7 +9,6 @@ const initialState = {
 };
 
 function cindyApp(state = initialState, action) {
-  console.log(state);
   switch (action.type) {
     case ACTION_SET_CURRENT_USER:
       return {
