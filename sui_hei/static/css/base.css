@@ -1,21 +1,7 @@
-.wrapper {
-  border: 3px solid #2aa198;
-  border-radius: 5px;
-  width: 100%;
-}
-.hline {
-  border-top: 1px solid #839496;
-  color: #ccc;
-}
-.clear {
-  clear: both;
-}
-html {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-p {
-  margin: 15px 5px;
+body {
+  background: #fff9f0;
+  line-height: normal;
+  padding-top: 50px;
 }
 h1,
 h2,
@@ -25,108 +11,38 @@ h5,
 h6 {
   padding-bottom: 5px;
 }
-select {
-  margin-top: 8px;
+.indexHero {
+  background: #f2cd8f;
 }
-li:not(.divider) {
-  padding: 2px;
-}
-textarea {
-  padding: 6px;
-  font-size: 15px;
-  border-radius: 2px;
-  border: 3px solid #98d0f1;
-  margin-top: 10px;
-  height: 100px;
-  width: 98%;
-}
-input[type="submit"] {
-  background: #2bc1f2;
-  border: none;
-  color: #fff;
-  width: 99%;
-  font-size: 22px;
-  font-weight: bolder;
-  padding: 8px 0;
-  border-radius: 3px;
-  margin: 2px;
-}
-button {
-  background: #2bc1f2;
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bolder;
-}
-input[type="button"] {
-  background: #2bc1f2;
-  border: none;
-  color: #fff;
-  font-size: 22px;
-  font-weight: bolder;
-  padding: 8px 0;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-top: 25px;
-}
-input[type="text"],
-input[type="password"] {
-  margin-top: 10px;
-  padding: 6px;
-  width: 99%;
-  font-size: 15px;
-  padding: 8px 0;
-  border-radius: 2px;
-  border: 3px solid #98d0f1;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-.list-nav li {
-  display: table-cell;
-  vertical-align: middle;
-  background: #fcf4dc;
-  border: 3px solid #5856b9;
-  border-radius: 25px;
-}
-.list-nav a {
-  height: auto;
-  width: 100px;
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  color: #2075c7;
-  padding: 8px;
-  font-size: 16px;
-}
-.child-nav li {
-  border: 3px solid #2075c7;
-}
-.child-nav a {
-  color: #2075c7;
-  padding: 1px;
-  font-size: 14px;
+.show-grid {
+  margin-bottom: 15px;
 }
 .status_label {
-  float: left;
-  width: 70px;
+  width: 100%;
   text-align: center;
   border-radius: 10px;
 }
 .status_solved {
   border: 1px solid #859900;
+  color: #859900;
 }
 .status_unsolved {
   border: 1px solid #cb4b16;
+  color: #cb4b16;
 }
 .status_dazed {
   border: 1px solid #259185;
+  color: #259185;
 }
 .status_hidden {
   border: 1px solid gray;
+  color: gray;
 }
 .process_label {
   text-align: center;
-  padding: 3px;
+  width: 100%;
+  min-width: 30px;
+  padding: 1px;
   border-radius: 10px;
 }
 .unanswered {
@@ -140,8 +56,10 @@ input[type="password"] {
   color: #eee8d5;
 }
 .title_label {
-  width: 50%;
-  padding-left: 10px;
+  font-size: 18px;
+}
+.title_label a {
+  color: #333;
 }
 .mondai_score {
   border: 2px solid #bcc045;
@@ -152,101 +70,9 @@ input[type="password"] {
   color: #bcc045;
   padding: 4px;
 }
-body {
-  background: #fff9f0;
-  line-height: normal;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  font-size: 100%;
-  font: inherit;
-}
-table th {
-  font-weight: bold;
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
-table td {
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
-table tr {
-  border-top: 1px solid #ccc;
-  background-color: #fff;
-}
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
-a.bul {
-  color: #222;
-  text-decoration: underline;
-}
-a.bul:hover {
-  text-decoration: none;
-}
-sub {
-  position: inherit;
-}
-.pagination {
-  margin: 0px;
-}
-.sidebar-nav {
-  padding: 9px 0;
-}
 
-.dropdown-menu .sub-menu {
-  left: 100%;
+#leftbar {
   position: absolute;
-  top: 0;
-  visibility: hidden;
-  margin-top: -1px;
-}
-
-.dropdown-menu li:hover .sub-menu {
-  visibility: visible;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.nav-tabs .dropdown-menu,
-.nav-pills .dropdown-menu,
-.navbar .dropdown-menu {
-  margin-top: 0;
-}
-
-.navbar .sub-menu:before {
-  border-bottom: 7px solid transparent;
-  border-left: none;
-  border-right: 7px solid rgba(0, 0, 0, 0.2);
-  border-top: 7px solid transparent;
-  left: -7px;
-  top: 10px;
-}
-
-.navbar .sub-menu:after {
-  border-top: 6px solid transparent;
-  border-left: none;
-  border-right: 6px solid #fff;
-  border-bottom: 6px solid transparent;
-  left: 10px;
-  top: 11px;
-  left: -6px;
-}
-.tab-pane {
-  padding-top: 5px;
-}
-.lobby_table_div .popover {
-  position: relative;
-  display: block;
-  margin: 20px;
-  max-width: inherit;
-}
-
-#search_box {
-  padding: inherit;
-  margin: inherit;
-  padding: inherit;
+  left: 0;
+  top: 50px;
 }

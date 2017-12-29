@@ -1,8 +1,8 @@
-Cindy
-=====
+Cindy-Realtime
+==============
 <img align="right" style="width:38.2%;" src="https://raw.githubusercontent.com/heyrict/cindy/master/sui_hei/static/pictures/cindylogo.png" />
-A (non-)replica project for replicating the
-website of [sui-hei.net](http://sui-hei.net) by `Django`.
+
+This is a project started in homage to [latethin](http://sui-hei.net) created by [kamisugi(上杉)](http://sui-hei.net/mondai/profile/1).
 
 The name of `Cindy` stands for **Cindy Is Not Dead Yet**,
 which comes from the popular original character of
@@ -10,44 +10,49 @@ which comes from the popular original character of
 
 <div style="clear:both;" />
 
-About Breaking Changes
-----------------------
-In version `v6.0`, the original UI is going to be replaced by `React`, and the original API is rewritten by `graphQL` and `Realy`,
-which means several projects depend on `Cindy`'s original API will not function anymore.
-You can still access `Cindy`'s API by querying to `/graphql` in this version.
+Differences between Cindy
+-------------------------
+Cindy-Realtime inherit its database from [Cindy][1], but its frontend is completely different from [Cindy][1].
 
-In version `v7.0`, a realtime cindy is going to be implemented with `WebSocket`,
-which means you cannot deploy it on some PaaS which have no multi-thread (asgi) support (e.g. pythonanywhere)
+Cindy-Realtime has more features:
+    - WebSocket, to make a realtime chat-like application
+    - React, to UI more convenient, and more convenient for maintainance :smile:
+    - GraphQL & Relay, instead of original REST-like API, to make site load faster.
 
-**Version `v5.X` is still under maintainance for legacy issues at present.**
-**After `v6.X`, support for `v5.X` is scheduled to be dropped, but after `v7.X`, support for `v6.X` will be continued for legacy issues**
+Though it has some drawbacks:
+    - Limited old browser support.
+    - Unable to deploy on a single-thread PaaS.
 
-### From v5.X to v6.X
-**WARNING**: The database has some major changes in v6.0, which means you *CANNOT* upgrade from v5.X to v6.X
-simply running `python3 manage.py makemigrations; python3 manage.py migrate`,
+For these reasons, I decide to separate this repository out from Cindy.
+*Both repos are under support at now*.
+
+Migrating from Cindy
+--------------------
+**WARNING**: The database has some major changes in Cindy-Realtime, which means you *CANNOT* upgrade from Cindy
+simply running `python3 manage.py makemigrations && python3 manage.py migrate`,
 which can modify your database but will *DROP SOME EXISTING DATA*.
 
-To upgrade from `v5.X` to `v6.X`:
+To upgrade from Cindy
 - Make sure you are at a node *BEFORE* an existing `v5.X` tag.
-- Upgrade the project to a version after `v6.X`
+- Checkout to branch relay-channels: `git checkout origin/relay-channels`
 - Run `upgrade.py` under `./upgrade-from-cindy/` folder
 - Run `python3 manage.py migrate`
 - Then upgrade the database as you did before `python3 manage.py makemigrations; python3 manage.py migrate`
 
 Requisitories
 -----------
-- [Python3.5](http://www.python.org)
+- [Python3.5](http://www.python.org) or later
 - MySQL Server
-- python3 packages from `requirements.txt`
+- python3 packages from `requirements.txt`. You may want to create a new virtualenv first.
 
     ```bash
     # Windows
     pip3 install -r requirements.txt
 
     # Mac or Linux
-    sudo -H pip3 install -r requirements.txt
+    pip3 install -r requirements.txt
     ```
-- nodejs manager (npm or bower)
+- a recent version of nodejs manager (npm or bower)
 
     ```bash
     cd cindy/sui_hei/static/js
@@ -63,11 +68,11 @@ Requisitories
     # or simply,
     npm run debug-main # NOTE: this may not function properly under Windows
     ```
-- mysqlclient
+- mysqlclient and redis-server
 
     ```bash
     # Linux
-    sudo apt-get install libmysqlclient20
+    sudo apt-get install libmysqlclient20 redis-server
     ```
 
 How To Run This Site On Your Machine
@@ -84,7 +89,7 @@ How To Run This Site On Your Machine
 
         ```sql
         # note that you need to chage all <>s to the value in your mysql.cnf.
-        create database <database>;
+        create database <database> character set utf-8;
         create user '<user>'@'<host>' identified by <password>;
         grant all on <database> to '<user>'@'<host>';
         quit
@@ -103,34 +108,13 @@ How To Run This Site On Your Machine
     - For Windows Users,
         open a `cmd` window, and type
         `python3 <drag the manage.py here> runserver`
-5. Open the link appeared in your terminal/cmd with a browser.
-
-### How to open a terminal
-
-#### Windows
-For Windows users, hit `Win+R`, Input `cmd`, and hit enter.
-
-#### Mac/Linux
-Open app menu by hitting `Super` or `Win` on your keyboard,
-or clicking the `all applications` icon in your dock.
-
-Search for `terminal`, and open it.
-
-Under linux, you can open a terminal by hitting `Ctrl-Alt-T` or click th
-e `open a terminal` in the right-click menu.
-
-TODO
------
-1. **A MORE BUILTIFUL LAYOUT**
-1. Migrate this website to use react.
-1. Add Pages (esp. wiki or something) for editing website on client side.
-1. separate the forum to different languages.
+5. Open the link (http://localhost:8000) appeared in your terminal/cmd with a browser.
 
 Contribute
 ----------
 All means of contributions are Welcome!
 
-If you are familiar with `python` or `css` or `html`,
+If you are familiar with `python`, `javascript`, `css` or `html`,
 don't hesitate to [make your own changes](#improving-codes) to it!
 You can even improve this `README.md` page if you have some `markdown` skills!
 
@@ -177,9 +161,9 @@ This chapter is specially for explaning the whole project to programmers.
 ### Data structure
 ```
 .
-├── cindy                                   # folder storing metadata for the project.
-│   ├── __init__.py                         #  you may not need to edit it unless you
-│   ├── settings.py                         #  know what you are doing.
+├── cindy
+│   ├── __init__.py
+│   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
 ├── mysql.cnf.template                      # tempate of config of mysql. please
@@ -187,70 +171,70 @@ This chapter is specially for explaning the whole project to programmers.
 ├── LICENSE                                 # licence file
 ├── manage.py                               # auto-generated manage script by django
 ├── README.md                               # the description file you are reading!
-├── README_jp.md                            # the description file in Japanese
-├── reset_database.sql                      # **warning**: you need to run this file
-│                                           #  ONLY when you want to reset database.
 ├── locale/                                 # folder storing language files
 └── sui_hei/                                # folder storing the main site project.
     ├── admin.py                            # modules visible in /admin
     ├── apps.py                             # apps config file.
-    ├── context_processor.py                # generating global context
     ├── models.py                           # models storing data structure.
     ├── static                              # folder storing static files, e.g. css, js, png, etc.
     │   ├── css
-    │   │   ├── base.css
-    │   │   ├── mondai_show.css
-    │   │   └── sidebar.css
+    │   │   └── base.css
     │   ├── js
-    │   │   ├── app
-    │   │   │   ├── base.js
-    │   │   │   ├── common.js
-    │   │   │   ├── index.js
-    │   │   │   ├── leftbar_content.js
-    │   │   │   ├── mondai_add.js
-    │   │   │   ├── mondai.js
-    │   │   │   ├── mondai_list.js
-    │   │   │   ├── mondai_show.js
-    │   │   │   ├── profile_edit.js
-    │   │   │   ├── profile.js
-    │   │   │   ├── profile_list.js
-    │   │   │   └── sidebar.js
-    │   │   ├── package.json
-    │   │   └── webpack.config.js
+    │   │   │── app
+    │   │   │   ├── App.jsx
+    │   │   │   ├── common.js
+    │   │   │   ├── components
+    │   │   │   │   ├── AuthForm.jsx
+    │   │   │   │   ├── components.jsx
+    │   │   │   │   ├── Index.jsx
+    │   │   │   │   ├── MondaiAdd.jsx
+    │   │   │   │   ├── MondaiList.jsx
+    │   │   │   │   ├── MondaiShow.jsx
+    │   │   │   │   ├── Navbar.jsx
+    │   │   │   │   ├── NavbarUserDropdown.jsx
+    │   │   │   │   └── SideBar.jsx
+    │   │   │   ├── Environment.js
+    │   │   │   ├── fragments/
+    │   │   │   ├── index.jsx
+    │   │   │   ├── main.jsx
+    │   │   │   └── redux
+    │   │   │       ├── actions.js
+    │   │   │       ├── reducers.js
+    │   │   │       └── socketMiddleware.js
+    │   │   ├── package.json
+    │   │   └── webpack.config.js
     │   └── pictures
     │       ├── cindylogo.png
-    │       ├── memobar.png
-    │       ├── sidebar.png
     │       └── star.png
     ├── templates                           #  folder storing the template for authentiation
-    │   ├── frames
-    │   │   ├── base.html
-    │   │   ├── footer.html
-    │   │   ├── leftbar_content.html
-    │   │   ├── pagination.html
-    │   │   └── profile_child_navi.html
-    │   ├── registration
-    │   │   ├── add.html                    #   /users/add
-    │   │   ├── login.html                  #   /users/login
-    │   │   └── users_password_change.html  #   /users/change_password
-    │   └── sui_hei                         #   /sui_hei
-    │       ├── index.html                  #   /
-    │       ├── mondai_add.html             #   /mondai/add
-    │       ├── mondai.html                 #   /mondai
-    │       ├── mondai_show.html            #   /mondai/show/[0-9]+
-    │       ├── profile_edit.html           #   /profile/edit
-    │       ├── profile.html                #   /profile/[0-9]+
-    │       └── profile_list.html           #   /profile/list
-    ├── templatetags                        # folder containing filters for template
-    │   ├── decodes.py                      #  works like {{ var|filter }} in templates
-    │   ├── __init__.py                     #
-    │   ├── iterutil.py                     #
-    │   └── markdown.py                     #
+    │   └── index.html                      #   /
     ├── tests.py                            # file for testing the project
     ├── urls.py                             # url patterns of the website
     ├── views.py                            # create pages from templates. Pass variables here.
-    └── translation.py
+    └── translation.py                      # modeltranslation
 ```
+
+### You will surely need these commands
+1. To update the database:
+
+    `python3 manage.py makemigrations && python3 manage.py migrate`
+
+    Do this after modifying, or making pulls with changes in `/sui_hei/models.py`.
+
+1. To update the graphql schema files
+    - Apply changes in `/sui_hei/schema.py`: `python3 manage.py graphql_schema`
+    - Apply changes in `graphql\`query{}\`` in javascript: `npm run relay`
+
+    ... or you can simply run `make schema` to update both.
+
+1. To generate bundles
+
+    - If you are developing, run `npm run debug-main`.
+    - If you are deploying, run `npm run prod-main`.
+
+    or you can run watch mode for webpack if you frequently update javascript files:
+
+    `./node_modules/webpack -w`
 
 ### Trouble Shooting
 
@@ -259,8 +243,7 @@ The latest commit may have some changes in sui_hei/models.py and
 you have to update your local database manually by running
 
 ```bash
-python3 manage.py makemigrations
-python3 manage.py migrate
+python3 manage.py makemigrations && python3 manage.py migrate
 ```
 
 Contributers
@@ -269,3 +252,7 @@ Contributers
 - [kamisan(上参)](https://github.com/pb10001)
 - [shakkuri(しゃっくり)](http://sui-hei.net/mondai/profile/11752)
 - [sarubobo(さるぼぼ)](http://sui-hei.net/mondai/profile/6664)
+
+
+[1]: https://github.com/heyrict/cindy
+
