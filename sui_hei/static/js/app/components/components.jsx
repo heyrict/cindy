@@ -15,7 +15,7 @@ import {
 import { createFragmentContainer } from "react-relay";
 import { Link } from "react-router-dom";
 import jQuery from "jquery";
-import common from "../../common";
+import common from "../common";
 
 // {{{1 function StatusLabel(props)
 export function StatusLabel(props) {

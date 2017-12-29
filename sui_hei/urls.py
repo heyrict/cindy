@@ -10,22 +10,6 @@ from .admin import *
 app_name = "sui_hei"
 
 
-def profile_dataExtra(prof):
-    returns = dict()
-
-    mondais = Mondai.objects.filter(user_id=prof.id)
-    comments = Comment.objects.filter(user_id=prof.id)
-
-    returns['mondai_count'] = mondais.count()
-    put_ques = Shitumon.objects.filter(user_id=prof.id)
-    returns['ques_count'] = put_ques.count()
-    returns['goodques_count'] = put_ques.filter(good=True).count()
-    returns['trueques_count'] = put_ques.filter(true=True).count()
-    returns['comment_count'] = comments.count()
-
-    return returns
-
-
 # yapf: disable
 urlpatterns = [
     path('i18n', include('django.conf.urls.i18n')),

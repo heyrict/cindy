@@ -20,53 +20,22 @@
   {% block style_include %}{% endblock %}
   {% get_current_language as LANGUAGE_CODE %}
   <script type="text/javascript">
-      LANGUAGE_CODE = "{{ LANGUAGE_CODE }}";
       window.django = {
         {% if request.user.is_authenticated %}
         user_id: {{ request.user.id }},
         user_nickname: "{{ request.user.nickname }}",
         {% endif %}
+        LANGUAGE_CODE: "{{ LANGUAGE_CODE }}",
       };
   </script>
   <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
   {% render_bundle 'manifest' %}
-  {% render_bundle 'react_vendor' %}
   {% render_bundle 'vendor' %}
-  {% render_bundle 'simple' %}
-  <script type="text/javascript">
-  {% block script %} {% endblock %}
-  </script>
-  {% block script_include %}{% endblock %}
+  {% render_bundle 'index' %}
 </head>
-
-<header><div class="container-fluid">
-
-{% block child_navi %} 
-{% endblock %} 
-
-{% block extra_header %}
-{% endblock %}
-</div></header>
 
 <body>
   <div id="root"></div>
 </body>
-
-<div id="message_edit_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="message_edit_modal_title" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="message_edit_modal_title">Edit</h3>
-  </div>
-  <div id="message_edit_modal_alert" class="alert alert-error" style="display:none;">
-    <button type="button" class="close">&times;</button>
-    <div id="message_edit_modal_alert_content"></div>
-  </div>
-  <div id="message_edit_modal_body" class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button id="message_edit_modal_save" class="btn btn-primary" aria-hidden="true">Save changes</button>
-  </div>
-</div>
 
 </html>

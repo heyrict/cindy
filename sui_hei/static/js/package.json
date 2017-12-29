@@ -5,7 +5,7 @@
   "scripts": {
     "prod-main": "./node_modules/.bin/webpack -p",
     "debug-main": "./node_modules/.bin/webpack",
-    "relay": "relay-compiler --src ./app/react --schema ./schema.json --extensions js jsx"
+    "relay": "relay-compiler --src ./app --schema ./schema.json --extensions js jsx"
   },
   "author": "heyrict<github.com/heyrict>",
   "license": "MIT",

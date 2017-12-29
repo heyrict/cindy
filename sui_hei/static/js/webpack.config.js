@@ -5,21 +5,16 @@ var BundleTracker = require("webpack-bundle-tracker");
 
 module.exports = {
   entry: {
-    index: ["./app/index"],
-    main: ["./app/base", "./app/sidebar"],
     vendor: [
       "jquery",
       "sanitize-html",
-      "velocity-animate",
       "markdown-it",
       "bootstrap",
       "bootbox",
       "bootstrap-slider",
       "moment",
       "moment-countdown",
-      "./app/common"
-    ],
-    react_vendor: [
+      "./app/common",
       "react",
       "react-dom",
       "react-bootstrap",
@@ -29,14 +24,7 @@ module.exports = {
       "react-router-dom",
       "react-router-bootstrap"
     ],
-    simple: "./app/react/main.jsx",
-    leftbar: "./app/leftbar_content",
-    profile: ["./app/profile"],
-    profile_edit: ["./app/profile_edit"],
-    profile_list: ["./app/profile_list"],
-    mondai: ["./app/mondai_list"],
-    mondai_add: ["./app/mondai_add"],
-    mondai_show: "./app/mondai_show"
+    index: "./app/index.jsx"
   },
   output: {
     publicPath: "/static/js/",
@@ -100,31 +88,12 @@ module.exports = {
             options: "moment"
           }
         ]
-      },
-      // sidebar
-      {
-        test: require.resolve("./app/sidebar"),
-        use: [
-          {
-            loader: "expose-loader",
-            options: "sidebar"
-          }
-        ]
-      },
-      {
-        test: require.resolve("./app/leftbar_content"),
-        use: [
-          {
-            loader: "expose-loader",
-            options: "leftbar"
-          }
-        ]
       }
     ]
   },
   plugins: [
     new CommonsChunkPlugin({
-      names: ["vendor", "react_vendor"],
+      names: "vendor",
       filename: "dist/[name]-[hash].chunk.js",
       minChunks: Infinity
     }),

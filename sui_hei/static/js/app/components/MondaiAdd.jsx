@@ -12,7 +12,7 @@ import { commitMutation } from "react-relay";
 import bootbox from "bootbox";
 
 import { FieldGroup, PreviewEditor } from "./components.jsx";
-import common from "../../common";
+import common from "../common";
 import { environment } from "../Environment";
 
 // {{{1 Elements

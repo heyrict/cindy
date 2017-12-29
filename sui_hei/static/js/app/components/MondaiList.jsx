@@ -18,7 +18,7 @@ import {
   createPaginationContainer
 } from "react-relay";
 import { environment } from "../Environment";
-import common from "../../common";
+import common from "../common";
 
 // {{{1 Elements
 // {{{2 function MondaiListItem

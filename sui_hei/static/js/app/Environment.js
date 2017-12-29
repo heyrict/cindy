@@ -1,5 +1,5 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
-import * as common from "../common";
+import * as common from "./common";
 
 const store = new Store(new RecordSource());
 

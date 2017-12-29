@@ -5,10 +5,10 @@ import { commitMutation } from "react-relay";
 import { connect } from "react-redux";
 import bootbox from "bootbox";
 
-import { actionSetCurrentUser } from "../actions";
+import { setCurrentUser } from "../redux/actions";
 
 import { FieldGroup, ModalContainer } from "./components.jsx";
-import common from "../../common";
+import common from "../common";
 import { environment } from "../Environment";
 
 // {{{1 Containers
@@ -106,7 +106,7 @@ export class LoginFormAtom extends React.Component {
 // {{{2 const LoginForm
 const mapLoginDispatchToProps = (dispatch, ownProps) => ({
   updateCurrentUser: user => {
-    dispatch(actionSetCurrentUser(user));
+    dispatch(setCurrentUser(user));
   }
 });
 
@@ -177,7 +177,7 @@ export class LogoutMenuItemAtom extends React.Component {
 // {{{2 const LogoutMenuItem
 const mapLogoutDispatchToProps = (dispatch, ownProps) => ({
   updateCurrentUser: () => {
-    dispatch(actionSetCurrentUser({ userId: null, nickname: null }));
+    dispatch(setCurrentUser({ userId: null, nickname: null }));
   }
 });
 

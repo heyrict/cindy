@@ -14,6 +14,7 @@ import { MondaiAddBody } from "./components/MondaiAdd.jsx";
 import { MondaiShowBody } from "./components/MondaiShow.jsx";
 import { TopNavbar } from "./components/Navbar.jsx";
 
+import socketMiddleware from "./socketMiddleware";
 import common from "../common";
 import cindyApp from "./reducers";
 

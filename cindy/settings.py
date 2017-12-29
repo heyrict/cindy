@@ -35,11 +35,18 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation', 'django.contrib.admin', 'django.contrib.auth',
-    'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'graphene_django',
-    'sui_hei', "webpack_loader"
-]
+    'modeltranslation',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'graphene_django',
+    'sui_hei',
+    "channels",
+    "webpack_loader",
+] # yapf: disable
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,7 +58,6 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'sui_hei.middleware.OnlineNowMiddleware',
 ]
 
 ROOT_URLCONF = 'cindy.urls'
@@ -67,7 +73,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'sui_hei.context_processor.lobby_chatlist',
             ],
         },
     },
@@ -112,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'ja-jp'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Japan'
 
@@ -153,15 +158,24 @@ APPEND_SLASH = False
 # Webpack Loader
 WEBPACK_LOADER = {
     "DEFAULT": {
-        "BUNDLE_DIR_NAME":
-        "dist/",
-        "STATS_FILE":
-        os.path.join(BASE_DIR, "sui_hei/static/js/dist/webpack-stats.json")
+        "BUNDLE_DIR_NAME": "dist/",
+        "STATS_FILE": os.path.join(BASE_DIR, "sui_hei/static/js/dist/webpack-stats.json")
     }
-}
+} # yapf: disable
 
 # Graphene Settings
 GRAPHENE = {
     'SCHEMA': 'schema.schema',
     'SCHEMA_OUTPUT': 'sui_hei/static/js/schema.json'
+}
+
+# Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:6379")],
+        },
+        "ROUTING": "sui_hei.routing.channel_routing"
+    },
 }
