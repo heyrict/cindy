@@ -12,7 +12,7 @@ import common from "../../common";
 import { environment } from "../Environment";
 
 // {{{1 Containers
-// {{{2 class LoginForm
+// {{{2 class LoginFormAtom
 export class LoginFormAtom extends React.Component {
   // {{{ constructor
   constructor(props) {
@@ -58,6 +58,7 @@ export class LoginFormAtom extends React.Component {
           type="submit"
           onClick={this.handleSubmit}
           value={gettext("Submit")}
+          className="hidden"
         />
       </Form>
     );
