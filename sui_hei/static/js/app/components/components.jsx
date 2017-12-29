@@ -136,7 +136,7 @@ export class UserAwardPopover extends React.Component {
       return (
         <OverlayTrigger placement="top" trigger="focus" overlay={popoverAward}>
           <a
-            href="#"
+            href="javascript:void(0);"
             role="button"
             style={{ color: "black" }}
           >
