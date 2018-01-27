@@ -8,9 +8,11 @@ The name of `Cindy` stands for **Cindy Is Not Dead Yet**,
 which comes from the popular original character of
 [Cindy](http://sui-hei.net/app/webroot/pukiwiki/index.php?%E3%82%B7%E3%83%B3%E3%83%87%E3%82%A3).
 
-**THE PROJECT IS STILL UNDER CONSTRUCTION. WE URGE FOR YOUR SUPPORT!**
-
 <div style="clear:both;" />
+
+Notes
+-----
+**This project is paused in favor of [cindy-realtime](http://github.com/heyrict/cindy-realtime).**
 
 Requisitories
 -----------
